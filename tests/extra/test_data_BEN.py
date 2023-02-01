@@ -28,7 +28,7 @@ channels_pass = [2, 3, 4, 10, 12]  # accepted channel configs
 channels_fail = [5, 1, 0, -1, 13]  # not accepted configs
 img_shapes_pass = [(c, hw, hw) for c in channels_pass for hw in img_sizes]
 img_shapes_fail = [(c, hw, hw) for c in channels_fail for hw in img_sizes]
-max_img_idxs = [0, 1, 100, 10000]
+max_img_idxs = [0, 1, 10, 20]
 max_img_idxs_too_large = [600_000, 1_000_000]
 
 

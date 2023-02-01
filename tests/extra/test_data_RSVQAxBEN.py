@@ -18,7 +18,7 @@ from typing import Sequence, Union
 
 @pytest.fixture
 def data_dir():
-    return resolve_ben_data_dir(None)
+    return resolve_ben_data_dir(None, allow_mock=True, force_mock=True)
 
 
 dataset_params = ["train", "val", "test", None]

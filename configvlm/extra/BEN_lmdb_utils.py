@@ -9,6 +9,8 @@ Dataloader.
 __author__ = "Leonard Hackel"
 __email__ = "l.hackel@tu-berlin.de"
 
+import pathlib
+
 import numpy as np
 from bigearthnet_patch_interface.merged_interface import BigEarthNet_S1_S2_Patch
 from bigearthnet_common.constants import BAND_STATS_S1, BAND_STATS_S2
@@ -147,10 +149,15 @@ def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
     return ben_channel_mean, ben_channel_std
 
 
-def resolve_ben_data_dir(data_dir: Union[str, None]) -> str:
+def resolve_ben_data_dir(
+    data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
+) -> str:
     """
     Helper function that tries to resolve the correct directory
     :param data_dir: current path that is suggested
+    :param allow_mock: allows mock data path to be returned
+    :param force_mock: only mock data path will be returned. Useful for debugging with
+                       small data
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
     if data_dir in [None, "none", "None"]:
@@ -169,6 +176,19 @@ def resolve_ben_data_dir(data_dir: Union[str, None]) -> str:
                 data_dir = p
                 Messages.warn(f"Changing path to {data_dir}")
                 break
+
+    # using mock data if allowed and no other found or forced
+    if data_dir in [None, "none", "None"] and allow_mock:
+        Messages.warn("Mock data being used, no alternative available.")
+        data_dir = str(
+            pathlib.Path(__file__).parent.joinpath("mock_data").resolve(True)
+        )
+    if force_mock:
+        Messages.warn("Forcing Mock data")
+        data_dir = str(
+            pathlib.Path(__file__).parent.joinpath("mock_data").resolve(True)
+        )
+
     if data_dir is None:
         raise AssertionError("Could not resolve data directory")
     elif data_dir in ["none", "None"]:

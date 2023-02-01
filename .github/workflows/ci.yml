@@ -62,7 +62,7 @@ jobs:
       - name: Generate coverage report
         run: |
           source .venv/bin/activate
-          coverage report
+          coverage report -i
       - name: Generate coverage badge
         uses: tj-actions/coverage-badge-py@v1.8
       #  if something was changed, commit

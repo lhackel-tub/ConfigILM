@@ -1,0 +1,339 @@
+import csv
+import os
+from datetime import datetime
+from time import time
+from typing import Collection
+from typing import Optional
+from typing import Union
+
+import pytorch_lightning as pl
+import torch
+import torchvision.transforms as transforms
+from torch.utils.data import DataLoader
+from torch.utils.data import Dataset
+
+from configvlm.extra.BEN_lmdb_utils import band_combi_to_mean_std
+from configvlm.extra.BEN_lmdb_utils import ben19_list_to_onehot
+from configvlm.extra.BEN_lmdb_utils import BENLMDBReader
+from configvlm.extra.BEN_lmdb_utils import resolve_ben_data_dir
+from configvlm.extra.CustomTorchClasses import MyGaussianNoise
+from configvlm.extra.CustomTorchClasses import MyRotateTransform
+from configvlm.util import Messages
+
+
+class BENDataSet(Dataset):
+    def __init__(
+        self,
+        root_dir="./",
+        split: Optional[str] = None,
+        transform=None,
+        max_img_idx=None,
+        img_size=(12, 120, 120),
+    ):
+        super().__init__()
+        self.root_dir = root_dir
+        self.lmdb_dir = os.path.join(self.root_dir, "BigEarthNetEncoded.lmdb")
+        self.transform = transform
+        self.image_size = img_size
+        assert img_size[0] in [2, 3, 4, 10, 12], (
+            "Image Channels have to be "
+            "2 (Sentinel-1), "
+            "3 (RGB), "
+            "4 (10m Sentinel-2), "
+            "10 (10m + 20m Sentinel-2) or "
+            "12 (10m + 20m Sentinel-2 + 10m Sentinel-1) "
+            "but was " + f"{img_size[0]}"
+        )
+        self.read_channels = img_size[0]
+
+        print(f"Loading BEN data for {split}...")
+        if split is not None:
+            with open(os.path.join(self.root_dir, f"{split}.csv")) as f:
+                reader = csv.reader(f)
+                patches = list(reader)
+        else:
+            splits = ["train", "val", "test"]
+            patches = []
+            for s in splits:
+                with open(os.path.join(self.root_dir, s + ".csv")) as f:
+                    reader = csv.reader(f)
+                    patches += list(reader)
+
+        # lines get read as arrays -> flatten to one dimension
+        self.patches = [x[0] for x in patches]
+        # sort list for reproducibility
+        self.patches.sort()
+        print(f"    {len(self.patches)} patches indexed")
+        if max_img_idx is not None and max_img_idx < len(self.patches):
+            self.patches = self.patches[:max_img_idx]
+
+        print(f"    {len(self.patches)} filtered patches indexed")
+        self.BENLoader = BENLMDBReader(
+            lmdb_dir=self.lmdb_dir,
+            label_type="new",
+            image_size=self.image_size,
+            bands=self.image_size[0],
+        )
+
+    def __len__(self):
+        return len(self.patches)
+
+    def __getitem__(self, idx):
+        key = self.patches[idx]
+
+        # get (& write) image from (& to) LMDB
+        # get image from database
+        # we have to copy, as the image in imdb is not writeable,
+        # which is a problem in .to_tensor()
+        img, labels = self.BENLoader[key]
+
+        if img is None:
+            print(f"Cannot load {key} from database")
+            raise ValueError
+        if self.transform:
+            img = self.transform(img)
+
+        label_list = labels
+        labels = ben19_list_to_onehot(labels)
+
+        assert sum(labels) == len(set(label_list)), f"Label creation failed for {key}"
+        return img, labels
+
+
+class BENDataModule(pl.LightningDataModule):
+    num_classes = 19
+    train_ds: Union[None, BENDataSet] = None
+    val_ds: Union[None, BENDataSet] = None
+    test_ds: Union[None, BENDataSet] = None
+
+    def __init__(
+        self,
+        batch_size=16,
+        data_dir: str = "./",
+        img_size=None,
+        num_workers_dataloader=None,
+        max_img_idx=None,
+        shuffle=None,
+    ):
+        if img_size is not None and len(img_size) != 3:
+            raise ValueError(
+                f"Expected image_size with 3 dimensions (HxWxC) or None but got "
+                f"{len(img_size)} dimensions instead"
+            )
+        super().__init__()
+        if num_workers_dataloader is None:
+            cpu_count = os.cpu_count()
+            if type(cpu_count) is int:
+                self.num_workers_dataloader = cpu_count // 2
+            else:
+                self.num_workers_dataloader = 0
+        print(f"Dataloader using {self.num_workers_dataloader} workers")
+
+        self.data_dir = data_dir
+        self.batch_size = batch_size
+        self.max_img_idx = max_img_idx
+        self.img_size = (12, 120, 120) if img_size is None else img_size
+        self.shuffle = shuffle
+        if self.shuffle is not None:
+            Messages.hint(
+                f"Shuffle was set to {self.shuffle}. This is not recommended for most "
+                f"configuration. Use shuffle=None (default) for recommended "
+                f"configuration."
+            )
+
+        # get mean and std
+        ben_mean, ben_std = band_combi_to_mean_std(self.img_size[0])
+
+        self.train_transform = transforms.Compose(
+            [
+                transforms.Resize((self.img_size[1], self.img_size[2])),
+                MyGaussianNoise(20),
+                transforms.RandomHorizontalFlip(),
+                transforms.RandomVerticalFlip(),
+                MyRotateTransform([0, 90, 180, 270]),
+                transforms.Normalize(ben_mean, ben_std),
+            ]
+        )
+        self.transform = transforms.Compose(
+            [
+                transforms.Resize((self.img_size[1], self.img_size[2])),
+                transforms.Normalize(ben_mean, ben_std),
+            ]
+        )
+        self.pin_memory = torch.cuda.device_count() > 0
+
+    def prepare_data(self):
+        pass
+
+    def setup(self, stage: Optional[str] = None):
+        print(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
+        sample_info_msg = ""
+        t0 = time()
+
+        # Assign train/val datasets for use in dataloaders
+        if stage == "fit" or stage is None:
+            self.train_ds = BENDataSet(
+                self.data_dir,
+                split="train",
+                transform=self.train_transform,
+                max_img_idx=self.max_img_idx,
+                img_size=self.img_size,
+            )
+
+            self.val_ds = BENDataSet(
+                self.data_dir,
+                split="val",
+                transform=self.transform,
+                max_img_idx=self.max_img_idx,
+                img_size=self.img_size,
+            )
+            sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
+            sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
+
+        # Assign test dataset for use in dataloader(s)
+        if stage == "test" or stage is None:
+            self.test_ds = BENDataSet(
+                self.data_dir,
+                split="test",
+                transform=self.transform,
+                max_img_idx=self.max_img_idx,
+                img_size=self.img_size,
+            )
+            sample_info_msg += f"  Total test samples: {len(self.test_ds):8,d}"
+
+        if stage == "predict":
+            raise NotImplementedError("Predict stage not implemented")
+
+        print(f"setup took {time() - t0:.2f} seconds")
+        print(sample_info_msg)
+
+    def train_dataloader(self):
+        return DataLoader(
+            self.train_ds,
+            batch_size=self.batch_size,
+            shuffle=True if self.shuffle is None else self.shuffle,
+            num_workers=self.num_workers_dataloader,
+            pin_memory=self.pin_memory,
+        )
+
+    def val_dataloader(self):
+        return DataLoader(
+            self.val_ds,
+            batch_size=self.batch_size,
+            shuffle=False if self.shuffle is None else self.shuffle,
+            num_workers=self.num_workers_dataloader,
+            pin_memory=self.pin_memory,
+        )
+
+    def test_dataloader(self):
+        return DataLoader(
+            self.test_ds,
+            batch_size=self.batch_size,
+            shuffle=False if self.shuffle is None else self.shuffle,
+            num_workers=self.num_workers_dataloader,
+            pin_memory=self.pin_memory,
+        )
+
+
+def speedtest(
+    workers: int = 4,
+    data_dir: Union[str, None] = None,
+    max_img_index: int = 8 * 1024,
+    bs: int = 64,
+    channels: int = 10,
+):
+    from tqdm import tqdm
+
+    data_dir = resolve_ben_data_dir(data_dir)
+
+    dm = BENDataModule(
+        data_dir=data_dir,
+        img_size=(channels, 120, 120),
+        max_img_idx=max_img_index,
+        num_workers_dataloader=workers,
+        batch_size=bs,
+    )
+    dm.setup("fit")
+    dl = dm.train_dataloader()
+    print("\n==== Got dataloader ====")
+    print(
+        f"Testing with:\n"
+        f"  Batchsize: {bs:6d}\n"
+        f"  # workers: {workers:6d}\n"
+        f"       imgs: {max_img_index:6d}\n"
+        f"   channels: {channels:6d}"
+    )
+    for i in range(5):
+        for batch in tqdm(iter(dl), desc=f"Data Loading speed test epoch {i}"):
+            pass
+
+
+def single_label(
+    workers: int = 4,
+    data_dir: Union[str, None] = None,
+    max_img_index: int = -1,
+    bs: int = 64,
+):
+    from tqdm import tqdm
+
+    data_dir = resolve_ben_data_dir(data_dir)
+
+    dm = BENDataModule(
+        data_dir=data_dir,
+        img_size=(3, 120, 120),
+        max_img_idx=max_img_index,
+        num_workers_dataloader=workers,
+        batch_size=bs,
+    )
+
+    dm.setup("fit")
+    dl = dm.train_dataloader()
+
+    sl_imgs = 0
+    for batch in tqdm(iter(dl), desc="Counting Single Label imgs"):
+        for lbl in batch[1]:
+            if sum(lbl) == 1:
+                sl_imgs += 1
+
+    print(f"Single Label images: {sl_imgs}")
+
+
+def display_img(
+    img_id: int = 420,
+    data_dir: Union[str, None] = None,
+    channel_sel: Collection[int] = (3, 2, 1),
+):
+    import matplotlib.pyplot as plt
+
+    assert len(channel_sel) == 3, "Please select 3 channels to display"
+    data_dir = resolve_ben_data_dir(data_dir)
+    # create dataset
+    ds = BENDataSet(root_dir=data_dir, split="train", img_size=(3, 120, 120))
+    # get img
+    img, lbl = ds[img_id]
+    # select channels and transpose (= move channels to last dim as expected by mpl)
+    img = img.T
+    # move to range 0-1
+    img -= img.min()
+    img /= img.max()
+
+    # display
+    # no axis
+    plt.axis("off")
+
+    # if interpolate we want to keep the "blockiness" of the pixels
+    plt.imshow(img, interpolation="nearest")
+    # first save then show, otherwise data is deleted by mpl
+    # also remove most of the white boarder and increase base resolution to 200
+    # (~780x780)
+    plt.savefig(f"{id}.png", bbox_inches="tight", dpi=200)
+    plt.show()
+
+
+if __name__ == "__main__":
+    import typer
+
+    # typer.run(speedtest)
+    # typer.run(display_img)
+    typer.run(single_label)
+    print("Done")

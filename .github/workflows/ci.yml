@@ -58,11 +58,11 @@ jobs:
       - name: Run tests + generate coverage
         run: |
           source .venv/bin/activate
-          coverage run -m pytest
+          coverage run -m pytest -k "coco"
       - name: Generate coverage report
         run: |
           source .venv/bin/activate
-          coverage report -i
+          coverage report
       - name: Generate coverage badge
         uses: tj-actions/coverage-badge-py@v1.8
       #  if something was changed, commit

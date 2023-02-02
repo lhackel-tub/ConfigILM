@@ -4,6 +4,7 @@ from typing import Sequence
 
 import pytest
 import torch
+from requests.exceptions import ReadTimeout  # type: ignore
 
 import configvlm
 from configvlm import ConfigVLM
@@ -180,7 +181,7 @@ def test_timm_256(model):
     apply_timm(model=model, cls=10, bs=4, image_size=256)
 
 
-def apply_vlm(config: ConfigVLM.VLMConfiguration, bs: int):
+def apply_vlm(config: ConfigVLM.VLMConfiguration, bs: int) -> bool:
     cls = config.classes
     v, q, a = get_vqa_batch(
         (config.channels, config.image_size, config.image_size),
@@ -188,15 +189,32 @@ def apply_vlm(config: ConfigVLM.VLMConfiguration, bs: int):
         classes=cls,
         text_tokens=config.max_sequence_length,
     )
-    model = ConfigVLM.ConfigVLM(config=config)
-    res = model((v, q))
-    assert (
-        res.shape == a.shape
-    ), f"Shape is wrong: Should be {a.shape} but is {res.shape}"
-    assert res.shape == (
-        bs,
-        cls,
-    ), f"Shape is wrong: Should be {(bs, cls)} but is {res.shape}"
+    i = 0
+
+    model = None
+    while True:
+        try:
+            model = ConfigVLM.ConfigVLM(config=config)
+        except ReadTimeout:
+            # Model could not load, retry
+            i += 1
+            continue
+        if i >= 4:
+            # model could not be loaded after 5 tries
+            return False
+        break
+
+    if model is not None:
+        res = model((v, q))
+        assert (
+            res.shape == a.shape
+        ), f"Shape is wrong: Should be {a.shape} but is {res.shape}"
+        assert res.shape == (
+            bs,
+            cls,
+        ), f"Shape is wrong: Should be {(bs, cls)} but is {res.shape}"
+        return True
+    return False
 
 
 hf_models = ["distilbert-base-uncased", "prajjwal1/bert-tiny"]
@@ -219,7 +237,8 @@ def test_vlm_default(hfmodel):
         network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
-    apply_vlm(config=config, bs=bs)
+    if not apply_vlm(config=config, bs=bs):
+        pytest.skip("Download did not work")
 
 
 @pytest.mark.parametrize("hfmodel", hf_models)
@@ -235,7 +254,8 @@ def test_vlm_dont_use_pooler(hfmodel):
         max_sequence_length=32,
         use_pooler_output=False,
     )
-    apply_vlm(config=config, bs=bs)
+    if not apply_vlm(config=config, bs=bs):
+        pytest.skip("Download did not work")
 
 
 def test_vlm_download():
@@ -254,7 +274,8 @@ def test_vlm_download():
         network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
-    apply_vlm(config=config, bs=bs)
+    if not apply_vlm(config=config, bs=bs):
+        pytest.skip("Download did not work")
 
 
 def test_vlm_untrained():

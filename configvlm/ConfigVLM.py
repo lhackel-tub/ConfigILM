@@ -26,6 +26,7 @@ from os import listdir
 from os.path import isdir, join
 import warnings
 from requests.exceptions import HTTPError  # type: ignore
+from requests.exceptions import ReadTimeout  # type: ignore
 
 
 def _available_hf_models(base_path: Path):
@@ -92,12 +93,17 @@ def get_hf_model(
             tokenizer.save_pretrained(join(save_directory, model_name))
         except HTTPError:
             raise HTTPError(
-                f"Model '{model_name}' could not be fetched. " f"Please check spelling."
+                f"Model '{model_name}' could not be fetched. Please check spelling."
             )
         except FileNotFoundError:
             raise FileNotFoundError(
                 f"Model '{model_name}' could not be fetched. "
-                f"Internet is down and file not cached."
+                f"Network is down and file not cached."
+            )
+        except ReadTimeout:
+            raise ReadTimeout(
+                f"Model '{model_name}' could not be fetched. "
+                f"Timeout and file not cached."
             )
 
     # Model is available or was made available

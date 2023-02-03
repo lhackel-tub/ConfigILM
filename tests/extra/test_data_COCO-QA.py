@@ -14,12 +14,13 @@ def data_dir():
 
 
 def dataset_ok(
-    dataset: COCOQADataSet,
+    dataset: Union[COCOQADataSet, None],
     expected_image_shape: Sequence,
     expected_question_length: int,
     expected_length: Union[int, None],
     classes: int,
 ):
+    assert dataset is not None
     if expected_length is not None:
         assert len(dataset) == expected_length
 
@@ -72,3 +73,40 @@ def test_ds_default(data_dir, split):
         expected_length=None,
         classes=430,
     )
+
+
+dataset_params = ["train", "val", "test", None]
+
+
+@pytest.mark.parametrize("split", dataset_params)
+def test_ben_dm_default(data_dir, split: str):
+    dm = COCOQADataModule(data_dir=data_dir)
+    split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
+    dm.setup(stage=split2stage[split])
+    dm.prepare_data()
+    if split in ["train", "val"]:
+        dataset_ok(
+            dm.train_ds,
+            expected_image_shape=(3, 120, 120),
+            expected_length=None,
+            classes=430,
+            expected_question_length=64,
+        )
+        dataset_ok(
+            dm.val_ds,
+            expected_image_shape=(3, 120, 120),
+            expected_length=None,
+            classes=430,
+            expected_question_length=64,
+        )
+        assert dm.test_ds is None
+    if split == "test":
+        dataset_ok(
+            dm.test_ds,
+            expected_image_shape=(3, 120, 120),
+            expected_length=None,
+            classes=430,
+            expected_question_length=64,
+        )
+        assert dm.train_ds is None
+        assert dm.val_ds is None

@@ -1,19 +1,12 @@
 import json
-import warnings
+from typing import Sequence
+from typing import Union
 
 import pytest
 
-with warnings.catch_warnings():
-    warnings.filterwarnings(
-        action="ignore", category=DeprecationWarning, message=".*distutils.*"
-    )
-    from configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import (
-        RSVQAxBENDataSet,
-        RSVQAxBENDataModule,
-    )
-
 from configvlm.extra.BEN_lmdb_utils import resolve_ben_data_dir
-from typing import Sequence, Union
+from configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataModule
+from configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataSet
 
 
 @pytest.fixture

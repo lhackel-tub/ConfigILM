@@ -1,3 +1,12 @@
+"""
+Dataloader and Datamodule for RSVQAxBEN dataset. Files can be requested by contacting
+the author.
+Original Paper of Dataset:
+https://rsvqa.sylvainlobry.com/IGARSS21.pdf
+Based on Image Data from:
+https://arxiv.org/abs/2105.07921
+https://bigearth.net/
+"""
 import json
 import os
 from datetime import datetime
@@ -239,6 +248,8 @@ class RSVQAxBENDataModule(pl.LightningDataModule):
                 self.num_workers_dataloader = cpu_count // 2
             else:
                 self.num_workers_dataloader = 0
+        else:
+            self.num_workers_dataloader = num_workers_dataloader
         print(f"Dataloader using {self.num_workers_dataloader} workers")
 
         self.data_dir = data_dir

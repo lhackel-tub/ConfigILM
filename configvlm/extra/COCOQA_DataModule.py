@@ -1,8 +1,10 @@
 import json
 import os
+import warnings
 from datetime import datetime
 from os.path import isdir
 from os.path import join
+from pathlib import Path
 from time import time
 from typing import List
 from typing import Optional
@@ -10,18 +12,21 @@ from typing import Union
 
 import pytorch_lightning as pl
 import torch
-from CustomTorchClasses import MyGaussianNoise
+import torch.nn.functional as F
 from PIL import Image
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 from torchvision import transforms
 from transformers import BertTokenizer
 
+from configvlm.extra.CustomTorchClasses import MyGaussianNoise
 from configvlm.util import huggingface_tokenize_and_pad
 from configvlm.util import Messages
 
 
-def resolve_cocoqa_data_dir(data_dir: Union[str, None]) -> str:
+def resolve_cocoqa_data_dir(
+    data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
+) -> str:
     """
     Helper function that tries to resolve the correct directory
     :param data_dir: current path that is suggested
@@ -44,6 +49,15 @@ def resolve_cocoqa_data_dir(data_dir: Union[str, None]) -> str:
                 data_dir = p
                 Messages.warn(f"Changing path to {data_dir}")
                 break
+
+    # using mock data if allowed and no other found or forced
+    if data_dir in [None, "none", "None"] and allow_mock:
+        Messages.warn("Mock data being used, no alternative available.")
+        data_dir = str(Path(__file__).parent.joinpath("mock_data").resolve(True))
+    if force_mock:
+        Messages.warn("Forcing Mock data")
+        data_dir = str(Path(__file__).parent.joinpath("mock_data").resolve(True))
+
     if data_dir is None:
         raise AssertionError("Could not resolve data directory")
     elif data_dir in ["none", "None"]:
@@ -63,7 +77,7 @@ class COCOQADataSet(Dataset):
         max_img_idx=None,
         img_size=(3, 120, 120),
         tokenizer=None,
-        seq_length=32,
+        seq_length=64,
     ):
         super().__init__()
         self.root_dir = root_dir
@@ -76,9 +90,16 @@ class COCOQADataSet(Dataset):
                 "This may result in very bad performance if the used network "
                 "expected other tokens"
             )
-            self.tokenizer = BertTokenizer.from_pretrained(
-                "./huggingface_tokenizers/bert-base-uncased.tok"
+            # get path relative to this script, not relative to the calling main script
+            # TODO: make this more flexible
+            default_tokenizer = (
+                Path(__file__)
+                .parent.parent.joinpath(
+                    "huggingface_tokenizers", "bert-base-uncased.tok"
+                )
+                .resolve(True)
             )
+            self.tokenizer = BertTokenizer.from_pretrained(default_tokenizer)
         else:
             self.tokenizer = tokenizer
         self.seq_length = seq_length
@@ -120,7 +141,14 @@ class COCOQADataSet(Dataset):
         img = Image.open(join(self.root_dir, "images", name)).convert("RGB")
         tensor = convert(img)
         # for some reason, HEIGHT and WIDTH are swapped in ToTensor()
-        return tensor.swapaxes(1, 2)
+        tensor = tensor.swapaxes(1, 2)
+        tensor = F.interpolate(
+            tensor.unsqueeze(dim=0),
+            self.image_size[-2:],
+            mode="bicubic",
+            align_corners=True,
+        ).squeeze(dim=0)
+        return tensor
 
     def _answer_to_onehot(self, answer):
         label = torch.zeros(self.num_classes)
@@ -138,7 +166,6 @@ class COCOQADataSet(Dataset):
         return len(self.qa_keys)
 
     def __getitem__(self, idx):
-
         data = self.qa_keys[idx]
 
         # get image
@@ -177,7 +204,7 @@ class COCOQADataModule(pl.LightningDataModule):
         max_img_idx=None,
         shuffle=None,
         tokenizer=None,
-        seq_length=32,
+        seq_length=64,
     ):
         super().__init__()
         if num_workers_dataloader is None:
@@ -186,6 +213,8 @@ class COCOQADataModule(pl.LightningDataModule):
                 self.num_workers_dataloader = cpu_count // 2
             else:
                 self.num_workers_dataloader = 0
+        else:
+            self.num_workers_dataloader = num_workers_dataloader
         print(f"Dataloader using {self.num_workers_dataloader} workers")
 
         self.data_dir = data_dir
@@ -259,6 +288,7 @@ class COCOQADataModule(pl.LightningDataModule):
             )
             sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
+            warnings.warn("Validation and Test set are equal in this Dataset.")
 
         # Assign test dataset for use in dataloader(s)
         if stage == "test" or stage is None:
@@ -272,6 +302,7 @@ class COCOQADataModule(pl.LightningDataModule):
                 seq_length=self.seq_length,
             )
             sample_info_msg += f"  Total test samples: {len(self.test_ds):8,d}"
+            warnings.warn("Validation and Test set are equal in this Dataset.")
 
         if stage == "predict":
             raise NotImplementedError("Predict stage not implemented")
@@ -300,15 +331,6 @@ class COCOQADataModule(pl.LightningDataModule):
     def test_dataloader(self):
         return DataLoader(
             self.test_ds,
-            batch_size=self.batch_size,
-            shuffle=False if self.shuffle is None else self.shuffle,
-            num_workers=self.num_workers_dataloader,
-            pin_memory=self.pin_memory,
-        )
-
-    def predict_dataloader(self):
-        return DataLoader(
-            self.predict_ds,
             batch_size=self.batch_size,
             shuffle=False if self.shuffle is None else self.shuffle,
             num_workers=self.num_workers_dataloader,

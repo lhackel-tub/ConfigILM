@@ -1,2 +1,74 @@
-def test_PASS():
-    pass
+from typing import Sequence
+from typing import Union
+
+import pytest
+
+from configvlm.extra.COCOQA_DataModule import COCOQADataModule
+from configvlm.extra.COCOQA_DataModule import COCOQADataSet
+from configvlm.extra.COCOQA_DataModule import resolve_cocoqa_data_dir
+
+
+@pytest.fixture
+def data_dir():
+    return resolve_cocoqa_data_dir(None, allow_mock=True)
+
+
+def dataset_ok(
+    dataset: COCOQADataSet,
+    expected_image_shape: Sequence,
+    expected_question_length: int,
+    expected_length: Union[int, None],
+    classes: int,
+):
+    if expected_length is not None:
+        assert len(dataset) == expected_length
+
+    if len(dataset) > 0:
+        for i in [0, 100, 2000, 5000, 10000]:
+            i = i % len(dataset)
+            sample = dataset[i]
+            assert len(sample) == 3
+            v, q, a = sample
+            assert v.shape == expected_image_shape
+            assert len(q) == expected_question_length
+            assert list(a.size()) == [classes]
+
+
+def dataloaders_ok(
+    dm: COCOQADataModule,
+    expected_image_shape: Sequence,
+    expected_question_length: int,
+    classes: int,
+):
+    dm.setup(stage=None)
+    dataloaders = [
+        dm.train_dataloader(),
+        dm.val_dataloader(),
+        dm.test_dataloader(),
+    ]
+    for dl in dataloaders:
+        max_batch = len(dl) // expected_image_shape[0]
+        for i, batch in enumerate(dl):
+            if i == 5 or i >= max_batch:
+                break
+            v, q, a = batch
+            assert v.shape == expected_image_shape
+            assert q.shape == (
+                expected_image_shape[0],
+                expected_question_length,
+            )
+            assert a.shape == (expected_image_shape[0], classes)
+
+
+@pytest.mark.parametrize("split", ["train", "test"])
+def test_ds_default(data_dir, split):
+    img_size = (3, 120, 120)
+    ds = COCOQADataSet(data_dir, split=split)
+
+    dataset_ok(
+        dataset=ds,
+        expected_image_shape=img_size,
+        expected_question_length=64,
+        expected_length=None,
+        classes=430,
+    )

@@ -37,8 +37,9 @@ def dataset_ok(
     expected_image_shape: Sequence,
     expected_length: Union[int, None],
 ):
-    # in principal dataset may be not set in data modules
-    # check that this is not the case here
+    # In principal dataset may be not set in data modules, but mypy requires this
+    # notation to be happy.
+    # Check that this is not the case here
     assert dataset is not None
     if expected_length is not None:
         assert len(dataset) == expected_length

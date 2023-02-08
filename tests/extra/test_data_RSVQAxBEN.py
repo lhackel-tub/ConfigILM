@@ -170,3 +170,77 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
             classes=1000,
             seq_length=32,
         )
+
+
+@pytest.mark.parametrize("split", dataset_params)
+def test_dm_default(data_dir, split: str):
+    json.load = wrap_json_load
+    dm = RSVQAxBENDataModule(data_dir=data_dir)
+    split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
+    dm.setup(stage=split2stage[split])
+    dm.prepare_data()
+    if split in ["train", "val"]:
+        if dm.train_ds is not None and dm.val_ds is not None:
+            dataset_ok(
+                dm.train_ds,
+                expected_image_shape=(12, 120, 120),
+                expected_length=None,
+                classes=1000,
+                expected_question_length=32,
+            )
+            dataset_ok(
+                dm.val_ds,
+                expected_image_shape=(12, 120, 120),
+                expected_length=None,
+                classes=1000,
+                expected_question_length=32,
+            )
+        else:
+            raise AssertionError(
+                "train_ds and val_ds have to exist after setup('fit'),"
+                " but at least one is missing."
+            )
+        assert dm.test_ds is None
+    elif split == "test":
+        if dm.test_ds is not None:
+            dataset_ok(
+                dm.test_ds,
+                expected_image_shape=(12, 120, 120),
+                expected_length=None,
+                classes=1000,
+                expected_question_length=32,
+            )
+        else:
+            raise AssertionError("test to exist after setup('test'), but is missing.")
+        assert dm.train_ds is None
+        assert dm.val_ds is None
+    elif split is None:
+        if None in [dm.train_ds, dm.val_ds, dm.test_ds]:
+            raise AssertionError(
+                "train_ds, val_ds or test_ds is None. " "This should not be the case"
+            )
+        else:
+            for ds in [dm.train_ds, dm.val_ds, dm.test_ds]:
+                dataset_ok(
+                    ds,
+                    expected_image_shape=(12, 120, 120),
+                    expected_length=None,
+                    classes=1000,
+                    expected_question_length=32,
+                )
+
+
+def test_dm_dataloaders(data_dir):
+    pass
+
+
+def test_dm_shuffle_false(data_dir):
+    pass
+
+
+def test_dm_shuffle_none(data_dir):
+    pass
+
+
+def test_dm_shuffle_true(data_dir):
+    pass

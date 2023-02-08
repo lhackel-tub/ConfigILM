@@ -112,12 +112,13 @@ def test_dm_default(data_dir, split: str):
         )
         assert dm.train_ds is None
         assert dm.val_ds is None
+    # TODO add test for None
 
 
 @pytest.mark.parametrize(
     "split, bs", [(s, b) for s in dataset_params for b in [1, 2, 3, 4, 16, 32]]
 )
-def test_ben_dm_default_dataloader(data_dir, split: str, bs: int):
+def test_dm_default_dataloader(data_dir, split: str, bs: int):
     dm = COCOQADataModule(data_dir=data_dir, batch_size=bs)
     dataloaders_ok(
         dm,
@@ -125,3 +126,19 @@ def test_ben_dm_default_dataloader(data_dir, split: str, bs: int):
         expected_question_length=64,
         classes=430,
     )
+
+
+def test_dm_dataloaders(data_dir):
+    pass
+
+
+def test_dm_shuffle_false(data_dir):
+    pass
+
+
+def test_dm_shuffle_none(data_dir):
+    pass
+
+
+def test_dm_shuffle_true(data_dir):
+    pass

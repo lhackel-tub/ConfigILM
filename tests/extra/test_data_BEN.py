@@ -168,6 +168,7 @@ def test_ben_dm_default(data_dir, split: str):
         )
         assert dm.train_ds is None
         assert dm.val_ds is None
+    # TODO add test for None
 
 
 @pytest.mark.parametrize("img_size", [[1], [1, 2], [1, 2, 3, 4]])

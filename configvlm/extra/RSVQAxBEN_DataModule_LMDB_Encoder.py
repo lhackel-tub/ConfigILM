@@ -278,7 +278,9 @@ class RSVQAxBENDataModule(pl.LightningDataModule):
 
         self.data_dir = data_dir
         self.batch_size = batch_size
-        self.max_img_idx = max_img_idx if max_img_idx > 0 else None
+        self.max_img_idx = (
+            max_img_idx if max_img_idx is None or max_img_idx > 0 else None
+        )
         self.img_size = (12, 120, 120) if img_size is None else img_size
         self.shuffle = shuffle
         if self.shuffle is not None:

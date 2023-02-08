@@ -20,7 +20,7 @@ import torch
 import torch.nn.functional as F
 
 import lmdb
-from os.path import join, isdir
+from os.path import isdir
 
 from configvlm.util import Messages
 
@@ -282,22 +282,3 @@ class BENLMDBReader:
             img_data,
             ben_patch.labels if self.label_type == "old" else ben_patch.new_labels,
         )
-
-
-if __name__ == "__main__":
-    BEN_reader = BENLMDBReader(
-        join(resolve_ben_data_dir(None), "BigEarthNetEncoded.lmdb"),
-        (3, 120, 120),
-        "RGB",
-        label_type="old",
-    )
-    out = BEN_reader["S2A_MSIL2A_20170613T101031_0_48"]
-    print(out)
-    BEN_reader = BENLMDBReader(
-        join(resolve_ben_data_dir(None), "BigEarthNetEncoded.lmdb"),
-        (2, 120, 120),
-        "S1",
-        label_type="old",
-    )
-    out = BEN_reader["S2A_MSIL2A_20170613T101031_0_48"]
-    print(out)

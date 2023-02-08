@@ -143,7 +143,7 @@ def get_obj_size(obj):
         }
 
         # The new obj_q will be the ones that were not marked,
-        # and we will update marked with their ids so we will
+        # and we will update marked with their ids, so we will
         # not traverse them again.
         obj_q = new_refr.values()
         marked.update(new_refr.keys())

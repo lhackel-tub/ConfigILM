@@ -234,9 +234,9 @@ class COCOQADataModule(pl.LightningDataModule):
         self.train_transform = transforms.Compose(
             [
                 transforms.Resize((self.img_size[1], self.img_size[2])),
-                MyGaussianNoise(20),
-                transforms.RandomHorizontalFlip(),
-                # transforms.RandomVerticalFlip(),
+                MyGaussianNoise(0.1),
+                # transforms.RandomHorizontalFlip(),
+                transforms.RandomVerticalFlip(),
                 transforms.RandomRotation(degrees=10),
                 # MyRotateTransform([0, 90, 180, 270]),
                 # normalize?
@@ -336,82 +336,3 @@ class COCOQADataModule(pl.LightningDataModule):
             num_workers=self.num_workers_dataloader,
             pin_memory=self.pin_memory,
         )
-
-
-def speedtest(
-    workers: int = 8,
-    data_dir: Union[str, None] = None,
-    max_img_index: int = -1,
-    bs: int = 64,
-    seq_length: int = 64,
-):
-    from tqdm import tqdm
-
-    data_dir = resolve_cocoqa_data_dir(data_dir)
-    dm = COCOQADataModule(
-        data_dir=data_dir,
-        img_size=(3, 120, 120),
-        max_img_idx=max_img_index,
-        num_workers_dataloader=workers,
-        batch_size=bs,
-        seq_length=seq_length,
-    )
-    dm.setup("fit")
-    dl = dm.train_dataloader()
-    batch_voting = [0] * seq_length
-    print("\n==== Got dataloader ====")
-    print(
-        f"Testing with:\n"
-        f"  Batchsize: {bs:6d}\n"
-        f"  # workers: {workers:6d}\n"
-        f"       imgs: {max_img_index:6d}"
-    )
-    for i in range(1):
-        for batch in tqdm(iter(dl), desc=f"Data Loading speed test epoch {i}"):
-            q = batch[1]
-            pad = [torch.sum(x) for x in q]
-            batch_voting[pad.index(0) - 1] += 1
-    while batch_voting[-1] == 0:
-        del batch_voting[-1]
-
-    print(
-        f"Done, voting length result = {batch_voting}\n      len = {len(batch_voting)}"
-    )
-
-
-def display_img(
-    img_id: int = 6643,
-    data_dir: Union[str, None] = None,
-):
-    import matplotlib.pyplot as plt
-
-    data_dir = resolve_cocoqa_data_dir(data_dir)
-    # create dataset
-    ds = COCOQADataSet(root_dir=data_dir, split="train", img_size=(3, 120, 120))
-    # get img
-    img, q, a = ds[img_id]
-    # select channels and transpose (= move channels to last dim as expected by mpl)
-    img = img.T
-    # move to range 0-1
-    img -= img.min()
-    img /= img.max()
-
-    # display
-    # no axis
-    plt.axis("off")
-
-    # if interpolate we want to keep the "blockiness" of the pixels
-    plt.imshow(img, interpolation="nearest")
-    # first save then show, otherwise data is deleted by mpl
-    # also remove most of the white boarder and increase base resolution to 200
-    # (~780x780)
-    plt.savefig(f"{id}.png", bbox_inches="tight", dpi=200)
-    plt.show()
-
-
-if __name__ == "__main__":
-    import typer
-
-    typer.run(speedtest)
-    # typer.run(display_img)
-    print("Done")

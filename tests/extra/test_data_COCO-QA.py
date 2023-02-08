@@ -2,6 +2,7 @@ from typing import Sequence
 from typing import Union
 
 import pytest
+import torch
 
 from configvlm.extra.COCOQA_DataModule import COCOQADataModule
 from configvlm.extra.COCOQA_DataModule import COCOQADataSet
@@ -52,7 +53,8 @@ def dataloaders_ok(
         for i, batch in enumerate(dl):
             if i == 5 or i >= max_batch:
                 break
-            v, q, a = batch
+            v, _q, a = batch
+            q = torch.stack(_q).T
             assert v.shape == expected_image_shape
             assert q.shape == (
                 expected_image_shape[0],
@@ -110,3 +112,16 @@ def test_ben_dm_default(data_dir, split: str):
         )
         assert dm.train_ds is None
         assert dm.val_ds is None
+
+
+@pytest.mark.parametrize(
+    "split, bs", [(s, b) for s in dataset_params for b in [1, 2, 3, 4, 16, 32]]
+)
+def test_ben_dm_default_dataloader(data_dir, split: str, bs: int):
+    dm = COCOQADataModule(data_dir=data_dir, batch_size=bs)
+    dataloaders_ok(
+        dm,
+        expected_image_shape=(bs, 3, 120, 120),
+        expected_question_length=64,
+        classes=430,
+    )

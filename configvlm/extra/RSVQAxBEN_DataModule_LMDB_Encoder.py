@@ -9,6 +9,7 @@ https://bigearth.net/
 """
 import json
 import os
+import warnings
 from datetime import datetime
 from os.path import join
 from pathlib import Path
@@ -28,7 +29,6 @@ from transformers import BertTokenizer
 
 from configvlm.extra.BEN_lmdb_utils import band_combi_to_mean_std
 from configvlm.extra.BEN_lmdb_utils import BENLMDBReader
-from configvlm.extra.BEN_lmdb_utils import resolve_ben_data_dir
 from configvlm.extra.CustomTorchClasses import MyGaussianNoise
 from configvlm.extra.CustomTorchClasses import MyRotateTransform
 from configvlm.util import huggingface_tokenize_and_pad
@@ -158,12 +158,7 @@ class RSVQAxBENDataSet(Dataset):
         else:
             self.selected_answers = selected_answers
 
-        print("    converting to NP arrays")
-        self.questions = np.array([x["question"] for x in self.qa_keys])
-        self.answers = np.array([x["answer"] for x in self.qa_keys])
-        self.names = np.array([x["S2_name"] for x in self.qa_keys])
-        self.types = np.array([x["type"] for x in self.qa_keys])
-        del self.qa_keys
+        self._split_qa()
 
         self.BENLoader = BENLMDBReader(
             lmdb_dir=self.lmdb_dir,
@@ -171,6 +166,32 @@ class RSVQAxBENDataSet(Dataset):
             image_size=self.image_size,
             bands=self.image_size[0],
         )
+
+    def _split_qa(self):
+        # make a lookup for index -> question
+        # the full set contains ~8.6 m questions, but < 250 000 unique ones
+        # we can save a lot of memory this way
+        self.idx_to_question = np.array(list({x["question"] for x in self.qa_keys}))
+        # temporary lookup question -> index.
+        # Otherwise, conversion to index would be very slow
+        q2idx = {q: i for i, q in enumerate(self.idx_to_question)}
+        q, a, n, t = [], [], [], []
+        for i, d in tqdm(
+            enumerate(self.qa_keys),
+            desc="Converting to NP arrays",
+            total=len(self.qa_keys),
+        ):
+            q.append(q2idx[d["question"]])
+            a.append(d["answer"])
+            n.append(d["S2_name"])
+            t.append(d["type"])
+            self.qa_keys[i] = None
+
+        del self.qa_keys
+        self.names = np.asarray(n)
+        self.types = np.asarray(t)
+        self.answers = np.asarray(a)
+        self.questions = np.asarray(q)
 
     def _to_labels(self, labels):
         label = torch.zeros(self.classes)
@@ -188,10 +209,13 @@ class RSVQAxBENDataSet(Dataset):
         return len(self.questions)
 
     def __getitem__(self, idx):
+        if idx > len(self):
+            warnings.warn(f"Index {idx} > {len(self)}, using modulo")
+            idx = idx % len(self)
 
         qa_pair = {
             "type": self.types[idx],
-            "question": self.questions[idx],
+            "question": self.idx_to_question[self.questions[idx]],
             "answer": self.answers[idx],
             "S2_name": self.names[idx],
         }
@@ -386,45 +410,3 @@ class RSVQAxBENDataModule(pl.LightningDataModule):
             num_workers=self.num_workers_dataloader,
             pin_memory=self.pin_memory,
         )
-
-
-def speedtest(
-    workers: int = 4,
-    data_dir: Union[str, None] = None,
-    max_img_index: int = 2000 * 64,
-    bs: int = 64,
-):
-    data_dir = resolve_ben_data_dir(data_dir)
-
-    dm = RSVQAxBENDataModule(
-        data_dir=data_dir,
-        img_size=(10, 120, 120),
-        max_img_idx=max_img_index,
-        num_workers_dataloader=workers,
-        batch_size=bs,
-        seq_length=48,
-        pin_memory=False,
-    )
-    dm.setup("fit")
-    dl = dm.train_dataloader()
-    # dm.setup("test")
-    # dl = dm.test_dataloader()
-    batch_voting = [0] * 48
-    print("Got dataloader")
-    for i in range(3):
-        print(f"'Epoch {i}': ")
-        for batch in tqdm(iter(dl), desc="Data Loading speed test"):
-            q = batch[1]
-            pad = [torch.sum(x) for x in q]
-            batch_voting[pad.index(0) - 1] += 1
-    while batch_voting[-1] == 0:
-        del batch_voting[-1]
-    print(
-        f"Done, voting length result = {batch_voting}\n      len = {len(batch_voting)}"
-    )
-
-
-if __name__ == "__main__":
-    import typer
-
-    typer.run(speedtest)

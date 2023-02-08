@@ -9,7 +9,6 @@ import csv
 import os
 from datetime import datetime
 from time import time
-from typing import Collection
 from typing import Optional
 from typing import Union
 
@@ -22,7 +21,6 @@ from torch.utils.data import Dataset
 from configvlm.extra.BEN_lmdb_utils import band_combi_to_mean_std
 from configvlm.extra.BEN_lmdb_utils import ben19_list_to_onehot
 from configvlm.extra.BEN_lmdb_utils import BENLMDBReader
-from configvlm.extra.BEN_lmdb_utils import resolve_ben_data_dir
 from configvlm.extra.CustomTorchClasses import MyGaussianNoise
 from configvlm.extra.CustomTorchClasses import MyRotateTransform
 from configvlm.util import Messages
@@ -242,107 +240,3 @@ class BENDataModule(pl.LightningDataModule):
             num_workers=self.num_workers_dataloader,
             pin_memory=self.pin_memory,
         )
-
-
-def speedtest(
-    workers: int = 4,
-    data_dir: Union[str, None] = None,
-    max_img_index: int = 8 * 1024,
-    bs: int = 64,
-    channels: int = 10,
-):
-    from tqdm import tqdm
-
-    data_dir = resolve_ben_data_dir(data_dir)
-
-    dm = BENDataModule(
-        data_dir=data_dir,
-        img_size=(channels, 120, 120),
-        max_img_idx=max_img_index,
-        num_workers_dataloader=workers,
-        batch_size=bs,
-    )
-    dm.setup("fit")
-    dl = dm.train_dataloader()
-    print("\n==== Got dataloader ====")
-    print(
-        f"Testing with:\n"
-        f"  Batchsize: {bs:6d}\n"
-        f"  # workers: {workers:6d}\n"
-        f"       imgs: {max_img_index:6d}\n"
-        f"   channels: {channels:6d}"
-    )
-    for i in range(5):
-        for batch in tqdm(iter(dl), desc=f"Data Loading speed test epoch {i}"):
-            pass
-
-
-def single_label(
-    workers: int = 4,
-    data_dir: Union[str, None] = None,
-    max_img_index: int = -1,
-    bs: int = 64,
-):
-    from tqdm import tqdm
-
-    data_dir = resolve_ben_data_dir(data_dir)
-
-    dm = BENDataModule(
-        data_dir=data_dir,
-        img_size=(3, 120, 120),
-        max_img_idx=max_img_index,
-        num_workers_dataloader=workers,
-        batch_size=bs,
-    )
-
-    dm.setup("fit")
-    dl = dm.train_dataloader()
-
-    sl_imgs = 0
-    for batch in tqdm(iter(dl), desc="Counting Single Label imgs"):
-        for lbl in batch[1]:
-            if sum(lbl) == 1:
-                sl_imgs += 1
-
-    print(f"Single Label images: {sl_imgs}")
-
-
-def display_img(
-    img_id: int = 420,
-    data_dir: Union[str, None] = None,
-    channel_sel: Collection[int] = (3, 2, 1),
-):
-    import matplotlib.pyplot as plt
-
-    assert len(channel_sel) == 3, "Please select 3 channels to display"
-    data_dir = resolve_ben_data_dir(data_dir)
-    # create dataset
-    ds = BENDataSet(root_dir=data_dir, split="train", img_size=(3, 120, 120))
-    # get img
-    img, lbl = ds[img_id]
-    # select channels and transpose (= move channels to last dim as expected by mpl)
-    img = img.T
-    # move to range 0-1
-    img -= img.min()
-    img /= img.max()
-
-    # display
-    # no axis
-    plt.axis("off")
-
-    # if interpolate we want to keep the "blockiness" of the pixels
-    plt.imshow(img, interpolation="nearest")
-    # first save then show, otherwise data is deleted by mpl
-    # also remove most of the white boarder and increase base resolution to 200
-    # (~780x780)
-    plt.savefig(f"{id}.png", bbox_inches="tight", dpi=200)
-    plt.show()
-
-
-if __name__ == "__main__":
-    import typer
-
-    # typer.run(speedtest)
-    # typer.run(display_img)
-    typer.run(single_label)
-    print("Done")

@@ -1,5 +1,6 @@
 import json
 from typing import Sequence
+from typing import Tuple
 from typing import Union
 
 import pytest
@@ -120,10 +121,15 @@ def wrap_json_load(
 )
 def test_4c_ben_dataset_splits(data_dir, split: str, classes: int):
     img_size = (4, 120, 120)
+    seq_length = 32
     json.load = wrap_json_load
 
     ds = RSVQAxBENDataSet(
-        root_dir=data_dir, split=split, img_size=img_size, classes=classes
+        root_dir=data_dir,
+        split=split,
+        img_size=img_size,
+        classes=classes,
+        seq_length=seq_length,
     )
 
     dataset_ok(
@@ -131,5 +137,36 @@ def test_4c_ben_dataset_splits(data_dir, split: str, classes: int):
         expected_image_shape=img_size,
         expected_length=None,
         classes=classes,
+        expected_question_length=seq_length,
+    )
+
+
+@pytest.mark.parametrize("img_size", img_shapes_pass)
+def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
+    json.load = wrap_json_load
+
+    ds = RSVQAxBENDataSet(
+        root_dir=data_dir, split="val", img_size=img_size, classes=1000, seq_length=32
+    )
+
+    dataset_ok(
+        dataset=ds,
+        expected_image_shape=img_size,
+        expected_length=None,
+        classes=1000,
         expected_question_length=32,
     )
+
+
+@pytest.mark.parametrize("img_size", img_shapes_fail)
+def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
+    json.load = wrap_json_load
+
+    with pytest.raises(AssertionError):
+        _ = RSVQAxBENDataSet(
+            root_dir=data_dir,
+            split="val",
+            img_size=img_size,
+            classes=1000,
+            seq_length=32,
+        )

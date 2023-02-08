@@ -81,7 +81,7 @@ dataset_params = ["train", "val", "test", None]
 
 
 @pytest.mark.parametrize("split", dataset_params)
-def test_ben_dm_default(data_dir, split: str):
+def test_dm_default(data_dir, split: str):
     dm = COCOQADataModule(data_dir=data_dir)
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
     dm.setup(stage=split2stage[split])

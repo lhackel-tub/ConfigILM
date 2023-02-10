@@ -13,7 +13,7 @@ from configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataSet
 
 @pytest.fixture
 def data_dir():
-    return resolve_ben_data_dir(None, allow_mock=True)
+    return resolve_ben_data_dir(None, allow_mock=True, force_mock=True)
 
 
 dataset_params = ["train", "val", "test", None]
@@ -27,12 +27,34 @@ img_shapes_fail = [(c, hw, hw) for c in channels_fail for hw in img_sizes]
 max_img_idxs = [0, 1, 100, 10000]
 max_img_idxs_too_large = [600_000, 1_000_000]
 
+# these are part of the names used in mock data
+# to see all names, open the lmdb env, create transaction and read
+# [name for name, _ in txn.cursor()]
+mock_s2_names = [
+    "S2A_MSIL2A_20170613T101031_0_45",
+    "S2A_MSIL2A_20170613T101031_26_57",
+    "S2A_MSIL2A_20170613T101031_34_32",
+    "S2A_MSIL2A_20170613T101031_39_24",
+    "S2A_MSIL2A_20170617T113321_48_5",
+    "S2A_MSIL2A_20170701T093031_2_52",
+    "S2A_MSIL2A_20170701T093031_31_31",
+    "S2A_MSIL2A_20170701T093031_43_67",
+    "S2A_MSIL2A_20170701T093031_50_51",
+    "S2A_MSIL2A_20170701T093031_63_35",
+    "S2A_MSIL2A_20170701T093031_77_24",
+    "S2A_MSIL2A_20170717T113321_82_31",
+    "S2A_MSIL2A_20170816T095031_79_10",
+    "S2A_MSIL2A_20170818T103021_43_48",
+    "S2A_MSIL2A_20171002T112112_10_57",
+    "S2A_MSIL2A_20171002T112112_34_76",
+]
+
 mock_data_dict = {
     i: {
         "type": "LC",
         "question": "What is the question?",
         "answer": f"{i % 2345}",
-        "S2_name": f"S2A_MSIL2A_20170613T101031_0_{45 + i % 46}",
+        "S2_name": mock_s2_names[i % len(mock_s2_names)],
     }
     for i in range(15000)
 }
@@ -177,8 +199,7 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
 def test_ds_max_img_idx(data_dir, max_img_index: int):
     json.load = wrap_json_load
     ds = RSVQAxBENDataSet(root_dir=data_dir, max_img_idx=max_img_index)
-    mocked_datadir = "mock" in data_dir
-    max_len = 75 if mocked_datadir else 15_000
+    max_len = 15_000
     len = (
         max_len
         if max_img_index is None or max_img_index > max_len or max_img_index == -1

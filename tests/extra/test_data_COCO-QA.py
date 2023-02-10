@@ -67,15 +67,17 @@ def dataloaders_ok(
 def test_ds_default(data_dir, split):
     img_size = (3, 120, 120)
     ds = COCOQADataSet(data_dir, split=split)
-    len = {"train": 78_736, "test": 38_948, None: 78_736 + 38_948}[split]
+    length = {"train": 78_736, "test": 38_948, None: 78_736 + 38_948}[split]
     mocked_datadir = "mock" in data_dir
-    len = 25 if mocked_datadir and split is not None else 50 if mocked_datadir else len
+    length = (
+        25 if mocked_datadir and split is not None else 50 if mocked_datadir else length
+    )
 
     dataset_ok(
         dataset=ds,
         expected_image_shape=img_size,
         expected_question_length=64,
-        expected_length=len,
+        expected_length=length,
         classes=430,
     )
 
@@ -89,7 +91,7 @@ def test_ds_max_img_idx(data_dir, max_img_idx):
     ds = COCOQADataSet(data_dir, split=None, max_img_idx=max_img_idx)
     mocked_datadir = "mock" in data_dir
     max_len = 50 if mocked_datadir else 78_736 + 38_948
-    len = (
+    length = (
         max_len
         if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1
         else max_img_idx
@@ -99,7 +101,7 @@ def test_ds_max_img_idx(data_dir, max_img_idx):
         dataset=ds,
         expected_image_shape=img_size,
         expected_question_length=64,
-        expected_length=len,
+        expected_length=length,
         classes=430,
     )
 

@@ -123,7 +123,7 @@ def test_ben_fail_image_retrieve(data_dir):
 def test_ben_max_index(data_dir, max_img_idx: int):
     mocked_datadir = "mock" in data_dir
     max_len = 25 if mocked_datadir else 123_723
-    len = (
+    length = (
         max_len
         if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1
         else max_img_idx
@@ -138,7 +138,7 @@ def test_ben_max_index(data_dir, max_img_idx: int):
     dataset_ok(
         dataset=ds,
         expected_image_shape=(3, 120, 120),
-        expected_length=len,
+        expected_length=length,
     )
 
 

@@ -63,16 +63,40 @@ def dataloaders_ok(
             assert a.shape == (expected_image_shape[0], classes)
 
 
-@pytest.mark.parametrize("split", ["train", "test"])
+@pytest.mark.parametrize("split", ["train", "test", None])
 def test_ds_default(data_dir, split):
     img_size = (3, 120, 120)
     ds = COCOQADataSet(data_dir, split=split)
+    len = {"train": 78_736, "test": 38_948, None: 78_736 + 38_948}[split]
 
     dataset_ok(
         dataset=ds,
         expected_image_shape=img_size,
         expected_question_length=64,
-        expected_length=None,
+        expected_length=len,
+        classes=430,
+    )
+
+
+@pytest.mark.parametrize(
+    "max_img_idx",
+    [None, -1, 1, 5, 20, 50, 200, 2_000, 20_000, 117_683, 117_684, 117_685, 200_000],
+)
+def test_ds_max_img_idx(data_dir, max_img_idx):
+    img_size = (3, 120, 120)
+    ds = COCOQADataSet(data_dir, split=None, max_img_idx=max_img_idx)
+    max_len = 78_736 + 38_948
+    len = (
+        max_len
+        if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1
+        else max_img_idx
+    )
+
+    dataset_ok(
+        dataset=ds,
+        expected_image_shape=img_size,
+        expected_question_length=64,
+        expected_length=len,
         classes=430,
     )
 
@@ -102,7 +126,7 @@ def test_dm_default(data_dir, split: str):
             expected_question_length=64,
         )
         assert dm.test_ds is None
-    if split == "test":
+    elif split == "test":
         dataset_ok(
             dm.test_ds,
             expected_image_shape=(3, 120, 120),
@@ -112,13 +136,21 @@ def test_dm_default(data_dir, split: str):
         )
         assert dm.train_ds is None
         assert dm.val_ds is None
-    # TODO add test for None
+    elif split is None:
+        for ds in [dm.train_ds, dm.val_ds, dm.test_ds]:
+            dataset_ok(
+                ds,
+                expected_image_shape=(3, 120, 120),
+                expected_length=None,
+                classes=430,
+                expected_question_length=64,
+            )
+    else:
+        ValueError(f"split {split} unknown")
 
 
-@pytest.mark.parametrize(
-    "split, bs", [(s, b) for s in dataset_params for b in [1, 2, 3, 4, 16, 32]]
-)
-def test_dm_default_dataloader(data_dir, split: str, bs: int):
+@pytest.mark.parametrize("bs", [1, 2, 3, 4, 16, 32])
+def test_dm_dataloader(data_dir, bs: int):
     dm = COCOQADataModule(data_dir=data_dir, batch_size=bs)
     dataloaders_ok(
         dm,
@@ -128,17 +160,47 @@ def test_dm_default_dataloader(data_dir, split: str, bs: int):
     )
 
 
-def test_dm_dataloaders(data_dir):
-    pass
-
-
 def test_dm_shuffle_false(data_dir):
-    pass
+    dm = COCOQADataModule(data_dir=data_dir, shuffle=False)
+    dm.setup(None)
+    # should not be equal due to transforms being random!
+    assert not torch.equal(
+        next(iter(dm.train_dataloader()))[0],
+        next(iter(dm.train_dataloader()))[0],
+    )
+    assert torch.equal(
+        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
+    )
+    assert torch.equal(
+        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
+    )
 
 
 def test_dm_shuffle_none(data_dir):
-    pass
+    dm = COCOQADataModule(data_dir=data_dir, shuffle=None)
+    dm.setup(None)
+    assert not torch.equal(
+        next(iter(dm.train_dataloader()))[0],
+        next(iter(dm.train_dataloader()))[0],
+    )
+    assert torch.equal(
+        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
+    )
+    assert torch.equal(
+        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
+    )
 
 
 def test_dm_shuffle_true(data_dir):
-    pass
+    dm = COCOQADataModule(data_dir=data_dir, shuffle=True)
+    dm.setup(None)
+    assert not torch.equal(
+        next(iter(dm.train_dataloader()))[0],
+        next(iter(dm.train_dataloader()))[0],
+    )
+    assert not torch.equal(
+        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
+    )
+    assert not torch.equal(
+        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
+    )

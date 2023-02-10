@@ -115,21 +115,27 @@ class COCOQADataSet(Dataset):
             for s in splits:
                 f_name = f"COCO-QA_QA_{s}.json"
                 with open(join(self.root_dir, f_name)) as read_file:
-                    self.qa_pairs.update(json.load(read_file))
+                    qa_pairs = json.load(read_file)
+                    qa_pairs = {f"{k}_{s}": v for k, v in qa_pairs.items()}
+                    self.qa_pairs.update(qa_pairs)
 
         #  sort list for reproducibility
-        self.qa_keys = [self.qa_pairs[key] for key in sorted(self.qa_pairs)]
+        self.qa_values = [self.qa_pairs[key] for key in sorted(self.qa_pairs)]
         del self.qa_pairs
-        print(f"    {len(self.qa_keys):6,d} QA-pairs indexed")
-        if max_img_idx is not None and max_img_idx < len(self.qa_keys):
-            self.qa_keys = self.qa_keys[:max_img_idx]
+        print(f"    {len(self.qa_values):6,d} QA-pairs indexed")
+        if (
+            max_img_idx is not None
+            and max_img_idx < len(self.qa_values)
+            and max_img_idx != -1
+        ):
+            self.qa_values = self.qa_values[:max_img_idx]
 
         image_name_mapping = os.listdir(join(self.root_dir, "images"))
         self.image_name_mapping = {int(x[-14:-4]): x for x in image_name_mapping}
 
-        print(f"    {len(self.qa_keys):6,d} QA-pairs in reduced data set")
+        print(f"    {len(self.qa_values):6,d} QA-pairs in reduced data set")
 
-        self.answers = sorted(list({x["answer"] for x in self.qa_keys}))
+        self.answers = sorted(list({x["answer"] for x in self.qa_values}))
         assert self.num_classes >= len(
             self.answers
         ), "There are more different answers than classes, this should not happen"
@@ -163,10 +169,10 @@ class COCOQADataSet(Dataset):
         return label
 
     def __len__(self):
-        return len(self.qa_keys)
+        return len(self.qa_values)
 
     def __getitem__(self, idx):
-        data = self.qa_keys[idx]
+        data = self.qa_values[idx]
 
         # get image
         # get answer

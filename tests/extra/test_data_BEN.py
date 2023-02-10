@@ -28,7 +28,7 @@ channels_pass = [2, 3, 4, 10, 12]  # accepted channel configs
 channels_fail = [5, 1, 0, -1, 13]  # not accepted configs
 img_shapes_pass = [(c, hw, hw) for c in channels_pass for hw in img_sizes]
 img_shapes_fail = [(c, hw, hw) for c in channels_fail for hw in img_sizes]
-max_img_idxs = [0, 1, 10, 20]
+max_img_idxs = [0, 1, 10, 20, None, -1]
 max_img_idxs_too_large = [600_000, 1_000_000]
 
 
@@ -121,6 +121,13 @@ def test_ben_fail_image_retrieve(data_dir):
 
 @pytest.mark.parametrize("max_img_idx", max_img_idxs)
 def test_ben_max_index(data_dir, max_img_idx: int):
+    mocked_datadir = "mock" in data_dir
+    max_len = 75 if mocked_datadir else 123_723
+    len = (
+        max_len
+        if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1
+        else max_img_idx
+    )
     ds = BENDataSet(
         root_dir=data_dir,
         split="val",
@@ -131,7 +138,7 @@ def test_ben_max_index(data_dir, max_img_idx: int):
     dataset_ok(
         dataset=ds,
         expected_image_shape=(3, 120, 120),
-        expected_length=max_img_idx,
+        expected_length=len,
     )
 
 
@@ -160,7 +167,7 @@ def test_ben_dm_default(data_dir, split: str):
         )
         dataset_ok(dm.val_ds, expected_image_shape=(12, 120, 120), expected_length=None)
         assert dm.test_ds is None
-    if split == "test":
+    elif split == "test":
         dataset_ok(
             dm.test_ds,
             expected_image_shape=(12, 120, 120),
@@ -168,7 +175,9 @@ def test_ben_dm_default(data_dir, split: str):
         )
         assert dm.train_ds is None
         assert dm.val_ds is None
-    # TODO add test for None
+    elif split is None:
+        for ds in [dm.train_ds, dm.val_ds, dm.test_ds]:
+            dataset_ok(ds, expected_image_shape=(12, 120, 120), expected_length=None)
 
 
 @pytest.mark.parametrize("img_size", [[1], [1, 2], [1, 2, 3, 4]])

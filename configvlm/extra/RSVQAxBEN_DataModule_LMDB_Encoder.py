@@ -54,7 +54,7 @@ def select_answers_from_qa_pairs(qa_pairs, number_of_answers=1000):
     # so that position 0 contains the most frequent word
     answers_by_appearence = sorted(freq_dict.items(), key=lambda x: x[1], reverse=True)
 
-    if number_of_answers >= len(answers_by_appearence):
+    if number_of_answers > len(answers_by_appearence):
         Messages.warn(
             f"There are fewer possible answers then requested ({number_of_answers} "
             f"requested, but {len(answers_by_appearence)} found)."
@@ -142,18 +142,22 @@ class RSVQAxBENDataSet(Dataset):
                     self.qa_pairs.update(json.load(read_file))
 
         # sort list for reproducibility
-        self.qa_keys = [self.qa_pairs[key] for key in sorted(self.qa_pairs)]
+        self.qa_values = [self.qa_pairs[key] for key in sorted(self.qa_pairs)]
         del self.qa_pairs
-        print(f"    {len(self.qa_keys):12,d} QA-pairs indexed")
-        if max_img_idx is not None and max_img_idx < len(self.qa_keys):
-            self.qa_keys = self.qa_keys[:max_img_idx]
+        print(f"    {len(self.qa_values):12,d} QA-pairs indexed")
+        if (
+            max_img_idx is not None
+            and max_img_idx < len(self.qa_values)
+            and max_img_idx != -1
+        ):
+            self.qa_values = self.qa_values[:max_img_idx]
 
-        print(f"    {len(self.qa_keys):12,d} QA-pairs in reduced data set")
+        print(f"    {len(self.qa_values):12,d} QA-pairs in reduced data set")
 
         # select answers
         if split == "train":
             self.selected_answers = select_answers_from_qa_pairs(
-                qa_pairs=self.qa_keys, number_of_answers=self.classes
+                qa_pairs=self.qa_values, number_of_answers=self.classes
             )
         else:
             self.selected_answers = selected_answers
@@ -171,23 +175,23 @@ class RSVQAxBENDataSet(Dataset):
         # make a lookup for index -> question
         # the full set contains ~8.6 m questions, but < 250 000 unique ones
         # we can save a lot of memory this way
-        self.idx_to_question = np.array(list({x["question"] for x in self.qa_keys}))
+        self.idx_to_question = np.array(list({x["question"] for x in self.qa_values}))
         # temporary lookup question -> index.
         # Otherwise, conversion to index would be very slow
         q2idx = {q: i for i, q in enumerate(self.idx_to_question)}
         q, a, n, t = [], [], [], []
         for i, d in tqdm(
-            enumerate(self.qa_keys),
+            enumerate(self.qa_values),
             desc="Converting to NP arrays",
-            total=len(self.qa_keys),
+            total=len(self.qa_values),
         ):
             q.append(q2idx[d["question"]])
             a.append(d["answer"])
             n.append(d["S2_name"])
             t.append(d["type"])
-            self.qa_keys[i] = None
+            self.qa_values[i] = None
 
-        del self.qa_keys
+        del self.qa_values
         self.names = np.asarray(n)
         self.types = np.asarray(t)
         self.answers = np.asarray(a)
@@ -398,15 +402,6 @@ class RSVQAxBENDataModule(pl.LightningDataModule):
     def test_dataloader(self):
         return DataLoader(
             self.test_ds,
-            batch_size=self.batch_size,
-            shuffle=False if self.shuffle is None else self.shuffle,
-            num_workers=self.num_workers_dataloader,
-            pin_memory=self.pin_memory,
-        )
-
-    def predict_dataloader(self):
-        return DataLoader(
-            self.predict_ds,
             batch_size=self.batch_size,
             shuffle=False if self.shuffle is None else self.shuffle,
             num_workers=self.num_workers_dataloader,

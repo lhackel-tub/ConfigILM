@@ -69,7 +69,11 @@ class BENDataSet(Dataset):
         # sort list for reproducibility
         self.patches.sort()
         print(f"    {len(self.patches)} patches indexed")
-        if max_img_idx is not None and max_img_idx < len(self.patches):
+        if (
+            max_img_idx is not None
+            and max_img_idx < len(self.patches)
+            and max_img_idx != -1
+        ):
             self.patches = self.patches[:max_img_idx]
 
         print(f"    {len(self.patches)} filtered patches indexed")

@@ -59,6 +59,8 @@ jobs:
         run: |
           source .venv/bin/activate
           coverage run --source=configvlm -m pytest
+      - name: Log latest CI run
+        run: echo $(date) > latest_ci_run
       - name: Generate coverage report
         run: |
           source .venv/bin/activate

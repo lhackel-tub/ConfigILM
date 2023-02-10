@@ -18,7 +18,7 @@ import torch
 
 @pytest.fixture
 def data_dir():
-    return resolve_ben_data_dir(None, allow_mock=True)
+    return resolve_ben_data_dir(None, force_mock=True)
 
 
 dataset_params = ["train", "val", "test", None]
@@ -122,7 +122,7 @@ def test_ben_fail_image_retrieve(data_dir):
 @pytest.mark.parametrize("max_img_idx", max_img_idxs)
 def test_ben_max_index(data_dir, max_img_idx: int):
     mocked_datadir = "mock" in data_dir
-    max_len = 75 if mocked_datadir else 123_723
+    max_len = 25 if mocked_datadir else 123_723
     len = (
         max_len
         if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1

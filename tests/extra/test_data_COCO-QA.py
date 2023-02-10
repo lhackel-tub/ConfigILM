@@ -11,7 +11,7 @@ from configvlm.extra.COCOQA_DataModule import resolve_cocoqa_data_dir
 
 @pytest.fixture
 def data_dir():
-    return resolve_cocoqa_data_dir(None, allow_mock=True)
+    return resolve_cocoqa_data_dir(None, force_mock=True)
 
 
 def dataset_ok(
@@ -68,6 +68,8 @@ def test_ds_default(data_dir, split):
     img_size = (3, 120, 120)
     ds = COCOQADataSet(data_dir, split=split)
     len = {"train": 78_736, "test": 38_948, None: 78_736 + 38_948}[split]
+    mocked_datadir = "mock" in data_dir
+    len = 25 if mocked_datadir and split is not None else 50 if mocked_datadir else len
 
     dataset_ok(
         dataset=ds,
@@ -85,7 +87,8 @@ def test_ds_default(data_dir, split):
 def test_ds_max_img_idx(data_dir, max_img_idx):
     img_size = (3, 120, 120)
     ds = COCOQADataSet(data_dir, split=None, max_img_idx=max_img_idx)
-    max_len = 78_736 + 38_948
+    mocked_datadir = "mock" in data_dir
+    max_len = 50 if mocked_datadir else 78_736 + 38_948
     len = (
         max_len
         if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1

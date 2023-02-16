@@ -51,14 +51,13 @@ jobs:
       #----------------------------------------------
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root
+        run: poetry install --no-interaction
       #----------------------------------------------
       #  Run test suite + coverage + generate badge
       #----------------------------------------------
       - name: Run tests + generate coverage
         run: |
-          poetry shell
-          coverage run --source=configvlm -m pytest
+          poetry run coverage run --source=configvlm -m pytest
       - name: Log latest CI run
         run: echo $(date) > latest_ci_run
       - name: Generate coverage report

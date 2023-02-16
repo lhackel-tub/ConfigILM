@@ -19,6 +19,7 @@ from typing import Optional
 from typing import Union
 
 import numpy as np
+import psutil
 import pytorch_lightning as pl
 import torch
 import torchvision.transforms as transforms
@@ -129,15 +130,17 @@ class RSVQAxBENDataSet(Dataset):
         self.seq_length = seq_length
 
         print(f"Loading split RSVQAxBEN data for {split}...")
+        # check that enough ram (in GB) is available, otherwise use subset
+        subset = "_subset" if psutil.virtual_memory().total / 1024**3 < 32 else ""
         self.qa_pairs = {}
         if split is not None:
-            f_name = f"RSVQAxBEN_QA_{split}.json"
+            f_name = f"RSVQAxBEN_QA_{split}{subset}.json"
             with open(join(self.root_dir, "VQA_RSVQAxBEN", f_name)) as read_file:
                 self.qa_pairs.update(json.load(read_file))
         else:
             splits = ["train", "val", "test"]
             for s in splits:
-                f_name = f"RSVQAxBEN_QA_{s}.json"
+                f_name = f"RSVQAxBEN_QA_{s}{subset}.json"
                 with open(join(self.root_dir, "VQA_RSVQAxBEN", f_name)) as read_file:
                     self.qa_pairs.update(json.load(read_file))
 

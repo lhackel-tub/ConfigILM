@@ -1,4 +1,3 @@
-import json
 from typing import Sequence
 from typing import Tuple
 from typing import Union
@@ -59,8 +58,6 @@ mock_data_dict = {
     for i in range(15000)
 }
 
-redirected_json_load = json.load
-
 
 def dataset_ok(
     dataset: Union[RSVQAxBENDataSet, None],
@@ -108,44 +105,12 @@ def dataloaders_ok(
             assert a.shape == (expected_image_shape[0], classes)
 
 
-def wrap_json_load(
-    fp,
-    *,
-    cls=None,
-    object_hook=None,
-    parse_float=None,
-    parse_int=None,
-    parse_constant=None,
-    object_pairs_hook=None,
-    **kw,
-):
-    if (
-        "RSVQAxBEN_QA_train.json" in fp.name
-        or "RSVQAxBEN_QA_val.json" in fp.name
-        or "RSVQAxBEN_QA_test.json" in fp.name
-    ):
-        # this call to load a json file will be redirected
-        return mock_data_dict
-    else:
-        return redirected_json_load(
-            fp=fp,
-            cls=cls,
-            object_hook=object_hook,
-            parse_float=parse_float,
-            parse_int=parse_int,
-            parse_constant=parse_constant,
-            object_pairs_hook=object_pairs_hook,
-            **kw,
-        )
-
-
 @pytest.mark.parametrize(
     "split, classes", [(s, c) for s in dataset_params for c in class_number]
 )
 def test_4c_ben_dataset_splits(data_dir, split: str, classes: int):
     img_size = (4, 120, 120)
     seq_length = 32
-    json.load = wrap_json_load
 
     ds = RSVQAxBENDataSet(
         root_dir=data_dir,
@@ -166,7 +131,6 @@ def test_4c_ben_dataset_splits(data_dir, split: str, classes: int):
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
 def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
-    json.load = wrap_json_load
 
     ds = RSVQAxBENDataSet(
         root_dir=data_dir, split="val", img_size=img_size, classes=1000, seq_length=32
@@ -183,7 +147,6 @@ def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
 
 @pytest.mark.parametrize("img_size", img_shapes_fail)
 def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
-    json.load = wrap_json_load
 
     with pytest.raises(AssertionError):
         _ = RSVQAxBENDataSet(
@@ -195,11 +158,10 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
         )
 
 
-@pytest.mark.parametrize("max_img_index", [1, 16, 250, 10000, 15000, None, -1])
+@pytest.mark.parametrize("max_img_index", [1, 16, 74, 75, None, -1])
 def test_ds_max_img_idx(data_dir, max_img_index: int):
-    json.load = wrap_json_load
     ds = RSVQAxBENDataSet(root_dir=data_dir, max_img_idx=max_img_index)
-    max_len = 15_000
+    max_len = 75
     len = (
         max_len
         if max_img_index is None or max_img_index > max_len or max_img_index == -1
@@ -214,32 +176,29 @@ def test_ds_max_img_idx(data_dir, max_img_index: int):
     )
 
 
-@pytest.mark.parametrize("max_img_index", [15001, 20000, 100_000, 10_000_000])
+@pytest.mark.parametrize("max_img_index", [76, 20000, 100_000, 10_000_000])
 def test_ds_max_img_idx_too_large(data_dir, max_img_index: int):
-    json.load = wrap_json_load
     ds = RSVQAxBENDataSet(root_dir=data_dir, max_img_idx=max_img_index)
     assert len(ds) < max_img_index
 
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
 def test_ds_classes(data_dir, classes: int):
-    json.load = wrap_json_load
     ds = RSVQAxBENDataSet(root_dir=data_dir, classes=classes, split="train")
     assert ds.classes == classes
     assert len(ds.selected_answers) == classes
-    if classes <= 2345:
+    if classes <= 4:
         for i in range(classes):
             assert ds.selected_answers[i] != "INVALID"
     else:
-        for i in range(2345):
+        for i in range(4):
             assert ds.selected_answers[i] != "INVALID"
-        for i in range(2345, classes):
+        for i in range(4, classes):
             assert ds.selected_answers[i] == "INVALID"
 
 
 @pytest.mark.parametrize("split", dataset_params)
 def test_dm_default(data_dir, split: str):
-    json.load = wrap_json_load
     dm = RSVQAxBENDataModule(data_dir=data_dir)
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
     dm.setup(stage=split2stage[split])
@@ -285,7 +244,6 @@ def test_dm_default(data_dir, split: str):
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_dm_dataloaders(data_dir, bs: int):
-    json.load = wrap_json_load
     dm = RSVQAxBENDataModule(data_dir=data_dir, batch_size=bs)
     dataloaders_ok(
         dm,
@@ -296,7 +254,6 @@ def test_dm_dataloaders(data_dir, bs: int):
 
 
 def test_dm_shuffle_false(data_dir):
-    json.load = wrap_json_load
     dm = RSVQAxBENDataModule(data_dir=data_dir, shuffle=False)
     dm.setup(None)
     # should not be equal due to transforms being random!
@@ -313,7 +270,6 @@ def test_dm_shuffle_false(data_dir):
 
 
 def test_dm_shuffle_none(data_dir):
-    json.load = wrap_json_load
     dm = RSVQAxBENDataModule(data_dir=data_dir, shuffle=None)
     dm.setup(None)
     assert not torch.equal(
@@ -329,7 +285,6 @@ def test_dm_shuffle_none(data_dir):
 
 
 def test_dm_shuffle_true(data_dir):
-    json.load = wrap_json_load
     dm = RSVQAxBENDataModule(data_dir=data_dir, shuffle=True)
     dm.setup(None)
     assert not torch.equal(

@@ -5,7 +5,6 @@ import torch
 import torch.nn.functional as F
 from fvcore.nn import FlopCountAnalysis
 from fvcore.nn import parameter_count
-from pl_bolts.optimizers.lr_scheduler import LinearWarmupCosineAnnealingLR
 from sklearn.metrics import accuracy_score
 from torch import optim
 from torchmetrics.classification import MultilabelAveragePrecision
@@ -14,6 +13,8 @@ from tqdm import tqdm
 
 from configvlm import ConfigVLM
 from configvlm.util import Messages
+
+# from pl_bolts.optimizers.lr_scheduler import LinearWarmupCosineAnnealingLR
 
 
 class LitVQAEncoder(pl.LightningModule):
@@ -86,7 +87,7 @@ class LitVQAEncoder(pl.LightningModule):
             )
 
     def _disassemble_batch(self, batch):
-        if not self.config.network_type == ConfigVLM.VLMType.VISION_CLASSIFICATION:
+        if self.config.network_type == ConfigVLM.VLMType.VISION_CLASSIFICATION:
             return batch
         elif self.config.network_type == ConfigVLM.VLMType.VQA_CLASSIFICATION:
             images, questions, labels = batch
@@ -102,7 +103,7 @@ class LitVQAEncoder(pl.LightningModule):
             ).T.int()
             return (images, questions), labels
         else:
-            raise ValueError("Configuration type unknown")
+            raise ValueError(f"Configuration type '{self.config.network_type}' unknown")
 
     def forward(self, x):
         return self.model(x)
@@ -125,7 +126,7 @@ class LitVQAEncoder(pl.LightningModule):
         self.log("val/loss", metrics["avg_loss"])
         self.log("val/f1", metrics["avg_f1_score"])
 
-        if not self.config.network_type == ConfigVLM.VLMType.VISION_CLASSIFICATION:
+        if self.config.network_type == ConfigVLM.VLMType.VISION_CLASSIFICATION:
             self.log("val/mAP (Micro)", metrics["map_score"]["micro"])
             self.log("val/mAP (Macro)", metrics["map_score"]["macro"])
         elif self.config.network_type == ConfigVLM.VLMType.VQA_CLASSIFICATION:
@@ -134,7 +135,7 @@ class LitVQAEncoder(pl.LightningModule):
             self.log("val/Accuracy (Overall)", metrics["accuracy"]["Overall"])
             self.log("val/Accuracy (Average)", metrics["accuracy"]["Average"])
         else:
-            raise ValueError("Configuration type unknown")
+            raise ValueError(f"Configuration type '{self.config.network_type}' unknown")
 
         self._approximate_end_time()
 
@@ -149,7 +150,7 @@ class LitVQAEncoder(pl.LightningModule):
         self.log("test/loss", metrics["avg_loss"])
         self.log("test/f1", metrics["avg_f1_score"])
 
-        if not self.config.network_type == ConfigVLM.VLMType.VISION_CLASSIFICATION:
+        if self.config.network_type == ConfigVLM.VLMType.VISION_CLASSIFICATION:
             self.log("test/mAP (Micro)", metrics["map_score"]["micro"])
             self.log("test/mAP (Macro)", metrics["map_score"]["macro"])
         elif self.config.network_type == ConfigVLM.VLMType.VQA_CLASSIFICATION:
@@ -194,18 +195,18 @@ class LitVQAEncoder(pl.LightningModule):
             f"{warmup} {interval}s"
         )
 
-        lr_scheduler = {
-            "scheduler": LinearWarmupCosineAnnealingLR(
-                optimizer,
-                warmup_epochs=warmup,
-                max_epochs=max_intervals,
-                warmup_start_lr=self.lr / 10,
-            ),
-            "name": "learning_rate",
-            "interval": interval,
-            "frequency": 1,
-        }
-        return [optimizer], [lr_scheduler]
+        # lr_scheduler = {
+        #    "scheduler": LinearWarmupCosineAnnealingLR(
+        #        optimizer,
+        #        warmup_epochs=warmup,
+        #        max_epochs=max_intervals,
+        #        warmup_start_lr=self.lr / 10,
+        #    ),
+        #    "name": "learning_rate",
+        #    "interval": interval,
+        #    "frequency": 1,
+        # }
+        return [optimizer]  # , [lr_scheduler]
 
     def get_metrics(self, outputs):
         avg_loss = torch.stack([x["loss"] for x in outputs]).mean()
@@ -257,26 +258,26 @@ class LitVQAEncoder(pl.LightningModule):
         else:
             accuracy_dict = None
 
-        f1_score = MultilabelF1Score(num_labels=self.num_classes, average=None).to(
+        f1_score = MultilabelF1Score(num_labels=self.config.classes, average=None).to(
             logits.device
         )(logits, labels)
 
         # calculate AP only for vision-only
-        if not self.config.network_type == ConfigVLM.VLMType.VISION_CLASSIFICATION:
+        if self.config.network_type == ConfigVLM.VLMType.VISION_CLASSIFICATION:
             ap_micro = MultilabelAveragePrecision(
-                num_labels=self.num_classes, average="micro"
-            ).to(logits.device)(logits, labels)
+                num_labels=self.config.classes, average="micro"
+            ).to(logits.device)(logits, labels.int())
 
             ap_macro = MultilabelAveragePrecision(
-                num_labels=self.num_classes, average="macro"
-            ).to(logits.device)(logits, labels)
+                num_labels=self.config.classes, average="macro"
+            ).to(logits.device)(logits, labels.int())
 
             ap_score = {"micro": float(ap_micro), "macro": float(ap_macro)}
         else:
             ap_score = None
 
         avg_f1_score = float(
-            torch.sum(f1_score) / self.num_classes
+            torch.sum(f1_score) / self.config.classes
         )  # macro average f1 score
 
         return {

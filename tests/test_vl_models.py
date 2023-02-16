@@ -1,38 +1,13 @@
-import pathlib
 import shutil
+from pathlib import Path
 from typing import Sequence
 
 import pytest
 import torch
+from appdirs import user_cache_dir
 from requests.exceptions import ReadTimeout  # type: ignore
 
-import configvlm
 from configvlm import ConfigVLM
-
-# import warnings
-
-
-def mock_filter(
-    action, message="", category=Warning, module="", lineno=0, append=False
-):
-    pass
-
-
-# with warnings.catch_warnings():
-#     # warnings that come at import of pl_bolts
-#     warnings.filterwarnings(action="ignore", message=".*marked under review.*")
-#     warnings.filterwarnings(
-#         action="ignore", category=DeprecationWarning, message=".*distutils.*"
-#     )
-#     # because pl_bolts overwrites our filters by using warnings.filterwarnings, we
-#     # temporarily mock this function
-#     # so that our filters will not be overwritten
-#     tmp_filterwarnings = warnings.filterwarnings
-#     warnings.filterwarnings = mock_filter
-#     from configvlm.extra import timm_huggingface_vqa
-#
-#     # make functionality of filterwarnings as before
-#     warnings.filterwarnings = tmp_filterwarnings
 
 
 def get_classification_batch(
@@ -260,9 +235,7 @@ def test_vlm_dont_use_pooler(hfmodel):
 
 def test_vlm_download():
     hf_model = "distilbert-base-uncased"
-    path = pathlib.Path(__file__).parent.parent.joinpath(
-        "pretrained_models", "huggingface_models", hf_model
-    )
+    path = Path(user_cache_dir(appname="configvlm"))
     shutil.rmtree(path, ignore_errors=True)
     bs = 4
     config = ConfigVLM.VLMConfiguration(
@@ -431,10 +404,10 @@ def test_failty_config():
 
 def test_failed_network_connection_in_download(mocker):
     hf_model = "distilbert-base-uncased"
-    path = pathlib.Path(configvlm.__path__[0]).joinpath(
+    path = Path(user_cache_dir(appname="configvlm")).joinpath(
         "pretrained_models", "huggingface_models", hf_model
     )
-    shutil.rmtree(path, ignore_errors=True)
+    shutil.rmtree(path)
 
     mocker.patch(
         "transformers.AutoModelForSequenceClassification.from_pretrained",
@@ -457,7 +430,7 @@ def test_failed_network_connection_in_download(mocker):
 
 def test_failed_network_connection_cached(mocker):
     hf_model = "prajjwal1/bert-tiny"
-    path = pathlib.Path(configvlm.__path__[0]).joinpath(
+    path = Path(user_cache_dir(appname="configvlm")).joinpath(
         "pretrained_models", "huggingface_models", hf_model
     )
     if not path.exists():
@@ -488,7 +461,7 @@ def test_failed_hf_name(mocker):
     from requests import HTTPError  # type: ignore
 
     hf_model = "hf_mock_name/simulated_name"
-    path = pathlib.Path(__file__).parent.parent.joinpath(
+    path = Path(user_cache_dir(appname="configvlm")).joinpath(
         "pretrained_models", "huggingface_models", hf_model
     )
     if path.exists():
@@ -513,3 +486,27 @@ def test_failed_hf_name(mocker):
 
     with pytest.raises(HTTPError):
         apply_vlm(config=config, bs=bs)
+
+
+def test_integration():
+    """
+    Tests an example code that loads pretrained weights and executes an image of ones on
+    it to confirm that everything works and the right values are returned.
+    """
+    cfg = ConfigVLM.VLMConfiguration(
+        timm_model_name="resnet18", classes=1000, load_timm_if_available=True
+    )
+
+    model = ConfigVLM.ConfigVLM(config=cfg)
+    model.eval()
+
+    in_t = torch.ones((1, 3, 120, 120))
+    out_t = model(in_t)
+
+    assert torch.all(
+        torch.isclose(
+            out_t[0][:5],
+            torch.tensor([-0.2201, -0.1476, -1.3507, -1.2310, -0.3701]),
+            atol=0.0001,
+        )
+    )

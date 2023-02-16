@@ -14,7 +14,7 @@ import pathlib
 import numpy as np
 from bigearthnet_patch_interface.merged_interface import BigEarthNet_S1_S2_Patch
 from bigearthnet_common.constants import BAND_STATS_S1, BAND_STATS_S2
-from typing import Iterable, Union
+from typing import Iterable, Union, Optional
 
 import torch
 import torch.nn.functional as F
@@ -150,7 +150,7 @@ def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
 
 
 def resolve_ben_data_dir(
-    data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
+    data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
 ) -> str:
     """
     Helper function that tries to resolve the correct directory

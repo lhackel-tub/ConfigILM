@@ -27,6 +27,7 @@ from os.path import isdir, join
 import warnings
 from requests.exceptions import HTTPError  # type: ignore
 from requests.exceptions import ReadTimeout  # type: ignore
+from appdirs import user_cache_dir
 
 
 def _available_hf_models(base_path: Path):
@@ -55,7 +56,6 @@ def _available_hf_models(base_path: Path):
 def get_hf_model(
     model_name: str,
     load_pretrained_if_available: bool = False,
-    save_directory: Union[Path, None] = None,
 ):
     """
     Loads a huggingface model including tokenizer. Searches local files first.
@@ -71,14 +71,9 @@ def get_hf_model(
     :raises: HTTP error if no name matches the one given (locally or on
              huggingface hub)
     """
-    if save_directory is None:
-        # directory relative to this file
-        # TODO: make this more flexible
-        save_directory = (
-            Path(__file__)
-            .parent.joinpath("pretrained_models", "huggingface_models")
-            .resolve()
-        )
+    save_directory = Path(user_cache_dir(appname="configvlm")).joinpath(
+        "pretrained_models", "huggingface_models"
+    )
 
     if model_name not in _available_hf_models(save_directory):
         # warn that it is not available
@@ -306,7 +301,7 @@ class ConfigVLM(nn.Module):
                     f"when initializing the model or pad accordingly."
                 )
         else:
-            raise ValueError("Configuration type unknown")
+            raise ValueError(f"Configuration type '{self.config.network_type}' unknown")
 
     def forward(self, batch):
         # check that input is correct before running network

@@ -57,7 +57,8 @@ jobs:
       #----------------------------------------------
       - name: Run tests + generate coverage
         run: |
-          poetry run coverage run --source=configvlm -m pytest
+          poetry shell
+          coverage run --source=configvlm -m pytest
       - name: Log latest CI run
         run: echo $(date) > latest_ci_run
       - name: Generate coverage report

@@ -9,4 +9,4 @@
 
 For detailed information please visit the [publication](TODO:arXiv-Link) or [documentation](TODO:documentation).
 
-`ConfivgVLM` is released under the [Apache Software License 2.0](https://opensource.org/licenses/Apache-2.0)
+`ConfigVLM` is released under the [Apache Software License 2.0](https://opensource.org/licenses/Apache-2.0)

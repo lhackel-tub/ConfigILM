@@ -5,6 +5,7 @@ description = ""
 authors = ["Leonard Hackel <l.hackel@tu-berlin.de>"]
 readme = "README.md"
 
+# docs-deps-start
 [tool.poetry.dependencies]
 python = "^3.10"
 torch = "^1.13.1"
@@ -35,7 +36,11 @@ pytest = "^7.2.1"
 coverage = "^7.1.0"
 pre-commit = "^3.0.2"
 pytest-mock = "^3.10.0"
-
+furo = "^2022.12.7"
+myst-nb = "^0.17.1"
+sphinx-autobuild = "^2021.3.14"
+sphinxcontrib-bibtex = "^2.5.0"
+# docs-deps-end
 
 [tool.poetry.group.example.dependencies]
 wandb = "^0.13.10"

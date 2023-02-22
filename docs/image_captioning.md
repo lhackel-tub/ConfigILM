@@ -1,4 +1,4 @@
-# Image Captioning
+# [WIP] Image Captioning
 
 ```{include} wip.md
 ```

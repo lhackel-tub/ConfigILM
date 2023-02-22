@@ -30,8 +30,9 @@ image_captioning
 
 ```{toctree}
 :hidden:
-:caption: Extra (Datamodules)
+:caption: Extra
 
+extra/BEN_LMDB_Reader
 extra/bigearthnet
 extra/rsvqaxben
 extra/cocoqa

@@ -70,6 +70,8 @@ myst_substitutions = {
     "timm": "[PyTorch Image Models]"
     "(https://github.com/rwightman/pytorch-image-models/)",
     "issues": "[GitHub issues](https://github.com/lhackel-tub/ConfigVLM/issues)",
+    "lmdb": "[LMDB](http://www.lmdb.tech/doc/)",
+    "bendocs": "[BigEarthNet Guide](https://github.com/kai-tub/ben-docs)",
 }
 
 nb_custom_formats = {

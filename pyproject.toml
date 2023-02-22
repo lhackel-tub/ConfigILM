@@ -40,6 +40,8 @@ furo = "^2022.12.7"
 myst-nb = "^0.17.1"
 sphinx-autobuild = "^2021.3.14"
 sphinxcontrib-bibtex = "^2.5.0"
+common-nb-preprocessors = "^1.1.1"
+jupyterlab = "^3.6.1"
 # docs-deps-end
 
 [tool.poetry.group.example.dependencies]

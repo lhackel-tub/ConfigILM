@@ -14,7 +14,7 @@ import pathlib
 import numpy as np
 from bigearthnet_patch_interface.merged_interface import BigEarthNet_S1_S2_Patch
 from bigearthnet_common.constants import BAND_STATS_S1, BAND_STATS_S2
-from typing import Iterable, Union, Optional
+from typing import Iterable, Union, Optional, Sequence
 
 import torch
 import torch.nn.functional as F
@@ -217,7 +217,7 @@ class BENLMDBReader:
     def __init__(
         self,
         lmdb_dir: str,
-        image_size: Union[tuple, list],
+        image_size: Sequence[int],
         bands: Union[Iterable, str, int],
         label_type: str,
     ):

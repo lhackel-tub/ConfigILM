@@ -8,7 +8,7 @@ readme = "README.md"
 # docs-deps-start
 [tool.poetry.dependencies]
 python = "^3.10"
-torch = "^1.13.1"
+torch = { version = "^1.12.1+cu116", source = "torchcu116" }
 numpy = "^1.24.1"
 timm = "^0.6.12"
 transformers = "^4.26.0"
@@ -42,6 +42,7 @@ sphinx-autobuild = "^2021.3.14"
 sphinxcontrib-bibtex = "^2.5.0"
 common-nb-preprocessors = "^1.1.1"
 jupyterlab = "^3.6.1"
+tensorboardx = "^2.6"
 # docs-deps-end
 
 [tool.poetry.group.example.dependencies]
@@ -54,3 +55,27 @@ build-backend = "poetry.core.masonry.api"
 [tool.black]
 line-length = 88
 target-version = ['py310']
+
+[tool.poetry.group.gpu]
+optional = true
+
+[tool.poetry.group.gpu.dependencies]
+torch = { version = "1.12.1+cu116", source = "torchcu116" }
+
+[tool.poetry.group.cpu]
+optional = true
+
+[tool.poetry.group.cpu.dependencies]
+torch = { version = "1.12.1+cpu", source = "torchcpu" }
+
+[[tool.poetry.source]]
+name = "torchcpu"
+url = "https://download.pytorch.org/whl/cpu"
+default = false
+secondary = true
+
+[[tool.poetry.source]]
+name = "torchcu116"
+url = "https://download.pytorch.org/whl/cu116"
+default = false
+secondary = true

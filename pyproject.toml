@@ -56,24 +56,6 @@ build-backend = "poetry.core.masonry.api"
 line-length = 88
 target-version = ['py310']
 
-[tool.poetry.group.gpu]
-optional = true
-
-[tool.poetry.group.gpu.dependencies]
-torch = { version = "1.12.1+cu116", source = "torchcu116" }
-
-[tool.poetry.group.cpu]
-optional = true
-
-[tool.poetry.group.cpu.dependencies]
-torch = { version = "1.12.1+cpu", source = "torchcpu" }
-
-[[tool.poetry.source]]
-name = "torchcpu"
-url = "https://download.pytorch.org/whl/cpu"
-default = false
-secondary = true
-
 [[tool.poetry.source]]
 name = "torchcu116"
 url = "https://download.pytorch.org/whl/cu116"

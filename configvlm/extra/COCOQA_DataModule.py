@@ -19,6 +19,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from transformers import BertTokenizer
 
+import configvlm
 from configvlm.extra.CustomTorchClasses import MyGaussianNoise
 from configvlm.util import huggingface_tokenize_and_pad
 from configvlm.util import Messages
@@ -91,12 +92,9 @@ class COCOQADataSet(Dataset):
                 "expected other tokens"
             )
             # get path relative to this script, not relative to the calling main script
-            # TODO: make this more flexible
             default_tokenizer = (
-                Path(__file__)
-                .parent.parent.joinpath(
-                    "huggingface_tokenizers", "bert-base-uncased.tok"
-                )
+                Path(configvlm.__file__)
+                .parent.joinpath("huggingface_tokenizers", "bert-base-uncased.tok")
                 .resolve(True)
             )
             self.tokenizer = BertTokenizer.from_pretrained(default_tokenizer)
@@ -146,8 +144,9 @@ class COCOQADataSet(Dataset):
 
         img = Image.open(join(self.root_dir, "images", name)).convert("RGB")
         tensor = convert(img)
-        # for some reason, HEIGHT and WIDTH are swapped in ToTensor()
-        tensor = tensor.swapaxes(1, 2)
+        # for some reason, HEIGHT and WIDTH are swapped in ToTensor() ... sometimes
+        # FIXME: axis are only sometimes swapped
+        # tensor = tensor.swapaxes(1, 2)
         tensor = F.interpolate(
             tensor.unsqueeze(dim=0),
             self.image_size[-2:],

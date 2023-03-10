@@ -25,7 +25,6 @@ installation
 
 sup_pretraining
 vqa
-image_captioning
 ```
 
 ```{toctree}
@@ -35,7 +34,6 @@ image_captioning
 extra/BEN_LMDB_Reader
 extra/bigearthnet
 extra/rsvqaxben
-extra/cocoqa
 ```
 
 ```{toctree}

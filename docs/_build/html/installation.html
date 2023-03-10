@@ -135,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -163,14 +163,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Vision Pre-training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vqa.html">Visual Question Answering</a></li>
-<li class="toctree-l1"><a class="reference internal" href="image_captioning.html">[WIP] Image Captioning</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="extra/BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extra/bigearthnet.html">BigEarthNet Dataset &amp; Datamodule</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extra/rsvqaxben.html">RSVQAxBEN</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra/cocoqa.html">COCO-QA</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
@@ -207,7 +205,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -216,9 +214,66 @@
           <section class="tex2jax_ignore mathjax_ignore" id="get-started">
 <h1>Get started<a class="headerlink" href="#get-started" title="Permalink to this heading">#</a></h1>
 <p>This sections covers how to get started with <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> allows you to easily combine and use predefined vision and language models and use them for tasks such as <a class="reference internal" href="vqa.html"><span class="doc std std-doc">VQA</span></a> or <a class="reference internal" href="image_captioning.html"><span class="doc std std-doc">Image captioning</span></a>.
-For this, models can be trained in an end-to-end fashion or pre-trained checkpoints can be used.
-Since the amount of well-annotated data for complex tasks often fluctuates, the framework also offers the possibility to pre-train the vision models in a supervised fashion.</p>
+<p>There are currently two ways of installing <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code>. The recommended way is using <a class="reference external" href="https://pypi.org/">pypi</a> via <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm</span></code>. Alternatively, the source can be directly downloaded from <a class="reference external" href="https://github.com/lhackel-tub/ConfigVLM">github</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> allows you to easily combine and use predefined vision and language models and use them for tasks such as <a class="reference internal" href="sup_pretraining.html"><span class="doc std std-doc">Supervised Pretraining</span></a> or <a class="reference internal" href="vqa.html"><span class="doc std std-doc">VQA</span></a>.
+For this, models can be trained in an end-to-end fashion or pre-trained checkpoints can be used.</p>
+<section id="model-configuration">
+<h2>Model Configuration<a class="headerlink" href="#model-configuration" title="Permalink to this heading">#</a></h2>
+<p>The central object of <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> is the dataclass <code class="docutils literal notranslate"><span class="pre">VLMConfiguration</span></code>. This is used to decide which parts the model consists of, how it is combined, and which task it should ultimately solve. A possible configuration for Supervised Classification can look like this:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not all properties of the object are always used. Which properties are unused depends on the network type specified. For classification there is no fusion or language part, therefore in this example all parameters associated with fusion or language modeling are unused.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.ConfigVLM</span> <span class="kn">import</span> <span class="n">VLMConfiguration</span><span class="p">,</span> <span class="n">VLMType</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="n">model_config</span> <span class="o">=</span> <span class="n">VLMConfiguration</span><span class="p">(</span>
+    <span class="n">timm_model_name</span><span class="o">=</span><span class="s2">&quot;resnet18&quot;</span><span class="p">,</span>
+    <span class="n">classes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">image_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+    <span class="n">channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">network_type</span><span class="o">=</span><span class="n">VLMType</span><span class="o">.</span><span class="n">VISION_CLASSIFICATION</span>
+<span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VLMConfiguration(timm_model_name=&#39;resnet18&#39;,
+                 hf_model_name=None,
+                 image_size=128,
+                 channels=3,
+                 classes=100,
+                 class_names=None,
+                 network_type=&lt;VLMType.VISION_CLASSIFICATION: 0&gt;,
+                 visual_features_out=512,
+                 fusion_in=512,
+                 fusion_hidden=256,
+                 v_dropout_rate=0.25,
+                 t_dropout_rate=0.25,
+                 fusion_dropout_rate=0.25,
+                 fusion_method=&lt;built-in method mul of type object at 0x7f2e451fd460&gt;,
+                 fusion_activation=Tanh(),
+                 drop_rate=0.2,
+                 use_pooler_output=True,
+                 max_sequence_length=32,
+                 load_timm_if_available=False,
+                 load_hf_if_available=True)
+</pre></div>
+</div>
+</div>
+</div>
+<p>This class is used to ultimately create the model, but also collects all other information such as the image size in an object. This facilitates the organization in the code and is to prevent that there are many global variables.
+Currently, the configuration supports the following network types:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;VISION_CLASSIFICATION&#39;, &#39;VQA_CLASSIFICATION&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
         </article>
@@ -264,8 +319,27 @@ Since the amount of well-annotated data for complex tasks often fluctuates, the 
 
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
 
+
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Get started</a><ul>
+<li><a class="reference internal" href="#model-configuration">Model Configuration</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
 
 
     </aside>

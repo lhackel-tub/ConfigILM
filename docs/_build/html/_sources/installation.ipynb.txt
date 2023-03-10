@@ -1,0 +1,140 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "source": [
+    "# Get started\n",
+    "\n",
+    "This sections covers how to get started with `ConfigVLM`.\n",
+    "\n",
+    "There are currently two ways of installing `ConfigVLM`. The recommended way is using [pypi](https://pypi.org/) via `pip install configvlm`. Alternatively, the source can be directly downloaded from [github](https://github.com/lhackel-tub/ConfigVLM).\n",
+    "\n",
+    "`ConfigVLM` allows you to easily combine and use predefined vision and language models and use them for tasks such as [Supervised Pretraining](sup_pretraining.ipynb) or [VQA](vqa.ipynb).\n",
+    "For this, models can be trained in an end-to-end fashion or pre-trained checkpoints can be used."
+   ],
+   "metadata": {
+    "collapsed": false
+   }
+  },
+  {
+   "cell_type": "markdown",
+   "source": [
+    "## Model Configuration\n",
+    "\n",
+    "The central object of `ConfigVLM` is the dataclass `VLMConfiguration`. This is used to decide which parts the model consists of, how it is combined, and which task it should ultimately solve. A possible configuration for Supervised Classification can look like this:\n",
+    ":::{note}\n",
+    "Not all properties of the object are always used. Which properties are unused depends on the network type specified. For classification there is no fusion or language part, therefore in this example all parameters associated with fusion or language modeling are unused.\n",
+    ":::"
+   ],
+   "metadata": {
+    "collapsed": false
+   }
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "VLMConfiguration(timm_model_name='resnet18',\n",
+      "                 hf_model_name=None,\n",
+      "                 image_size=128,\n",
+      "                 channels=3,\n",
+      "                 classes=100,\n",
+      "                 class_names=None,\n",
+      "                 network_type=<VLMType.VISION_CLASSIFICATION: 0>,\n",
+      "                 visual_features_out=512,\n",
+      "                 fusion_in=512,\n",
+      "                 fusion_hidden=256,\n",
+      "                 v_dropout_rate=0.25,\n",
+      "                 t_dropout_rate=0.25,\n",
+      "                 fusion_dropout_rate=0.25,\n",
+      "                 fusion_method=<built-in method mul of type object at 0x7f2e451fd460>,\n",
+      "                 fusion_activation=Tanh(),\n",
+      "                 drop_rate=0.2,\n",
+      "                 use_pooler_output=True,\n",
+      "                 max_sequence_length=32,\n",
+      "                 load_timm_if_available=False,\n",
+      "                 load_hf_if_available=True)\n"
+     ]
+    }
+   ],
+   "source": [
+    "from configvlm.ConfigVLM import VLMConfiguration, VLMType\n",
+    "from pprint import pprint\n",
+    "model_config = VLMConfiguration(\n",
+    "    timm_model_name=\"resnet18\",\n",
+    "    classes=100,\n",
+    "    image_size=128,\n",
+    "    channels=3,\n",
+    "    network_type=VLMType.VISION_CLASSIFICATION\n",
+    ")\n",
+    "pprint(model_config)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "source": [
+    "This class is used to ultimately create the model, but also collects all other information such as the image size in an object. This facilitates the organization in the code and is to prevent that there are many global variables.\n",
+    "Currently, the configuration supports the following network types:"
+   ],
+   "metadata": {
+    "collapsed": false
+   }
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['VISION_CLASSIFICATION', 'VQA_CLASSIFICATION']\n"
+     ]
+    }
+   ],
+   "source": [
+    "# remove-input\n",
+    "from pprint import pprint\n",
+    "pprint([p.name for p in VLMType])"
+   ],
+   "metadata": {
+    "collapsed": false
+   }
+  },
+  {
+   "cell_type": "markdown",
+   "source": [],
+   "metadata": {
+    "collapsed": false
+   }
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython2",
+   "version": "2.7.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 0
+}

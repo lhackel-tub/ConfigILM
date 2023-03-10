@@ -168,7 +168,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="extra/BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extra/bigearthnet.html">BigEarthNet Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra/rsvqaxben.html">RSVQAxBEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra/rsvqaxben.html">RSVQAxBEN Dataset &amp; Datamodule</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
@@ -217,18 +217,6 @@
 For this example usage we will be using the <a class="reference internal" href="extra/rsvqaxben.html"><span class="doc std std-doc"><code class="docutils literal notranslate"><span class="pre">RSVQAxBEN</span> <span class="pre">DataModule</span></code></span></a> from [1] inside a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/"><code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">lightning</span></code></a> trainer. The network will be integrated into a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html"><code class="docutils literal notranslate"><span class="pre">LightningModule</span></code></a> to release us from writing training loop etc.
 [1] <a class="reference external" href="https://ieeexplore.ieee.org/document/9553307">RSVQA Meets Bigearthnet: A New, Large-Scale, Visual Question Answering Dataset for Remote Sensing</a></p>
 <p>First we start by importing the basics we need from <code class="docutils literal notranslate"><span class="pre">torch</span></code> and <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> that are needed to set up the <code class="docutils literal notranslate"><span class="pre">LightningModule</span></code>.</p>
-<div class="cell tag_remove-output docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">optim</span>
-
-<span class="kn">from</span> <span class="nn">configvlm</span> <span class="kn">import</span> <span class="n">ConfigVLM</span>
-</pre></div>
-</div>
-</div>
-</div>
 <section id="pytorch-lightning-module">
 <h2>Pytorch Lightning Module<a class="headerlink" href="#pytorch-lightning-module" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">Module</span></code> we use to encapsulate the model divides the usual loop into functions that are called internally by <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code>. The necessary functions are just <code class="docutils literal notranslate"><span class="pre">training_step</span></code> and <code class="docutils literal notranslate"><span class="pre">configure_optimizer</span></code>, but to have a fully functional script, we add the validation and test steps as well as evaluation of the validation and test results. All <code class="docutils literal notranslate"><span class="pre">_step</span></code> functions are working on a single batch while <code class="docutils literal notranslate"><span class="pre">_epoch_end</span></code> functions are called after all batches are used and are passed a list of all return values of their respective <code class="docutils literal notranslate"><span class="pre">_step</span></code> functions.
@@ -374,8 +362,8 @@ For VQA we have to add one additional function, as the network works with 3 valu
 <section id="creating-model-dataset">
 <h2>Creating Model + Dataset<a class="headerlink" href="#creating-model-dataset" title="Permalink to this heading">#</a></h2>
 <p>Finally, we create the model defined above and our datamodule. We will be using a datamodule from this framework described in the Extra section.</p>
-<div class="cell tag_remove-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder</span> <span class="kn">import</span> <span class="n">RSVQAxBENDataModule</span>
 <span class="kn">from</span> <span class="nn">configvlm.ConfigVLM</span> <span class="kn">import</span> <span class="n">get_hf_model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LitVQAEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
@@ -388,6 +376,32 @@ For VQA we have to add one additional function, as the network works with 3 valu
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/lhackel/Documents/development/ConfigVLM/configvlm/ConfigVLM.py:131: UserWarning: Keyword &#39;img_size&#39; unknown. Trying to ignore and restart creation.
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/lhackel/.cache/configvlm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
+- This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 4 workers
+
+HINT: pin_memory set to None
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/lhackel/Documents/development/ConfigVLM/configvlm/ConfigVLM.py:115: UserWarning: Tokenizer was initialized pretrained
+  warnings.warn(&quot;Tokenizer was initialized pretrained&quot;)
+</pre></div>
+</div>
+</div>
+</details>
 </div>
 </section>
 <section id="running">
@@ -397,19 +411,515 @@ For VQA we have to add one additional function, as the network works with 3 valu
 <p class="admonition-title">Note</p>
 <p>These calls generate quite a bit of output depending on the number of batches and epochs. The output is removed for readability.</p>
 </div>
-<div class="cell tag_remove-output docutils container">
-<div class="cell_input docutils container">
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">dm</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(15:38:17) Datamodule setup called
+Loading split RSVQAxBEN data for train...
+              25 QA-pairs indexed
+              25 QA-pairs in reduced data set
+</pre></div>
 </div>
-<div class="cell tag_remove-output docutils container">
-<div class="cell_input docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers:   0%|                                                                                                                                                                                                                                            | 0/25 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 667882.80it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: There are fewer possible answers then requested (1000 requested, but 4 found).
+The 1000 most frequent answers cover about 100.00 % of the total answers.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                                                                                                     | 0/25 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 748982.86it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for val...
+              25 QA-pairs indexed
+              25 QA-pairs in reduced data set
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                                                                                                     | 0/25 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 613202.34it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/lhackel/Documents/development/ConfigVLM/.venv/lib/python3.10/site-packages/pytorch_lightning/callbacks/model_checkpoint.py:613: UserWarning: Checkpoint directory ./tb_logs/VQA Test Model/testversion/checkpoints exists and is not empty.
+  rank_zero_warn(f&quot;Checkpoint directory {dirpath} exists and is not empty.&quot;)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>setup took 0.00 seconds
+  Total training samples:       25  Total validation samples:       25
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  | Name  | Type      | Params
+------------------------------------
+0 | model | ConfigVLM | 16.6 M
+------------------------------------
+16.6 M    Trainable params
+0         Non-trainable params
+16.6 M    Total params
+66.281    Total estimated model params size (MB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sanity Checking: 0it [00:00, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sanity Checking:   0%|                                                                                                                                                                                                                                              | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sanity Checking DataLoader 0:   0%|                                                                                                                                                                                                                                 | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sanity Checking DataLoader 0:  50%|████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                                                                                            | 1/2 [00:01&lt;00:01,  1.54s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sanity Checking DataLoader 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:01&lt;00:00,  1.29it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training: 0it [00:00, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training:   0%|                                                                                                                                                                                                                                                     | 0/4 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0:   0%|                                                                                                                                                                                                                                                      | 0/4 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0:  25%|███████████████████████████████████████████████████████████▌                                                                                                                                                                                  | 1/4 [00:00&lt;00:01,  1.91it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0:  25%|█████████████████████████████████████████████████████▌                                                                                                                                                                | 1/4 [00:00&lt;00:01,  1.87it/s, loss=0.694, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                           | 2/4 [00:00&lt;00:00,  3.59it/s, loss=0.694, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                           | 2/4 [00:00&lt;00:00,  3.51it/s, loss=0.691, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation: 0it [00:00, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation:   0%|                                                                                                                                                                                                                                                   | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0:   0%|                                                                                                                                                                                                                                      | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0:  50%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                                                                                              | 1/2 [00:00&lt;00:00, 114.36it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0:  75%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                                     | 3/4 [00:00&lt;00:00,  3.80it/s, loss=0.691, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 122.27it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  5.01it/s, loss=0.691, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  4.99it/s, loss=0.691, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  4.98it/s, loss=0.691, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0:   0%|                                                                                                                                                                                                                              | 0/4 [00:00&lt;?, ?it/s, loss=0.691, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1:   0%|                                                                                                                                                                                                                              | 0/4 [00:00&lt;?, ?it/s, loss=0.691, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1:  25%|█████████████████████████████████████████████████████▌                                                                                                                                                                | 1/4 [00:00&lt;00:00,  4.29it/s, loss=0.691, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1:  25%|█████████████████████████████████████████████████████▌                                                                                                                                                                | 1/4 [00:00&lt;00:00,  4.03it/s, loss=0.688, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                           | 2/4 [00:00&lt;00:00,  7.42it/s, loss=0.688, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                           | 2/4 [00:00&lt;00:00,  7.06it/s, loss=0.683, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation: 0it [00:00, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation:   0%|                                                                                                                                                                                                                                                   | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0:   0%|                                                                                                                                                                                                                                      | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0:  50%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                                                                                              | 1/2 [00:00&lt;00:00, 136.16it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1:  75%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                                     | 3/4 [00:00&lt;00:00,  6.07it/s, loss=0.683, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 130.60it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  7.96it/s, loss=0.683, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  7.91it/s, loss=0.683, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  7.87it/s, loss=0.683, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1:   0%|                                                                                                                                                                                                                              | 0/4 [00:00&lt;?, ?it/s, loss=0.683, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2:   0%|                                                                                                                                                                                                                              | 0/4 [00:00&lt;?, ?it/s, loss=0.683, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2:  25%|█████████████████████████████████████████████████████▌                                                                                                                                                                | 1/4 [00:00&lt;00:00,  3.92it/s, loss=0.683, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2:  25%|█████████████████████████████████████████████████████▌                                                                                                                                                                | 1/4 [00:00&lt;00:00,  3.70it/s, loss=0.676, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                           | 2/4 [00:00&lt;00:00,  6.85it/s, loss=0.676, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                           | 2/4 [00:00&lt;00:00,  6.54it/s, loss=0.666, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation: 0it [00:00, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation:   0%|                                                                                                                                                                                                                                                   | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0:   0%|                                                                                                                                                                                                                                      | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                               | 1/2 [00:00&lt;00:00, 92.72it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2:  75%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                                     | 3/4 [00:00&lt;00:00,  5.33it/s, loss=0.666, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 101.91it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  7.00it/s, loss=0.666, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  6.96it/s, loss=0.666, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  6.93it/s, loss=0.666, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 2:   0%|                                                                                                                                                                                                                              | 0/4 [00:00&lt;?, ?it/s, loss=0.666, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3:   0%|                                                                                                                                                                                                                              | 0/4 [00:00&lt;?, ?it/s, loss=0.666, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3:  25%|█████████████████████████████████████████████████████▌                                                                                                                                                                | 1/4 [00:00&lt;00:00,  3.72it/s, loss=0.666, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3:  25%|█████████████████████████████████████████████████████▌                                                                                                                                                                | 1/4 [00:00&lt;00:00,  3.52it/s, loss=0.654, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                           | 2/4 [00:00&lt;00:00,  6.53it/s, loss=0.654, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                           | 2/4 [00:00&lt;00:00,  6.23it/s, loss=0.639, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation: 0it [00:00, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation:   0%|                                                                                                                                                                                                                                                   | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0:   0%|                                                                                                                                                                                                                                      | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0:  50%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                               | 1/2 [00:00&lt;00:00, 92.54it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3:  75%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▌                                                     | 3/4 [00:00&lt;00:00,  5.23it/s, loss=0.639, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Validation DataLoader 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 114.06it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  6.89it/s, loss=0.639, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  6.85it/s, loss=0.639, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  6.82it/s, loss=0.639, v_num=sion]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>`Trainer.fit` stopped: `max_epochs=4` reached.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 3: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:00&lt;00:00,  4.82it/s, loss=0.639, v_num=sion]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">dm</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(15:38:24) Datamodule setup called
+Loading split RSVQAxBEN data for test...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              25 QA-pairs indexed
+              25 QA-pairs in reduced data set
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                                                                                                     | 0/25 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 635500.61it/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>setup took 0.00 seconds
+  Total test samples:       25
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing: 0it [00:00, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing:   0%|                                                                                                                                                                                                                                                      | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing DataLoader 0:   0%|                                                                                                                                                                                                                                         | 0/2 [00:00&lt;?, ?it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing DataLoader 0:  50%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████                                                                                                                | 1/2 [00:00&lt;00:00, 130.96it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing DataLoader 0: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 135.39it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing DataLoader 0: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00&lt;00:00, 102.69it/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span style="font-weight: bold">        Test metric        </span>┃<span style="font-weight: bold">       DataLoader 0        </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span style="color: #008080; text-decoration-color: #008080">         test/loss         </span>│<span style="color: #800080; text-decoration-color: #800080">    0.5323014855384827     </span>│
+└───────────────────────────┴───────────────────────────┘
+</pre>
+</div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;test/loss&#39;: 0.5323014855384827}]
+</pre></div>
+</div>
+</div>
+</details>
 </div>
 </section>
 </section>

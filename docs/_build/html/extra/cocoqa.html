@@ -168,7 +168,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigearthnet.html">BigEarthNet Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN Dataset &amp; Datamodule</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
@@ -213,7 +213,7 @@
         <article role="main">
           <section class="tex2jax_ignore mathjax_ignore" id="coco-qa">
 <h1>COCO-QA<a class="headerlink" href="#coco-qa" title="Permalink to this heading">#</a></h1>
-<p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://www.cs.toronto.edu/~mren/research/imageqa/data/cocoqa/">COCO-QA</a>, a VQA dataset based on the COCO Dataset. It was first published in <span id="id1">Ren <em>et al.</em> [<a class="reference internal" href="../references.html#id6" title="Mengye Ren, Ryan Kiros, and Richard Zemel. Exploring models and data for image question answering. Advances in neural information processing systems, 2015.">1</a>]</span>.</p>
+<p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://www.cs.toronto.edu/~mren/research/imageqa/data/cocoqa/">COCO-QA</a>, a VQA dataset based on the COCO Dataset. It was first published in <span id="id1">Ren <em>et al.</em> [<a class="reference internal" href="../references.html#id6" title="Mengye Ren, Ryan Kiros, and Richard Zemel. Exploring models and data for image question answering. Advances in neural information processing systems, 2015.">2</a>]</span>.</p>
 <section id="cocoqa-dataset">
 <h2>COCOQA DataSet<a class="headerlink" href="#cocoqa-dataset" title="Permalink to this heading">#</a></h2>
 <p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the path of the data, if the path is not “./”.
@@ -262,7 +262,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <img alt="../_images/008e6e0dd2208c56a69d1e068fdc78079f306e9ad484f22fffecd7a30d805e27.png" src="../_images/008e6e0dd2208c56a69d1e068fdc78079f306e9ad484f22fffecd7a30d805e27.png" />
 </div>
 </div>
-<p>As we can see, this Dataset uses a Tokenizer to generate the Question out of a natural language text. If no tokenizer is provided, a default one will be used, however this may lead to bad performance if not accounted for. The tokenizer can be configured as input parameter.</p>
+<p>As we can see, this Dataset uses a tokenizer to generate the Question out of a natural language text. If no tokenizer is provided, a default one will be used, however this may lead to bad performance if not accounted for. The tokenizer can be configured as input parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.ConfigVLM</span> <span class="kn">import</span> <span class="n">get_hf_model</span>

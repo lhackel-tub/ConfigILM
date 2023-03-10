@@ -168,7 +168,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="extra/BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extra/bigearthnet.html">BigEarthNet Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra/rsvqaxben.html">RSVQAxBEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extra/rsvqaxben.html">RSVQAxBEN Dataset &amp; Datamodule</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
@@ -214,7 +214,15 @@
           <section class="tex2jax_ignore mathjax_ignore" id="get-started">
 <h1>Get started<a class="headerlink" href="#get-started" title="Permalink to this heading">#</a></h1>
 <p>This sections covers how to get started with <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code>.</p>
-<p>There are currently two ways of installing <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code>. The recommended way is using <a class="reference external" href="https://pypi.org/">pypi</a> via <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm</span></code>. Alternatively, the source can be directly downloaded from <a class="reference external" href="https://github.com/lhackel-tub/ConfigVLM">github</a>.</p>
+<p>There are currently two ways of installing <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code>. The recommended way is using <a class="reference external" href="https://pypi.org/">pypi</a> via <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm</span></code>. Alternatively, the source can be directly downloaded from <a class="reference external" href="https://github.com/lhackel-tub/ConfigVLM">github</a>. If you want to use the extras (e.g. Datasets), installation is <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm[extra]</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using the extras means installing some additional dependencies.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you use the wheel, installation would equate to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm-0.1.0-py3-none-any.whl</span></code> and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm-0.1.0-py3-none-any.whl[extra]</span></code></p>
+</div>
 <p><code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> allows you to easily combine and use predefined vision and language models and use them for tasks such as <a class="reference internal" href="sup_pretraining.html"><span class="doc std std-doc">Supervised Pretraining</span></a> or <a class="reference internal" href="vqa.html"><span class="doc std std-doc">VQA</span></a>.
 For this, models can be trained in an end-to-end fashion or pre-trained checkpoints can be used.</p>
 <section id="model-configuration">

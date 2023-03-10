@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="RSVQAxBEN" href="rsvqaxben.html" /><link rel="prev" title="Using the BigEarthNet LMDB Reader" href="BEN_LMDB_Reader.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="RSVQAxBEN Dataset &amp; Datamodule" href="rsvqaxben.html" /><link rel="prev" title="Using the BigEarthNet LMDB Reader" href="BEN_LMDB_Reader.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>BigEarthNet Dataset &amp; Datamodule - ConfigVLM</title>
@@ -168,7 +168,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">BigEarthNet Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN Dataset &amp; Datamodule</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
@@ -214,12 +214,12 @@
           <section class="tex2jax_ignore mathjax_ignore" id="bigearthnet-dataset-datamodule">
 <h1><a class="reference external" href="https://bigearth.net/">BigEarthNet</a> Dataset &amp; Datamodule<a class="headerlink" href="#bigearthnet-dataset-datamodule" title="Permalink to this heading">#</a></h1>
 <p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://bigearth.net/">BigEarthNet</a>, a multi-spectral multilabel Remote Sensing Land-Use/Land-Cover classification dataset.</p>
-<p>The official paper of the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> (BigEarthNet-S2) dataset was initially published in <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id4" title="Gencer Sumbul, Marcela Charfuelan, Begüm Demir, and Volker Markl. Bigearthnet: A large-scale benchmark archive for remote sensing image understanding. In IGARSS 2019 - 2019 IEEE International Geoscience and Remote Sensing Symposium. IEEE, July 2019. URL: https://doi.org/10.1109/igarss.2019.8900532, doi:10.1109/igarss.2019.8900532.">2</a>]</span> and updated to multi-modal <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> in <span id="id2">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id5" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">3</a>]</span>.</p>
+<p>The official paper of the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> (BigEarthNet-S2) dataset was initially published in <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id4" title="Gencer Sumbul, Marcela Charfuelan, Begüm Demir, and Volker Markl. Bigearthnet: A large-scale benchmark archive for remote sensing image understanding. In IGARSS 2019 - 2019 IEEE International Geoscience and Remote Sensing Symposium. IEEE, July 2019. URL: https://doi.org/10.1109/igarss.2019.8900532, doi:10.1109/igarss.2019.8900532.">3</a>]</span> and updated to multi-modal <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> in <span id="id2">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id5" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">4</a>]</span>.</p>
 <p>For detailed information on the dataset itself please refer to the publications and the <a class="reference external" href="https://github.com/kai-tub/ben-docs">BigEarthNet Guide</a>.</p>
 <p>This module contains two <code class="docutils literal notranslate"><span class="pre">classes</span></code>, a standard <code class="docutils literal notranslate"><span class="pre">torch.util.data.Dataset</span></code> and a <code class="docutils literal notranslate"><span class="pre">pytorch_lightning.LightningDataModule</span></code> that encapsulates the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> for easy use in <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> applications. The <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> uses a <code class="docutils literal notranslate"><span class="pre">BENLMDBReader</span></code> to read images and labels from a LMDB file. Labels are returned in their 19-label version as one-hot vector.</p>
 <section id="bendataset">
 <h2>BENDataSet<a class="headerlink" href="#bendataset" title="Permalink to this heading">#</a></h2>
-<p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the path of the LMDB file, if the path is not “./”. The file name is assumed to be <code class="docutils literal notranslate"><span class="pre">BigEarthNetEncoded.lmdb</span></code> (note, that from an os point of view, LMDB files are folders). This <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> will load 12 channels (10m + 20m Sentinel-2 + 10m Sentinel-1).</p>
+<p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the base path of the LMDB file and csv files, if the path is not “./”. The LMDB file name is assumed to be <code class="docutils literal notranslate"><span class="pre">BigEarthNetEncoded.lmdb</span></code> (note, that from an os point of view, LMDB files are folders). This <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> will load 12 channels (10m + 20m Sentinel-2 + 10m Sentinel-1).</p>
 <p>The full folder structure expected is</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
 ├── BigEarthNetEncoded.lmdb
@@ -495,7 +495,7 @@ HINT: Shuffle was set to False. This is not recommended for most configuration. 
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">RSVQAxBEN</div>
+                <div class="title">RSVQAxBEN Dataset &amp; Datamodule</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

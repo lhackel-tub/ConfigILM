@@ -39,6 +39,7 @@
    ],
    "source": [
     "# remove-output\n",
+    "# remove-input\n",
     "import pytorch_lightning as pl\n",
     "import torch\n",
     "import torch.nn.functional as F\n",
@@ -321,7 +322,7 @@
     }
    ],
    "source": [
-    "# remove-output\n",
+    "# hide-output\n",
     "from configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataModule\n",
     "from configvlm.ConfigVLM import get_hf_model\n",
     "model = LitVQAEncoder(config=model_config, lr=lr)\n",
@@ -476,7 +477,7 @@
     }
    ],
    "source": [
-    "# remove-output\n",
+    "# hide-output\n",
     "trainer.fit(model, datamodule=dm)"
    ],
    "metadata": {
@@ -532,7 +533,7 @@
     }
    ],
    "source": [
-    "# remove-output\n",
+    "# hide-output\n",
     "trainer.test(model, datamodule=dm)"
    ],
    "metadata": {

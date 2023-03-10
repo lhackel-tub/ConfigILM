@@ -62,7 +62,7 @@
    "source": [
     "## BENDataSet\n",
     "\n",
-    "In its most basic form, the `Dataset` only needs the path of the LMDB file, if the path is not \"./\". The file name is assumed to be `BigEarthNetEncoded.lmdb` (note, that from an os point of view, LMDB files are folders). This `Dataset` will load 12 channels (10m + 20m Sentinel-2 + 10m Sentinel-1).\n",
+    "In its most basic form, the `Dataset` only needs the base path of the LMDB file and csv files, if the path is not \"./\". The LMDB file name is assumed to be `BigEarthNetEncoded.lmdb` (note, that from an os point of view, LMDB files are folders). This `Dataset` will load 12 channels (10m + 20m Sentinel-2 + 10m Sentinel-1).\n",
     "\n",
     "The full folder structure expected is\n",
     "```\n",

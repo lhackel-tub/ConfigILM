@@ -23,11 +23,20 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 10,
+   "execution_count": 1,
    "metadata": {
     "collapsed": true
    },
-   "outputs": [],
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/home/lhackel/Documents/development/ConfigVLM/.venv/lib/python3.10/site-packages/tqdm/auto.py:22: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html\n",
+      "  from .autonotebook import tqdm as notebook_tqdm\n"
+     ]
+    }
+   ],
    "source": [
     "# remove-output\n",
     "import pytorch_lightning as pl\n",
@@ -51,7 +60,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 2,
    "outputs": [],
    "source": [
     "class LitVQAEncoder(pl.LightningModule):\n",
@@ -130,7 +139,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 12,
+   "execution_count": 3,
    "outputs": [],
    "source": [
     "from pytorch_lightning.loggers import TensorBoardLogger\n",
@@ -151,7 +160,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 23,
+   "execution_count": 4,
    "outputs": [],
    "source": [
     "vision_model_name = \"resnet18\"\n",
@@ -177,7 +186,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 28,
+   "execution_count": 5,
    "outputs": [
     {
      "name": "stderr",
@@ -222,7 +231,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
+   "execution_count": 6,
    "outputs": [
     {
      "name": "stderr",
@@ -262,7 +271,7 @@
    "cell_type": "markdown",
    "source": [
     "## Creating Model + Dataset\n",
-    "Finally, we create the model defined above and our datamodule"
+    "Finally, we create the model defined above and our datamodule. We will be using a datamodule from this framework described in the Extra section."
    ],
    "metadata": {
     "collapsed": false
@@ -270,7 +279,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 16,
+   "execution_count": 7,
    "outputs": [],
    "source": [
     "# remove-input\n",
@@ -286,7 +295,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 29,
+   "execution_count": 8,
    "outputs": [
     {
      "name": "stderr",
@@ -296,7 +305,9 @@
       "  warnings.warn(\n",
       "Some weights of the model checkpoint at /home/lhackel/.cache/configvlm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: ['classifier.weight', 'classifier.bias']\n",
       "- This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).\n",
-      "- This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\n"
+      "- This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).\n",
+      "/home/lhackel/Documents/development/ConfigVLM/configvlm/ConfigVLM.py:115: UserWarning: Tokenizer was initialized pretrained\n",
+      "  warnings.warn(\"Tokenizer was initialized pretrained\")\n"
      ]
     },
     {
@@ -307,24 +318,18 @@
       "\n",
       "\u001B[96mHINT: pin_memory set to None \u001B[0m\n"
      ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "/home/lhackel/Documents/development/ConfigVLM/configvlm/ConfigVLM.py:115: UserWarning: Tokenizer was initialized pretrained\n",
-      "  warnings.warn(\"Tokenizer was initialized pretrained\")\n"
-     ]
     }
    ],
    "source": [
     "# remove-output\n",
     "from configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataModule\n",
+    "from configvlm.ConfigVLM import get_hf_model\n",
     "model = LitVQAEncoder(config=model_config, lr=lr)\n",
     "dm = RSVQAxBENDataModule(\n",
     "    data_dir=my_data_path,\n",
     "    img_size=(number_of_channels, image_size, image_size),\n",
     "    num_workers_dataloader=4,\n",
+    "    tokenizer = get_hf_model(model_name=text_model_name)[0]\n",
     ")"
    ],
    "metadata": {
@@ -347,15 +352,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 30,
+   "execution_count": 9,
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "(11:43:08) Datamodule setup called\n",
-      "\n",
-      "\u001B[93mWARNING: No tokenizer was provided, using BertTokenizer (uncased). This may result in very bad performance if the used network expected other tokens.\u001B[0m\n",
+      "(11:07:59) Datamodule setup called\n",
       "Loading split RSVQAxBEN data for train...\n",
       "              25 QA-pairs indexed\n",
       "              25 QA-pairs in reduced data set\n"
@@ -365,8 +368,7 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "\n",
-      "Counting Answers: 100%|██████████| 25/25 [00:00<00:00, 708497.30it/s]\n"
+      "Counting Answers: 100%|██████████| 25/25 [00:00<00:00, 346064.69it/s]\n"
      ]
     },
     {
@@ -382,16 +384,13 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "\n",
-      "Converting to NP arrays: 100%|██████████| 25/25 [00:00<00:00, 733269.93it/s]\n"
+      "Converting to NP arrays: 100%|██████████| 25/25 [00:00<00:00, 845625.81it/s]\n"
      ]
     },
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "\n",
-      "\u001B[93mWARNING: No tokenizer was provided, using BertTokenizer (uncased). This may result in very bad performance if the used network expected other tokens.\u001B[0m\n",
       "Loading split RSVQAxBEN data for val...\n",
       "              25 QA-pairs indexed\n",
       "              25 QA-pairs in reduced data set\n"
@@ -401,8 +400,23 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "\n",
-      "Converting to NP arrays: 100%|██████████| 25/25 [00:00<00:00, 204003.11it/s]\n",
+      "Converting to NP arrays: 100%|██████████| 25/25 [00:00<00:00, 474468.78it/s]\n",
+      "/home/lhackel/Documents/development/ConfigVLM/.venv/lib/python3.10/site-packages/pytorch_lightning/callbacks/model_checkpoint.py:613: UserWarning: Checkpoint directory ./tb_logs/VQA Test Model/testversion/checkpoints exists and is not empty.\n",
+      "  rank_zero_warn(f\"Checkpoint directory {dirpath} exists and is not empty.\")\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "setup took 0.01 seconds\n",
+      "  Total training samples:       25  Total validation samples:       25\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
       "LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]\n",
       "\n",
       "  | Name  | Type      | Params\n",
@@ -419,33 +433,31 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "setup took 0.03 seconds\n",
-      "  Total training samples:       25  Total validation samples:       25\n",
-      "Epoch 0:  50%|█████     | 2/4 [00:00<00:00,  2.85it/s, loss=0.691, v_num=sion]\n",
+      "Epoch 0:  50%|█████     | 2/4 [00:00<00:00,  3.15it/s, loss=0.691, v_num=sion]\n",
       "Validation: 0it [00:00, ?it/s]\u001B[A\n",
       "Validation:   0%|          | 0/2 [00:00<?, ?it/s]\u001B[A\n",
       "Validation DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]\u001B[A\n",
-      "Epoch 0:  75%|███████▌  | 3/4 [00:00<00:00,  3.16it/s, loss=0.691, v_num=sion]\n",
-      "Epoch 0: 100%|██████████| 4/4 [00:00<00:00,  4.17it/s, loss=0.691, v_num=sion]\n",
-      "Epoch 1:  50%|█████     | 2/4 [00:00<00:00,  5.95it/s, loss=0.682, v_num=sion]\n",
+      "Epoch 0:  75%|███████▌  | 3/4 [00:00<00:00,  3.35it/s, loss=0.691, v_num=sion]\n",
+      "Epoch 0: 100%|██████████| 4/4 [00:00<00:00,  4.41it/s, loss=0.691, v_num=sion]\n",
+      "Epoch 1:  50%|█████     | 2/4 [00:00<00:00,  5.09it/s, loss=0.683, v_num=sion]\n",
       "Validation: 0it [00:00, ?it/s]\u001B[A\n",
       "Validation:   0%|          | 0/2 [00:00<?, ?it/s]\u001B[A\n",
       "Validation DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]\u001B[A\n",
-      "Epoch 1:  75%|███████▌  | 3/4 [00:00<00:00,  4.98it/s, loss=0.682, v_num=sion]\n",
-      "Epoch 1: 100%|██████████| 4/4 [00:00<00:00,  6.52it/s, loss=0.682, v_num=sion]\n",
-      "Epoch 2:  50%|█████     | 2/4 [00:00<00:00,  5.92it/s, loss=0.665, v_num=sion]\n",
+      "Epoch 1:  75%|███████▌  | 3/4 [00:00<00:00,  4.69it/s, loss=0.683, v_num=sion]\n",
+      "Epoch 1: 100%|██████████| 4/4 [00:00<00:00,  6.15it/s, loss=0.683, v_num=sion]\n",
+      "Epoch 2:  50%|█████     | 2/4 [00:00<00:00,  6.18it/s, loss=0.666, v_num=sion]\n",
       "Validation: 0it [00:00, ?it/s]\u001B[A\n",
       "Validation:   0%|          | 0/2 [00:00<?, ?it/s]\u001B[A\n",
       "Validation DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]\u001B[A\n",
-      "Epoch 2:  75%|███████▌  | 3/4 [00:00<00:00,  5.10it/s, loss=0.665, v_num=sion]\n",
-      "Epoch 2: 100%|██████████| 4/4 [00:00<00:00,  6.68it/s, loss=0.665, v_num=sion]\n",
-      "Epoch 3:  50%|█████     | 2/4 [00:00<00:00,  6.03it/s, loss=0.638, v_num=sion]\n",
+      "Epoch 2:  75%|███████▌  | 3/4 [00:00<00:00,  5.03it/s, loss=0.666, v_num=sion]\n",
+      "Epoch 2: 100%|██████████| 4/4 [00:00<00:00,  6.56it/s, loss=0.666, v_num=sion]\n",
+      "Epoch 3:  50%|█████     | 2/4 [00:00<00:00,  5.65it/s, loss=0.639, v_num=sion]\n",
       "Validation: 0it [00:00, ?it/s]\u001B[A\n",
       "Validation:   0%|          | 0/2 [00:00<?, ?it/s]\u001B[A\n",
       "Validation DataLoader 0:   0%|          | 0/2 [00:00<?, ?it/s]\u001B[A\n",
-      "Epoch 3:  75%|███████▌  | 3/4 [00:00<00:00,  5.14it/s, loss=0.638, v_num=sion]\n",
-      "Epoch 3: 100%|██████████| 4/4 [00:00<00:00,  6.66it/s, loss=0.638, v_num=sion]\n",
-      "Epoch 3: 100%|██████████| 4/4 [00:00<00:00,  6.63it/s, loss=0.638, v_num=sion]"
+      "Epoch 3:  75%|███████▌  | 3/4 [00:00<00:00,  4.96it/s, loss=0.639, v_num=sion]\n",
+      "Epoch 3: 100%|██████████| 4/4 [00:00<00:00,  6.46it/s, loss=0.639, v_num=sion]\n",
+      "Epoch 3: 100%|██████████| 4/4 [00:00<00:00,  6.42it/s, loss=0.639, v_num=sion]"
      ]
     },
     {
@@ -459,7 +471,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Epoch 3: 100%|██████████| 4/4 [00:00<00:00,  4.60it/s, loss=0.638, v_num=sion]\n"
+      "Epoch 3: 100%|██████████| 4/4 [00:00<00:00,  4.25it/s, loss=0.639, v_num=sion]\n"
      ]
     }
    ],
@@ -473,15 +485,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 31,
+   "execution_count": 10,
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "(11:43:14) Datamodule setup called\n",
-      "\n",
-      "\u001B[93mWARNING: No tokenizer was provided, using BertTokenizer (uncased). This may result in very bad performance if the used network expected other tokens.\u001B[0m\n",
+      "(11:08:08) Datamodule setup called\n",
       "Loading split RSVQAxBEN data for test...\n",
       "              25 QA-pairs indexed\n",
       "              25 QA-pairs in reduced data set\n"
@@ -491,7 +501,7 @@
      "name": "stderr",
      "output_type": "stream",
      "text": [
-      "Converting to NP arrays: 100%|██████████| 25/25 [00:00<00:00, 414456.92it/s]\n",
+      "Converting to NP arrays: 100%|██████████| 25/25 [00:00<00:00, 421114.86it/s]\n",
       "LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]\n"
      ]
     },
@@ -499,24 +509,24 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "setup took 0.02 seconds\n",
+      "setup took 0.00 seconds\n",
       "  Total test samples:       25\n",
-      "Testing DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 98.53it/s] \n"
+      "Testing DataLoader 0: 100%|██████████| 2/2 [00:00<00:00, 100.99it/s]\n"
      ]
     },
     {
      "data": {
-      "text/plain": "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\u001B[1m \u001B[0m\u001B[1m       Test metric       \u001B[0m\u001B[1m \u001B[0m┃\u001B[1m \u001B[0m\u001B[1m      DataLoader 0       \u001B[0m\u001B[1m \u001B[0m┃\n┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩\n│\u001B[36m \u001B[0m\u001B[36m        test/loss        \u001B[0m\u001B[36m \u001B[0m│\u001B[35m \u001B[0m\u001B[35m   0.5295097827911377    \u001B[0m\u001B[35m \u001B[0m│\n└───────────────────────────┴───────────────────────────┘\n",
-      "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃<span style=\"font-weight: bold\">        Test metric        </span>┃<span style=\"font-weight: bold\">       DataLoader 0        </span>┃\n┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩\n│<span style=\"color: #008080; text-decoration-color: #008080\">         test/loss         </span>│<span style=\"color: #800080; text-decoration-color: #800080\">    0.5295097827911377     </span>│\n└───────────────────────────┴───────────────────────────┘\n</pre>\n"
+      "text/plain": "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃\u001B[1m \u001B[0m\u001B[1m       Test metric       \u001B[0m\u001B[1m \u001B[0m┃\u001B[1m \u001B[0m\u001B[1m      DataLoader 0       \u001B[0m\u001B[1m \u001B[0m┃\n┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩\n│\u001B[36m \u001B[0m\u001B[36m        test/loss        \u001B[0m\u001B[36m \u001B[0m│\u001B[35m \u001B[0m\u001B[35m   0.5322797298431396    \u001B[0m\u001B[35m \u001B[0m│\n└───────────────────────────┴───────────────────────────┘\n",
+      "text/html": "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n┃<span style=\"font-weight: bold\">        Test metric        </span>┃<span style=\"font-weight: bold\">       DataLoader 0        </span>┃\n┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩\n│<span style=\"color: #008080; text-decoration-color: #008080\">         test/loss         </span>│<span style=\"color: #800080; text-decoration-color: #800080\">    0.5322797298431396     </span>│\n└───────────────────────────┴───────────────────────────┘\n</pre>\n"
      },
      "metadata": {},
      "output_type": "display_data"
     },
     {
      "data": {
-      "text/plain": "[{'test/loss': 0.5295097827911377}]"
+      "text/plain": "[{'test/loss': 0.5322797298431396}]"
      },
-     "execution_count": 31,
+     "execution_count": 10,
      "metadata": {},
      "output_type": "execute_result"
     }

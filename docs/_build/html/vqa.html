@@ -373,15 +373,17 @@ For VQA we have to add one additional function, as the network works with 3 valu
 </section>
 <section id="creating-model-dataset">
 <h2>Creating Model + Dataset<a class="headerlink" href="#creating-model-dataset" title="Permalink to this heading">#</a></h2>
-<p>Finally, we create the model defined above and our datamodule</p>
+<p>Finally, we create the model defined above and our datamodule. We will be using a datamodule from this framework described in the Extra section.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder</span> <span class="kn">import</span> <span class="n">RSVQAxBENDataModule</span>
+<span class="kn">from</span> <span class="nn">configvlm.ConfigVLM</span> <span class="kn">import</span> <span class="n">get_hf_model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LitVQAEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 <span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>
     <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="n">number_of_channels</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">),</span>
     <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">get_hf_model</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="n">text_model_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="p">)</span>
 </pre></div>
 </div>

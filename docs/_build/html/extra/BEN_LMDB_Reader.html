@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="BigEarthNet Dataset &amp; Datamodule" href="bigearthnet.html" /><link rel="prev" title="Visual Question Answering" href="../vqa.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="BigEarthNet Dataset &amp; Datamodule" href="bigearthnet.html" /><link rel="prev" title="Visual Question Answering (VQA)" href="../vqa.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>Using the BigEarthNet LMDB Reader - ConfigVLM</title>
@@ -161,8 +161,8 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Features</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../sup_pretraining.html">Supervised Vision Pre-training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vqa.html">Visual Question Answering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sup_pretraining.html">Supervised Vision Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vqa.html">Visual Question Answering (VQA)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul class="current">
@@ -224,7 +224,7 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.extra.BEN_lmdb_utils</span> <span class="kn">import</span> <span class="n">BENLMDBReader</span>
 
 <span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
-        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
         <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;old&quot;</span><span class="p">,</span>
@@ -262,7 +262,7 @@ Labels:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
-        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B08&quot;</span><span class="p">,</span> <span class="s2">&quot;B04&quot;</span><span class="p">],</span>
         <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;old&quot;</span><span class="p">,</span>
@@ -303,7 +303,7 @@ Labels:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
-        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
         <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;new&quot;</span><span class="p">,</span>
@@ -346,7 +346,7 @@ Labels:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader_1</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
-        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B08&quot;</span><span class="p">,</span> <span class="s2">&quot;B04&quot;</span><span class="p">],</span>
         <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;old&quot;</span><span class="p">,</span>
@@ -355,7 +355,7 @@ Labels:
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Std 1: </span><span class="si">{</span><span class="n">BEN_reader_1</span><span class="o">.</span><span class="n">std</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">BEN_reader_2</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
-        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B04&quot;</span><span class="p">,</span> <span class="s2">&quot;B01&quot;</span><span class="p">,</span> <span class="s2">&quot;B8A&quot;</span><span class="p">],</span>
         <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;old&quot;</span><span class="p">,</span>
@@ -398,7 +398,7 @@ Mean 2: [590.23569706, 340.76769064, 2266.46036911]
                   <span>Previous</span>
                 </div>
 
-                <div class="title">Visual Question Answering</div>
+                <div class="title">Visual Question Answering (VQA)</div>
 
               </div>
             </a>

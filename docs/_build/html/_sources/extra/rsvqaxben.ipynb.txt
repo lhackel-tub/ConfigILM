@@ -7,7 +7,7 @@
     "\n",
     "\n",
     "This page describes the usage of Dataloader and Datamodule for [RSVQAxBEN](https://zenodo.org/record/5084904#.ZAsFWNLMIUE), a VQA dataset based on the\n",
-    "{{ben}} Dataset. It was first published in {cite:t}`rsvqaxben`. The dataset can be found on zenodo [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5084904.svg)](https://doi.org/10.5281/zenodo.5084904).\n",
+    "{{ben}} Dataset. It was first published by {cite:t}`rsvqaxben`. The dataset can be found on zenodo [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5084904.svg)](https://doi.org/10.5281/zenodo.5084904).\n",
     "For the usage in this context, the dataset was extended from its RGB form to include all bands originally included in {{ben}}. A small example of the data used is distributed with this package.\n",
     "\n",
     "This module contains two `classes`, a standard `torch.util.data.Dataset` and a `pytorch_lightning.LightningDataModule` that encapsulates the `Dataset` for easy use in `pytorch_lightning` applications. The `Dataset` uses a `BENLMDBReader` to read images a LMDB file. Questions and Answers are read using JSON files."
@@ -94,7 +94,7 @@
     "from configvlm.extra import RSVQAxBEN_DataModule_LMDB_Encoder\n",
     "\n",
     "ds = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path\n",
+    "    root_dir=my_data_path  # path to dataset\n",
     ")\n",
     "\n",
     "img, question, answer = ds[4]\n",
@@ -182,7 +182,7 @@
     "tokenizer, _ = get_hf_model(\"prajjwal1/bert-tiny\")\n",
     "\n",
     "ds = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path,\n",
+    "    root_dir=my_data_path,  # path to dataset\n",
     "    tokenizer=tokenizer\n",
     ")\n",
     "img, question, answer = ds[0]"
@@ -241,7 +241,7 @@
    "source": [
     "# hide-output\n",
     "ds = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path,\n",
+    "    root_dir=my_data_path,  # path to dataset\n",
     "    tokenizer=tokenizer,\n",
     "    seq_length=16\n",
     ")\n",
@@ -290,7 +290,7 @@
    "source": [
     "# hide-output\n",
     "ds = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path,\n",
+    "    root_dir=my_data_path,  # path to dataset\n",
     "    tokenizer=tokenizer,\n",
     "    seq_length=8\n",
     ")\n",
@@ -327,7 +327,7 @@
     "# hide-output\n",
     "try:\n",
     "    ds = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "        root_dir=my_data_path,\n",
+    "        root_dir=my_data_path,  # path to dataset\n",
     "        img_size=(-1, 120, 120)\n",
     "    )\n",
     "except AssertionError as a:\n",
@@ -372,7 +372,7 @@
    "source": [
     "# hide-output\n",
     "_ = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path,\n",
+    "    root_dir=my_data_path,  # path to dataset\n",
     "    split=\"test\",\n",
     "    tokenizer=tokenizer\n",
     ")"
@@ -416,7 +416,7 @@
    "source": [
     "# hide-output\n",
     "_ = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path,\n",
+    "    root_dir=my_data_path,  # path to dataset\n",
     "    max_img_idx=10,\n",
     "    tokenizer=tokenizer\n",
     ")"
@@ -449,7 +449,7 @@
    "source": [
     "# hide-output\n",
     "_ = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path,\n",
+    "    root_dir=my_data_path,  # path to dataset\n",
     "    max_img_idx=100,\n",
     "    tokenizer=tokenizer\n",
     ")"
@@ -507,7 +507,7 @@
    "source": [
     "# hide-output\n",
     "train_ds = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path,\n",
+    "    root_dir=my_data_path,  # path to dataset\n",
     "    split=\"train\",\n",
     "    tokenizer=tokenizer,\n",
     "    classes=3\n",
@@ -588,7 +588,7 @@
     "print(f\"Train DS: {train_ds.selected_answers}\")\n",
     "\n",
     "ds = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path,\n",
+    "    root_dir=my_data_path,  # path to dataset\n",
     "    split=\"val\",\n",
     "    tokenizer=tokenizer,\n",
     "    selected_answers=train_ds.selected_answers\n",
@@ -596,7 +596,7 @@
     "print(f\"Val DS 1: {ds.selected_answers}\")\n",
     "\n",
     "ds = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet(\n",
-    "    root_dir=my_data_path,\n",
+    "    root_dir=my_data_path,  # path to dataset\n",
     "    split=\"val\",\n",
     "    tokenizer=tokenizer,\n",
     "    selected_answers=train_ds.selected_answers[:2],\n",
@@ -636,7 +636,7 @@
    "source": [
     "# remove-output\n",
     "dm = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataModule(\n",
-    "    data_dir=my_data_path\n",
+    "    data_dir=my_data_path  # path to dataset\n",
     ")"
    ],
    "metadata": {
@@ -834,7 +834,7 @@
    "source": [
     "# remove-output\n",
     "dm = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataModule(\n",
-    "    data_dir=my_data_path,\n",
+    "    data_dir=my_data_path,  # path to dataset\n",
     "    batch_size=4,\n",
     "    tokenizer=tokenizer\n",
     ")\n",
@@ -882,7 +882,7 @@
    "source": [
     "# hide-output\n",
     "_ = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataModule(\n",
-    "    data_dir=my_data_path,\n",
+    "    data_dir=my_data_path,  # path to dataset\n",
     "    shuffle=False\n",
     ")"
    ],
@@ -907,7 +907,7 @@
    "source": [
     "# hide-output\n",
     "_ = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataModule(\n",
-    "    data_dir=my_data_path,\n",
+    "    data_dir=my_data_path,  # path to dataset\n",
     "    num_workers_dataloader=2\n",
     ")"
    ],
@@ -932,7 +932,7 @@
    "source": [
     "# hide-output\n",
     "_ = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataModule(\n",
-    "    data_dir=my_data_path,\n",
+    "    data_dir=my_data_path,  # path to dataset\n",
     "    pin_memory=False\n",
     ")"
    ],

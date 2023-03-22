@@ -5,7 +5,10 @@
    "metadata": {},
    "source": [
     "# Using the {{ben}} LMDB Reader\n",
-    "In this section, an example of using the {{ben}} reader is shown. This converts the Lightning Memory-Mapped Database Manager ({{lmdb}}) used in the background as a database into an indexable Python object."
+    "In this section, an example of using the {{ben}} reader is shown. This converts the Lightning Memory-Mapped Database Manager ({{lmdb}}) used in the background as a database into an indexable Python object.\n",
+    ":::{note}\n",
+    "Due to its use of {{lmdb}}, which is not pickle-able, it is not thread safe to use this object after first access. However, using it only after forking is supported (e.g. access in `__getitem__` methods in a `pytorch dataset`).\n",
+    ":::"
    ]
   },
   {

@@ -214,6 +214,10 @@
           <section class="tex2jax_ignore mathjax_ignore" id="using-the-bigearthnet-lmdb-reader">
 <h1>Using the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> LMDB Reader<a class="headerlink" href="#using-the-bigearthnet-lmdb-reader" title="Permalink to this heading">#</a></h1>
 <p>In this section, an example of using the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> reader is shown. This converts the Lightning Memory-Mapped Database Manager (<a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>) used in the background as a database into an indexable Python object.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to its use of <a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>, which is not pickle-able, it is not thread safe to use this object after first access. However, using it only after forking is supported (e.g. access in <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> methods in a <code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">dataset</span></code>).</p>
+</div>
 <p>To use the reader, we have to create a <code class="docutils literal notranslate"><span class="pre">BENLMDBReader</span></code> object. This object needs 4 arguments for creation, namely the directory where the LMBD file is located as <code class="docutils literal notranslate"><span class="pre">string</span></code>, a sequence of 3 <code class="docutils literal notranslate"><span class="pre">ints</span></code> for the desired image size <code class="docutils literal notranslate"><span class="pre">(Channel,</span> <span class="pre">Height,</span> <span class="pre">Width)</span></code>, an indication of which bands are to be used and the label type to use.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">

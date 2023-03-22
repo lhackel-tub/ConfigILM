@@ -241,9 +241,7 @@ class BENLMDBReader:
         )
 
         self.lmdb_dir = lmdb_dir
-        self.env = lmdb.open(
-            self.lmdb_dir, readonly=True, lock=False, meminit=False, readahead=True
-        )
+        self.env = None
         self.label_type = label_type
         self.mean, self.std = band_combi_to_mean_std(self.bands)
 
@@ -255,6 +253,10 @@ class BENLMDBReader:
                      name has to be provided
         :return: tuple (interpolated image, labels)
         """
+        if self.env is None:
+            self.env = lmdb.open(
+                self.lmdb_dir, readonly=True, lock=False, meminit=False, readahead=True
+            )
         # get pure patch data
         ben_patch = read_ben_from_lmdb(self.env, item)
 

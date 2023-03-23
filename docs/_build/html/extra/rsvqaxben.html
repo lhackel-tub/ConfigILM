@@ -157,10 +157,11 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../index.html">ConfigVLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Features</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../vlmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sup_pretraining.html">Supervised Vision Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vqa.html">Visual Question Answering (VQA)</a></li>
 </ul>
@@ -231,8 +232,8 @@ For the usage in this context, the dataset was extended from its RGB form to inc
     └── RSVQAxBEN_QA_test.json
 </pre></div>
 </div>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.extra</span> <span class="kn">import</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
@@ -244,29 +245,6 @@ For the usage in this context, the dataset was extended from its RGB form to inc
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: No tokenizer was provided, using BertTokenizer (uncased). This may result in very bad performance if the used network expected other tokens.
-Loading split RSVQAxBEN data for None...
-              75 QA-pairs indexed
-              75 QA-pairs in reduced data set
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/75 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 75/75 [00:00&lt;00:00, 800439.69it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
@@ -281,8 +259,8 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <section id="tokenizer-and-tokenization">
 <h3>Tokenizer and Tokenization<a class="headerlink" href="#tokenizer-and-tokenization" title="Permalink to this heading">#</a></h3>
 <p>As we can see, this Dataset uses a tokenizer to generate the Question out of a natural language text. If no tokenizer is provided, a default one will be used, however this may lead to bad performance if not accounted for. The tokenizer can be configured as input parameter.</p>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.ConfigVLM</span> <span class="kn">import</span> <span class="n">get_hf_model</span>
 
 <span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
@@ -295,109 +273,81 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for None...
-              75 QA-pairs indexed
-              75 QA-pairs in reduced data set
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/75 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 75/75 [00:00&lt;00:00, 919803.51it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <p>During tokenization a sequence of tokens (integers) of specific length is generated. The length of this sequence can be set with the parameter <code class="docutils literal notranslate"><span class="pre">seq_length</span></code>. If the generated tokens are shorter than the sequence length, the sequence will be padded with zeros. If it is longer, the sequence is truncated.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Most tokenizer use an ‘End of Sequence’ token that will always be the last one in the non-padded sequence.</p>
 </div>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">16</span>
 <span class="p">)</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">question1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">question1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
+</div>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for None...
-              75 QA-pairs indexed
-              75 QA-pairs in reduced data set
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/75 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 75/75 [00:00&lt;00:00, 893672.73it/s]
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2024, 7976, 2752, 2030, 4910, 2752, 2556, 1029, 102, 0, 0, 0, 0, 0, 0]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
 </div>
 </div>
-</details>
-</div>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">8</span>
 <span class="p">)</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">question2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">question2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
+</div>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for None...
-              75 QA-pairs indexed
-              75 QA-pairs in reduced data set
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/75 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 75/75 [00:00&lt;00:00, 1127501.08it/s]
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2024, 7976, 2752, 2030, 4910, 2752, 102]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</div>
+</div>
+<p>The tokenizer can also be used to reconstruct the input/question from the IDs including the special tokens:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Question 1: &#39;</span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">question1</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Question 2: &#39;</span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">question2</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;[CLS] are artificial areas or agricultural areas present? [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]&#39;
+Question 2: &#39;[CLS] are artificial areas or agricultural areas [SEP]&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>or without:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Question 1: &#39;</span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">question1</span><span class="p">,</span><span class="w"> </span><span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Question 2: &#39;</span><span class="si">{</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">question2</span><span class="p">,</span><span class="w"> </span><span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;are artificial areas or agricultural areas present?&#39;
+Question 2: &#39;are artificial areas or agricultural areas&#39;
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="selecting-bands">
@@ -431,8 +381,8 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <section id="splits">
 <h3>Splits<a class="headerlink" href="#splits" title="Permalink to this heading">#</a></h3>
 <p>It is possible to load only a specific split (<code class="docutils literal notranslate"><span class="pre">'train'</span></code>, <code class="docutils literal notranslate"><span class="pre">'val'</span></code> or <code class="docutils literal notranslate"><span class="pre">'test'</span></code>) in the dataset. The images loaded are specified using the csv files in the same folder as the LMDB file. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>), all three are loaded into the same <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
@@ -441,28 +391,6 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for test...
-              25 QA-pairs indexed
-              25 QA-pairs in reduced data set
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/25 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 812849.61it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 </section>
 <section id="restricting-the-number-of-loaded-images">
@@ -492,7 +420,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/10 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00&lt;00:00, 381300.36it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00&lt;00:00, 335544.32it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -525,7 +453,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/75 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 75/75 [00:00&lt;00:00, 1527052.43it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 75/75 [00:00&lt;00:00, 1248304.76it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -563,7 +491,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers:   0%|                                                                                                                                                             | 0/25 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 911805.22it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 888623.73it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -575,7 +503,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/25 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 903944.83it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 838860.80it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -589,8 +517,8 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <p class="admonition-title">Note</p>
 <p>The number of classes does not necessarily match the number of answers. If there are fewer answers then classes, the last classes will never be encoded in the one-hot encoded answer vector. If there are more, an <code class="docutils literal notranslate"><span class="pre">IndexError</span></code> will happen during accessing a non encode-able element.</p>
 </div>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train DS: </span><span class="si">{</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
@@ -607,51 +535,19 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 1: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 2: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
+</div>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train DS: [&#39;yes&#39;, &#39;no&#39;, &#39;mixed forest and transitional woodland/shrub&#39;]
-Loading split RSVQAxBEN data for val...
-              25 QA-pairs indexed
-              25 QA-pairs in reduced data set
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/25 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 782519.40it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Val DS 1: [&#39;yes&#39;, &#39;no&#39;, &#39;mixed forest and transitional woodland/shrub&#39;]
-Loading split RSVQAxBEN data for val...
-              25 QA-pairs indexed
-              25 QA-pairs in reduced data set
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|                                                                                                                                                      | 0/25 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 25/25 [00:00&lt;00:00, 825650.39it/s]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Val DS 1: [&#39;yes&#39;, &#39;no&#39;]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+Val DS 1: [&#39;yes&#39;, &#39;no&#39;]
+Val DS 2: [&#39;yes&#39;, &#39;no&#39;]
 </pre></div>
 </div>
 </div>
-</details>
 </div>
 </section>
 </section>
@@ -704,8 +600,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7ff20db8fd90&gt;
-&lt;configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7ff21c2e9420&gt;
+&lt;configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7f1ec03e76a0&gt;
+&lt;configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7f1ec03e7640&gt;
 None
 </pre></div>
 </div>

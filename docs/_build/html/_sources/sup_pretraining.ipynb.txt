@@ -460,6 +460,7 @@
     }
    ],
    "source": [
+    "# remove-input\n",
     "import matplotlib.pyplot as plt\n",
     "\n",
     "img, lbl = dm.val_ds[9]\n",

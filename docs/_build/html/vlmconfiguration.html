@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation" href="installation.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Supervised Vision Classification" href="sup_pretraining.html" /><link rel="prev" title="Installation" href="installation.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>ConfigVLM</title>
+        <title>Model Configuration - ConfigVLM</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">ConfigVLM</div></a>
+      <a href="index.html"><div class="brand">ConfigVLM</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -135,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -144,7 +144,7 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
 
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
 
 
   <span class="sidebar-brand-text">ConfigVLM</span>
@@ -155,13 +155,13 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">ConfigVLM</a></li>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">ConfigVLM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Features</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="vlmconfiguration.html">Model Configuration</a></li>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Vision Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vqa.html">Visual Question Answering (VQA)</a></li>
 </ul>
@@ -206,49 +206,69 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="configvlm">
-<h1>ConfigVLM<a class="headerlink" href="#configvlm" title="Permalink to this heading">#</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This site should be considered in BETA status and is an active WIP!</p>
+          <section class="tex2jax_ignore mathjax_ignore" id="model-configuration">
+<h1>Model Configuration<a class="headerlink" href="#model-configuration" title="Permalink to this heading">#</a></h1>
+<p>The central object of <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> is the dataclass <code class="docutils literal notranslate"><span class="pre">VLMConfiguration</span></code>. This is used to decide which parts the model consists of, how it is combined, and which task it should ultimately solve. A possible minimal configuration for Supervised Classification can look like this:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not all properties of the object are always used. Which properties are unused depends on the network type specified. For classification there is no fusion or language part, therefore in this example all parameters associated with fusion or language modeling are unused.</p>
 </div>
-<p>The library <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> is a state-of-the-art tool for Python developers seeking to rapidly and
-iteratively develop vision and language models within the <a class="reference external" href="https://pytorch.org/"><code class="docutils literal notranslate"><span class="pre">pytorch</span></code></a> framework.
-This <strong>open-source</strong> library provides a convenient implementation for seamlessly combining models
-from two of the most popular <a class="reference external" href="https://pytorch.org/"><code class="docutils literal notranslate"><span class="pre">pytorch</span></code></a> libraries,
-the highly regarded <a class="reference external" href="https://github.com/rwightman/pytorch-image-models"><code class="docutils literal notranslate"><span class="pre">timm</span></code></a> and <a class="reference external" href="https://huggingface.co/"><code class="docutils literal notranslate"><span class="pre">huggingface</span></code>🤗</a>.
-With an extensive collection of nearly <strong>1000 vision</strong> and <strong>over 100 language models</strong>,
-with an <strong>additional 120,000</strong> community-uploaded models in the <a class="reference external" href="https://huggingface.co/models"><code class="docutils literal notranslate"><span class="pre">huggingface</span></code>🤗 model collection</a>,
-<code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> offers a diverse range of model combinations that require minimal implementation effort.
-Its vast array of models makes it an unparalleled resource for developers seeking to create
-innovative and sophisticated <strong>vision-language models</strong> with ease.</p>
-<p>Furthermore, <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> boasts a user-friendly interface that streamlines the exchange of model components,
-thus providing endless possibilities for the creation of novel models.
-Additionally, the package offers <strong>pre-built and throughput-optimized</strong>
-<a class="reference external" href="https://pytorch.org/tutorials/beginner/basics/data_tutorial.html"><code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">dataloaders</span></code></a> and
-<a class="reference external" href="https://lightning.ai/docs/pytorch/latest/data/datamodule.html"><code class="docutils literal notranslate"><span class="pre">lightning</span> <span class="pre">datamodules</span></code></a>,
-which enable developers to seamlessly test their models in diverse application areas, such as <em>Remote Sensing (RS)</em>.
-Moreover, the comprehensive documentation of <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> includes installation instructions,
-tutorial examples, and a detailed overview of the framework’s interface, ensuring a smooth and hassle-free development experience.</p>
-<p>This documentation outlines the easy installation process of the
-<code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> framework on the upcoming page.
-Subsequently, the individual components will be explored and exemplified in detail on the following pages.
-Should any issues arise, users are encouraged to visit the project’s dedicated <a class="reference external" href="https://github.com/lhackel-tub/ConfigVLM">GitHub page</a>,
-where they can receive assistance from the community of users and developers.</p>
-<p>Additionally, feature requests can be submitted via this platform.</p>
-<div class="toctree-wrapper compound">
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.ConfigVLM</span> <span class="kn">import</span> <span class="n">VLMConfiguration</span><span class="p">,</span> <span class="n">VLMType</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="n">model_config</span> <span class="o">=</span> <span class="n">VLMConfiguration</span><span class="p">(</span>
+    <span class="n">timm_model_name</span><span class="o">=</span><span class="s2">&quot;resnet18&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
 </div>
-<div class="toctree-wrapper compound">
 </div>
-<div class="toctree-wrapper compound">
+<div class="cell_output docutils container">
 </div>
-<div class="toctree-wrapper compound">
+</div>
+<p>All parameters as well as their respective default values can be seen below.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter name            | Type                                                         | Default value
+-------------------------------------------------------------------------------------------------------------------------
+timm_model_name           | &lt;class &#39;str&#39;&gt;                                                |               &lt;REQUIRED PARAM&gt;
+hf_model_name             | typing.Optional[str]                                         |                           None
+image_size                | &lt;class &#39;int&#39;&gt;                                                |                            120
+channels                  | &lt;class &#39;int&#39;&gt;                                                |                              3
+classes                   | &lt;class &#39;int&#39;&gt;                                                |                             10
+class_names               | typing.Optional[typing.Sequence[str]]                        |                           None
+network_type              | &lt;enum &#39;VLMType&#39;&gt;                                             |  VLMType.VISION_CLASSIFICATION
+visual_features_out       | &lt;class &#39;int&#39;&gt;                                                |                            512
+fusion_in                 | &lt;class &#39;int&#39;&gt;                                                |                            512
+fusion_hidden             | &lt;class &#39;int&#39;&gt;                                                |                            256
+v_dropout_rate            | &lt;class &#39;float&#39;&gt;                                              |                           0.25
+t_dropout_rate            | &lt;class &#39;float&#39;&gt;                                              |                           0.25
+fusion_dropout_rate       | &lt;class &#39;float&#39;&gt;                                              |                           0.25
+fusion_method             | typing.Callable[[torch.Tensor, torch.Tensor], torch.Tensor]  |                      torch.mul
+fusion_activation         | typing.Callable[[torch.Tensor], torch.Tensor]                |                         Tanh()
+drop_rate                 | typing.Optional[float]                                       |                            0.2
+use_pooler_output         | &lt;class &#39;bool&#39;&gt;                                               |                           True
+max_sequence_length       | &lt;class &#39;int&#39;&gt;                                                |                             32
+load_timm_if_available    | &lt;class &#39;bool&#39;&gt;                                               |                          False
+load_hf_if_available      | &lt;class &#39;bool&#39;&gt;                                               |                           True
+</pre></div>
+</div>
+</div>
+</div>
+<p>This class is used to ultimately create the model, but also collects all other information such as the image size in an object. This facilitates the organization in the code and is to prevent that there are many global variables.
+Currently, the configuration supports the following network types:</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;VISION_CLASSIFICATION&#39;, &#39;VQA_CLASSIFICATION&#39;]
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 
@@ -257,16 +277,26 @@ where they can receive assistance from the community of users and developers.</p
       <footer>
 
         <div class="related-pages">
-          <a class="next-page" href="installation.html">
+          <a class="next-page" href="sup_pretraining.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Installation</div>
+                <div class="title">Supervised Vision Classification</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
+          <a class="prev-page" href="installation.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
 
+                <div class="title">Installation</div>
+
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -285,26 +315,8 @@ where they can receive assistance from the community of users and developers.</p
 
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
 
-
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">ConfigVLM</a><ul>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
 
 
     </aside>

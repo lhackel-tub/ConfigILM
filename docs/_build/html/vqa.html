@@ -157,10 +157,11 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="index.html">ConfigVLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Features</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="vlmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Vision Classification</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Visual Question Answering (VQA)</a></li>
 </ul>
@@ -366,8 +367,12 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 <section id="creating-model-dataset">
 <h2>Creating Model + Dataset<a class="headerlink" href="#creating-model-dataset" title="Permalink to this heading">#</a></h2>
 <p>Finally, we create the model defined above and our datamodule. We will be using a datamodule from this framework described in the Extra section.</p>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We get a user warning here that ‘image_size’ is not known as a keyword. This is expected as most Convolutional Neural Networks (CNNs) (just as the resnet here) operate independently of the image size of the input</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder</span> <span class="kn">import</span> <span class="n">RSVQAxBENDataModule</span>
 <span class="kn">from</span> <span class="nn">configvlm.ConfigVLM</span> <span class="kn">import</span> <span class="n">get_hf_model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LitVQAEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
@@ -380,19 +385,16 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/lhackel/Documents/development/ConfigVLM/configvlm/ConfigVLM.py:131: UserWarning: Keyword &#39;img_size&#39; unknown. Trying to ignore and restart creation.
   warnings.warn(
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/lhackel/.cache/configvlm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
+Some weights of the model checkpoint at /home/lhackel/.cache/configvlm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.weight&#39;, &#39;classifier.bias&#39;]
 - This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
 - This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/lhackel/Documents/development/ConfigVLM/configvlm/ConfigVLM.py:115: UserWarning: Tokenizer was initialized pretrained
+  warnings.warn(&quot;Tokenizer was initialized pretrained&quot;)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 4 workers
@@ -400,12 +402,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 HINT: pin_memory set to None
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/lhackel/Documents/development/ConfigVLM/configvlm/ConfigVLM.py:115: UserWarning: Tokenizer was initialized pretrained
-  warnings.warn(&quot;Tokenizer was initialized pretrained&quot;)
-</pre></div>
 </div>
-</div>
-</details>
 </div>
 </section>
 <section id="running">
@@ -432,44 +429,14 @@ HINT: pin_memory set to None
 <p>Here is an example forward call for the model. Since the input is normalized, the colors are slightly distorted. To display the image anyway, we select only the RGB channels and normalize this image to the range 0 to 1.
 The input question is already returned by the dataset in the form of tokens, so we decode here again using the tokenizer. To make the input always the same size it may be padded.
 Additionally only the first 10 elements of output + expected answer are shown, as the full lists have 1000 elements.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
-<span class="n">v</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">val_ds</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
-<span class="c1"># only choose BGR axis for display and bring into RGB order</span>
-<span class="c1"># only needed for displaying</span>
-<span class="n">img_display</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">v</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">img_display</span> <span class="o">-=</span> <span class="n">torch</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">img_display</span><span class="p">)</span>
-<span class="n">img_display</span> <span class="o">/=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">img_display</span><span class="p">)</span>
-
-<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_display</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># add batch dimension</span>
-<span class="n">v_in</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">q_in</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># forward call, only use first result (batch size 1)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="p">((</span><span class="n">v_in</span><span class="p">,</span> <span class="n">q_in</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Text: </span><span class="si">{</span><span class="n">dm</span><span class="o">.</span><span class="n">val_ds</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Question: </span><span class="si">{</span><span class="n">q</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected: </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;          </span><span class="si">{</span><span class="n">dm</span><span class="o">.</span><span class="n">val_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Real: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;          </span><span class="si">{</span><span class="n">dm</span><span class="o">.</span><span class="n">val_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="_images/d5081bbd2a1ad91c5896dc3ea89b461d9a255bf18f50eb5e5c97abe5c5b9b867.png" src="_images/d5081bbd2a1ad91c5896dc3ea89b461d9a255bf18f50eb5e5c97abe5c5b9b867.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Text: [CLS] are forests and heterogeneous agricultural areas present? [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]
 Question: [101, 2024, 6138, 1998, 21770, 10624, 6914, 14769, 4910, 2752, 2556, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Expected: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
           yes
-    Real: [0.19755713641643524, -0.2776879072189331, -0.6271088123321533, -0.7901010513305664, -1.1356347799301147, -0.36912283301353455, 0.43463438749313354, -1.2643425464630127, -0.3974243700504303, -0.7981588840484619]
+    Real: [0.19758769869804382, -0.2777036130428314, -0.6270515322685242, -0.7901533246040344, -1.1356943845748901, -0.3691132962703705, 0.4346601963043213, -1.2644184827804565, -0.39747247099876404, -0.7981390953063965]
           yes
 </pre></div>
 </div>

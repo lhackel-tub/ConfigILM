@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Visual Question Answering (VQA)" href="vqa.html" /><link rel="prev" title="Get started" href="installation.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Visual Question Answering (VQA)" href="vqa.html" /><link rel="prev" title="Model Configuration" href="vlmconfiguration.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>Supervised Vision Classification - ConfigVLM</title>
@@ -157,10 +157,11 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="index.html">ConfigVLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Get started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Features</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="vlmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Supervised Vision Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vqa.html">Visual Question Answering (VQA)</a></li>
 </ul>
@@ -387,33 +388,11 @@ For this example usage we will be using the <a class="reference internal" href="
 </div>
 </div>
 <p>Here is an example forward call for the model. Since the input is normalized, the colors are slightly distorted. To display the image anyway, we select only the RGB channels and normalize this image to the range 0 to 1.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
-<span class="n">img</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">val_ds</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
-<span class="c1"># only choose BGR axis for display and bring into RGB order</span>
-<span class="c1"># only needed for displaying</span>
-<span class="n">img_display</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">img</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">img_display</span> <span class="o">-=</span> <span class="n">torch</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">img_display</span><span class="p">)</span>
-<span class="n">img_display</span> <span class="o">/=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">img_display</span><span class="p">)</span>
-
-<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_display</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="c1"># forward call, only use first result (batch size 1)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected: </span><span class="si">{</span><span class="n">lbl</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Real: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="_images/989fdc00969305cdf6bfcd35eeeda35247e5a04b67f242a46847fee651e27c24.png" src="_images/989fdc00969305cdf6bfcd35eeeda35247e5a04b67f242a46847fee651e27c24.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Expected: [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    Real: [-0.7090480923652649, 0.22333866357803345, -0.682947039604187, -0.46185076236724854, -0.6759416460990906, -0.24388669431209564, -1.0253559350967407, -0.7190824747085571, -0.5982934236526489, -0.9707436561584473, -0.20257391035556793, -0.7860231399536133, -0.394426167011261, -0.731132984161377, -1.0502828359603882, -0.3865568935871124, -0.6126933693885803, -1.0291354656219482, -0.6661369800567627]
+    Real: [-0.7090588808059692, 0.2233438789844513, -0.6829307079315186, -0.4618554711341858, -0.675950288772583, -0.24389474093914032, -1.0253543853759766, -0.7190719842910767, -0.5982993245124817, -0.9707560539245605, -0.2025696486234665, -0.7860442399978638, -0.3944298028945923, -0.7311370372772217, -1.0502692461013794, -0.38657525181770325, -0.6127081513404846, -1.029127836227417, -0.6661410927772522]
 </pre></div>
 </div>
 </div>
@@ -435,14 +414,14 @@ For this example usage we will be using the <a class="reference internal" href="
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="installation.html">
+          <a class="prev-page" href="vlmconfiguration.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
 
-                <div class="title">Get started</div>
+                <div class="title">Model Configuration</div>
 
               </div>
             </a>

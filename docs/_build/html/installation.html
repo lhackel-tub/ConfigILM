@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Supervised Vision Classification" href="sup_pretraining.html" /><link rel="prev" title="ConfigVLM" href="index.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Model Configuration" href="vlmconfiguration.html" /><link rel="prev" title="ConfigVLM" href="index.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Get started - ConfigVLM</title>
+        <title>Installation - ConfigVLM</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -135,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -157,10 +157,11 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">ConfigVLM</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Get started</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Features</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="vlmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Vision Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vqa.html">Visual Question Answering (VQA)</a></li>
 </ul>
@@ -205,16 +206,24 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="get-started">
-<h1>Get started<a class="headerlink" href="#get-started" title="Permalink to this heading">#</a></h1>
+          <section class="tex2jax_ignore mathjax_ignore" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
 <p>This sections covers how to get started with <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code>.</p>
-<p>There are currently two ways of installing <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code>. The recommended way is using <a class="reference external" href="https://pypi.org/">pypi</a> via <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm</span></code>. Alternatively, the source can be directly downloaded from <a class="reference external" href="https://github.com/lhackel-tub/ConfigVLM">github</a>. If you want to use the extras (e.g. Datasets), installation is <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm[extra]</span></code>.</p>
+<p>There are currently two ways of installing <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code>. The recommended way is using <a class="reference external" href="https://pypi.org/">pypi</a> via</p>
+<div class="cell tag_skip-execution docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>configvlm
+</pre></div>
+</div>
+</div>
+</div>
+<p>Alternatively, the source can be directly downloaded from <a class="reference external" href="https://github.com/lhackel-tub/ConfigVLM">github</a>. If you want to use the extras (e.g. Datasets), installation is <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm[extra]</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Using the extras means installing some additional dependencies.</p>
@@ -224,64 +233,9 @@
 <p>If you use the wheel, installation would equate to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm-0.1.0-py3-none-any.whl</span></code> and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configvlm-0.1.0-py3-none-any.whl[extra]</span></code></p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> allows you to easily combine and use predefined vision and language models and use them for tasks such as <a class="reference internal" href="sup_pretraining.html"><span class="doc std std-doc">Supervised Pretraining</span></a> or <a class="reference internal" href="vqa.html"><span class="doc std std-doc">VQA</span></a>.
-For this, models can be trained in an end-to-end fashion or pre-trained checkpoints can be used.</p>
-<section id="model-configuration">
-<h2>Model Configuration<a class="headerlink" href="#model-configuration" title="Permalink to this heading">#</a></h2>
-<p>The central object of <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> is the dataclass <code class="docutils literal notranslate"><span class="pre">VLMConfiguration</span></code>. This is used to decide which parts the model consists of, how it is combined, and which task it should ultimately solve. A possible configuration for Supervised Classification can look like this:</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Not all properties of the object are always used. Which properties are unused depends on the network type specified. For classification there is no fusion or language part, therefore in this example all parameters associated with fusion or language modeling are unused.</p>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.ConfigVLM</span> <span class="kn">import</span> <span class="n">VLMConfiguration</span><span class="p">,</span> <span class="n">VLMType</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="n">model_config</span> <span class="o">=</span> <span class="n">VLMConfiguration</span><span class="p">(</span>
-    <span class="n">timm_model_name</span><span class="o">=</span><span class="s2">&quot;resnet18&quot;</span><span class="p">,</span>
-    <span class="n">classes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">image_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
-    <span class="n">channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">network_type</span><span class="o">=</span><span class="n">VLMType</span><span class="o">.</span><span class="n">VISION_CLASSIFICATION</span>
-<span class="p">)</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VLMConfiguration(timm_model_name=&#39;resnet18&#39;,
-                 hf_model_name=None,
-                 image_size=128,
-                 channels=3,
-                 classes=100,
-                 class_names=None,
-                 network_type=&lt;VLMType.VISION_CLASSIFICATION: 0&gt;,
-                 visual_features_out=512,
-                 fusion_in=512,
-                 fusion_hidden=256,
-                 v_dropout_rate=0.25,
-                 t_dropout_rate=0.25,
-                 fusion_dropout_rate=0.25,
-                 fusion_method=&lt;built-in method mul of type object at 0x7f2e451fd460&gt;,
-                 fusion_activation=Tanh(),
-                 drop_rate=0.2,
-                 use_pooler_output=True,
-                 max_sequence_length=32,
-                 load_timm_if_available=False,
-                 load_hf_if_available=True)
-</pre></div>
-</div>
-</div>
-</div>
-<p>This class is used to ultimately create the model, but also collects all other information such as the image size in an object. This facilitates the organization in the code and is to prevent that there are many global variables.
-Currently, the configuration supports the following network types:</p>
-<div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;VISION_CLASSIFICATION&#39;, &#39;VQA_CLASSIFICATION&#39;]
-</pre></div>
-</div>
-</div>
-</div>
-</section>
+For this, models can be trained in an <strong>end-to-end</strong> fashion or <strong>pre-trained checkpoints</strong> can be used. How the configuration is set up is explained on the next page. Alternatively, use cases for this framework are presented on the following pages.</p>
+<p>For all examples in this documentation it is assumed that <code class="docutils literal notranslate"><span class="pre">ConfigVLM</span></code> has been installed together with the <code class="docutils literal notranslate"><span class="pre">[extra]</span></code> dependencies.</p>
+<p>If you want to try out the framework’s functionality, check out the <a class="reference external" href="https://colab.research.google.com/drive/1ALBLQdn_NKd0ve7gwJtuNaUU3PgxEbMa?usp=sharing">google colab</a>, which shows an example use case.</p>
 </section>
 
         </article>
@@ -289,12 +243,12 @@ Currently, the configuration supports the following network types:</p>
       <footer>
 
         <div class="related-pages">
-          <a class="next-page" href="sup_pretraining.html">
+          <a class="next-page" href="vlmconfiguration.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Supervised Vision Classification</div>
+                <div class="title">Model Configuration</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -327,27 +281,8 @@ Currently, the configuration supports the following network types:</p>
 
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
 
-
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">Get started</a><ul>
-<li><a class="reference internal" href="#model-configuration">Model Configuration</a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
 
 
     </aside>

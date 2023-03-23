@@ -88,6 +88,9 @@ nb_custom_formats = {
 # always fail CI pipeline when nb cannot be executed
 nb_execution_raise_on_error = True
 
+# show line numbers in source code
+nb_number_source_lines = False
+
 # Recommendation from furo
 # https://pradyunsg.me/furo/kitchen-sink/api/
 autodoc_typehints = "description"

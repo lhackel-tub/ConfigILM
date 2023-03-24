@@ -27,7 +27,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-          ref: ${{ github.ref_name }}
       #----------------------------------------------
       #  -----  install & configure poetry  -----
       #----------------------------------------------
@@ -67,10 +66,28 @@ jobs:
           source .venv/bin/activate
           coverage report
       - name: Generate coverage badge
-        uses: tj-actions/coverage-badge-py@v1.8
-      #  if something was changed, commit
-      - name: Commit coverage badge
+        uses: tj-actions/coverage-badge-py@v2
+
+      #----------------------------------------------
+      #  Add Coverage Badge
+      #----------------------------------------------
+      - name: Verify Changed files
+        uses: tj-actions/verify-changed-files@v13
+        id: verify-changed-files
+        with:
+          files: coverage.svg
+
+      - name: Commit files
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
         run: |
-          git config --global user.name 'Leonard Hackel'
-          git config --global user.email 'lhackel-tub@users.noreply.github.com'
-          if ! git diff-index --quiet HEAD; then git commit -am "Automated coverage report"; git push; fi
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add coverage.svg
+          git commit -m "Updated coverage.svg"
+
+      - name: Push changes
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          branch: ${{ github.ref }}

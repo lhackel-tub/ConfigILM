@@ -72,7 +72,7 @@ jobs:
       #  Build Docu
       #----------------------------------------------
       - name: Build documentation
-        run: sphinx-build docs docs/_build
+        run: poetry run sphinx-build docs docs/_build
 
       - name: Deploy Pages
         if: ${{ github.event_name == 'push' }}

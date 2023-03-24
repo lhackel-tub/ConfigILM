@@ -1,0 +1,461 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="BigEarthNet Dataset &amp; Datamodule" href="bigearthnet.html" /><link rel="prev" title="Visual Question Answering (VQA)" href="../vqa.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>Using the BigEarthNet LMDB Reader - ConfigVLM</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+
+
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+
+      }
+    }
+  }
+</style></head>
+  <body>
+
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">ConfigVLM</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+
+
+  <span class="sidebar-brand-text">ConfigVLM</span>
+
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ConfigVLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../vlmconfiguration.html">Model Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sup_pretraining.html">Supervised Vision Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vqa.html">Visual Question Answering (VQA)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extra</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Using the BigEarthNet LMDB Reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigearthnet.html">BigEarthNet Dataset &amp; Datamodule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN Dataset &amp; Datamodule</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general/code_of_conduct.html">Contributor Covenant Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general/dependencies.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general/license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">Further references</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="using-the-bigearthnet-lmdb-reader">
+<h1>Using the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> LMDB Reader<a class="headerlink" href="#using-the-bigearthnet-lmdb-reader" title="Permalink to this heading">#</a></h1>
+<p>In this section, an example of using the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> reader is shown. This converts the Lightning Memory-Mapped Database Manager (<a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>) used in the background as a database into an indexable Python object.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to its use of <a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>, which is not pickle-able, it is not thread safe to use this object after first access. However, using it only after forking is supported (e.g. access in <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> methods in a <code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">dataset</span></code>).</p>
+</div>
+<p>To use the reader, we have to create a <code class="docutils literal notranslate"><span class="pre">BENLMDBReader</span></code> object. This object needs 4 arguments for creation, namely the directory where the LMBD file is located as <code class="docutils literal notranslate"><span class="pre">string</span></code>, a sequence of 3 <code class="docutils literal notranslate"><span class="pre">ints</span></code> for the desired image size <code class="docutils literal notranslate"><span class="pre">(Channel,</span> <span class="pre">Height,</span> <span class="pre">Width)</span></code>, an indication of which bands are to be used and the label type to use.</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.extra.BEN_lmdb_utils</span> <span class="kn">import</span> <span class="n">BENLMDBReader</span>
+
+<span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+        <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
+        <span class="n">bands</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
+        <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;old&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">img</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">BEN_reader</span><span class="p">[</span><span class="s2">&quot;S2B_MSIL2A_20180502T093039_82_40&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We are expecting this object to contain images of size <code class="docutils literal notranslate"><span class="pre">3x120x120</span></code> in RGB, annotated with the “old” 43-label version. Images are delivered as <code class="docutils literal notranslate"><span class="pre">torch</span> <span class="pre">tensors</span></code> and labels as a <code class="docutils literal notranslate"><span class="pre">list</span> <span class="pre">of</span> <span class="pre">strings</span></code>.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 120, 120])
+Labels:
+[&#39;Complex cultivation patterns&#39;,
+ &#39;Land principally occupied by agriculture, with significant areas of natural &#39;
+ &#39;vegetation&#39;,
+ &#39;Broad-leaved forest&#39;,
+ &#39;Transitional woodland/shrub&#39;,
+ &#39;Water bodies&#39;]
+</pre></div>
+</div>
+<img alt="../_images/4db5f4bbaeccb3c5903e16efb7399658f3cd764ac02059de89a7cd958e6e21c5.png" src="../_images/4db5f4bbaeccb3c5903e16efb7399658f3cd764ac02059de89a7cd958e6e21c5.png" />
+</div>
+</div>
+<section id="selecting-bands">
+<h2>Selecting Bands<a class="headerlink" href="#selecting-bands" title="Permalink to this heading">#</a></h2>
+<p>If we now are interested in the vegetation index for example, we can specifically create a reader that only returns the Bands B8 and B4 as needed for the Index.</p>
+<p>The vegetation index is defined as
+<span class="math notranslate nohighlight">\(
+\begin{align*}
+    VI = \frac{B08 - B04}{B08 + B04}
+\end{align*}
+\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+        <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
+        <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B08&quot;</span><span class="p">,</span> <span class="s2">&quot;B04&quot;</span><span class="p">],</span>
+        <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;old&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">img</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">BEN_reader</span><span class="p">[</span><span class="s2">&quot;S2B_MSIL2A_20180502T093039_82_40&quot;</span><span class="p">]</span>
+<span class="n">veg_idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">img</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">img</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The images returned from this reader will have Band 08 in dimension 0 and Band 04 in dimension 1 like the order specified in the parameter. Note, that the image size also has to be set to <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">...)</span></code>, as this is used to check the size after interpolation. Interpolation is already applied in the <code class="docutils literal notranslate"><span class="pre">Loader</span></code> using <code class="docutils literal notranslate"><span class="pre">torch.nn.functional.interpolate()</span></code> with aligned corners in bicubic mode.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/bfa1c30516a5289407f4483b46e2569337bb35f53ad3735c85573d408d7bb102.png" src="../_images/bfa1c30516a5289407f4483b46e2569337bb35f53ad3735c85573d408d7bb102.png" />
+</div>
+</div>
+<p>For ease of use there are some predefined configurations available that can be used without having to list all containing bands. The available pre-definitions and their respective bands are</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    &#39;S1&#39;: [&#39;VH&#39;, &#39;VV&#39;]
+    &#39;S2&#39;: [&#39;B02&#39;, &#39;B03&#39;, &#39;B04&#39;, &#39;B08&#39;, &#39;B05&#39;, &#39;B06&#39;, &#39;B07&#39;, &#39;B11&#39;, &#39;B12&#39;, &#39;B8A&#39;]
+&#39;10m20m&#39;: [&#39;B02&#39;, &#39;B03&#39;, &#39;B04&#39;, &#39;B08&#39;, &#39;B05&#39;, &#39;B06&#39;, &#39;B07&#39;, &#39;B11&#39;, &#39;B12&#39;, &#39;B8A&#39;, &#39;VH&#39;, &#39;VV&#39;]
+   &#39;RGB&#39;: [&#39;B04&#39;, &#39;B03&#39;, &#39;B02&#39;]
+&#39;RGB-IR&#39;: [&#39;B04&#39;, &#39;B03&#39;, &#39;B02&#39;, &#39;B08&#39;]
+      2 : [&#39;VH&#39;, &#39;VV&#39;]
+     10 : [&#39;B02&#39;, &#39;B03&#39;, &#39;B04&#39;, &#39;B08&#39;, &#39;B05&#39;, &#39;B06&#39;, &#39;B07&#39;, &#39;B11&#39;, &#39;B12&#39;, &#39;B8A&#39;]
+     12 : [&#39;B02&#39;, &#39;B03&#39;, &#39;B04&#39;, &#39;B08&#39;, &#39;B05&#39;, &#39;B06&#39;, &#39;B07&#39;, &#39;B11&#39;, &#39;B12&#39;, &#39;B8A&#39;, &#39;VH&#39;, &#39;VV&#39;]
+      3 : [&#39;B04&#39;, &#39;B03&#39;, &#39;B02&#39;]
+      4 : [&#39;B04&#39;, &#39;B03&#39;, &#39;B02&#39;, &#39;B08&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="label-types">
+<h2>Label types<a class="headerlink" href="#label-types" title="Permalink to this heading">#</a></h2>
+<p>We can also request the labels in the “new” 19-label version as introduced in <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id5" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">4</a>]</span>. Here we see that the Label ‘Water bodies’ gets converted into ‘Inland waters’ as expected.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+        <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
+        <span class="n">bands</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
+        <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;new&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">img</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">BEN_reader</span><span class="p">[</span><span class="s2">&quot;S2B_MSIL2A_20180502T093039_82_40&quot;</span><span class="p">]</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">lbl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Complex cultivation patterns&#39;,
+ &#39;Land principally occupied by agriculture, with significant areas of natural &#39;
+ &#39;vegetation&#39;,
+ &#39;Broad-leaved forest&#39;,
+ &#39;Transitional woodland, shrub&#39;,
+ &#39;Inland waters&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>If wished, the 19-label lists can also be converted into a 19-dimensional one-hot tensor. This guarantees a uniform conversion, so that each label vector always has the same sequence, regardless of the user.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.extra.BEN_lmdb_utils</span> <span class="kn">import</span> <span class="n">ben19_list_to_onehot</span>
+<span class="n">ben19_list_to_onehot</span><span class="p">(</span><span class="n">lbl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
+        0.])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mean-and-standard-deviation">
+<h2>Mean and Standard Deviation<a class="headerlink" href="#mean-and-standard-deviation" title="Permalink to this heading">#</a></h2>
+<p>The reader objects also collect mean and standard deviation during initialization based on the chosen band configuration.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader_1</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+        <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
+        <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B08&quot;</span><span class="p">,</span> <span class="s2">&quot;B04&quot;</span><span class="p">],</span>
+        <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;old&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean 1: </span><span class="si">{</span><span class="n">BEN_reader_1</span><span class="o">.</span><span class="n">mean</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Std 1: </span><span class="si">{</span><span class="n">BEN_reader_1</span><span class="o">.</span><span class="n">std</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">BEN_reader_2</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+        <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+        <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
+        <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B04&quot;</span><span class="p">,</span> <span class="s2">&quot;B01&quot;</span><span class="p">,</span> <span class="s2">&quot;B8A&quot;</span><span class="p">],</span>
+        <span class="n">label_type</span><span class="o">=</span><span class="s2">&quot;old&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean 2: </span><span class="si">{</span><span class="n">BEN_reader_2</span><span class="o">.</span><span class="n">mean</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Std 2: </span><span class="si">{</span><span class="n">BEN_reader_2</span><span class="o">.</span><span class="n">std</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean 1: [2218.94553375, 590.23569706]
+ Std 1: [1365.45589904, 675.88746967]
+Mean 2: [590.23569706, 340.76769064, 2266.46036911]
+ Std 2: [675.88746967, 554.81258967, 1356.13789355]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+
+        <div class="related-pages">
+          <a class="next-page" href="bigearthnet.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">BigEarthNet Dataset &amp; Datamodule</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../vqa.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+
+                <div class="title">Visual Question Answering (VQA)</div>
+
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Leonard Wayne Hackel
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+
+          </div>
+          <div class="right-details">
+
+          </div>
+        </div>
+
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+
+
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Using the BigEarthNet LMDB Reader</a><ul>
+<li><a class="reference internal" href="#selecting-bands">Selecting Bands</a></li>
+<li><a class="reference internal" href="#label-types">Label types</a></li>
+<li><a class="reference internal" href="#mean-and-standard-deviation">Mean and Standard Deviation</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+
+
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </body>
+</html>

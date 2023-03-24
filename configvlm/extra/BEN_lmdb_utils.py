@@ -14,7 +14,7 @@ import pathlib
 import numpy as np
 from bigearthnet_patch_interface.merged_interface import BigEarthNet_S1_S2_Patch
 from bigearthnet_common.constants import BAND_STATS_S1, BAND_STATS_S2
-from typing import Iterable, Union, Optional
+from typing import Iterable, Union, Optional, Sequence
 
 import torch
 import torch.nn.functional as F
@@ -217,7 +217,7 @@ class BENLMDBReader:
     def __init__(
         self,
         lmdb_dir: str,
-        image_size: Union[tuple, list],
+        image_size: Sequence[int],
         bands: Union[Iterable, str, int],
         label_type: str,
     ):
@@ -241,9 +241,7 @@ class BENLMDBReader:
         )
 
         self.lmdb_dir = lmdb_dir
-        self.env = lmdb.open(
-            self.lmdb_dir, readonly=True, lock=False, meminit=False, readahead=True
-        )
+        self.env = None
         self.label_type = label_type
         self.mean, self.std = band_combi_to_mean_std(self.bands)
 
@@ -255,6 +253,10 @@ class BENLMDBReader:
                      name has to be provided
         :return: tuple (interpolated image, labels)
         """
+        if self.env is None:
+            self.env = lmdb.open(
+                self.lmdb_dir, readonly=True, lock=False, meminit=False, readahead=True
+            )
         # get pure patch data
         ben_patch = read_ben_from_lmdb(self.env, item)
 

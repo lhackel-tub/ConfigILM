@@ -27,6 +27,20 @@ from configvlm.util import Messages
 
 
 class BENDataSet(Dataset):
+    avail_chan_configs = {
+        2: "Sentinel-1",
+        3: "RGB",
+        4: "10m Sentinel-2",
+        10: "10m + 20m Sentinel-2",
+        12: "10m + 20m Sentinel-2 + 10m Sentinel-1",
+    }
+
+    @classmethod
+    def get_available_channel_configurations(cls):
+        print("Available channel configurations are:")
+        for c, m in cls.avail_chan_configs.items():
+            print(f"    {c:>3} -> {m}")
+
     def __init__(
         self,
         root_dir="./",
@@ -40,15 +54,10 @@ class BENDataSet(Dataset):
         self.lmdb_dir = os.path.join(self.root_dir, "BigEarthNetEncoded.lmdb")
         self.transform = transform
         self.image_size = img_size
-        assert img_size[0] in [2, 3, 4, 10, 12], (
-            "Image Channels have to be "
-            "2 (Sentinel-1), "
-            "3 (RGB), "
-            "4 (10m Sentinel-2), "
-            "10 (10m + 20m Sentinel-2) or "
-            "12 (10m + 20m Sentinel-2 + 10m Sentinel-1) "
-            "but was " + f"{img_size[0]}"
-        )
+        if img_size[0] not in self.avail_chan_configs.keys():
+            BENDataSet.get_available_channel_configurations()
+            raise AssertionError(f"{img_size[0]} is not a valid channel configuration.")
+
         self.read_channels = img_size[0]
 
         print(f"Loading BEN data for {split}...")

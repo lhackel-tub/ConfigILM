@@ -1,6 +1,8 @@
 .pytest_cache/
 .idea/
 dist/
+docs/_build
+!docs/_build/.gitkeep
 
 *.pyc
 *.ckpt

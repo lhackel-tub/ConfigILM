@@ -69,6 +69,23 @@ jobs:
         uses: tj-actions/coverage-badge-py@v2
 
       #----------------------------------------------
+      #  Build Docu
+      #----------------------------------------------
+      - name: Build documentation
+        run: sphinx-build docs docs/_build
+
+      - name: Deploy Pages
+        if: ${{ github.event_name == 'push' }}
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          # This should be set via `just build`
+          folder: docs/_build
+          # do not touch the pr-preview generated files:
+          # https://github.com/rossjrw/pr-preview-action
+          clean-exclude: pr-preview/
+
+      #----------------------------------------------
       #  Add Coverage Badge
       #----------------------------------------------
       - name: Verify Changed files

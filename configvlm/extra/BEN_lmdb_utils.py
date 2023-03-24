@@ -13,6 +13,7 @@ import pathlib
 
 import numpy as np
 from bigearthnet_patch_interface.merged_interface import BigEarthNet_S1_S2_Patch
+from bigearthnet_common.base import ben_19_labels_to_multi_hot
 from bigearthnet_common.constants import BAND_STATS_S1, BAND_STATS_S2
 from typing import Iterable, Union, Optional, Sequence
 
@@ -113,9 +114,7 @@ def ben19_list_to_onehot(lst):
         -> [18] = 'Urban fabric'
     """
     # all the valid ones and one additional if none are valid
-    res = torch.zeros(len(valid_labels_classification))
-    for label in lst:
-        res[valid_labels_classification.index(label.lower())] = 1
+    res = torch.tensor(ben_19_labels_to_multi_hot(lst, lex_sorted=True))
     assert sum(res) >= 1, "Result Tensor is all Zeros - this is not allowed"
     return res
 

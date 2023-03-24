@@ -1,6 +1,6 @@
 # ConfigVLM
 
-[![DOI](https://zenodo.org/badge/DOI/TODO)](https://doi.org/TODO)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7767951.svg)](https://doi.org/10.5281/zenodo.7767951)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigVLM/actions/workflows/ci.yml/badge.svg)](https://github.com/lhackel-tub/ConfigVLM/actions/workflows/ci.yml)
 [![Code Coverage](./coverage.svg)](./.coverage)

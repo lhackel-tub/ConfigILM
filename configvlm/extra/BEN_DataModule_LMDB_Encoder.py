@@ -166,7 +166,7 @@ class BENDataModule(pl.LightningDataModule):
 
         self.train_transform = transforms.Compose(
             [
-                transforms.Resize((self.img_size[1], self.img_size[2])),
+                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
                 MyGaussianNoise(20),
                 transforms.RandomHorizontalFlip(),
                 transforms.RandomVerticalFlip(),
@@ -176,7 +176,7 @@ class BENDataModule(pl.LightningDataModule):
         )
         self.transform = transforms.Compose(
             [
-                transforms.Resize((self.img_size[1], self.img_size[2])),
+                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
                 transforms.Normalize(ben_mean, ben_std),
             ]
         )

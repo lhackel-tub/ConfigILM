@@ -93,7 +93,7 @@ def test_ben_val_dataset_sizes_rescale(data_dir, img_size: Sequence):
 
     transform = transforms.Compose(
         [
-            transforms.Resize(new_size[1:]),
+            transforms.Resize(new_size[1:], antialias=True),
         ]
     )
     ds = BENDataSet(

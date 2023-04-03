@@ -238,7 +238,7 @@ class COCOQADataModule(pl.LightningDataModule):
 
         self.train_transform = transforms.Compose(
             [
-                transforms.Resize((self.img_size[1], self.img_size[2])),
+                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
                 MyGaussianNoise(0.1),
                 # transforms.RandomHorizontalFlip(),
                 transforms.RandomVerticalFlip(),
@@ -249,7 +249,7 @@ class COCOQADataModule(pl.LightningDataModule):
         )
         self.transform = transforms.Compose(
             [
-                transforms.Resize((self.img_size[1], self.img_size[2])),
+                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
                 # normalize?
             ]
         )

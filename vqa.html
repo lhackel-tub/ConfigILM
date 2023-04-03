@@ -390,7 +390,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
   warnings.warn(
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/runner/.cache/configvlm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.weight&#39;, &#39;classifier.bias&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/runner/.cache/configvlm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
 - This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
 - This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
 </pre></div>
@@ -433,16 +433,12 @@ The input question is already returned by the dataset in the form of tokens, so 
 Additionally only the first 10 elements of output + expected answer are shown, as the full lists have 1000 elements.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigVLM/ConfigVLM/.venv/lib/python3.10/site-packages/torchvision/transforms/functional.py:1603: UserWarning: The default value of the antialias parameter of all the resizing transforms (Resize(), RandomResizedCrop(), etc.) will change from None to True in v0.17, in order to be consistent across the PIL and Tensor backends. To suppress this warning, directly pass antialias=True (recommended, future default), antialias=None (current default, which means False for Tensors and True for PIL), or antialias=False (only works on Tensors - PIL will still use antialiasing). This also applies if you are using the inference transforms from the models weights: update the call to weights.transforms(antialias=True).
-  warnings.warn(
-</pre></div>
-</div>
 <img alt="_images/9be29ca080e803f706188544f309db527ed35249a567f0e3883a9c688206c04f.png" src="_images/9be29ca080e803f706188544f309db527ed35249a567f0e3883a9c688206c04f.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Text: [CLS] are forests and heterogeneous agricultural areas present? [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]
 Question: [101, 2024, 6138, 1998, 21770, 10624, 6914, 14769, 4910, 2752, 2556, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Expected: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
           yes
-    Real: [0.24329857528209686, 0.41611525416374207, -0.4097031056880951, -0.5234662890434265, -1.2557852268218994, -0.4784291684627533, -0.3277336657047272, -0.9055147171020508, -0.7889604568481445, -0.7591767907142639]
+    Real: [0.24331672489643097, 0.416130393743515, -0.4097263514995575, -0.5235225558280945, -1.2558377981185913, -0.4784601926803589, -0.32770946621894836, -0.9055449366569519, -0.7889048457145691, -0.7592024207115173]
           yes
 </pre></div>
 </div>

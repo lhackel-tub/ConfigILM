@@ -69,3 +69,10 @@ If you use this work, please cite
     doi={10.5281/zenodo.7767951},
     howpublished = {\url{https://github.com/lhackel-tub/ConfigVLM}},
 }
+```
+
+This work is supported by the European Research Council (ERC) through the ERC-2017-STG
+BigEarth Project under Grant 759764 and by the European Space Agency through the DA4DTE
+(Demonstrator precursor Digital Assistant interface for Digital Twin Earth) project and
+by the German Ministry for Economic Affairs and Climate Action through the AI-Cube
+Project under Grant 50EE2012B.

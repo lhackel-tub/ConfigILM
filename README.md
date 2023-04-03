@@ -34,6 +34,7 @@ For detailed information please visit the [publication](TODO:arXiv-Link) or the 
 
 `ConfigVLM` is released under the [MIT Software License](https://opensource.org/licenses/mit-0)
 
+## Citation
 If you use this work, please cite
 
 ```bibtex
@@ -48,3 +49,10 @@ If you use this work, please cite
     howpublished = {\url{https://github.com/lhackel-tub/ConfigVLM}},
 }
 ```
+
+## Acknoledgement
+This work is supported by the European Research Council (ERC) through the ERC-2017-STG
+BigEarth Project under Grant 759764 and by the European Space Agency through the DA4DTE
+(Demonstrator precursor Digital Assistant interface for Digital Twin Earth) project and
+by the German Ministry for Economic Affairs and Climate Action through the AI-Cube
+Project under Grant 50EE2012B.

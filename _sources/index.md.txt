@@ -55,3 +55,24 @@ general/dependencies
 general/license
 references
 ```
+
+If you use this work, please cite
+
+```bibtex
+@misc{lhackel-tub_2023,
+    author={Leonard Hackel},
+    title={ConfigVLM},
+    year={2023},
+    month={Mar},
+    publisher={GitHub},
+    journal = {Github repository},
+    doi={10.5281/zenodo.7767951},
+    howpublished = {\url{https://github.com/lhackel-tub/ConfigVLM}},
+}
+```
+
+This work is supported by the European Research Council (ERC) through the ERC-2017-STG
+BigEarth Project under Grant 759764 and by the European Space Agency through the DA4DTE
+(Demonstrator precursor Digital Assistant interface for Digital Twin Earth) project and
+by the German Ministry for Economic Affairs and Climate Action through the AI-Cube
+Project under Grant 50EE2012B.

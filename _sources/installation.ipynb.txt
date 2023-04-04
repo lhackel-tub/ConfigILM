@@ -38,7 +38,7 @@
     "If you use the wheel, installation would equate to `pip install configvlm-0.1.0-py3-none-any.whl` and `pip install configvlm-0.1.0-py3-none-any.whl[extra]`\n",
     ":::\n",
     "\n",
-    "`ConfigVLM` allows you to easily combine and use predefined vision and language models and use them for tasks such as [Supervised Pretraining](sup_pretraining.ipynb) or [VQA](vqa.ipynb).\n",
+    "`ConfigVLM` allows you to easily combine and use predefined image and language models and use them for tasks such as [Supervised Pretraining](sup_pretraining.ipynb) or [VQA](vqa.ipynb).\n",
     "For this, models can be trained in an **end-to-end** fashion or **pre-trained checkpoints** can be used. How the configuration is set up is explained on the next page. Alternatively, use cases for this framework are presented on the following pages.\n",
     "\n",
     "For all examples in this documentation it is assumed that `ConfigVLM` has been installed together with the `[extra]` dependencies.\n",

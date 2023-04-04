@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Using the BigEarthNet LMDB Reader" href="extra/BEN_LMDB_Reader.html" /><link rel="prev" title="Supervised Vision Classification" href="sup_pretraining.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Using the BigEarthNet LMDB Reader" href="extra/BEN_LMDB_Reader.html" /><link rel="prev" title="Supervised Image Classification" href="sup_pretraining.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>Visual Question Answering (VQA) - ConfigVLM</title>
@@ -162,7 +162,7 @@
 <p class="caption" role="heading"><span class="caption-text">Features</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="vlmconfiguration.html">Model Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Vision Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Visual Question Answering (VQA)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
@@ -214,7 +214,7 @@
         <article role="main">
           <section class="tex2jax_ignore mathjax_ignore" id="visual-question-answering-vqa">
 <h1>Visual Question Answering (VQA)<a class="headerlink" href="#visual-question-answering-vqa" title="Permalink to this heading">#</a></h1>
-<p>The Framework is set up in way, that it is easy to combine a vision model from the <a class="reference external" href="https://github.com/huggingface/pytorch-image-models/tree/main/timm/models">timm</a> library with a language model from <a class="reference external" href="https://huggingface.co/">huggingface</a>. For both models, either pre-trained weights can be used or the models can be trained as a composite in an end-to-end fashion.
+<p>The Framework is set up in way, that it is easy to combine an image model from the <a class="reference external" href="https://github.com/huggingface/pytorch-image-models/tree/main/timm/models">timm</a> library with a language model from <a class="reference external" href="https://huggingface.co/">huggingface</a>. For both models, either pre-trained weights can be used or the models can be trained as a composite in an end-to-end fashion.
 For this example usage we will be using the <a class="reference internal" href="extra/rsvqaxben.html"><span class="doc std std-doc"><code class="docutils literal notranslate"><span class="pre">RSVQAxBEN</span> <span class="pre">DataModule</span></code></span></a> which loads the <em>RSVQAxBEN</em> dataset published by <span id="id1">Lobry <em>et al.</em> [<a class="reference internal" href="references.html#id7" title="Sylvain Lobry, Begüm Demir, and Devis Tuia. Rsvqa meets bigearthnet: a new, large-scale, visual question answering dataset for remote sensing. In 2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS, 1218–1221. IEEE, 2021.">1</a>]</span> inside a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/"><code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">lightning</span></code></a> trainer. The network will be integrated into a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html"><code class="docutils literal notranslate"><span class="pre">LightningModule</span></code></a>.</p>
 <p>First we start by importing the needed packages from <code class="docutils literal notranslate"><span class="pre">torch</span></code> and <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> so that we can set up the <code class="docutils literal notranslate"><span class="pre">LightningModule</span></code>.</p>
 <div class="cell tag_remove-output docutils container">
@@ -238,7 +238,7 @@ For this example usage we will be using the <a class="reference internal" href="
 <li><p><code class="docutils literal notranslate"><span class="pre">configure_optimizer</span></code>,</p></li>
 </ol>
 <p>but to have a fully functional script, we add the validation and test steps as well as evaluation of the validation and test results. All <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions are working on a single batch while <code class="docutils literal notranslate"><span class="pre">*_epoch_end</span></code> functions are called after all batches are used and are passed a list of all return values of their respective <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions.
-For Visual Question Answering (VQA) we have to add one additional function, as the network works with 3 values (vision + language input, output) instead of the usual 2 (input, output). Therefore we add a function (here called <code class="docutils literal notranslate"><span class="pre">_disassemble_batch</span></code>), which disassembles the batch into input and output where the <em>input contains both modalities</em>.</p>
+For Visual Question Answering (VQA) we have to add one additional function, as the network works with 3 values (image + language input, output) instead of the usual 2 (input, output). Therefore we add a function (here called <code class="docutils literal notranslate"><span class="pre">_disassemble_batch</span></code>), which disassembles the batch into input and output where the <em>input contains both modalities</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LitVQAEncoder</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
@@ -321,7 +321,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 <p>as well as defining our hyperparameters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vision_model_name</span> <span class="o">=</span> <span class="s2">&quot;resnet18&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_model_name</span> <span class="o">=</span> <span class="s2">&quot;resnet18&quot;</span>
 <span class="n">text_model_name</span> <span class="o">=</span> <span class="s2">&quot;prajjwal1/bert-tiny&quot;</span>
 <span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
 <span class="n">number_of_channels</span> <span class="o">=</span> <span class="mi">12</span>
@@ -339,7 +339,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 <span class="n">pl</span><span class="o">.</span><span class="n">seed_everything</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">model_config</span> <span class="o">=</span> <span class="n">VLMConfiguration</span><span class="p">(</span>
-    <span class="n">timm_model_name</span><span class="o">=</span><span class="n">vision_model_name</span><span class="p">,</span>
+    <span class="n">timm_model_name</span><span class="o">=</span><span class="n">image_model_name</span><span class="p">,</span>
     <span class="n">hf_model_name</span><span class="o">=</span><span class="n">text_model_name</span><span class="p">,</span>  <span class="c1"># different to pre-training</span>
     <span class="n">classes</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>  <span class="c1"># different to pre-training</span>
     <span class="n">image_size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span>
@@ -390,7 +390,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
   warnings.warn(
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/runner/.cache/configvlm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.weight&#39;, &#39;classifier.bias&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/runner/.cache/configvlm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
 - This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
 - This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
 </pre></div>
@@ -468,7 +468,7 @@ Expected: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Supervised Vision Classification</div>
+                <div class="title">Supervised Image Classification</div>
                 
               </div>
             </a>

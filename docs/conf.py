@@ -119,3 +119,28 @@ templates_path = ["_templates"]
 #
 # html_theme = 'alabaster'
 html_theme = "furo"
+
+html_static_path = ["_static"]
+
+html_theme_options = {
+    "footer_icons": [
+        {
+            "name": "BIFOLD",
+            "url": "https://bifold.berlin/",
+            "html": """
+                <img src="/_static/BIFOLD_Logo_farbig.svg" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo">
+            """,
+            "class": "",
+        },
+        {
+            "name": "RSiM",
+            "url": "https://rsim.berlin/",
+            # Yes, you shouldn't add style inline in HTML but just think of it as a pre-modern
+            # version of tailwindcss, as this seems to be better for whatever reason ;)
+            "html": """
+                <img src="/_static/RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo">
+            """,
+            "class": "",
+        },
+    ],
+}

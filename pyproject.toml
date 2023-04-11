@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "configvlm"
-version = "0.1.1"
+version = "0.1.2"
 description = "A state-of-the-art tool for Python developers seeking to rapidly and iteratively develop vision and language models within the [`pytorch`](https://pytorch.org/) framework"
 authors = ["Leonard Hackel <l.hackel@tu-berlin.de>"]
 readme = "README.md"
@@ -29,6 +29,7 @@ matplotlib = "^3.6.3"
 scikit-learn = "^1.2.1"
 lightning-bolts = "^0.6.0.post1"
 fvcore = "^0.1.5.post20221221"
+psutil = "^5.9.4"
 
 
 [tool.poetry.group.dev.dependencies]

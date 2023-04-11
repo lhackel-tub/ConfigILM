@@ -62,3 +62,6 @@ BigEarth Project under Grant 759764 and by the European Space Agency through the
 (Demonstrator precursor Digital Assistant interface for Digital Twin Earth) project and
 by the German Ministry for Economic Affairs and Climate Action through the AI-Cube
 Project under Grant 50EE2012B.
+
+<a href="https://bifold.berlin/"><img src="BIFOLD_Logo_farbig.svg" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
+<a href="https://rsim.berlin/"><img src="RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>

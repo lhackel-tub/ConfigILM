@@ -3,6 +3,7 @@
 dist/
 docs/_build
 !docs/_build/.gitkeep
+jupyter_execute/
 
 *.pyc
 *.ckpt

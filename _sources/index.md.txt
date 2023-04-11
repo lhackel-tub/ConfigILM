@@ -1,7 +1,6 @@
 # ConfigVLM
 
 :::{warning}
-
 This site should be considered in BETA status and is an active WIP!
 :::
 

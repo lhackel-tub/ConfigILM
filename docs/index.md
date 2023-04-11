@@ -55,19 +55,12 @@ general/license
 references
 ```
 
-If you use this work, please cite
 
-```bibtex
-@misc{lhackel-tub_2023,
-    author={Leonard Hackel},
-    title={ConfigVLM},
-    year={2023},
-    month={Mar},
-    publisher={GitHub},
-    journal = {Github repository},
-    doi={10.5281/zenodo.7767951},
-    howpublished = {\url{https://github.com/lhackel-tub/ConfigVLM}},
-}
+```{include} ../README.md
+---
+start-after: <!-- citation-start -->
+end-before: <!-- citation-end -->
+---
 ```
 
 This work is supported by the European Research Council (ERC) through the ERC-2017-STG

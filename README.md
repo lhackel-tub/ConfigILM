@@ -34,23 +34,29 @@ For detailed information please visit the [publication](TODO:arXiv-Link) or the 
 
 `ConfigVLM` is released under the [MIT Software License](https://opensource.org/licenses/mit-0)
 
+
 ## Citation
+
+<!-- citation-start -->
 If you use this work, please cite
 
 ```bibtex
-@misc{lhackel-tub_2023,
-    author={Leonard Hackel},
-    title={ConfigVLM},
-    year={2023},
-    month={Mar},
-    publisher={GitHub},
-    journal = {Github repository},
-    doi={10.5281/zenodo.7767951},
-    howpublished = {\url{https://github.com/lhackel-tub/ConfigVLM}},
+@software{lhackel-tub_2023,
+  author       = {Leonard Hackel and
+                  Kai Norman Clasen and
+                  Begüm Demir},
+  title        = {lhackel-tub/ConfigVLM: v0.1.1},
+  month        = mar,
+  year         = 2023,
+  publisher    = {Zenodo},
+  version      = {release},
+  doi          = {10.5281/zenodo.7767951},
+  url          = {https://doi.org/10.5281/zenodo.7767951}
 }
 ```
+<!-- citation-end -->
 
-## Acknoledgement
+## Acknowledgement
 This work is supported by the European Research Council (ERC) through the ERC-2017-STG
 BigEarth Project under Grant 759764 and by the European Space Agency through the DA4DTE
 (Demonstrator precursor Digital Assistant interface for Digital Twin Earth) project and

@@ -7,7 +7,7 @@ import torch
 from appdirs import user_cache_dir
 from requests.exceptions import ReadTimeout  # type: ignore
 
-from configvlm import ConfigVLM
+from configilm import ConfigILM
 
 
 def get_classification_batch(
@@ -36,11 +36,11 @@ def get_vqa_batch(
 
 @pytest.mark.parametrize("batch_size", [1, 2, 4, 8, 16, 32, 27, 13])
 def test_bs(batch_size):
-    config = ConfigVLM.VLMConfiguration(timm_model_name="resnet18")
+    config = ConfigILM.ILMConfiguration(timm_model_name="resnet18")
     x, y = get_classification_batch(
         (config.channels, config.image_size, config.image_size), batch_size
     )
-    model = ConfigVLM.ConfigVLM(config=config)
+    model = ConfigILM.ConfigILM(config=config)
     model(x)
     # pass
 
@@ -114,7 +114,7 @@ tested_timm_models_256 = [
 
 
 def apply_timm(model: str, cls: int, bs: int, image_size: int):
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name=model,
         drop_rate=None,
         image_size=image_size,
@@ -125,7 +125,7 @@ def apply_timm(model: str, cls: int, bs: int, image_size: int):
         batch_size=bs,
         classes=cls,
     )
-    model = ConfigVLM.ConfigVLM(config=config)
+    model = ConfigILM.ConfigILM(config=config)
     res = model(x)
     assert (
         res.shape == y.shape
@@ -156,7 +156,7 @@ def test_timm_256(model):
     apply_timm(model=model, cls=10, bs=4, image_size=256)
 
 
-def apply_vlm(config: ConfigVLM.VLMConfiguration, bs: int) -> bool:
+def apply_ilm(config: ConfigILM.ILMConfiguration, bs: int) -> bool:
     cls = config.classes
     v, q, a = get_vqa_batch(
         (config.channels, config.image_size, config.image_size),
@@ -169,7 +169,7 @@ def apply_vlm(config: ConfigVLM.VLMConfiguration, bs: int) -> bool:
     model = None
     while True:
         try:
-            model = ConfigVLM.ConfigVLM(config=config)
+            model = ConfigILM.ConfigILM(config=config)
         except ReadTimeout:
             # Model could not load, retry
             i += 1
@@ -201,80 +201,80 @@ hf_models_full = hf_models + [
 
 
 @pytest.mark.parametrize("hfmodel", hf_models_full)
-def test_vlm_default(hfmodel):
+def test_ilm_default(hfmodel):
     bs = 4
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name=hfmodel,
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
-    if not apply_vlm(config=config, bs=bs):
+    if not apply_ilm(config=config, bs=bs):
         pytest.skip("Download did not work")
 
 
 @pytest.mark.parametrize("hfmodel", hf_models)
-def test_vlm_dont_use_pooler(hfmodel):
+def test_ilm_dont_use_pooler(hfmodel):
     bs = 4
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name=hfmodel,
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
         use_pooler_output=False,
     )
-    if not apply_vlm(config=config, bs=bs):
+    if not apply_ilm(config=config, bs=bs):
         pytest.skip("Download did not work")
 
 
-def test_vlm_download():
+def test_ilm_download():
     hf_model = "distilbert-base-uncased"
-    path = Path(user_cache_dir(appname="configvlm"))
+    path = Path(user_cache_dir(appname="configILM"))
     shutil.rmtree(path, ignore_errors=True)
     bs = 4
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name=hf_model,
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
-    if not apply_vlm(config=config, bs=bs):
+    if not apply_ilm(config=config, bs=bs):
         pytest.skip("Download did not work")
 
 
-def test_vlm_untrained():
+def test_ilm_untrained():
     bs = 4
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name="prajjwal1/bert-tiny",
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
         load_hf_if_available=False,
     )
-    apply_vlm(config=config, bs=bs)
+    apply_ilm(config=config, bs=bs)
 
 
 @pytest.mark.parametrize("n", [1, 2, 3, 5, 6])
 def test_v_wrong_batchshape(n):
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18", drop_rate=None, image_size=120, classes=10
     )
     shape = [16] * n
     x = torch.ones(shape)
 
-    model = ConfigVLM.ConfigVLM(config=config)
+    model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(AssertionError):
         _ = model(x)
 
@@ -282,15 +282,15 @@ def test_v_wrong_batchshape(n):
 @pytest.mark.parametrize(
     "img, txt", [(i, t) for i in range(1, 6, 1) for t in range(1, 6, 1)]
 )
-def test_vlm_wrong_batch_parts_shape(img, txt):
+def test_ilm_wrong_batch_parts_shape(img, txt):
     bs, cls = 8, 10
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=bs,
         hf_model_name="prajjwal1/bert-tiny",
         classes=cls,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
     img_shape = [bs] * img
@@ -299,7 +299,7 @@ def test_vlm_wrong_batch_parts_shape(img, txt):
     q = torch.ones(txt_shape, dtype=torch.int32)
     a = torch.ones((bs, cls))
 
-    model = ConfigVLM.ConfigVLM(config=config)
+    model = ConfigILM.ConfigILM(config=config)
     if img != 4 or txt != 2:
         with pytest.raises(AssertionError):
             _ = model((v, q))
@@ -314,14 +314,14 @@ def test_vlm_wrong_batch_parts_shape(img, txt):
         ), f"Shape is wrong: Should be {(bs, cls)} but is {res.shape}"
 
 
-def test_vlm_wrong_different_batch_sizes():
-    config = ConfigVLM.VLMConfiguration(
+def test_ilm_wrong_different_batch_sizes():
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name="prajjwal1/bert-tiny",
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
     img_shape = [16] * 4
@@ -329,19 +329,19 @@ def test_vlm_wrong_different_batch_sizes():
     v = torch.ones(img_shape)
     q = torch.ones(txt_shape, dtype=torch.int32)
 
-    model = ConfigVLM.ConfigVLM(config=config)
+    model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(AssertionError):
         _ = model((v, q))
 
 
-def test_vlm_wrong_seq_length_no_pooler():
-    config = ConfigVLM.VLMConfiguration(
+def test_ilm_wrong_seq_length_no_pooler():
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name="prajjwal1/bert-tiny",
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
         use_pooler_output=False,
     )
@@ -350,21 +350,21 @@ def test_vlm_wrong_seq_length_no_pooler():
     v = torch.ones(img_shape)
     q = torch.ones(txt_shape, dtype=torch.int32)
 
-    model = ConfigVLM.ConfigVLM(config=config)
+    model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(RuntimeError):
         # This specific one config (hf_model_name="prajjwal1/bert-tiny")
         # will have a runtime error. This may not happen for other configs
         _ = model((v, q))
 
 
-def test_vlm_wrong_input_length():
-    config = ConfigVLM.VLMConfiguration(
+def test_ilm_wrong_input_length():
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name="prajjwal1/bert-tiny",
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
     img_shape = [16] * 4
@@ -372,7 +372,7 @@ def test_vlm_wrong_input_length():
     v = torch.ones(img_shape)
     q = torch.ones(txt_shape, dtype=torch.int32)
 
-    model = ConfigVLM.ConfigVLM(config=config)
+    model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(AssertionError):
         # This specific one config (hf_model_name="prajjwal1/bert-tiny") will have a
         # runtime error. This may not happen for other configs
@@ -381,7 +381,7 @@ def test_vlm_wrong_input_length():
 
 def test_failty_config():
     bs = 4
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
@@ -397,14 +397,14 @@ def test_failty_config():
         classes=config.classes,
         text_tokens=config.max_sequence_length,
     )
-    model = ConfigVLM.ConfigVLM(config=config)
+    model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(ValueError):
         _ = model((v, q))
 
 
 def test_failed_network_connection_in_download(mocker):
     hf_model = "distilbert-base-uncased"
-    path = Path(user_cache_dir(appname="configvlm")).joinpath(
+    path = Path(user_cache_dir(appname="configilm")).joinpath(
         "pretrained_models", "huggingface_models", hf_model
     )
     shutil.rmtree(path)
@@ -414,23 +414,23 @@ def test_failed_network_connection_in_download(mocker):
         new=lambda x: (_ for _ in ()).throw(FileNotFoundError),
     )
     bs = 4
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name=hf_model,
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
 
     with pytest.raises(FileNotFoundError):
-        apply_vlm(config=config, bs=bs)
+        apply_ilm(config=config, bs=bs)
 
 
 def test_failed_network_connection_cached(mocker):
     hf_model = "prajjwal1/bert-tiny"
-    path = Path(user_cache_dir(appname="configvlm")).joinpath(
+    path = Path(user_cache_dir(appname="configILM")).joinpath(
         "pretrained_models", "huggingface_models", hf_model
     )
     if not path.exists():
@@ -444,24 +444,24 @@ def test_failed_network_connection_cached(mocker):
         new=lambda x: (_ for _ in ()).throw(ConnectionError),
     )
     bs = 4
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name=hf_model,
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
     # works even tho we cannot download
-    apply_vlm(config=config, bs=bs)
+    apply_ilm(config=config, bs=bs)
 
 
 def test_failed_hf_name(mocker):
     from requests import HTTPError  # type: ignore
 
     hf_model = "hf_mock_name/simulated_name"
-    path = Path(user_cache_dir(appname="configvlm")).joinpath(
+    path = Path(user_cache_dir(appname="configILM")).joinpath(
         "pretrained_models", "huggingface_models", hf_model
     )
     if path.exists():
@@ -474,18 +474,18 @@ def test_failed_hf_name(mocker):
         new=lambda x: (_ for _ in ()).throw(HTTPError),
     )
     bs = 4
-    config = ConfigVLM.VLMConfiguration(
+    config = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18",
         image_size=120,
         channels=12,
         hf_model_name=hf_model,
         classes=10,
-        network_type=ConfigVLM.VLMType.VQA_CLASSIFICATION,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
     )
 
     with pytest.raises(HTTPError):
-        apply_vlm(config=config, bs=bs)
+        apply_ilm(config=config, bs=bs)
 
 
 def test_integration():
@@ -493,11 +493,11 @@ def test_integration():
     Tests an example code that loads pretrained weights and executes an image of ones on
     it to confirm that everything works and the right values are returned.
     """
-    cfg = ConfigVLM.VLMConfiguration(
+    cfg = ConfigILM.ILMConfiguration(
         timm_model_name="resnet18", classes=1000, load_timm_if_available=True
     )
 
-    model = ConfigVLM.ConfigVLM(config=cfg)
+    model = ConfigILM.ConfigILM(config=cfg)
     model.eval()
 
     in_t = torch.ones((1, 3, 120, 120))

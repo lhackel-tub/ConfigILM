@@ -71,7 +71,7 @@ def get_hf_model(
     :raises: HTTP error if no name matches the one given (locally or on
              huggingface hub)
     """
-    save_directory = Path(user_cache_dir(appname="configvlm")).joinpath(
+    save_directory = Path(user_cache_dir(appname="configilm")).joinpath(
         "pretrained_models", "huggingface_models"
     )
 
@@ -134,13 +134,13 @@ def get_timm_model(model_name: str, timm_kwargs: dict):
     return encoder
 
 
-class VLMType(Enum):
+class ILMType(Enum):
     VISION_CLASSIFICATION = 0
     VQA_CLASSIFICATION = 1
 
 
 @dataclass
-class VLMConfiguration:
+class ILMConfiguration:
     timm_model_name: str
     hf_model_name: Union[None, str] = None
 
@@ -149,7 +149,7 @@ class VLMConfiguration:
     channels: int = 3
     classes: int = 10
     class_names: Union[None, Sequence[str]] = None
-    network_type: VLMType = VLMType.VISION_CLASSIFICATION
+    network_type: ILMType = ILMType.VISION_CLASSIFICATION
 
     # currently only used for VQA_CLASSIFICATION
     visual_features_out: int = 512
@@ -172,21 +172,21 @@ class VLMConfiguration:
     load_hf_if_available: bool = True
 
 
-class ConfigVLM(nn.Module):
-    def __init__(self, config: VLMConfiguration):
+class ConfigILM(nn.Module):
+    def __init__(self, config: ILMConfiguration):
         super().__init__()
         self.config = config
         if self.config.class_names is None:
             self.config.class_names = [str(i) for i in range(self.config.classes)]
 
         if config.network_type in [
-            VLMType.VQA_CLASSIFICATION,
-            VLMType.VISION_CLASSIFICATION,
+            ILMType.VQA_CLASSIFICATION,
+            ILMType.VISION_CLASSIFICATION,
         ]:
             # keyword arguments as expected by Timm lib
             timm_kwargs = {
                 "num_classes": self.config.visual_features_out
-                if config.network_type in [VLMType.VQA_CLASSIFICATION]
+                if config.network_type in [ILMType.VQA_CLASSIFICATION]
                 else self.config.classes,
                 "img_size": self.config.image_size,
                 "in_chans": self.config.channels,
@@ -198,7 +198,7 @@ class ConfigVLM(nn.Module):
             # create timm_model
             self.vision_encoder = get_timm_model(config.timm_model_name, timm_kwargs)
 
-        if config.network_type in [VLMType.VQA_CLASSIFICATION]:
+        if config.network_type in [ILMType.VQA_CLASSIFICATION]:
             # create huggingface model
             assert (
                 config.hf_model_name is not None
@@ -208,7 +208,7 @@ class ConfigVLM(nn.Module):
                 load_pretrained_if_available=config.load_hf_if_available,
             )
 
-        if config.network_type == VLMType.VQA_CLASSIFICATION:
+        if config.network_type == ILMType.VQA_CLASSIFICATION:
             # create fusion layer
             # get number of out-features
             text_features_out = self.text_encoder.config.hidden_size
@@ -266,12 +266,12 @@ class ConfigVLM(nn.Module):
             )
 
     def _check_input(self, batch):
-        if self.config.network_type == VLMType.VISION_CLASSIFICATION:
+        if self.config.network_type == ILMType.VISION_CLASSIFICATION:
             assert len(batch.shape) == 4, (
                 f"For vision classification, input should be (b, c, h, w) (4 dims) "
                 f"but has shape {batch.shape} ({len(batch)} dims)."
             )
-        elif self.config.network_type == VLMType.VQA_CLASSIFICATION:
+        elif self.config.network_type == ILMType.VQA_CLASSIFICATION:
             assert len(batch) == 2, (
                 f"For VQA classification, input should be (v, q) (2 dims) but is "
                 f"{len(batch)} dims."
@@ -307,9 +307,9 @@ class ConfigVLM(nn.Module):
         # check that input is correct before running network
         self._check_input(batch)
 
-        if self.config.network_type == VLMType.VISION_CLASSIFICATION:
+        if self.config.network_type == ILMType.VISION_CLASSIFICATION:
             return self.vision_encoder(batch)
-        elif self.config.network_type == VLMType.VQA_CLASSIFICATION:
+        elif self.config.network_type == ILMType.VQA_CLASSIFICATION:
             v, q = batch
             # visual path
             v = self.vision_encoder(v)

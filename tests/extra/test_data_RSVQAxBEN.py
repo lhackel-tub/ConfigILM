@@ -5,9 +5,9 @@ from typing import Union
 import pytest
 import torch
 
-from configvlm.extra.BEN_lmdb_utils import resolve_ben_data_dir
-from configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataModule
-from configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataSet
+from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
+from configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataModule
+from configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataSet
 
 
 @pytest.fixture

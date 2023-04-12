@@ -23,7 +23,7 @@ import torch.nn.functional as F
 import lmdb
 from os.path import isdir
 
-from configvlm.util import Messages
+from configilm.util import Messages
 
 BAND_COMBINATION_PREDEFINTIONS = {
     "S1": ["VH", "VV"],

@@ -2,7 +2,7 @@ from math import isclose as fequal
 
 from torch import Tensor
 
-from configvlm import util
+from configilm import util
 
 
 def test_indent_simple():

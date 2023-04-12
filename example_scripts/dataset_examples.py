@@ -7,10 +7,10 @@ import torch
 import typer
 from tqdm import tqdm
 
-from configvlm.extra import BEN_DataModule_LMDB_Encoder
-from configvlm.extra import COCOQA_DataModule
-from configvlm.extra import RSVQAxBEN_DataModule_LMDB_Encoder
-from configvlm.extra.BEN_lmdb_utils import resolve_ben_data_dir
+from configilm.extra import BEN_DataModule_LMDB_Encoder
+from configilm.extra import COCOQA_DataModule
+from configilm.extra import RSVQAxBEN_DataModule_LMDB_Encoder
+from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
 
 
 def speedtest(

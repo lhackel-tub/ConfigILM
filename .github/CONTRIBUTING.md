@@ -14,7 +14,7 @@ If you would like to provide feedback and/or discuss something or if you have a 
 
 ## Increasing visibility
 - Tell others about this framework!
-- [Star 🌟 the project on GitHub](https://github.com/lhackel-tub/ConfigVLM/)
+- [Star 🌟 the project on GitHub](https://github.com/lhackel-tub/ConfigILM/)
 
 ## Directly update source code or notebooks
 
@@ -22,8 +22,8 @@ If you would like to provide feedback and/or discuss something or if you have a 
 
 To set up the development environment
 1. [Download and install Poetry](https://python-poetry.org/)
-2. Clone this repository with `git clone https://github.com/lhackel-tub/ConfigVLM/`
-3. Change to the downloaded directory with `cd ConfigVLM`
+2. Clone this repository with `git clone https://github.com/lhackel-tub/ConfigILM/`
+3. Change to the downloaded directory with `cd ConfigILM`
 4. Replicate the development environment with `poetry install` (this may take some time depending on your download speed)
 5. Start hacking 😁
 

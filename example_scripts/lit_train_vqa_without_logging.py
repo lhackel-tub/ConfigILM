@@ -15,12 +15,12 @@ from torch import optim
 from torchmetrics.classification import MultilabelF1Score
 from tqdm import tqdm
 
-from configvlm import ConfigVLM
-from configvlm.ConfigVLM import get_hf_model as get_huggingface_model
-from configvlm.ConfigVLM import VLMConfiguration
-from configvlm.ConfigVLM import VLMType
-from configvlm.extra.BEN_lmdb_utils import resolve_ben_data_dir
-from configvlm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataModule
+from configilm import ConfigVLM
+from configilm.ConfigVLM import get_hf_model as get_huggingface_model
+from configilm.ConfigVLM import VLMConfiguration
+from configilm.ConfigVLM import VLMType
+from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
+from configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataModule
 
 
 __author__ = "Leonard Hackel - BIFOLD/RSiM TU Berlin"
@@ -36,7 +36,7 @@ class LitVisionEncoder(pl.LightningModule):
 
     def __init__(
         self,
-        config: ConfigVLM.VLMConfiguration,
+        config: ConfigVLM.ILMConfiguration,
         lr: float = 1e-3,
     ):
         super().__init__()

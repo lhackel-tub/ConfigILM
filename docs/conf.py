@@ -13,7 +13,7 @@
 # sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
-project = "ConfigVLM"
+project = "ConfigILM"
 copyright = "2023, Leonard Wayne Hackel"
 author = "Leonard Wayne Hackel"
 html_title = project
@@ -69,7 +69,7 @@ myst_substitutions = {
     "ben": "[BigEarthNet](https://bigearth.net/)",
     "timm": "[PyTorch Image Models]"
     "(https://github.com/rwightman/pytorch-image-models/)",
-    "issues": "[GitHub issues](https://github.com/lhackel-tub/ConfigVLM/issues)",
+    "issues": "[GitHub issues](https://github.com/lhackel-tub/ConfigILM/issues)",
     "lmdb": "[LMDB](http://www.lmdb.tech/doc/)",
     "bendocs": "[BigEarthNet Guide](https://github.com/kai-tub/ben-docs)",
 }
@@ -127,35 +127,50 @@ html_theme_options = {
         {
             "name": "BIFOLD",
             "url": "https://bifold.berlin/",
-                # <img src="_static/BIFOLD_Logo_farbig.svg" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo">
+            # <img src="_static/BIFOLD_Logo_farbig.svg" style="font-size: 1rem;
+            # height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo">
             "html": """
-            <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-            	 viewBox="0 0 932.3 187" style="enable-background:new 0 0 932.3 187; display: block; height: 2em; width: auto; margin-right: 1em;" xml:space="preserve">
+            <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            viewBox="0 0 932.3 187"
+            style="enable-background:new 0 0 932.3 187; display: block; height: 2em;
+            width: auto; margin-right: 1em;" xml:space="preserve">
             <style type="text/css">
-            	.st0{fill:#7FCCE0;}
-            	.st1{fill:#002D62;}
-            	.st2{fill:#B1DEEB;}
-            	.st3{fill:#2ABAD4;}
+                .st0{fill:#7FCCE0;}
+                .st1{fill:#002D62;}
+                .st2{fill:#B1DEEB;}
+                .st3{fill:#2ABAD4;}
             </style>
             <polygon class="st0" points="233.7,67.5 166.2,0 150.5,140.5 338,171.8 "/>
             <polygon class="st1" points="348,60.6 240.6,60.6 348,167.9 "/>
             <polygon class="st2" points="166.2,0 0,73.6 150.5,140.5 "/>
             <polygon class="st3" points="150.5,140.5 253.2,187 338,171.8 "/>
             <g>
-            	<path class="st1" d="M881.9,80.6H862V148h18.8c8,0,14.3-2.8,19-8.5c4.6-5.7,7-14.3,7-25.9c0-10.2-2.1-18.3-6.3-24.2
-            		C896.2,83.5,890.1,80.6,881.9,80.6 M881.9,167.9h-44.5V60.5h44.9c10.7,0,19.9,2.3,27.4,6.8c7.5,4.5,13.2,10.8,17,18.7
-            		c3.8,8,5.7,17.1,5.7,27.6c0,11.1-2.1,20.7-6.2,28.8c-4.1,8.2-10,14.5-17.5,18.9C901.1,165.7,892.2,167.9,881.9,167.9 M822.9,167.9
-            		h-74.1V60.5h24.6v88.1H820L822.9,167.9z M648,114.5c0,10.3,2.6,18.7,7.7,25.2c5.1,6.5,12,9.7,20.8,9.7c5.4,0,10.2-1.3,14.6-4
-            		c4.4-2.7,7.8-6.7,10.3-12.1c2.5-5.4,3.8-12,3.8-19.7c0-6.6-1.2-12.6-3.5-17.8c-2.3-5.3-5.6-9.4-9.9-12.4c-4.3-3-9.2-4.5-14.9-4.5
-            		c-5.3,0-10.1,1.5-14.5,4.4c-4.4,2.9-7.9,7.1-10.5,12.6C649.3,101.2,648,107.5,648,114.5 M676.6,58.1c11.2,0,20.8,2.4,29,7.3
-            		c8.2,4.9,14.4,11.6,18.7,20c4.3,8.4,6.5,17.8,6.5,28.1c0,11-2.3,20.7-6.9,29.2c-4.6,8.5-11,15.2-19.2,20
-            		c-8.2,4.8-17.6,7.2-28.1,7.3c-11.1,0-20.7-2.4-28.8-7.3c-8.2-4.9-14.4-11.6-18.8-20c-4.4-8.4-6.6-17.8-6.6-28.1
-            		c0-10.8,2.3-20.5,6.9-29.1c4.6-8.5,11-15.2,19.2-20.1C656.7,60.7,666.1,58.3,676.6,58.1 M606.8,125h-36.2v43H546V60.7h65.4
-            		l2.8,19.3h-43.6v25.6h33.3L606.8,125z M495.3,60.5h24.6v107.4h-24.6V60.5z M437.1,122.4h-17.8v25.7h17.2c5.1,0,9.1-1.1,12.2-3.2
-            		c3.1-2.2,4.6-5.2,4.6-9.1c0-4.2-1.4-7.5-4.3-9.9C446,123.6,442.1,122.4,437.1,122.4 M432.2,80.4h-13v22.3H430
-            		c5.4,0,9.8-0.9,13.2-2.7c3.4-1.8,5.1-4.5,5.1-8.1C448.3,84.3,443,80.4,432.2,80.4 M437,167.9h-42.3V60.5h39.6
-            		c11.9,0,21.5,2.5,28.8,7.5c7.3,5,11,12.7,11,23c0,6.5-3.6,13-10.7,19.3c4.7,2.9,8.5,6.6,11.3,10.9c2.8,4.3,4.2,9.3,4.2,14.8
-            		c0,10.6-3.9,18.6-11.7,23.9C459.3,165.3,449.3,167.9,437,167.9"/>
+                <path class="st1" d="M881.9,80.6H862V148h18.8c8,0,14.3-2.8,
+                19-8.5c4.6-5.7,7-14.3,7-25.9c0-10.2-2.1-18.3-6.3-24.2
+                    C896.2,83.5,890.1,80.6,881.9,80.6 M881.9,167.9h-44.5V60.5h44.9c10.7,
+                    0,19.9,2.3,27.4,6.8c7.5,4.5,13.2,10.8,17,18.7
+                    c3.8,8,5.7,17.1,5.7,27.6c0,11.1-2.1,20.7-6.2,28.8c-4.1,8.2-10,
+                    14.5-17.5,18.9C901.1,165.7,892.2,167.9,881.9,167.9 M822.9,167.9
+                    h-74.1V60.5h24.6v88.1H820L822.9,167.9z M648,114.5c0,10.3,2.6,18.7,
+                    7.7,25.2c5.1,6.5,12,9.7,20.8,9.7c5.4,0,10.2-1.3,14.6-4
+                    c4.4-2.7,7.8-6.7,10.3-12.1c2.5-5.4,
+                    3.8-12,3.8-19.7c0-6.6-1.2-12.6-3.5-17.8c-2.3-5.3-5.6-9.4-9.9-12.4c-4.3-3-9.2-4.5-14.9-4.5
+                    c-5.3,0-10.1,1.5-14.5,4.4c-4.4,2.9-7.9,7.1-10.5,12.6C649.3,101.2,
+                    648,107.5,648,114.5 M676.6,58.1c11.2,0,20.8,2.4,29,7.3
+                    c8.2,4.9,14.4,11.6,18.7,20c4.3,8.4,6.5,17.8,6.5,28.1c0,11-2.3,20.7-6.9,29.2c-4.6,8.5-11,15.2-19.2,20
+                    c-8.2,4.8-17.6,7.2-28.1,7.3c-11.1,0-20.7-2.4-28.8-7.3c-8.2-4.9-14.4-11.6-18.8-20c-4.4-8.4-6.6-17.8-6.6-28.1
+                    c0-10.8,2.3-20.5,6.9-29.1c4.6-8.5,11-15.2,19.2-20.1C656.7,60.7,
+                    666.1,58.3,676.6,58.1 M606.8,125h-36.2v43H546V60.7h65.4
+                    l2.8,19.3h-43.6v25.6h33.3L606.8,125z M495.3,
+                    60.5h24.6v107.4h-24.6V60.5z M437.1,122.4h-17.8v25.7h17.2c5.1,0,
+                    9.1-1.1,12.2-3.2
+                    c3.1-2.2,4.6-5.2,4.6-9.1c0-4.2-1.4-7.5-4.3-9.9C446,123.6,
+                    442.1,122.4,437.1,122.4 M432.2,80.4h-13v22.3H430
+                    c5.4,0,9.8-0.9,13.2-2.7c3.4-1.8,5.1-4.5,5.1-8.1C448.3,84.3,443,80.4,
+                    432.2,80.4 M437,167.9h-42.3V60.5h39.6
+                    c11.9,0,21.5,2.5,28.8,7.5c7.3,5,11,12.7,11,23c0,6.5-3.6,13-10.7,19.3c4.7,2.9,8.5,6.6,11.3,10.9c2.8,4.3,4.2,9.3,4.2,14.8
+                    c0,10.6-3.9,18.6-11.7,23.9C459.3,165.3,449.3,167.9,437,167.9"/>
             </g>
             </svg>
             """,
@@ -164,13 +179,17 @@ html_theme_options = {
         {
             "name": "RSiM",
             "url": "https://rsim.berlin/",
-            # Yes, you shouldn't add style inline in HTML but just think of it as a pre-modern
-            # version of tailwindcss, as this seems to be better for whatever reason ;)
-            # <!--<img src="_static/RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"> -->
+            # Yes, you shouldn't add style inline in HTML but just think of it as a
+            # pre-modern version of tailwindcss, as this seems to be better for whatever
+            # reason ;)
+            # <!--<img src="_static/RSiM_Logo_1.png" style="font-size: 1rem;
+            # height: 2em; width: auto" alt="RSiM Logo"> -->
             "html": """
             <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-             width="987.000000pt" height="337.000000pt" viewBox="0 0 987.000000 337.000000"
-             preserveAspectRatio="xMidYMid meet" style="display: block; height: 2em; width: auto">
+             width="987.000000pt" height="337.000000pt"
+             viewBox="0 0 987.000000 337.000000"
+             preserveAspectRatio="xMidYMid meet" style="display: block; height: 2em;
+             width: auto">
             <g transform="translate(0.000000,337.000000) scale(0.100000,-0.100000)"
             fill="#070685" stroke="none">
             <path d="M3555 3350 c-149 -15 -344 -74 -454 -138 -293 -169 -426 -437 -392

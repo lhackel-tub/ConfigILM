@@ -64,4 +64,5 @@ by the German Ministry for Economic Affairs and Climate Action through the AI-Cu
 Project under Grant 50EE2012B.
 
 <a href="https://bifold.berlin/"><img src="BIFOLD_Logo_farbig.svg" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
+<img height="2em" hspace="10em"/>
 <a href="https://rsim.berlin/"><img src="RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>

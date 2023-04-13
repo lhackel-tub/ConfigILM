@@ -235,7 +235,7 @@ def test_ilm_dont_use_pooler(hfmodel):
 
 def test_ilm_download():
     hf_model = "distilbert-base-uncased"
-    path = Path(user_cache_dir(appname="configILM"))
+    path = Path(user_cache_dir(appname="configilm"))
     shutil.rmtree(path, ignore_errors=True)
     bs = 4
     config = ConfigILM.ILMConfiguration(
@@ -430,7 +430,7 @@ def test_failed_network_connection_in_download(mocker):
 
 def test_failed_network_connection_cached(mocker):
     hf_model = "prajjwal1/bert-tiny"
-    path = Path(user_cache_dir(appname="configILM")).joinpath(
+    path = Path(user_cache_dir(appname="configilm")).joinpath(
         "pretrained_models", "huggingface_models", hf_model
     )
     if not path.exists():
@@ -461,7 +461,7 @@ def test_failed_hf_name(mocker):
     from requests import HTTPError  # type: ignore
 
     hf_model = "hf_mock_name/simulated_name"
-    path = Path(user_cache_dir(appname="configILM")).joinpath(
+    path = Path(user_cache_dir(appname="configilm")).joinpath(
         "pretrained_models", "huggingface_models", hf_model
     )
     if path.exists():

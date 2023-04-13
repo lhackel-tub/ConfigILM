@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="RSVQAxBEN Dataset &amp; Datamodule" href="rsvqaxben.html" /><link rel="prev" title="Using the BigEarthNet LMDB Reader" href="BEN_LMDB_Reader.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>BigEarthNet Dataset &amp; Datamodule - ConfigVLM</title>
+        <title>BigEarthNet Dataset &amp; Datamodule - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">ConfigVLM</div></a>
+      <a href="../index.html"><div class="brand">ConfigILM</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">ConfigVLM</span>
+  <span class="sidebar-brand-text">ConfigILM</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -156,12 +156,12 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">ConfigVLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">ConfigILM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Features</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../vlmconfiguration.html">Model Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vqa.html">Visual Question Answering (VQA)</a></li>
 </ul>
@@ -233,7 +233,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configvlm.extra</span> <span class="kn">import</span> <span class="n">BEN_DataModule_LMDB_Encoder</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra</span> <span class="kn">import</span> <span class="n">BEN_DataModule_LMDB_Encoder</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path set by to dataset</span>
@@ -245,6 +245,10 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/.venv/lib/python3.10/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading BEN data for None...
     75 patches indexed
     75 filtered patches indexed
@@ -260,7 +264,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
         0.])
 </pre></div>
 </div>
-<img alt="../_images/711b4395b42488ff52ee590b8b29f6b01aa6a1738f9ba5b0de062f49dd6c6c16.png" src="../_images/711b4395b42488ff52ee590b8b29f6b01aa6a1738f9ba5b0de062f49dd6c6c16.png" />
+<img alt="../_images/32f570dafc20c5f34e93ce7f1b818f2b0e990696731192feedc7aed9a52d37ec.png" src="../_images/32f570dafc20c5f34e93ce7f1b818f2b0e990696731192feedc7aed9a52d37ec.png" />
 </div>
 </div>
 <section id="selecting-bands">
@@ -269,7 +273,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <p>The configurations are working like setting the respective number as <code class="docutils literal notranslate"><span class="pre">bands</span></code> parameter in the <code class="docutils literal notranslate"><span class="pre">LMDBReader</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="o">.</span><span class="n">get_available_channel_configurations</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="o">.</span><span class="n">get_available_channel_configurations</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -290,7 +294,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <p>It is possible to load only a specific split (<code class="docutils literal notranslate"><span class="pre">'train'</span></code>, <code class="docutils literal notranslate"><span class="pre">'val'</span></code> or <code class="docutils literal notranslate"><span class="pre">'test'</span></code>) in the dataset. The images loaded are specified using the csv files in the same folder as the LMDB file. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>), all three are loaded into the same <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span>
 <span class="p">)</span>
@@ -311,7 +315,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <p>It is also possible to restrict the number of images indexed. By setting <code class="docutils literal notranslate"><span class="pre">max_img_idx</span> <span class="pre">=</span> <span class="pre">n</span></code> only the first <code class="docutils literal notranslate"><span class="pre">n</span></code> images (in alphabetical order based on their S2-name) will be loaded. A <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> of  <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> or larger than the number of images in the csv file(s) (in this case 25) equals to load-all-images behaviour.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">10</span>
@@ -329,7 +333,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">100</span>
@@ -353,7 +357,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <p>To use a <code class="docutils literal notranslate"><span class="pre">DataModule</span></code>, the <code class="docutils literal notranslate"><span class="pre">setup()</span></code> function has to be called. This populates the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> splits inside the <code class="docutils literal notranslate"><span class="pre">DataModule</span></code>. Depending on the stage (<code class="docutils literal notranslate"><span class="pre">'fit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'test'</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>), the setup will prepare only train &amp; validation <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>, only test <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> or all three.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path set by to dataset</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Before:&quot;</span><span class="p">)</span>
@@ -372,14 +376,14 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 10 workers
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 1 workers
 Before:
 None
 None
 None
 
 === SETUP ===
-(10:34:18) Datamodule setup called
+(07:33:59) Datamodule setup called
 Loading BEN data for train...
     25 patches indexed
     25 filtered patches indexed
@@ -391,8 +395,8 @@ setup took 0.00 seconds
 === END SETUP ===
 
 After:
-&lt;configvlm.extra.BEN_DataModule_LMDB_Encoder.BENDataSet object at 0x7f85b7b91420&gt;
-&lt;configvlm.extra.BEN_DataModule_LMDB_Encoder.BENDataSet object at 0x7f85b7b93790&gt;
+&lt;configilm.extra.BEN_DataModule_LMDB_Encoder.BENDataSet object at 0x7f07ce1f1930&gt;
+&lt;configilm.extra.BEN_DataModule_LMDB_Encoder.BENDataSet object at 0x7f089e912770&gt;
 None
 </pre></div>
 </div>
@@ -401,7 +405,7 @@ None
 <p>Afterwards the pytorch <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> can be easily accessed. Note, that <span class="math notranslate nohighlight">\(len(DL) = \lceil \frac{len(DS)}{batch\_size} \rceil\)</span>, therefore here with the default <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> of 16: 25/16 -&gt; 2.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">train_loader</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">train_dataloader</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_loader</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">train_dataloader</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -419,7 +423,7 @@ None
 <p>Not changeable is the usage of pinned memory, which is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> if a cuda-enabled device is found and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span>
 <span class="p">)</span>
@@ -431,10 +435,10 @@ None
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 10 workers
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 1 workers
 
 === SETUP ===
-(10:45:15) Datamodule setup called
+(07:33:59) Datamodule setup called
 Loading BEN data for train...
     25 patches indexed
     25 filtered patches indexed
@@ -452,7 +456,7 @@ setup took 0.00 seconds
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
@@ -460,7 +464,7 @@ setup took 0.00 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 10 workers
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 1 workers
 
 HINT: Shuffle was set to False. This is not recommended for most configuration. Use shuffle=None (default) for recommended configuration.
 </pre></div>
@@ -469,7 +473,7 @@ HINT: Shuffle was set to False. This is not recommended for most configuration. 
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">2</span>
 <span class="p">)</span>
@@ -525,40 +529,56 @@ HINT: Shuffle was set to False. This is not recommended for most configuration. 
           <div class="right-details">
             <div class="icons">
               <a class="muted-link " href="https://bifold.berlin/" aria-label="BIFOLD">
-            <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-            	 viewBox="0 0 932.3 187" style="enable-background:new 0 0 932.3 187; display: block; height: 2em; width: auto; margin-right: 1em;" xml:space="preserve">
+            <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            viewBox="0 0 932.3 187"
+            style="enable-background:new 0 0 932.3 187; display: block; height: 2em;
+            width: auto; margin-right: 1em;" xml:space="preserve">
             <style type="text/css">
-            	.st0{fill:#7FCCE0;}
-            	.st1{fill:#002D62;}
-            	.st2{fill:#B1DEEB;}
-            	.st3{fill:#2ABAD4;}
+                .st0{fill:#7FCCE0;}
+                .st1{fill:#002D62;}
+                .st2{fill:#B1DEEB;}
+                .st3{fill:#2ABAD4;}
             </style>
             <polygon class="st0" points="233.7,67.5 166.2,0 150.5,140.5 338,171.8 "/>
             <polygon class="st1" points="348,60.6 240.6,60.6 348,167.9 "/>
             <polygon class="st2" points="166.2,0 0,73.6 150.5,140.5 "/>
             <polygon class="st3" points="150.5,140.5 253.2,187 338,171.8 "/>
             <g>
-            	<path class="st1" d="M881.9,80.6H862V148h18.8c8,0,14.3-2.8,19-8.5c4.6-5.7,7-14.3,7-25.9c0-10.2-2.1-18.3-6.3-24.2
-            		C896.2,83.5,890.1,80.6,881.9,80.6 M881.9,167.9h-44.5V60.5h44.9c10.7,0,19.9,2.3,27.4,6.8c7.5,4.5,13.2,10.8,17,18.7
-            		c3.8,8,5.7,17.1,5.7,27.6c0,11.1-2.1,20.7-6.2,28.8c-4.1,8.2-10,14.5-17.5,18.9C901.1,165.7,892.2,167.9,881.9,167.9 M822.9,167.9
-            		h-74.1V60.5h24.6v88.1H820L822.9,167.9z M648,114.5c0,10.3,2.6,18.7,7.7,25.2c5.1,6.5,12,9.7,20.8,9.7c5.4,0,10.2-1.3,14.6-4
-            		c4.4-2.7,7.8-6.7,10.3-12.1c2.5-5.4,3.8-12,3.8-19.7c0-6.6-1.2-12.6-3.5-17.8c-2.3-5.3-5.6-9.4-9.9-12.4c-4.3-3-9.2-4.5-14.9-4.5
-            		c-5.3,0-10.1,1.5-14.5,4.4c-4.4,2.9-7.9,7.1-10.5,12.6C649.3,101.2,648,107.5,648,114.5 M676.6,58.1c11.2,0,20.8,2.4,29,7.3
-            		c8.2,4.9,14.4,11.6,18.7,20c4.3,8.4,6.5,17.8,6.5,28.1c0,11-2.3,20.7-6.9,29.2c-4.6,8.5-11,15.2-19.2,20
-            		c-8.2,4.8-17.6,7.2-28.1,7.3c-11.1,0-20.7-2.4-28.8-7.3c-8.2-4.9-14.4-11.6-18.8-20c-4.4-8.4-6.6-17.8-6.6-28.1
-            		c0-10.8,2.3-20.5,6.9-29.1c4.6-8.5,11-15.2,19.2-20.1C656.7,60.7,666.1,58.3,676.6,58.1 M606.8,125h-36.2v43H546V60.7h65.4
-            		l2.8,19.3h-43.6v25.6h33.3L606.8,125z M495.3,60.5h24.6v107.4h-24.6V60.5z M437.1,122.4h-17.8v25.7h17.2c5.1,0,9.1-1.1,12.2-3.2
-            		c3.1-2.2,4.6-5.2,4.6-9.1c0-4.2-1.4-7.5-4.3-9.9C446,123.6,442.1,122.4,437.1,122.4 M432.2,80.4h-13v22.3H430
-            		c5.4,0,9.8-0.9,13.2-2.7c3.4-1.8,5.1-4.5,5.1-8.1C448.3,84.3,443,80.4,432.2,80.4 M437,167.9h-42.3V60.5h39.6
-            		c11.9,0,21.5,2.5,28.8,7.5c7.3,5,11,12.7,11,23c0,6.5-3.6,13-10.7,19.3c4.7,2.9,8.5,6.6,11.3,10.9c2.8,4.3,4.2,9.3,4.2,14.8
-            		c0,10.6-3.9,18.6-11.7,23.9C459.3,165.3,449.3,167.9,437,167.9"/>
+                <path class="st1" d="M881.9,80.6H862V148h18.8c8,0,14.3-2.8,
+                19-8.5c4.6-5.7,7-14.3,7-25.9c0-10.2-2.1-18.3-6.3-24.2
+                    C896.2,83.5,890.1,80.6,881.9,80.6 M881.9,167.9h-44.5V60.5h44.9c10.7,
+                    0,19.9,2.3,27.4,6.8c7.5,4.5,13.2,10.8,17,18.7
+                    c3.8,8,5.7,17.1,5.7,27.6c0,11.1-2.1,20.7-6.2,28.8c-4.1,8.2-10,
+                    14.5-17.5,18.9C901.1,165.7,892.2,167.9,881.9,167.9 M822.9,167.9
+                    h-74.1V60.5h24.6v88.1H820L822.9,167.9z M648,114.5c0,10.3,2.6,18.7,
+                    7.7,25.2c5.1,6.5,12,9.7,20.8,9.7c5.4,0,10.2-1.3,14.6-4
+                    c4.4-2.7,7.8-6.7,10.3-12.1c2.5-5.4,
+                    3.8-12,3.8-19.7c0-6.6-1.2-12.6-3.5-17.8c-2.3-5.3-5.6-9.4-9.9-12.4c-4.3-3-9.2-4.5-14.9-4.5
+                    c-5.3,0-10.1,1.5-14.5,4.4c-4.4,2.9-7.9,7.1-10.5,12.6C649.3,101.2,
+                    648,107.5,648,114.5 M676.6,58.1c11.2,0,20.8,2.4,29,7.3
+                    c8.2,4.9,14.4,11.6,18.7,20c4.3,8.4,6.5,17.8,6.5,28.1c0,11-2.3,20.7-6.9,29.2c-4.6,8.5-11,15.2-19.2,20
+                    c-8.2,4.8-17.6,7.2-28.1,7.3c-11.1,0-20.7-2.4-28.8-7.3c-8.2-4.9-14.4-11.6-18.8-20c-4.4-8.4-6.6-17.8-6.6-28.1
+                    c0-10.8,2.3-20.5,6.9-29.1c4.6-8.5,11-15.2,19.2-20.1C656.7,60.7,
+                    666.1,58.3,676.6,58.1 M606.8,125h-36.2v43H546V60.7h65.4
+                    l2.8,19.3h-43.6v25.6h33.3L606.8,125z M495.3,
+                    60.5h24.6v107.4h-24.6V60.5z M437.1,122.4h-17.8v25.7h17.2c5.1,0,
+                    9.1-1.1,12.2-3.2
+                    c3.1-2.2,4.6-5.2,4.6-9.1c0-4.2-1.4-7.5-4.3-9.9C446,123.6,
+                    442.1,122.4,437.1,122.4 M432.2,80.4h-13v22.3H430
+                    c5.4,0,9.8-0.9,13.2-2.7c3.4-1.8,5.1-4.5,5.1-8.1C448.3,84.3,443,80.4,
+                    432.2,80.4 M437,167.9h-42.3V60.5h39.6
+                    c11.9,0,21.5,2.5,28.8,7.5c7.3,5,11,12.7,11,23c0,6.5-3.6,13-10.7,19.3c4.7,2.9,8.5,6.6,11.3,10.9c2.8,4.3,4.2,9.3,4.2,14.8
+                    c0,10.6-3.9,18.6-11.7,23.9C459.3,165.3,449.3,167.9,437,167.9"/>
             </g>
             </svg>
             </a>
               <a class="muted-link " href="https://rsim.berlin/" aria-label="RSiM">
             <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-             width="987.000000pt" height="337.000000pt" viewBox="0 0 987.000000 337.000000"
-             preserveAspectRatio="xMidYMid meet" style="display: block; height: 2em; width: auto">
+             width="987.000000pt" height="337.000000pt"
+             viewBox="0 0 987.000000 337.000000"
+             preserveAspectRatio="xMidYMid meet" style="display: block; height: 2em;
+             width: auto">
             <g transform="translate(0.000000,337.000000) scale(0.100000,-0.100000)"
             fill="#070685" stroke="none">
             <path d="M3555 3350 c-149 -15 -344 -74 -454 -138 -293 -169 -426 -437 -392

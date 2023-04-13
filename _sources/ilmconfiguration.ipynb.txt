@@ -5,7 +5,7 @@
    "source": [
     "# Model Configuration\n",
     "\n",
-    "The central object of `ConfigVLM` is the dataclass `VLMConfiguration`. This is used to decide which parts the model consists of, how it is combined, and which task it should ultimately solve. A possible minimal configuration for Supervised Classification can look like this:\n",
+    "The central object of `ConfigILM` is the dataclass `ILMConfiguration`. This is used to decide which parts the model consists of, how it is combined, and which task it should ultimately solve. A possible minimal configuration for Supervised Classification can look like this:\n",
     ":::{note}\n",
     "Not all properties of the object are always used. Which properties are unused depends on the network type specified. For classification there is no fusion or language part, therefore in this example all parameters associated with fusion or language modeling are unused.\n",
     ":::"
@@ -58,9 +58,9 @@
    ],
    "source": [
     "# output_stderr = remove\n",
-    "from configvlm.ConfigVLM import VLMConfiguration, VLMType\n",
+    "from configilm.ConfigILM import ILMConfiguration, ILMType\n",
     "from pprint import pprint\n",
-    "model_config = VLMConfiguration(\n",
+    "model_config = ILMConfiguration(\n",
     "    timm_model_name=\"resnet18\",\n",
     ")"
    ]
@@ -112,9 +112,9 @@
     "type_len = 60\n",
     "print(f'{\"Parameter name\":<25} | {\"Type\":<60} | Default value')\n",
     "print(\"-\"*(25+3+60+3+30))\n",
-    "conf = VLMConfiguration(timm_model_name=\"<REQUIRED PARAM>\").__dict__\n",
+    "conf = ILMConfiguration(timm_model_name=\"<REQUIRED PARAM>\").__dict__\n",
     "conf[\"fusion_method\"] = \"torch.mul\"\n",
-    "for n, t in VLMConfiguration.__init__.__annotations__.items():\n",
+    "for n, t in ILMConfiguration.__init__.__annotations__.items():\n",
     "    if n in conf.keys():\n",
     "        print(f\"{n:<25} | {str(t):<60} | {str(conf[n]):>30}\")"
    ],
@@ -139,7 +139,7 @@
    "source": [
     "# remove-input\n",
     "from pprint import pprint\n",
-    "pprint([p.name for p in VLMType])"
+    "pprint([p.name for p in ILMType])"
    ],
    "metadata": {
     "collapsed": false

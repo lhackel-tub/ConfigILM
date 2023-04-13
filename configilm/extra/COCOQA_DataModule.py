@@ -19,10 +19,10 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from transformers import BertTokenizer
 
-import configvlm
-from configvlm.extra.CustomTorchClasses import MyGaussianNoise
-from configvlm.util import huggingface_tokenize_and_pad
-from configvlm.util import Messages
+import configilm
+from configilm.extra.CustomTorchClasses import MyGaussianNoise
+from configilm.util import huggingface_tokenize_and_pad
+from configilm.util import Messages
 
 
 def resolve_cocoqa_data_dir(
@@ -93,7 +93,7 @@ class COCOQADataSet(Dataset):
             )
             # get path relative to this script, not relative to the calling main script
             default_tokenizer = (
-                Path(configvlm.__file__)
+                Path(configilm.__file__)
                 .parent.joinpath("huggingface_tokenizers", "bert-base-uncased.tok")
                 .resolve(True)
             )

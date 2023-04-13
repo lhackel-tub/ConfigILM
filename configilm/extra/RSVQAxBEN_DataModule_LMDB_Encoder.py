@@ -28,12 +28,12 @@ from torch.utils.data import Dataset
 from tqdm import tqdm
 from transformers import BertTokenizer
 
-from configvlm.extra.BEN_lmdb_utils import band_combi_to_mean_std
-from configvlm.extra.BEN_lmdb_utils import BENLMDBReader
-from configvlm.extra.CustomTorchClasses import MyGaussianNoise
-from configvlm.extra.CustomTorchClasses import MyRotateTransform
-from configvlm.util import huggingface_tokenize_and_pad
-from configvlm.util import Messages
+from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
+from configilm.extra.BEN_lmdb_utils import BENLMDBReader
+from configilm.extra.CustomTorchClasses import MyGaussianNoise
+from configilm.extra.CustomTorchClasses import MyRotateTransform
+from configilm.util import huggingface_tokenize_and_pad
+from configilm.util import Messages
 
 
 def select_answers_from_qa_pairs(qa_pairs, number_of_answers=1000):

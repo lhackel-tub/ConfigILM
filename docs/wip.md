@@ -1,4 +1,4 @@
 :::{warning}
 
-The content you selected is an active WIP! It is not part of `ConfigVLM` as of now.
+The content you selected is an active WIP! It is not part of `ConfigILM` as of now.
 :::

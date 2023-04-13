@@ -18,12 +18,12 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 
-from configvlm.extra.BEN_lmdb_utils import band_combi_to_mean_std
-from configvlm.extra.BEN_lmdb_utils import ben19_list_to_onehot
-from configvlm.extra.BEN_lmdb_utils import BENLMDBReader
-from configvlm.extra.CustomTorchClasses import MyGaussianNoise
-from configvlm.extra.CustomTorchClasses import MyRotateTransform
-from configvlm.util import Messages
+from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
+from configilm.extra.BEN_lmdb_utils import ben19_list_to_onehot
+from configilm.extra.BEN_lmdb_utils import BENLMDBReader
+from configilm.extra.CustomTorchClasses import MyGaussianNoise
+from configilm.extra.CustomTorchClasses import MyRotateTransform
+from configilm.util import Messages
 
 
 class BENDataSet(Dataset):

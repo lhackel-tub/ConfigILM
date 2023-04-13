@@ -6,12 +6,12 @@ with warnings.catch_warnings():
     warnings.filterwarnings(
         action="ignore", category=DeprecationWarning, message=".*distutils.*"
     )
-    from configvlm.extra.BEN_DataModule_LMDB_Encoder import (
+    from configilm.extra.BEN_DataModule_LMDB_Encoder import (
         BENDataSet,
         BENDataModule,
     )
 
-from configvlm.extra.BEN_lmdb_utils import resolve_ben_data_dir
+from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
 from typing import Sequence, Union
 import torch
 

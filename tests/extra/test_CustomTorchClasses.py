@@ -1,8 +1,8 @@
 import pytest
 import torch
 
-from configvlm.extra.CustomTorchClasses import MyGaussianNoise
-from configvlm.extra.CustomTorchClasses import MyRotateTransform
+from configilm.extra.CustomTorchClasses import MyGaussianNoise
+from configilm.extra.CustomTorchClasses import MyRotateTransform
 
 
 def test_rotate_single():

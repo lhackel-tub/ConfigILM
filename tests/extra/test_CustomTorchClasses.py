@@ -40,13 +40,14 @@ def test_empty_sequence():
 def test_gaussian():
     gt = MyGaussianNoise(sigma=1)
     t = torch.Tensor([0])
-    assert t != gt(t), "No noise added"
+    assert not torch.equal(gt(t), t), "No noise added"
+    assert not torch.equal(gt(t), gt(t)), "Same noise used twice in a row"
 
 
 def test_gaussian_zero():
     gt = MyGaussianNoise(sigma=0)
     t = torch.Tensor([0])
-    assert t == gt(t), "No noise should be added"
+    assert torch.equal(gt(t), t), "No noise should be added"
 
 
 @pytest.mark.parametrize(

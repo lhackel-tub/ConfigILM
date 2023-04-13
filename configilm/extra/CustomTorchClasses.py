@@ -24,6 +24,7 @@ class MyRotateTransform:
 
 class MyGaussianNoise:
     # Adds gaussian noise with sigma in the specified range
+    # Not usable for complex types or similar
     # Code credit to https://github.com/pytorch/vision/issues/6192
     def __init__(self, sigma: float):
         self.sigma = sigma
@@ -31,6 +32,7 @@ class MyGaussianNoise:
     def __call__(self, x):
         dtype = x.dtype
         if not x.is_floating_point():
+            # this will be a problem with imaginary types or similar
             x = x.to(torch.float32)
 
         out = x + self.sigma * torch.randn_like(x)

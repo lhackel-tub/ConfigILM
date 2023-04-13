@@ -22,9 +22,9 @@ from torchmetrics.classification import MultilabelF1Score
 from wandb.sdk import finish as wandb_finish
 from wandb.sdk import login as wandb_login
 
-from configilm import ConfigVLM
-from configilm.ConfigVLM import VLMConfiguration
-from configilm.ConfigVLM import VLMType
+from configilm import ConfigILM
+from configilm.ConfigILM import ILMConfiguration
+from configilm.ConfigILM import ILMType
 from configilm.extra.BEN_DataModule_LMDB_Encoder import BENDataModule
 from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
 
@@ -44,13 +44,13 @@ class LitVisionEncoder(pl.LightningModule):
 
     def __init__(
         self,
-        config: ConfigVLM.ILMConfiguration,
+        config: ConfigILM.ILMConfiguration,
         lr: float = 1e-3,
     ):
         super().__init__()
         self.lr = lr
         self.config = config
-        self.model = ConfigVLM.ConfigVLM(config)
+        self.model = ConfigILM.ConfigILM(config)
 
     def training_step(self, batch, batch_idx):
         x, y = batch
@@ -167,13 +167,13 @@ def main(
     else:
         wandb_mode = "offline" if offline else "online"
 
-    model_config = VLMConfiguration(
+    model_config = ILMConfiguration(
         timm_model_name=vision_model,
         classes=19,
         image_size=image_size,
         channels=number_of_channels,
         drop_rate=drop_rate,
-        network_type=VLMType.VISION_CLASSIFICATION,
+        network_type=ILMType.VISION_CLASSIFICATION,
     )
 
     wandb_logger = WandbLogger(

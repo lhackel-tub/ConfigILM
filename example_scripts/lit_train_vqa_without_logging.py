@@ -15,10 +15,10 @@ from torch import optim
 from torchmetrics.classification import MultilabelF1Score
 from tqdm import tqdm
 
-from configilm import ConfigVLM
-from configilm.ConfigVLM import get_hf_model as get_huggingface_model
-from configilm.ConfigVLM import VLMConfiguration
-from configilm.ConfigVLM import VLMType
+from configilm import ConfigILM
+from configilm.ConfigILM import get_hf_model as get_huggingface_model
+from configilm.ConfigILM import ILMConfiguration
+from configilm.ConfigILM import ILMType
 from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
 from configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataModule
 
@@ -36,13 +36,13 @@ class LitVisionEncoder(pl.LightningModule):
 
     def __init__(
         self,
-        config: ConfigVLM.ILMConfiguration,
+        config: ConfigILM.ILMConfiguration,
         lr: float = 1e-3,
     ):
         super().__init__()
         self.lr = lr
         self.config = config
-        self.model = ConfigVLM.ConfigVLM(config)
+        self.model = ConfigILM.ConfigILM(config)
 
     def _disassemble_batch(self, batch):
         images, questions, labels = batch
@@ -186,14 +186,14 @@ def main(
         model_name=text_model, load_pretrained_if_available=False
     )
 
-    model_config = VLMConfiguration(
+    model_config = ILMConfiguration(
         timm_model_name=vision_model,
         hf_model_name=text_model,
         classes=1000,
         image_size=image_size,
         channels=number_of_channels,
         drop_rate=drop_rate,
-        network_type=VLMType.VQA_CLASSIFICATION,
+        network_type=ILMType.VQA_CLASSIFICATION,
     )
 
     trainer = pl.Trainer(

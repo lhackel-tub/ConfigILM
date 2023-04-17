@@ -1,5 +1,9 @@
 # ConfigILM
 
+<a href="https://bifold.berlin/"><img src="BIFOLD_Logo_farbig.svg" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
+<img height="2em" hspace="10em"/>
+<a href="https://rsim.berlin/"><img src="RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7767951.svg)](https://doi.org/10.5281/zenodo.7767951)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml)
@@ -62,7 +66,3 @@ BigEarth Project under Grant 759764 and by the European Space Agency through the
 (Demonstrator precursor Digital Assistant interface for Digital Twin Earth) project and
 by the German Ministry for Economic Affairs and Climate Action through the AI-Cube
 Project under Grant 50EE2012B.
-
-<a href="https://bifold.berlin/"><img src="BIFOLD_Logo_farbig.svg" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
-<img height="2em" hspace="10em"/>
-<a href="https://rsim.berlin/"><img src="RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>

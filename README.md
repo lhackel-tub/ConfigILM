@@ -8,7 +8,7 @@
 
 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7767951.svg)](https://doi.org/10.5281/zenodo.7767951)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7839973.svg)](https://doi.org/10.5281/zenodo.7839973)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml)
 [![Code Coverage](./coverage.svg)](./.coverage)
@@ -49,17 +49,17 @@ For detailed information please visit the [publication](TODO:arXiv-Link) or the 
 If you use this work, please cite
 
 ```bibtex
-@software{lhackel-tub_2023,
+@software{lhackel_tub_2023,
   author       = {Leonard Hackel and
                   Kai Norman Clasen and
                   Begüm Demir},
-  title        = {lhackel-tub/ConfigILM: v0.1.1},
-  month        = mar,
+  title        = {lhackel-tub/ConfigILM: v0.2.0},
+  month        = apr,
   year         = 2023,
   publisher    = {Zenodo},
-  version      = {release},
-  doi          = {10.5281/zenodo.7767951},
-  url          = {https://doi.org/10.5281/zenodo.7767951}
+  version      = {v0.2.0},
+  doi          = {10.5281/zenodo.7839973},
+  url          = {https://doi.org/10.5281/zenodo.7839973}
 }
 ```
 <!-- citation-end -->

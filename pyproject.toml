@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "configilm"
-version = "0.2.0"
+version = "0.3.0"
 description = "A state-of-the-art tool for Python developers seeking to rapidly and iteratively develop vision and language models within the [`pytorch`](https://pytorch.org/) framework"
 authors = ["Leonard Hackel <l.hackel@tu-berlin.de>"]
 readme = "README.md"

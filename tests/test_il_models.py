@@ -6,6 +6,7 @@ import pytest
 import torch
 from appdirs import user_cache_dir
 from requests.exceptions import ReadTimeout  # type: ignore
+from collections import OrderedDict
 
 from configilm import ConfigILM
 
@@ -111,6 +112,8 @@ tested_timm_models_240 = [
 tested_timm_models_256 = [
     "swinv2_tiny_window8_256",
 ]
+
+tested_dims = [10, 100, 1000, 256, 512, 1024, 360, 1200]
 
 
 def apply_timm(model: str, cls: int, bs: int, image_size: int):
@@ -510,3 +513,70 @@ def test_integration():
             atol=0.0001,
         )
     )
+
+
+@pytest.mark.parametrize("dim", tested_dims)
+def test_fusion_same_dim_explicit(dim):
+    """
+    Tests if fusion functions with the same input and output dimensions work
+    """
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name="resnet18",
+        hf_model_name="prajjwal1/bert-tiny",
+        fusion_in=dim,
+        fusion_out=dim,
+        fusion_method=torch.mul,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION
+    )
+    assert apply_ilm(cfg, bs=4), f"Fusion with {dim}->{dim} failed"
+
+
+@pytest.mark.parametrize("dim", tested_dims)
+def test_fusion_same_dim_implicit(dim):
+    """
+    Tests if fusion functions with the same input and output dimensions work
+    """
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name="resnet18",
+        hf_model_name="prajjwal1/bert-tiny",
+        fusion_in=dim,
+        fusion_out=None,
+        fusion_method=torch.mul,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION
+    )
+    assert apply_ilm(cfg, bs=4), f"Fusion with {dim}->{dim} failed"
+
+
+@pytest.mark.parametrize(
+    "in_dim, out_dim", [(i, o) for i in tested_dims for o in tested_dims]
+)
+def test_fusion_dif_dim(in_dim, out_dim):
+    """
+    Tests if fusion functions with the same input and output dimensions work
+    """
+    class _CatNet(torch.nn.Module):
+        def __init__(self, in_dim_cat, out_dim_lin):
+            super().__init__()
+            self.net = torch.nn.Sequential(
+                OrderedDict(
+                    [
+                        ("FFN", torch.nn.Linear(2*in_dim_cat, out_dim_lin)),
+                        ("Activation", torch.nn.ReLU())
+                    ]
+                )
+            )
+
+        def forward(self, x1, x2):
+            # concat vectors, not batches
+            x = torch.cat((x1, x2), dim=-1)
+            return self.net(x)
+
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name="resnet18",
+        hf_model_name="prajjwal1/bert-tiny",
+        fusion_in=in_dim,
+        fusion_out=out_dim,
+        fusion_method=_CatNet(in_dim_cat=in_dim, out_dim_lin=out_dim),
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION
+    )
+    assert apply_ilm(cfg, bs=4), f"Fusion with {in_dim}->{out_dim} failed"

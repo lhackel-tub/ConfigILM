@@ -154,6 +154,7 @@ class ILMConfiguration:
     # currently only used for VQA_CLASSIFICATION
     visual_features_out: int = 512
     fusion_in: int = 512
+    fusion_out: Union[None, int] = None  # if None, same as fusion_in
     fusion_hidden: int = 256
     v_dropout_rate: float = 0.25
     t_dropout_rate: float = 0.25
@@ -234,6 +235,9 @@ class ConfigILM(nn.Module):
             self.dropout_v = torch.nn.Dropout(self.config.v_dropout_rate)
             self.dropout_q = torch.nn.Dropout(self.config.t_dropout_rate)
 
+            if self.config.fusion_out is None:
+                self.config.fusion_out = self.config.fusion_in
+
             self.fusion = nn.Sequential(
                 OrderedDict(
                     [
@@ -247,7 +251,8 @@ class ConfigILM(nn.Module):
                         ),
                         (
                             "classifier_linear_1",
-                            nn.Linear(self.config.fusion_in, self.config.fusion_hidden),
+                            nn.Linear(self.config.fusion_out,
+                                      self.config.fusion_hidden),
                         ),
                         (
                             "classifier_activation_2",

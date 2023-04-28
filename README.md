@@ -8,7 +8,7 @@
 
 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7839973.svg)](https://doi.org/10.5281/zenodo.7839973)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7875406.svg)](https://doi.org/10.5281/zenodo.7875406)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml)
 [![Code Coverage](./coverage.svg)](./.coverage)
@@ -53,13 +53,13 @@ If you use this work, please cite
   author       = {Leonard Hackel and
                   Kai Norman Clasen and
                   Begüm Demir},
-  title        = {lhackel-tub/ConfigILM: v0.2.0},
+  title        = {lhackel-tub/ConfigILM: v0.3.0},
   month        = apr,
   year         = 2023,
   publisher    = {Zenodo},
-  version      = {v0.2.0},
-  doi          = {10.5281/zenodo.7839973},
-  url          = {https://doi.org/10.5281/zenodo.7839973}
+  version      = {v0.3.0},
+  doi          = {10.5281/zenodo.7875406},
+  url          = {https://doi.org/10.5281/zenodo.7875406}
 }
 ```
 <!-- citation-end -->

@@ -390,7 +390,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
   warnings.warn(
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/runner/.cache/configilm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.weight&#39;, &#39;classifier.bias&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/runner/.cache/configilm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
 - This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
 - This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
 </pre></div>
@@ -438,7 +438,7 @@ Additionally only the first 10 elements of output + expected answer are shown, a
 Question: [101, 2024, 6138, 1998, 21770, 10624, 6914, 14769, 4910, 2752, 2556, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Expected: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
           yes
-    Real: [0.24331672489643097, 0.416130393743515, -0.4097263514995575, -0.5235225558280945, -1.2558377981185913, -0.4784601926803589, -0.32770946621894836, -0.9055449366569519, -0.7889048457145691, -0.7592024207115173]
+    Real: [0.24329857528209686, 0.41611525416374207, -0.4097031056880951, -0.5234662890434265, -1.2557852268218994, -0.4784291684627533, -0.3277336657047272, -0.9055147171020508, -0.7889604568481445, -0.7591767907142639]
           yes
 </pre></div>
 </div>

@@ -44,7 +44,7 @@ class BENDataSet(Dataset):
 
     def __init__(
         self,
-        root_dir: Path = Path("./"),
+        root_dir: Union[str, Path] = Path("./"),
         split: Optional[str] = None,
         transform=None,
         max_img_idx=None,
@@ -128,7 +128,7 @@ class BENDataModule(pl.LightningDataModule):
     def __init__(
         self,
         batch_size=16,
-        data_dir: str = "./",
+        data_dir: Union[str, Path] = "./",
         img_size=None,
         num_workers_dataloader=None,
         max_img_idx=None,

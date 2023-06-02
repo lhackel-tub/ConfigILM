@@ -1,7 +1,7 @@
 # ConfigILM
 ![ConfigILM Logo](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM_v1.png)
 
-<a href="https://bifold.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/BIFOLD_Logo_farbig.svg" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
+<a href="https://bifold.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/BIFOLD_Logo_farbig.png" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
 <img height="2em" hspace="10em"/>
 <a href="https://www.tu.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/tu-berlin-logo-long-red.svg" style="font-size: 1rem; height: 2em; width: auto" alt="TU Berlin Logo"/>
 <img height="2em" hspace="17em"/>
@@ -52,11 +52,11 @@ If you use this work, please cite
   author       = {Leonard Hackel and
                   Kai Norman Clasen and
                   Begüm Demir},
-  title        = {lhackel-tub/ConfigILM: v0.4.1},
+  title        = {lhackel-tub/ConfigILM: v0.4.3},
   month        = apr,
   year         = 2023,
   publisher    = {Zenodo},
-  version      = {v0.4.1},
+  version      = {v0.4.3},
   doi          = {10.5281/zenodo.7875406},
   url          = {https://doi.org/10.5281/zenodo.7875406}
 }

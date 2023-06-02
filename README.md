@@ -1,12 +1,11 @@
 # ConfigILM
+![ConfigILM Logo](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM_v1.png)
 
-<a href="https://bifold.berlin/"><img src="BIFOLD_Logo_farbig.svg" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
+<a href="https://bifold.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/BIFOLD_Logo_farbig.svg" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
 <img height="2em" hspace="10em"/>
-<a href="https://www.tu.berlin/"><img src="tu-berlin-logo-long-red.svg" style="font-size: 1rem; height: 2em; width: auto" alt="TU Berlin Logo"/>
+<a href="https://www.tu.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/tu-berlin-logo-long-red.svg" style="font-size: 1rem; height: 2em; width: auto" alt="TU Berlin Logo"/>
 <img height="2em" hspace="17em"/>
-<a href="https://rsim.berlin/"><img src="RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>
-
-
+<a href="https://rsim.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7875406.svg)](https://doi.org/10.5281/zenodo.7875406)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
@@ -36,7 +35,7 @@ tutorial examples, and a detailed overview of the framework's interface, ensurin
 
 <!-- introduction-end -->
 
-![Concept of ConfigILM](ConfigILM-ILMType.VQA_CLASSIFICATION.png)
+![Concept of ConfigILM](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM-ILMType.VQA_CLASSIFICATION.png)
 
 For detailed information please visit the [publication](TODO:arXiv-Link) or the [documentation](https://lhackel-tub.github.io/ConfigILM).
 

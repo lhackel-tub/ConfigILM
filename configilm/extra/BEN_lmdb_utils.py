@@ -215,7 +215,7 @@ def read_ben_from_lmdb(env, key):
 class BENLMDBReader:
     def __init__(
         self,
-        lmdb_dir: str,
+        lmdb_dir: Union[str, pathlib.Path],
         image_size: Sequence[int],
         bands: Union[Iterable, str, int],
         label_type: str,
@@ -254,7 +254,8 @@ class BENLMDBReader:
         """
         if self.env is None:
             self.env = lmdb.open(
-                self.lmdb_dir, readonly=True, lock=False, meminit=False, readahead=True
+                str(self.lmdb_dir), readonly=True, lock=False, meminit=False,
+                readahead=True
             )
         # get pure patch data
         ben_patch = read_ben_from_lmdb(self.env, item)

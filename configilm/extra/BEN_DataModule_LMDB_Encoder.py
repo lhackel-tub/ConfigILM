@@ -11,6 +11,7 @@ from datetime import datetime
 from time import time
 from typing import Optional
 from typing import Union
+from pathlib import Path
 
 import pytorch_lightning as pl
 import torch
@@ -43,15 +44,15 @@ class BENDataSet(Dataset):
 
     def __init__(
         self,
-        root_dir="./",
+        root_dir: Path = Path("./"),
         split: Optional[str] = None,
         transform=None,
         max_img_idx=None,
         img_size=(12, 120, 120),
     ):
         super().__init__()
-        self.root_dir = root_dir
-        self.lmdb_dir = os.path.join(self.root_dir, "BigEarthNetEncoded.lmdb")
+        self.root_dir = Path(root_dir)
+        self.lmdb_dir = self.root_dir / "BigEarthNetEncoded.lmdb"
         self.transform = transform
         self.image_size = img_size
         if img_size[0] not in self.avail_chan_configs.keys():
@@ -62,14 +63,14 @@ class BENDataSet(Dataset):
 
         print(f"Loading BEN data for {split}...")
         if split is not None:
-            with open(os.path.join(self.root_dir, f"{split}.csv")) as f:
+            with open(self.root_dir / f"{split}.csv") as f:
                 reader = csv.reader(f)
                 patches = list(reader)
         else:
             splits = ["train", "val", "test"]
             patches = []
             for s in splits:
-                with open(os.path.join(self.root_dir, s + ".csv")) as f:
+                with open(self.root_dir / f"{s}.csv") as f:
                     reader = csv.reader(f)
                     patches += list(reader)
 

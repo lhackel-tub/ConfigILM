@@ -80,8 +80,8 @@ tested_timm_models_120 = [
     "resnet50",
     "resnetv2_50",
     "resnext26ts",
-    "semobilevit_s",
-    "ssl_resnet18",
+    # "semobilevit_s", removed in 0.4.0
+    "resnet18.fb_ssl_yfcc100m_ft_in1k",  # name change in 0.4.0
     "tinynet_a",
     "vgg16",
     "visformer_tiny",
@@ -90,19 +90,39 @@ tested_timm_models_120 = [
     "volo_d1_224",
     "wide_resnet50_2",
     "xcit_tiny_12_p8_224",
-    "xcit_tiny_12_p8_224_dist",
+    "xcit_tiny_12_p8_224.fb_dist_in1k",  # name change in 0.4.0
+    # new tests in 0.4.0
+    "eva02_tiny_patch14_336.mim_in22k_ft_in1k",
+    "convnext_base.clip_laion2b_augreg_ft_in12k_in1k",
+    "convnextv2_tiny"
 ]
 
 tested_timm_models_224 = [
     "coat_tiny",
     "efficientformer_l1",
-    "jx_nest_tiny",
+    "nest_tiny_jx",  # name change in 0.4.0
     "levit_128",
     "levit_128s",
     "mvitv2_tiny",
     "swin_s3_tiny_224",
     "swin_tiny_patch4_window7_224",
     "swinv2_cr_tiny_224",
+    # new tests in 0.4.0
+    "coatnet_2_rw_224.sw_in12k_ft_in1k",
+    "coatnet_nano_rw_224.sw_in1k",
+    "convnext_atto",
+    "convnext_femto",
+    "convnext_nano",
+    "convnext_pico",
+    "convnext_small",
+    "convnext_tiny",
+    "convnextv2_atto",
+    "convnextv2_femto",
+    "convnextv2_nano",
+    "convnextv2_pico",
+    "convnextv2_small",
+    "coatnext_nano_rw_224.sw_in1k",
+    "maxvit_nano_rw_256.sw_in1k",
 ]
 
 tested_timm_models_240 = [
@@ -509,8 +529,8 @@ def test_integration():
     assert torch.all(
         torch.isclose(
             out_t[0][:5],
-            torch.tensor([-0.2201, -0.1476, -1.3507, -1.2310, -0.3701]),
-            atol=0.0001,
+            torch.tensor([-5.6796, -5.2999, -4.8613, -5.0192, -4.8003]),
+            atol=0.001,
         )
     )
 

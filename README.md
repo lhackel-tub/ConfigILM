@@ -53,11 +53,11 @@ If you use this work, please cite
   author       = {Leonard Hackel and
                   Kai Norman Clasen and
                   Begüm Demir},
-  title        = {lhackel-tub/ConfigILM: v0.3.0},
+  title        = {lhackel-tub/ConfigILM: v0.4.0},
   month        = apr,
   year         = 2023,
   publisher    = {Zenodo},
-  version      = {v0.3.0},
+  version      = {v0.4.0},
   doi          = {10.5281/zenodo.7875406},
   url          = {https://doi.org/10.5281/zenodo.7875406}
 }

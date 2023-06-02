@@ -7,7 +7,7 @@
 <img height="2em" hspace="17em"/>
 <a href="https://rsim.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7875406.svg)](https://doi.org/10.5281/zenodo.7875406)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7998032.svg)](https://doi.org/10.5281/zenodo.7998032)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml)
 [![Code Coverage](./coverage.svg)](./.coverage)
@@ -57,8 +57,8 @@ If you use this work, please cite
   year         = 2023,
   publisher    = {Zenodo},
   version      = {v0.4.3},
-  doi          = {10.5281/zenodo.7875406},
-  url          = {https://doi.org/10.5281/zenodo.7875406}
+  doi          = {10.5281/zenodo.7998032},
+  url          = {https://doi.org/10.5281/zenodo.7875799803206}
 }
 ```
 <!-- citation-end -->

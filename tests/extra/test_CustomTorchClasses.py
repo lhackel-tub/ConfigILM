@@ -1,3 +1,5 @@
+import warnings
+
 import pytest
 import torch
 
@@ -66,5 +68,19 @@ def test_gaussian_zero():
 )
 def test_gaussian_dtype(dtype):
     gt = MyGaussianNoise(sigma=0)
-    t = torch.ones([10, 10], dtype=dtype)
+    if dtype in [torch.complex32, torch.complex128]:
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message=r"ComplexHalf support is experimental and many "
+            r"operators don't support it yet.+",
+        )
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message=r"Casting complex values to real discards the " r"imaginary part.+",
+        )
+        t = torch.ones([10, 10], dtype=dtype)
+    else:
+        t = torch.ones([10, 10], dtype=dtype)
     assert gt(t).dtype == t.dtype, "Datatype changed"

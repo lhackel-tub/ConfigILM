@@ -1,5 +1,6 @@
 import shutil
 import warnings
+from collections import OrderedDict
 from pathlib import Path
 from typing import Sequence
 
@@ -7,7 +8,6 @@ import pytest
 import torch
 from appdirs import user_cache_dir
 from requests.exceptions import ReadTimeout  # type: ignore
-from collections import OrderedDict
 
 from configilm import ConfigILM
 
@@ -43,13 +43,16 @@ def test_bs(batch_size):
         (config.channels, config.image_size, config.image_size), batch_size
     )
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Keyword 'img_size' unknown. Trying to "
-                                        "ignore and restart creation.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
         model = ConfigILM.ConfigILM(config=config)
     model(x)
     # pass
+
 
 default_image_test_model = "resnet18"
 default_text_test_model = "prajjwal1/bert-tiny"
@@ -101,7 +104,7 @@ tested_timm_models_120 = [
     # new tests in 0.4.0
     "eva02_tiny_patch14_336.mim_in22k_ft_in1k",
     "convnext_base.clip_laion2b_augreg_ft_in12k_in1k",
-    "convnextv2_tiny"
+    "convnextv2_tiny",
 ]
 
 tested_timm_models_224 = [
@@ -156,10 +159,12 @@ def apply_timm(model: str, cls: int, bs: int, image_size: int):
         classes=cls,
     )
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Keyword 'img_size' unknown. Trying to "
-                                        "ignore and restart creation.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
         model = ConfigILM.ConfigILM(config=config)
     res = model(x)
     assert (
@@ -205,21 +210,28 @@ def apply_ilm(config: ConfigILM.ILMConfiguration, bs: int) -> bool:
     while True:
         try:
             with warnings.catch_warnings():
-                warnings.filterwarnings(action="ignore",
-                                        category=UserWarning,
-                                        message="Keyword 'img_size' unknown. Trying to "
-                                                "ignore and restart creation.")
-                warnings.filterwarnings(action="ignore",
-                                        category=UserWarning,
-                                        message="Model '\S+' not available. Trying to "
-                                                "download...")
-                warnings.filterwarnings(action="ignore",
-                                        category=UserWarning,
-                                        message="Text encoder '\S+' has no pooler, "
-                                                "changing use_pooler_output to False")
-                warnings.filterwarnings(action="ignore",
-                                        category=UserWarning,
-                                        message="Tokenizer was initialized pretrained")
+                warnings.filterwarnings(
+                    action="ignore",
+                    category=UserWarning,
+                    message="Keyword 'img_size' unknown. Trying to "
+                    "ignore and restart creation.",
+                )
+                warnings.filterwarnings(
+                    action="ignore",
+                    category=UserWarning,
+                    message=r"Model '\S+' not available. Trying to " "download...",
+                )
+                warnings.filterwarnings(
+                    action="ignore",
+                    category=UserWarning,
+                    message=r"Text encoder '\S+' has no pooler, "
+                    "changing use_pooler_output to False",
+                )
+                warnings.filterwarnings(
+                    action="ignore",
+                    category=UserWarning,
+                    message="Tokenizer was initialized pretrained",
+                )
                 model = ConfigILM.ConfigILM(config=config)
 
         except ReadTimeout:
@@ -321,15 +333,20 @@ def test_ilm_untrained():
 @pytest.mark.parametrize("n", [1, 2, 3, 5, 6])
 def test_v_wrong_batchshape(n):
     config = ConfigILM.ILMConfiguration(
-        timm_model_name=default_image_test_model, drop_rate=None, image_size=120, classes=10
+        timm_model_name=default_image_test_model,
+        drop_rate=None,
+        image_size=120,
+        classes=10,
     )
     shape = [16] * n
     x = torch.ones(shape)
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Keyword 'img_size' unknown. Trying to "
-                                        "ignore and restart creation.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
 
         model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(AssertionError):
@@ -356,14 +373,18 @@ def test_ilm_wrong_batch_parts_shape(img, txt):
     q = torch.ones(txt_shape, dtype=torch.int32)
     a = torch.ones((bs, cls))
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Keyword 'img_size' unknown. Trying to "
-                                        "ignore and restart creation.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
 
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Tokenizer was initialized pretrained")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Tokenizer was initialized pretrained",
+        )
         model = ConfigILM.ConfigILM(config=config)
     if img != 4 or txt != 2:
         with pytest.raises(AssertionError):
@@ -394,14 +415,18 @@ def test_ilm_wrong_different_batch_sizes():
     v = torch.ones(img_shape)
     q = torch.ones(txt_shape, dtype=torch.int32)
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Keyword 'img_size' unknown. Trying to "
-                                        "ignore and restart creation.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
 
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Tokenizer was initialized pretrained")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Tokenizer was initialized pretrained",
+        )
         model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(AssertionError):
         _ = model((v, q))
@@ -423,22 +448,26 @@ def test_ilm_wrong_seq_length_no_pooler():
     v = torch.ones(img_shape)
     q = torch.ones(txt_shape, dtype=torch.int32)
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Keyword 'img_size' unknown. Trying to "
-                                        "ignore and restart creation.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
 
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Tokenizer was initialized pretrained")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Tokenizer was initialized pretrained",
+        )
         model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(RuntimeError):
         # This specific one config (hf_model_name="prajjwal1/bert-tiny")
         # will have a runtime error. This may not happen for other configs
 
         with pytest.warns(
-                UserWarning,
-                match=".+ length of \d+ but sequence length is \d+ and .+"):
+            UserWarning, match=r".+ length of \d+ but sequence length is \d+ and .+"
+        ):
             _ = model((v, q))
 
 
@@ -457,14 +486,18 @@ def test_ilm_wrong_input_length():
     v = torch.ones(img_shape)
     q = torch.ones(txt_shape, dtype=torch.int32)
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Keyword 'img_size' unknown. Trying to "
-                                        "ignore and restart creation.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
 
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Tokenizer was initialized pretrained")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Tokenizer was initialized pretrained",
+        )
         model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(AssertionError):
         # This specific one config (hf_model_name="prajjwal1/bert-tiny") will have a
@@ -491,14 +524,18 @@ def test_failty_config():
         text_tokens=config.max_sequence_length,
     )
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Keyword 'img_size' unknown. Trying to "
-                                        "ignore and restart creation.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
 
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Tokenizer was initialized pretrained")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Tokenizer was initialized pretrained",
+        )
         model = ConfigILM.ConfigILM(config=config)
     with pytest.raises(ValueError):
         _ = model((v, q))
@@ -596,18 +633,23 @@ def test_integration():
     it to confirm that everything works and the right values are returned.
     """
     cfg = ConfigILM.ILMConfiguration(
-        timm_model_name=default_image_test_model, classes=1000,
-        load_timm_if_available=True
+        timm_model_name=default_image_test_model,
+        classes=1000,
+        load_timm_if_available=True,
     )
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Keyword 'img_size' unknown. Trying to "
-                                        "ignore and restart creation.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
 
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Tokenizer was initialized pretrained")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Tokenizer was initialized pretrained",
+        )
         model = ConfigILM.ConfigILM(config=cfg)
     model.eval()
 
@@ -634,7 +676,7 @@ def test_fusion_same_dim_explicit(dim):
         fusion_in=dim,
         fusion_out=dim,
         fusion_method=torch.mul,
-        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
     )
     assert apply_ilm(cfg, bs=4), f"Fusion with {dim}->{dim} failed"
 
@@ -650,7 +692,7 @@ def test_fusion_same_dim_implicit(dim):
         fusion_in=dim,
         fusion_out=None,
         fusion_method=torch.mul,
-        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
     )
     assert apply_ilm(cfg, bs=4), f"Fusion with {dim}->{dim} failed"
 
@@ -662,14 +704,15 @@ def test_fusion_dif_dim(in_dim, out_dim):
     """
     Tests if fusion functions with the same input and output dimensions work
     """
+
     class _CatNet(torch.nn.Module):
         def __init__(self, in_dim_cat, out_dim_lin):
             super().__init__()
             self.net = torch.nn.Sequential(
                 OrderedDict(
                     [
-                        ("FFN", torch.nn.Linear(2*in_dim_cat, out_dim_lin)),
-                        ("Activation", torch.nn.ReLU())
+                        ("FFN", torch.nn.Linear(2 * in_dim_cat, out_dim_lin)),
+                        ("Activation", torch.nn.ReLU()),
                     ]
                 )
             )
@@ -685,6 +728,6 @@ def test_fusion_dif_dim(in_dim, out_dim):
         fusion_in=in_dim,
         fusion_out=out_dim,
         fusion_method=_CatNet(in_dim_cat=in_dim, out_dim_lin=out_dim),
-        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
     )
     assert apply_ilm(cfg, bs=4), f"Fusion with {in_dim}->{out_dim} failed"

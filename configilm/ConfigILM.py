@@ -135,7 +135,7 @@ def get_timm_model(model_name: str, timm_kwargs: dict):
 
 
 class ILMType(Enum):
-    VISION_CLASSIFICATION = 0
+    IMAGE_CLASSIFICATION = 0
     VQA_CLASSIFICATION = 1
 
 
@@ -149,7 +149,7 @@ class ILMConfiguration:
     channels: int = 3
     classes: int = 10
     class_names: Union[None, Sequence[str]] = None
-    network_type: ILMType = ILMType.VISION_CLASSIFICATION
+    network_type: ILMType = ILMType.IMAGE_CLASSIFICATION
 
     # currently only used for VQA_CLASSIFICATION
     visual_features_out: int = 512
@@ -182,7 +182,7 @@ class ConfigILM(nn.Module):
 
         if config.network_type in [
             ILMType.VQA_CLASSIFICATION,
-            ILMType.VISION_CLASSIFICATION,
+            ILMType.IMAGE_CLASSIFICATION,
         ]:
             # keyword arguments as expected by Timm lib
             timm_kwargs = {
@@ -251,8 +251,9 @@ class ConfigILM(nn.Module):
                         ),
                         (
                             "classifier_linear_1",
-                            nn.Linear(self.config.fusion_out,
-                                      self.config.fusion_hidden),
+                            nn.Linear(
+                                self.config.fusion_out, self.config.fusion_hidden
+                            ),
                         ),
                         (
                             "classifier_activation_2",
@@ -271,7 +272,7 @@ class ConfigILM(nn.Module):
             )
 
     def _check_input(self, batch):
-        if self.config.network_type == ILMType.VISION_CLASSIFICATION:
+        if self.config.network_type == ILMType.IMAGE_CLASSIFICATION:
             assert len(batch.shape) == 4, (
                 f"For vision classification, input should be (b, c, h, w) (4 dims) "
                 f"but has shape {batch.shape} ({len(batch)} dims)."
@@ -312,7 +313,7 @@ class ConfigILM(nn.Module):
         # check that input is correct before running network
         self._check_input(batch)
 
-        if self.config.network_type == ILMType.VISION_CLASSIFICATION:
+        if self.config.network_type == ILMType.IMAGE_CLASSIFICATION:
             return self.vision_encoder(batch)
         elif self.config.network_type == ILMType.VQA_CLASSIFICATION:
             v, q = batch

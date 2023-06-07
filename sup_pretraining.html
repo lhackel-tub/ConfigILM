@@ -235,7 +235,7 @@ For this example usage we will be using the <a class="reference internal" href="
 <p>The <code class="docutils literal notranslate"><span class="pre">Module</span></code> we use to encapsulate the model divides the usual loop into functions that are called internally by <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code>. The necessary functions are just <code class="docutils literal notranslate"><span class="pre">training_step</span></code> and <code class="docutils literal notranslate"><span class="pre">configure_optimizer</span></code>, but to have a fully functional script, we add the validation and test steps as well as evaluation of the validation and test results. All <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions are working on a single batch while <code class="docutils literal notranslate"><span class="pre">*_epoch_end</span></code> functions are called after all batches are used and are passed a list of all return values of their respective <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LitVisionEncoder</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LitImageEncoder</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper around a pytorch module, allowing this module to be used in automatic</span>
 <span class="sd">    training with pytorch lightning.</span>
@@ -329,7 +329,7 @@ For this example usage we will be using the <a class="reference internal" href="
     <span class="n">classes</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span>
     <span class="n">image_size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span>
     <span class="n">channels</span><span class="o">=</span><span class="n">number_of_channels</span><span class="p">,</span>
-    <span class="n">network_type</span><span class="o">=</span><span class="n">ILMType</span><span class="o">.</span><span class="n">VISION_CLASSIFICATION</span>
+    <span class="n">network_type</span><span class="o">=</span><span class="n">ILMType</span><span class="o">.</span><span class="n">IMAGE_CLASSIFICATION</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -355,7 +355,7 @@ For this example usage we will be using the <a class="reference internal" href="
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.BEN_DataModule_LMDB_Encoder</span> <span class="kn">import</span> <span class="n">BENDataModule</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">LitVisionEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LitImageEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 <span class="n">dm</span> <span class="o">=</span> <span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="n">number_of_channels</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">),</span>
@@ -392,7 +392,7 @@ For this example usage we will be using the <a class="reference internal" href="
 <div class="cell_output docutils container">
 <img alt="_images/5ca768ae356cae103f2943bf67bcc8064494fc5728cd7c130f194d86b62d1a50.png" src="_images/5ca768ae356cae103f2943bf67bcc8064494fc5728cd7c130f194d86b62d1a50.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Expected: [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    Real: [-0.8461940288543701, 0.05351656675338745, -0.43593665957450867, -0.5633974671363831, -0.5838448405265808, -0.5952038764953613, -0.7836416363716125, -0.726468563079834, -0.754687488079071, -0.8279276490211487, -0.1932421624660492, -0.7901732921600342, -0.6696738600730896, -0.8135378360748291, -0.967444658279419, -0.7233637571334839, -0.6134018301963806, -0.8439657092094421, -0.7069827318191528]
+    Real: [-0.8461952209472656, 0.053515881299972534, -0.43593648076057434, -0.5633976459503174, -0.5838469862937927, -0.5952039957046509, -0.7836412191390991, -0.726469874382019, -0.7546876072883606, -0.8279280662536621, -0.19324178993701935, -0.7901748418807983, -0.6696745753288269, -0.8135374784469604, -0.9674454927444458, -0.7233631610870361, -0.6134014129638672, -0.8439663648605347, -0.7069821953773499]
 </pre></div>
 </div>
 </div>

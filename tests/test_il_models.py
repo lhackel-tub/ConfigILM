@@ -739,7 +739,20 @@ def test_tokenizer_exists():
         hf_model_name=default_text_test_model,
         network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
     )
-    model = ConfigILM.ConfigILM(config=cfg)
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
+
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Tokenizer was initialized pretrained",
+        )
+        model = ConfigILM.ConfigILM(config=cfg)
     _ = model.get_tokenizer()
 
 
@@ -748,7 +761,14 @@ def test_tokenizer_not_exists():
         timm_model_name=default_image_test_model,
         network_type=ConfigILM.ILMType.IMAGE_CLASSIFICATION,
     )
-    model = ConfigILM.ConfigILM(config=cfg)
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Keyword 'img_size' unknown. Trying to "
+            "ignore and restart creation.",
+        )
+        model = ConfigILM.ConfigILM(config=cfg)
 
     with pytest.raises(AttributeError):
         _ = model.get_tokenizer()

@@ -16,7 +16,6 @@ from torchmetrics.classification import MultilabelF1Score
 from tqdm import tqdm
 
 from configilm import ConfigILM
-from configilm.ConfigILM import get_hf_model as get_huggingface_model
 from configilm.ConfigILM import ILMConfiguration
 from configilm.ConfigILM import ILMType
 from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
@@ -181,11 +180,6 @@ def main(
     # seed for pytorch, numpy, python.random, Dataloader workers, spawned subprocesses
     pl.seed_everything(seed, workers=True)
 
-    # get data
-    hf_tokenizer, _ = get_huggingface_model(
-        model_name=text_model, load_pretrained_if_available=False
-    )
-
     model_config = ILMConfiguration(
         timm_model_name=vision_model,
         hf_model_name=text_model,
@@ -211,7 +205,7 @@ def main(
         max_img_idx=max_img_index,
         num_workers_dataloader=num_workers,
         batch_size=batch_size,
-        tokenizer=hf_tokenizer,
+        tokenizer=model.model.get_tokenizer(),
         seq_length=64,
     )
 

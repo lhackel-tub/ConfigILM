@@ -353,13 +353,12 @@
    ],
    "source": [
     "from configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder import RSVQAxBENDataModule\n",
-    "from configilm.ConfigILM import get_hf_model\n",
     "model = LitVQAEncoder(config=model_config, lr=lr)\n",
     "dm = RSVQAxBENDataModule(\n",
     "    data_dir=my_data_path,  # path to dataset\n",
     "    img_size=(number_of_channels, image_size, image_size),\n",
     "    num_workers_dataloader=4,\n",
-    "    tokenizer = get_hf_model(model_name=text_model_name)[0]\n",
+    "    tokenizer = model.model.get_tokenizer()\n",
     ")"
    ],
    "metadata": {

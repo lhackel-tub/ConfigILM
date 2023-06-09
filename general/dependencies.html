@@ -218,9 +218,9 @@
 <h2>Python (Poetry) Dependencies<a class="headerlink" href="#python-poetry-dependencies" title="Permalink to this heading">#</a></h2>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.10&quot;</span>
-<span class="n">torch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&gt;=1.13.1&quot;</span>
+<span class="n">torch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;2.0.0&quot;</span><span class="w">  </span><span class="c1"># locking for now as pytorch has a dependency problem right now</span>
 <span class="n">numpy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.24.1&quot;</span>
-<span class="n">timm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.9.2&quot;</span><span class="w">  </span><span class="c1">#formaly 0.6.12</span>
+<span class="n">timm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.9.2&quot;</span>
 <span class="n">transformers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^4.26.0&quot;</span>
 <span class="n">appdirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.4.4&quot;</span>
 <span class="n">lmdb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.4.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>

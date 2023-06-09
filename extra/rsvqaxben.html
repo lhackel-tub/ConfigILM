@@ -261,9 +261,9 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <p>As we can see, this Dataset uses a tokenizer to generate the Question out of a natural language text. If no tokenizer is provided, a default one will be used, however this may lead to bad performance if not accounted for. The tokenizer can be configured as input parameter.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.ConfigILM</span> <span class="kn">import</span> <span class="n">get_hf_model</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.ConfigILM</span> <span class="kn">import</span> <span class="n">_get_hf_model</span>
 
-<span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
@@ -273,6 +273,10 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </pre></div>
 </div>
 </div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Usually this tokenizer is provided by the model itself as shown in the <a class="reference internal" href="../vqa.html"><span class="doc std std-doc">VQA example</span></a> during dataset creation.</p>
 </div>
 <p>During tokenization a sequence of tokens (integers) of specific length is generated. The length of this sequence can be set with the parameter <code class="docutils literal notranslate"><span class="pre">seq_length</span></code>. If the generated tokens are shorter than the sequence length, the sequence will be padded with zeros. If it is longer, the sequence is truncated.</p>
 <div class="admonition note">
@@ -420,7 +424,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/10 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 10/10 [00:00&lt;00:00, 68422.58it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 10/10 [00:00&lt;00:00, 71089.90it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -453,7 +457,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/75 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 75/75 [00:00&lt;00:00, 330433.61it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 75/75 [00:00&lt;00:00, 352265.17it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -491,7 +495,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers:   0%|          | 0/25 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers: 100%|██████████| 25/25 [00:00&lt;00:00, 165913.92it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers: 100%|██████████| 25/25 [00:00&lt;00:00, 179243.76it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -503,7 +507,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/25 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 25/25 [00:00&lt;00:00, 161567.95it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 25/25 [00:00&lt;00:00, 168041.03it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -600,8 +604,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7f1115e026b0&gt;
-&lt;configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7f1115e02320&gt;
+&lt;configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7f7155b05810&gt;
+&lt;configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7f71556f80a0&gt;
 None
 </pre></div>
 </div>

@@ -8,9 +8,9 @@ readme = "README.md"
 # docs-deps-start
 [tool.poetry.dependencies]
 python = "^3.10"
-torch = ">=1.13.1"
+torch = "2.0.0"  # locking for now as pytorch has a dependency problem right now
 numpy = "^1.24.1"
-timm = "^0.9.2"  #formaly 0.6.12
+timm = "^0.9.2"
 transformers = "^4.26.0"
 appdirs = "^1.4.4"
 lmdb = { version = "^1.4.0", optional = true }

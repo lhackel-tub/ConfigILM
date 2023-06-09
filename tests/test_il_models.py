@@ -731,3 +731,24 @@ def test_fusion_dif_dim(in_dim, out_dim):
         network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
     )
     assert apply_ilm(cfg, bs=4), f"Fusion with {in_dim}->{out_dim} failed"
+
+
+def test_tokenizer_exists():
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        hf_model_name=default_text_test_model,
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+    )
+    model = ConfigILM.ConfigILM(config=cfg)
+    _ = model.get_tokenizer()
+
+
+def test_tokenizer_not_exists():
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        network_type=ConfigILM.ILMType.IMAGE_CLASSIFICATION,
+    )
+    model = ConfigILM.ConfigILM(config=cfg)
+
+    with pytest.raises(AttributeError):
+        _ = model.get_tokenizer()

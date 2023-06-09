@@ -53,7 +53,7 @@ def _available_hf_models(base_path: Path):
     return all_models
 
 
-def get_hf_model(
+def _get_hf_model(
     model_name: str,
     load_pretrained_if_available: bool = False,
 ):
@@ -119,7 +119,7 @@ def get_hf_model(
     return tokenizer, model
 
 
-def get_timm_model(model_name: str, timm_kwargs: dict):
+def _get_timm_model(model_name: str, timm_kwargs: dict):
     while True:
         try:
             encoder = timm.create_model(model_name, **timm_kwargs)
@@ -197,14 +197,14 @@ class ConfigILM(nn.Module):
             }
 
             # create timm_model
-            self.vision_encoder = get_timm_model(config.timm_model_name, timm_kwargs)
+            self.vision_encoder = _get_timm_model(config.timm_model_name, timm_kwargs)
 
         if config.network_type in [ILMType.VQA_CLASSIFICATION]:
             # create huggingface model
             assert (
                 config.hf_model_name is not None
             ), "Requesting huggingface model but not specifying which"
-            self.tokenizer, self.text_encoder = get_hf_model(
+            self.tokenizer, self.text_encoder = _get_hf_model(
                 config.hf_model_name,
                 load_pretrained_if_available=config.load_hf_if_available,
             )
@@ -270,6 +270,13 @@ class ConfigILM(nn.Module):
                     ]
                 )
             )
+
+    def get_tokenizer(self):
+        if hasattr(self, "tokenizer"):
+            return self.tokenizer
+        else:
+            raise AttributeError(f"ConfigILM of type {self.config.network_type} has no"
+                                 f"tokenizer. Please use a different network type.")
 
     def _check_input(self, batch):
         if self.config.network_type == ILMType.IMAGE_CLASSIFICATION:

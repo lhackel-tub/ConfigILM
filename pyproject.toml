@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "configilm"
-version = "0.4.4"
+version = "0.4.5"
 description = "A state-of-the-art tool for Python developers seeking to rapidly and iteratively develop vision and language models within the [`pytorch`](https://pytorch.org/) framework"
 authors = ["Leonard Hackel <l.hackel@tu-berlin.de>"]
 readme = "README.md"
@@ -15,7 +15,7 @@ transformers = "^4.26.0"
 appdirs = "^1.4.4"
 lmdb = { version = "^1.4.0", optional = true }
 bigearthnet-encoder = { version = "^0.3.0", optional = true }
-pytorch-lightning = { version = "^1.9.0", optional = true }
+pytorch-lightning = { version = "^2.0.0", optional = true }
 matplotlib = { version = "^3.6.3", optional = true }
 scikit-learn = { version = "^1.2.1", optional = true }
 lightning-bolts = { version = "^0.6.0.post1", optional = true }
@@ -24,7 +24,7 @@ fvcore = { version = "^0.1.5.post20221221", optional = true }
 [tool.poetry.group.extra.dependencies]
 lmdb = "^1.4.0"
 bigearthnet-encoder = "^0.3.0"
-pytorch-lightning = "^1.9.0"
+pytorch-lightning = "^2.0.0"
 matplotlib = "^3.6.3"
 scikit-learn = "^1.2.1"
 lightning-bolts = "^0.6.0.post1"

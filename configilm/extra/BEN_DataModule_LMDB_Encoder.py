@@ -5,7 +5,6 @@ Original Paper of Image Data:
 https://arxiv.org/abs/2105.07921
 https://bigearth.net/
 """
-import csv
 import os
 from datetime import datetime
 from time import time
@@ -17,106 +16,12 @@ import pytorch_lightning as pl
 import torch
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-from torch.utils.data import Dataset
 
 from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
-from configilm.extra.BEN_lmdb_utils import ben19_list_to_onehot
-from configilm.extra.BEN_lmdb_utils import BENLMDBReader
 from configilm.extra.CustomTorchClasses import MyGaussianNoise
 from configilm.extra.CustomTorchClasses import MyRotateTransform
 from configilm.util import Messages
-
-
-class BENDataSet(Dataset):
-    avail_chan_configs = {
-        2: "Sentinel-1",
-        3: "RGB",
-        4: "10m Sentinel-2",
-        10: "10m + 20m Sentinel-2",
-        12: "10m + 20m Sentinel-2 + 10m Sentinel-1",
-    }
-
-    @classmethod
-    def get_available_channel_configurations(cls):
-        print("Available channel configurations are:")
-        for c, m in cls.avail_chan_configs.items():
-            print(f"    {c:>3} -> {m}")
-
-    def __init__(
-        self,
-        root_dir: Union[str, Path] = Path("./"),
-        split: Optional[str] = None,
-        transform=None,
-        max_img_idx=None,
-        img_size=(12, 120, 120),
-    ):
-        super().__init__()
-        self.root_dir = Path(root_dir)
-        self.lmdb_dir = self.root_dir / "BigEarthNetEncoded.lmdb"
-        self.transform = transform
-        self.image_size = img_size
-        if img_size[0] not in self.avail_chan_configs.keys():
-            BENDataSet.get_available_channel_configurations()
-            raise AssertionError(f"{img_size[0]} is not a valid channel configuration.")
-
-        self.read_channels = img_size[0]
-
-        print(f"Loading BEN data for {split}...")
-        if split is not None:
-            with open(self.root_dir / f"{split}.csv") as f:
-                reader = csv.reader(f)
-                patches = list(reader)
-        else:
-            splits = ["train", "val", "test"]
-            patches = []
-            for s in splits:
-                with open(self.root_dir / f"{s}.csv") as f:
-                    reader = csv.reader(f)
-                    patches += list(reader)
-
-        # lines get read as arrays -> flatten to one dimension
-        self.patches = [x[0] for x in patches]
-        # sort list for reproducibility
-        self.patches.sort()
-        print(f"    {len(self.patches)} patches indexed")
-        if (
-            max_img_idx is not None
-            and max_img_idx < len(self.patches)
-            and max_img_idx != -1
-        ):
-            self.patches = self.patches[:max_img_idx]
-
-        print(f"    {len(self.patches)} filtered patches indexed")
-        self.BENLoader = BENLMDBReader(
-            lmdb_dir=self.lmdb_dir,
-            label_type="new",
-            image_size=self.image_size,
-            bands=self.image_size[0],
-        )
-
-    def __len__(self):
-        return len(self.patches)
-
-    def __getitem__(self, idx):
-        key = self.patches[idx]
-
-        # get (& write) image from (& to) LMDB
-        # get image from database
-        # we have to copy, as the image in imdb is not writeable,
-        # which is a problem in .to_tensor()
-        img, labels = self.BENLoader[key]
-
-        if img is None:
-            print(f"Cannot load {key} from database")
-            raise ValueError
-        if self.transform:
-            img = self.transform(img)
-
-        label_list = labels
-        labels = ben19_list_to_onehot(labels)
-
-        assert sum(labels) == len(set(label_list)), f"Label creation failed for {key}"
-        return img, labels
+from configilm.extra.BENDataSet import BENDataSet
 
 
 class BENDataModule(pl.LightningDataModule):

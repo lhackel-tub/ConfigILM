@@ -51,6 +51,8 @@ class LitVisionEncoder(pl.LightningModule):
         self.lr = lr
         self.config = config
         self.model = ConfigILM.ConfigILM(config)
+        self.val_output_list = []
+        self.test_output_list = []
 
     def training_step(self, batch, batch_idx):
         x, y = batch
@@ -67,10 +69,14 @@ class LitVisionEncoder(pl.LightningModule):
         x, y = batch
         x_hat = self.model(x)
         loss = F.binary_cross_entropy_with_logits(x_hat, y)
-        return {"loss": loss, "outputs": x_hat, "labels": y}
+        self.val_output_list += [{"loss": loss, "outputs": x_hat, "labels": y}]
 
-    def validation_epoch_end(self, outputs):
-        metrics = self.get_metrics(outputs)
+    def on_validation_epoch_start(self):
+        super().on_validation_epoch_start()
+        self.val_output_list = []
+
+    def on_validation_epoch_end(self):
+        metrics = self.get_metrics(self.val_output_list)
 
         self.log("val/loss", metrics["avg_loss"])
         self.log("val/f1", metrics["avg_f1_score"])
@@ -81,10 +87,10 @@ class LitVisionEncoder(pl.LightningModule):
         x, y = batch
         x_hat = self.model(x)
         loss = F.binary_cross_entropy_with_logits(x_hat, y)
-        return {"loss": loss, "outputs": x_hat, "labels": y}
+        self.test_output_list += [{"loss": loss, "outputs": x_hat, "labels": y}]
 
-    def test_epoch_end(self, outputs):
-        metrics = self.get_metrics(outputs)
+    def on_test_epoch_end(self):
+        metrics = self.get_metrics(self.test_output_list)
 
         self.log("test/loss", metrics["avg_loss"])
         self.log("test/f1", metrics["avg_f1_score"])
@@ -173,7 +179,7 @@ def main(
         image_size=image_size,
         channels=number_of_channels,
         drop_rate=drop_rate,
-        network_type=ILMType.VISION_CLASSIFICATION,
+        network_type=ILMType.IMAGE_CLASSIFICATION,
     )
 
     wandb_logger = WandbLogger(
@@ -222,7 +228,7 @@ def main(
 
     model = LitVisionEncoder(config=model_config, lr=lr)
     dm = BENDataModule(
-        data_dir=resolve_ben_data_dir(data_dir),  # path to dataset
+        data_dir=resolve_ben_data_dir(data_dir, allow_mock=True),  # path to dataset
         img_size=(number_of_channels, image_size, image_size),
         num_workers_dataloader=num_workers,
         max_img_idx=max_img_index,

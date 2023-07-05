@@ -237,7 +237,7 @@ For this example usage we will be using the <a class="reference internal" href="
 <li><p><code class="docutils literal notranslate"><span class="pre">training_step</span></code> and</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">configure_optimizer</span></code>,</p></li>
 </ol>
-<p>but to have a fully functional script, we add the validation and test steps as well as evaluation of the validation and test results. All <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions are working on a single batch while <code class="docutils literal notranslate"><span class="pre">*_epoch_end</span></code> functions are called after all batches are used and are passed a list of all return values of their respective <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions.
+<p>but to have a fully functional script, we add the validation and test steps as well as evaluation of the validation and test results. All <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions are working on a single batch while <code class="docutils literal notranslate"><span class="pre">*_epoch_end</span></code> functions are called after all batches are evaluated. During <code class="docutils literal notranslate"><span class="pre">*_step</span></code> calls the module collects the outputs in the respective <code class="docutils literal notranslate"><span class="pre">self.*_output_list</span></code> so that the results can be evaluated at the end of the epoch (this is new for pytorch lightning 2.0).
 For Visual Question Answering (VQA) we have to add one additional function, as the network works with 3 values (image + language input, output) instead of the usual 2 (input, output). Therefore we add a function (here called <code class="docutils literal notranslate"><span class="pre">_disassemble_batch</span></code>), which disassembles the batch into input and output where the <em>input contains both modalities</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -257,6 +257,8 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
         <span class="bp">self</span><span class="o">.</span><span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">ConfigILM</span><span class="o">.</span><span class="n">ConfigILM</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_output_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_output_list</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">_disassemble_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
         <span class="n">images</span><span class="p">,</span> <span class="n">questions</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span>
@@ -283,20 +285,28 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disassemble_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
         <span class="n">x_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">x_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="n">x_hat</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_output_list</span> <span class="o">+=</span> <span class="p">[{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="n">x_hat</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}]</span>
 
-    <span class="k">def</span> <span class="nf">validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
-        <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">on_validation_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_validation_epoch_start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_output_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">on_validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_output_list</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;val/loss&quot;</span><span class="p">,</span> <span class="n">avg_loss</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disassemble_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
         <span class="n">x_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">x_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="n">x_hat</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_output_list</span> <span class="o">+=</span> <span class="p">[{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="n">x_hat</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}]</span>
 
-    <span class="k">def</span> <span class="nf">test_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
-        <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">on_test_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_test_epoch_start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_output_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">on_test_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_output_list</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;test/loss&quot;</span><span class="p">,</span> <span class="n">avg_loss</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
@@ -389,7 +399,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
   warnings.warn(
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/runner/.cache/configilm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/runner/.cache/configilm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.weight&#39;, &#39;classifier.bias&#39;]
 - This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
 - This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
 </pre></div>
@@ -437,7 +447,7 @@ Additionally only the first 10 elements of output + expected answer are shown, a
 Question: [101, 2024, 6138, 1998, 21770, 10624, 6914, 14769, 4910, 2752, 2556, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Expected: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
           yes
-    Real: [-0.15966129302978516, 0.3294173777103424, -0.292447030544281, -0.8065721988677979, -0.8537939786911011, -0.651321530342102, -0.03260095417499542, -0.4727802872657776, -0.7928547263145447, -0.6645684838294983]
+    Real: [-0.3493223786354065, 0.3443600833415985, -0.5000567436218262, -0.8526687026023865, -0.9373693466186523, -0.6275889277458191, 0.08152499794960022, -1.1940683126449585, -0.2362317144870758, -0.3389194905757904]
           yes
 </pre></div>
 </div>

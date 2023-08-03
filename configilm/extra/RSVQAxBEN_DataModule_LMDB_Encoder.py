@@ -216,10 +216,6 @@ class RSVQAxBENDataSet(Dataset):
         return len(self.questions)
 
     def __getitem__(self, idx):
-        if idx > len(self):
-            warnings.warn(f"Index {idx} > {len(self)}, using modulo")
-            idx = idx % len(self)
-
         qa_pair = {
             "type": self.types[idx],
             "question": self.idx_to_question[self.questions[idx]],

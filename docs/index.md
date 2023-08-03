@@ -42,6 +42,7 @@ vqa
 extra/BEN_LMDB_Reader
 extra/bigearthnet
 extra/rsvqaxben
+extra/hrvqa
 ```
 
 ```{toctree}

@@ -20,6 +20,8 @@ matplotlib = { version = "^3.6.3", optional = true }
 scikit-learn = { version = "^1.2.1", optional = true }
 lightning-bolts = { version = "^0.6.0.post1", optional = true }
 fvcore = { version = "^0.1.5.post20221221", optional = true }
+pyarrow = "^12.0.1"
+pydantic = "^1.8" # version 2 is incompatible with bigearthnet-encoder
 
 [tool.poetry.group.extra.dependencies]
 lmdb = "^1.4.0"

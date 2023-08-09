@@ -6,10 +6,8 @@ with warnings.catch_warnings():
     warnings.filterwarnings(
         action="ignore", category=DeprecationWarning, message=".*distutils.*"
     )
-    from configilm.extra.BEN_DataModule_LMDB_Encoder import (
-        BENDataSet,
-        BENDataModule,
-    )
+    from configilm.extra.BENDataSet import BENDataSet
+    from configilm.extra.BEN_DataModule import BENDataModule
 
 from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
 from typing import Sequence, Union
@@ -34,9 +32,9 @@ max_img_idxs_too_large = [600_000, 1_000_000]
 
 
 def dataset_ok(
-        dataset: Union[BENDataSet, None],
-        expected_image_shape: Sequence,
-        expected_length: Union[int, None],
+    dataset: Union[BENDataSet, None],
+    expected_image_shape: Sequence,
+    expected_length: Union[int, None],
 ):
     # In principal dataset may be not set in data modules, but mypy requires this
     # notation to be happy.
@@ -74,14 +72,18 @@ def dataloaders_ok(dm: BENDataModule, expected_image_shape: Sequence):
 
 def test_4c_ben_dataset_patchname_getter(data_dir):
     ds = BENDataSet(root_dir=data_dir, split="val", return_patchname=True)
-    assert ds.get_patchname_from_index(0) == 'S2A_MSIL2A_20180413T95032_25_43', \
-        "Patch name does not match"
-    assert ds.get_patchname_from_index(1_000_000) is None, \
-        "Patch index OOB should not work"
-    assert ds.get_index_from_patchname('S2A_MSIL2A_20180413T95032_25_43') == 0, \
-        "Index name does not match"
-    assert ds.get_index_from_patchname('abc') is None, \
-        "None existing name does not work"
+    assert (
+        ds.get_patchname_from_index(0) == "S2A_MSIL2A_20180413T95032_25_43"
+    ), "Patch name does not match"
+    assert (
+        ds.get_patchname_from_index(1_000_000) is None
+    ), "Patch index OOB should not work"
+    assert (
+        ds.get_index_from_patchname("S2A_MSIL2A_20180413T95032_25_43") == 0
+    ), "Index name does not match"
+    assert (
+        ds.get_index_from_patchname("abc") is None
+    ), "None existing name does not work"
 
 
 def test_4c_ben_dataset_patchname(data_dir):
@@ -90,21 +92,29 @@ def test_4c_ben_dataset_patchname(data_dir):
     ds = BENDataSet(root_dir=data_dir, split="val", return_patchname=True)
     assert len(ds[0]) == 3, "Three items should have been returned"
     assert type(ds[0][2]) == str, "Third item should be a string"
-    assert ds[0][2] == 'S2A_MSIL2A_20180413T95032_25_43', "Patch name does not match"
+    assert ds[0][2] == "S2A_MSIL2A_20180413T95032_25_43", "Patch name does not match"
 
 
 def test_4c_ben_dataset_from_csv(data_dir):
     img_size = (4, 120, 120)
-    ds = BENDataSet(root_dir=data_dir, split=None, img_size=img_size,
-                    csv_files=Path(data_dir) / "val.csv")
+    ds = BENDataSet(
+        root_dir=data_dir,
+        split=None,
+        img_size=img_size,
+        csv_files=Path(data_dir) / "val.csv",
+    )
 
     dataset_ok(dataset=ds, expected_image_shape=img_size, expected_length=25)
 
 
 def test_4c_ben_dataset_from_csv_with_split(data_dir, capsys):
     img_size = (4, 120, 120)
-    _ = BENDataSet(root_dir=data_dir, split="val", img_size=img_size,
-                   csv_files=Path(data_dir) / "val.csv")
+    _ = BENDataSet(
+        root_dir=data_dir,
+        split="val",
+        img_size=img_size,
+        csv_files=Path(data_dir) / "val.csv",
+    )
     out, _ = capsys.readouterr()
     assert "potential conflict" in out, "Expected a message to be printed but was not"
 

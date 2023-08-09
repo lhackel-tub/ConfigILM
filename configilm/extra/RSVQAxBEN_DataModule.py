@@ -9,7 +9,6 @@ https://bigearth.net/
 """
 import json
 import os
-import warnings
 from datetime import datetime
 from os.path import join
 from pathlib import Path

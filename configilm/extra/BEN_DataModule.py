@@ -7,10 +7,10 @@ https://bigearth.net/
 """
 import os
 from datetime import datetime
+from pathlib import Path
 from time import time
 from typing import Optional
 from typing import Union
-from pathlib import Path
 
 import pytorch_lightning as pl
 import torch
@@ -18,10 +18,10 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 
 from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
+from configilm.extra.BENDataSet import BENDataSet
 from configilm.extra.CustomTorchClasses import MyGaussianNoise
 from configilm.extra.CustomTorchClasses import MyRotateTransform
 from configilm.util import Messages
-from configilm.extra.BENDataSet import BENDataSet
 
 
 class BENDataModule(pl.LightningDataModule):

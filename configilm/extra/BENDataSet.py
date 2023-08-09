@@ -7,18 +7,20 @@ https://bigearth.net/
 """
 import csv
 import pathlib
+from pathlib import Path
+from typing import Callable
+from typing import Iterable
 from typing import Optional
 from typing import Union
-from typing import Iterable
-from pathlib import Path
+
 from torch.utils.data import Dataset
+
 from configilm.extra.BEN_lmdb_utils import ben19_list_to_onehot
 from configilm.extra.BEN_lmdb_utils import BENLMDBReader
-
 from configilm.util import Messages
 
 
-def _csv_files_to_patch_list(csv_files: Optional[Union[Path, Iterable[Path]]]):
+def _csv_files_to_patch_list(csv_files: Union[Path, Iterable[Path]]):
     if isinstance(csv_files, pathlib.Path):
         csv_files = [csv_files]
     patches = []
@@ -28,8 +30,7 @@ def _csv_files_to_patch_list(csv_files: Optional[Union[Path, Iterable[Path]]]):
             patches += list(reader)
 
     # lines get read as arrays -> flatten to one dimension
-    patches = [x[0] for x in patches]
-    return patches
+    return [x[0] for x in patches]
 
 
 class BENDataSet(Dataset):
@@ -55,7 +56,8 @@ class BENDataSet(Dataset):
         transform=None,
         max_img_idx=None,
         img_size=(12, 120, 120),
-        return_patchname: bool = False
+        return_patchname: bool = False,
+        patch_prefilter: Optional[Callable[[str], bool]] = None,
     ):
         super().__init__()
         self.return_patchname = return_patchname
@@ -83,15 +85,22 @@ class BENDataSet(Dataset):
                 csv_files = self.root_dir / f"{split}.csv"
         else:
             if split is not None:
-                Messages.warn("You specified a split and a csv file - this may be a "
-                              "potential conflict and cannot be resolved.")
+                Messages.warn(
+                    "You specified a split and a csv file - this may be a "
+                    "potential conflict and cannot be resolved."
+                )
 
         # get data from this csv file(s)
         self.patches = _csv_files_to_patch_list(csv_files)
+        print(f"    {len(self.patches)} patches indexed")
+
+        # if a prefilter is provided, filter patches based on function
+        if patch_prefilter:
+            self.patches = list(filter(patch_prefilter, self.patches))
+        print(f"    {len(self.patches)} pre-filtered patches indexed")
 
         # sort list for reproducibility
         self.patches.sort()
-        print(f"    {len(self.patches)} patches indexed")
         if (
             max_img_idx is not None
             and max_img_idx < len(self.patches)

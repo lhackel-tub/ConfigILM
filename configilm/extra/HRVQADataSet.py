@@ -1,33 +1,39 @@
-from torch.utils.data import Dataset
-import torch
 import json
-from pathlib import Path
-from typing import Union, Optional
-from PIL import Image
-from torchvision import transforms
-import numpy as np
-import warnings
-from tqdm import tqdm
-from configilm.util import huggingface_tokenize_and_pad
-from configilm.util import Messages
-from transformers import BertTokenizer
 import pathlib
 from os.path import isdir
+from pathlib import Path
+from typing import Optional
+from typing import Union
 
+import torch
+from PIL import Image
+from torch.utils.data import Dataset
+from torchvision import transforms
+from tqdm import tqdm
+from transformers import BertTokenizer
 
-_means = {
-    "red": 0.4257,
-    "green": 0.4435,
-    "blue": 0.4239,
-    "mono": 0.4310
-}
+from configilm.util import huggingface_tokenize_and_pad
+from configilm.util import Messages
 
-_stds = {
-    "red": 0.1335,
-    "green": 0.1202,
-    "blue": 0.1117,
-    "mono": 0.1218
-}
+# 256
+# _means = {
+#     "red": 0.4257,
+#     "green": 0.4435,
+#     "blue": 0.4239,
+#     "mono": 0.4310
+# }
+#
+# _stds = {
+#     "red": 0.1335,
+#     "green": 0.1202,
+#     "blue": 0.1117,
+#     "mono": 0.1218
+# }
+
+# 1024
+_means = {"red": 0.4255, "green": 0.4433, "blue": 0.4237, "mono": 0.4309}
+
+_stds = {"red": 0.1398, "green": 0.1279, "blue": 0.1203, "mono": 0.1308}
 
 
 def resolve_data_dir(
@@ -44,7 +50,7 @@ def resolve_data_dir(
     if data_dir in [None, "none", "None"]:
         Messages.warn("No data directory provided, trying to resolve")
         paths = [
-            "/mnt/storagecube/data/datasets/HRVQA-1.0 release",  # ERDE Storagecube
+            "/mnt/storagecube/data/datasets/HRVQA-1.0 release",  # MARS Storagecube
             "/media/storagecube/data/datasets/HRVQA-1.0 release",  # ERDE Storagecube
         ]
         for p in paths:
@@ -56,12 +62,12 @@ def resolve_data_dir(
     # using mock data if allowed and no other found or forced
     if data_dir in [None, "none", "None"] and allow_mock:
         Messages.warn("Mock data being used, no alternative available.")
-        data_dir = pathlib.Path(__file__).parent / "mock_data" / "HRVQA"
-        data_dir = str(data_dir.resolve(True))
+        data_dir_p = pathlib.Path(__file__).parent / "mock_data" / "HRVQA"
+        data_dir = str(data_dir_p.resolve(True))
     if force_mock:
         Messages.warn("Forcing Mock data")
-        data_dir = pathlib.Path(__file__).parent / "mock_data" / "HRVQA"
-        data_dir = str(data_dir.resolve(True))
+        data_dir_p = pathlib.Path(__file__).parent / "mock_data" / "HRVQA"
+        data_dir = str(data_dir_p.resolve(True))
 
     if data_dir is None:
         raise AssertionError("Could not resolve data directory")
@@ -96,7 +102,7 @@ def select_answers(answers, number_of_answers: int = 1_000):
             f"requested, but {len(answers_by_appearence)} found)."
         )
         answers_by_appearence += [("INVALID", 0)] * (
-                number_of_answers - len(answers_by_appearence)
+            number_of_answers - len(answers_by_appearence)
         )
 
     selected_answers = answers_by_appearence[:number_of_answers]
@@ -115,23 +121,26 @@ def select_answers(answers, number_of_answers: int = 1_000):
 
 class HRVQADataSet(Dataset):
     def __init__(
-            self,
-            root_dir: Union[Path, str],
-            split: Optional[str] = None,
-            transform=None,
-            max_img_idx=None,
-            img_size=(3, 256, 256),
-            selected_answers=None,
-            classes=1_000,
-            tokenizer=None,
-            seq_length=32,
+        self,
+        root_dir: Union[Path, str],
+        split: Optional[str] = None,
+        transform=None,
+        max_img_idx=None,
+        img_size=(3, 1024, 1024),
+        selected_answers=None,
+        classes=1_000,
+        tokenizer=None,
+        seq_length=32,
     ):
         super().__init__()
-        assert split in ["train", "val", None], (f"Split '{split}' not supported for "
-                                                 f"HRVQA DataSet")
-        assert img_size[0] in [1, 3], ("HRVQA only supports 3 channel (RGB) or 1 "
-                                       f"channel (grayscale). {img_size[0]} channels "
-                                       f"unsupported.")
+        assert split in ["train", "val", None], (
+            f"Split '{split}' not supported for " f"HRVQA DataSet"
+        )
+        assert img_size[0] in [1, 3], (
+            "HRVQA only supports 3 channel (RGB) or 1 "
+            f"channel (grayscale). {img_size[0]} channels "
+            f"unsupported."
+        )
         self.is_rgb = img_size[0] == 3
 
         if tokenizer is None:
@@ -155,10 +164,7 @@ class HRVQADataSet(Dataset):
 
         self.seq_length = seq_length
         self.pre_transforms = transforms.Compose(
-            [
-                transforms.Resize(img_size[1:]),
-                transforms.ToTensor()
-            ]
+            [transforms.Resize(img_size[1:]), transforms.ToTensor()]
         )
         self.root_dir = Path(root_dir)
         self.split = split
@@ -198,14 +204,17 @@ class HRVQADataSet(Dataset):
             self.questions = self.questions[:max_img_idx]
             self.answers = self.answers[:max_img_idx]
 
-        assert len(self.answers) == len(self.questions), \
-            (f"Number of questions ({len(self.questions)}) is not the same as number of"
-             f" answers ({len(self.answers)})")
+        assert len(self.answers) == len(self.questions), (
+            f"Number of questions ({len(self.questions)}) is not the same as number of"
+            f" answers ({len(self.answers)})"
+        )
 
-        assert (set([x["question_id"] for x in self.answers]) ==
-                set([x["question_id"] for x in self.questions])), \
-            ("Sets of question and answers do not fit (not same question_ids in both "
-             "sets)")
+        assert {x["question_id"] for x in self.answers} == {
+            x["question_id"] for x in self.questions
+        }, (
+            "Sets of question and answers do not fit (not same question_ids in both "
+            "sets)"
+        )
 
         if selected_answers is None:
             self.selected_answers = select_answers(
@@ -232,8 +241,9 @@ class HRVQADataSet(Dataset):
     def __getitem__(self, idx):
         question = self.questions[idx]
         answer = self.answers[idx]
-        assert question["question_id"] == answer["question_id"], \
-            f"ID mismatch for question and answer for index {idx}"
+        assert (
+            question["question_id"] == answer["question_id"]
+        ), f"ID mismatch for question and answer for index {idx}"
         img_path = self.root_dir / "images" / f'{question["image_id"]}.png'
         img = Image.open(img_path.resolve()).convert("RGB")
         img = self.pre_transforms(img)

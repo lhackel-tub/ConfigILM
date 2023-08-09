@@ -234,9 +234,10 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra</span> <span class="kn">import</span> <span class="n">BEN_DataModule_LMDB_Encoder</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra</span> <span class="kn">import</span> <span class="n">BENDataSet</span>
+<span class="kn">from</span> <span class="nn">configilm.extra</span> <span class="kn">import</span> <span class="n">BEN_DataModule</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">BENDataSet</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path set by to dataset</span>
 <span class="p">)</span>
 
@@ -252,6 +253,7 @@
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading BEN data for None...
     75 patches indexed
+    75 pre-filtered patches indexed
     75 filtered patches indexed
 </pre></div>
 </div>
@@ -265,7 +267,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
         0.])
 </pre></div>
 </div>
-<img alt="../_images/32f570dafc20c5f34e93ce7f1b818f2b0e990696731192feedc7aed9a52d37ec.png" src="../_images/32f570dafc20c5f34e93ce7f1b818f2b0e990696731192feedc7aed9a52d37ec.png" />
+<img alt="../_images/309ab46aee3a114b4ece61d37f70f8e495a2dc0cec8c4719b46436583a0c4f1a.png" src="../_images/309ab46aee3a114b4ece61d37f70f8e495a2dc0cec8c4719b46436583a0c4f1a.png" />
 </div>
 </div>
 <section id="selecting-bands">
@@ -274,7 +276,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <p>The configurations are working like setting the respective number as <code class="docutils literal notranslate"><span class="pre">bands</span></code> parameter in the <code class="docutils literal notranslate"><span class="pre">LMDBReader</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="o">.</span><span class="n">get_available_channel_configurations</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BENDataSet</span><span class="o">.</span><span class="n">BENDataSet</span><span class="o">.</span><span class="n">get_available_channel_configurations</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -295,7 +297,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <p>It is possible to load only a specific split (<code class="docutils literal notranslate"><span class="pre">'train'</span></code>, <code class="docutils literal notranslate"><span class="pre">'val'</span></code> or <code class="docutils literal notranslate"><span class="pre">'test'</span></code>) in the dataset. The images loaded are specified using the csv files in the same folder as the LMDB file. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>), all three are loaded into the same <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENDataSet</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span>
 <span class="p">)</span>
@@ -305,6 +307,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading BEN data for train...
     25 patches indexed
+    25 pre-filtered patches indexed
     25 filtered patches indexed
 </pre></div>
 </div>
@@ -316,7 +319,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <p>It is also possible to restrict the number of images indexed. By setting <code class="docutils literal notranslate"><span class="pre">max_img_idx</span> <span class="pre">=</span> <span class="pre">n</span></code> only the first <code class="docutils literal notranslate"><span class="pre">n</span></code> images (in alphabetical order based on their S2-name) will be loaded. A <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> of  <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> or larger than the number of images in the csv file(s) (in this case 25) equals to load-all-images behaviour.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENDataSet</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">10</span>
@@ -327,6 +330,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading BEN data for train...
     25 patches indexed
+    25 pre-filtered patches indexed
     10 filtered patches indexed
 </pre></div>
 </div>
@@ -334,7 +338,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENDataSet</span><span class="o">.</span><span class="n">BENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">100</span>
@@ -345,6 +349,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading BEN data for train...
     25 patches indexed
+    25 pre-filtered patches indexed
     25 filtered patches indexed
 </pre></div>
 </div>
@@ -358,7 +363,7 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 <p>To use a <code class="docutils literal notranslate"><span class="pre">DataModule</span></code>, the <code class="docutils literal notranslate"><span class="pre">setup()</span></code> function has to be called. This populates the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> splits inside the <code class="docutils literal notranslate"><span class="pre">DataModule</span></code>. Depending on the stage (<code class="docutils literal notranslate"><span class="pre">'fit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'test'</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>), the setup will prepare only train &amp; validation <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>, only test <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> or all three.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BEN_DataModule</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path set by to dataset</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Before:&quot;</span><span class="p">)</span>
@@ -384,20 +389,22 @@ None
 None
 
 === SETUP ===
-(11:58:22) Datamodule setup called
+(14:01:18) Datamodule setup called
 Loading BEN data for train...
     25 patches indexed
+    25 pre-filtered patches indexed
     25 filtered patches indexed
 Loading BEN data for val...
     25 patches indexed
+    25 pre-filtered patches indexed
     25 filtered patches indexed
 setup took 0.00 seconds
   Total training samples:       25  Total validation samples:       25
 === END SETUP ===
 
 After:
-&lt;configilm.extra.BENDataSet.BENDataSet object at 0x7f88e00f6500&gt;
-&lt;configilm.extra.BENDataSet.BENDataSet object at 0x7f88e00f6ad0&gt;
+&lt;configilm.extra.BENDataSet.BENDataSet object at 0x7f0153b0d5d0&gt;
+&lt;configilm.extra.BENDataSet.BENDataSet object at 0x7f0084965bd0&gt;
 None
 </pre></div>
 </div>
@@ -424,7 +431,7 @@ None
 <p>Not changeable is the usage of pinned memory, which is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> if a cuda-enabled device is found and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BEN_DataModule</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span>
 <span class="p">)</span>
@@ -439,12 +446,14 @@ None
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 1 workers
 
 === SETUP ===
-(11:58:22) Datamodule setup called
+(14:01:18) Datamodule setup called
 Loading BEN data for train...
     25 patches indexed
+    25 pre-filtered patches indexed
     25 filtered patches indexed
 Loading BEN data for val...
     25 patches indexed
+    25 pre-filtered patches indexed
     25 filtered patches indexed
 setup took 0.00 seconds
   Total training samples:       25  Total validation samples:       25
@@ -457,7 +466,7 @@ setup took 0.00 seconds
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
@@ -474,7 +483,7 @@ HINT: Shuffle was set to False. This is not recommended for most configuration. 
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BEN_DataModule</span><span class="o">.</span><span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">2</span>
 <span class="p">)</span>

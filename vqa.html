@@ -384,7 +384,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder</span> <span class="kn">import</span> <span class="n">RSVQAxBENDataModule</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.RSVQAxBEN_DataModule</span> <span class="kn">import</span> <span class="n">RSVQAxBENDataModule</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LitVQAEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 <span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
@@ -398,11 +398,6 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/ConfigILM.py:131: UserWarning: Keyword &#39;img_size&#39; unknown. Trying to ignore and restart creation.
   warnings.warn(
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at /home/runner/.cache/configilm/pretrained_models/huggingface_models/prajjwal1/bert-tiny were not used when initializing BertModel: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
-- This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
-- This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 4 workers
@@ -443,7 +438,7 @@ The input question is already returned by the dataset in the form of tokens, so 
 Additionally only the first 10 elements of output + expected answer are shown, as the full lists have 1000 elements.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/9be29ca080e803f706188544f309db527ed35249a567f0e3883a9c688206c04f.png" src="_images/9be29ca080e803f706188544f309db527ed35249a567f0e3883a9c688206c04f.png" />
+<img alt="_images/e1e859080318945ca62a892c7037a3b25825c4641ad1c3b0aa6da1bedee69b03.png" src="_images/e1e859080318945ca62a892c7037a3b25825c4641ad1c3b0aa6da1bedee69b03.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Text: [CLS] are forests and heterogeneous agricultural areas present? [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]
 Question: [101, 2024, 6138, 1998, 21770, 10624, 6914, 14769, 4910, 2752, 2556, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Expected: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]

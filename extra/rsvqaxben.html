@@ -235,9 +235,9 @@ For the usage in this context, the dataset was extended from its RGB form to inc
 </div>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra</span> <span class="kn">import</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra</span> <span class="kn">import</span> <span class="n">RSVQAxBEN_DataModule</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 
@@ -254,7 +254,7 @@ Question (start): [101, 2024, 2070, 6138, 2556, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 
 Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../_images/6eb1786414f6fb19451cd0f91c6f6f4cbd9251e47823cfa04b66b4ef93ba9966.png" src="../_images/6eb1786414f6fb19451cd0f91c6f6f4cbd9251e47823cfa04b66b4ef93ba9966.png" />
+<img alt="../_images/790da3820152e3b842f6d5da8ba80ae20af16dc477c9ef17b27a4209353864a0.png" src="../_images/790da3820152e3b842f6d5da8ba80ae20af16dc477c9ef17b27a4209353864a0.png" />
 </div>
 </div>
 <section id="tokenizer-and-tokenization">
@@ -266,7 +266,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 
 <span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
@@ -286,7 +286,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">16</span>
@@ -306,7 +306,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">8</span>
@@ -361,7 +361,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
         <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
     <span class="p">)</span>
@@ -388,7 +388,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <p>It is possible to load only a specific split (<code class="docutils literal notranslate"><span class="pre">'train'</span></code>, <code class="docutils literal notranslate"><span class="pre">'val'</span></code> or <code class="docutils literal notranslate"><span class="pre">'test'</span></code>) in the dataset. The images loaded are specified using the csv files in the same folder as the LMDB file. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>), all three are loaded into the same <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
@@ -403,7 +403,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <p>It is also possible to restrict the number of images indexed. By setting <code class="docutils literal notranslate"><span class="pre">max_img_idx</span> <span class="pre">=</span> <span class="pre">n</span></code> only the first <code class="docutils literal notranslate"><span class="pre">n</span></code> images (in alphabetical order based on their S2-name) will be loaded. A <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> of  <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> or larger than the number of images in the csv file(s) (in this case 25) equals to load-all-images behaviour.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
@@ -425,7 +425,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/10 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 10/10 [00:00&lt;00:00, 26214.40it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 10/10 [00:00&lt;00:00, 58908.76it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -436,7 +436,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
@@ -458,7 +458,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/75 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 75/75 [00:00&lt;00:00, 381300.36it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 75/75 [00:00&lt;00:00, 301893.28it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -473,7 +473,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <p>For some applications, it is relevant to have only a certain number of classes as valid output. For example, the <code class="docutils literal notranslate"><span class="pre">RSVQAxBEN</span></code> DataSet could contain up to 2^19 &gt; 0.5 million different classes. To prevent this dimension explosion, the number of classes can be limited. For the ‘train’ split, it is then automatically determined which combination of classes results in the highest reduction of the dataset.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
@@ -496,7 +496,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers:   0%|          | 0/25 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers: 100%|██████████| 25/25 [00:00&lt;00:00, 185260.78it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers: 100%|██████████| 25/25 [00:00&lt;00:00, 153975.92it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -508,7 +508,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/25 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 25/25 [00:00&lt;00:00, 178329.25it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 25/25 [00:00&lt;00:00, 142276.26it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -526,7 +526,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train DS: </span><span class="si">{</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
@@ -534,7 +534,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 1: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
@@ -562,7 +562,7 @@ Val DS 2: [&#39;yes&#39;, &#39;no&#39;]
 To use a DataModule, the setup() function has to be called. This populates the Dataset splits inside the DataModule. Depending on the stage (‘fit’, ‘test’ or None), the setup will prepare only train &amp; validation Dataset, only test Dataset or all three.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 </pre></div>
@@ -605,8 +605,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7fe277233850&gt;
-&lt;configilm.extra.RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet object at 0x7fe277232d70&gt;
+&lt;configilm.extra.RSVQAxBEN_DataModule.RSVQAxBENDataSet object at 0x7fbf8db33310&gt;
+&lt;configilm.extra.RSVQAxBEN_DataModule.RSVQAxBENDataSet object at 0x7fbebc1b33a0&gt;
 None
 </pre></div>
 </div>
@@ -634,7 +634,7 @@ None
 Pinned Memory will be set if a <code class="docutils literal notranslate"><span class="pre">CUDA</span></code> device is found, otherwise it will be of. However, this behaviour can be overwritten with <code class="docutils literal notranslate"><span class="pre">pin_memory</span></code>. Changing some of these settings will be accompanied by a Message-Hint printed.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
@@ -658,7 +658,7 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
@@ -683,7 +683,7 @@ HINT: pin_memory set to None
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">2</span>
 <span class="p">)</span>
@@ -706,7 +706,7 @@ HINT: pin_memory set to None
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule_LMDB_Encoder</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">pin_memory</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>

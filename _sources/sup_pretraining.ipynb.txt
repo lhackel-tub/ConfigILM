@@ -323,7 +323,7 @@
    ],
    "source": [
     "# remove-output\n",
-    "from configilm.extra.BEN_DataModule_LMDB_Encoder import BENDataModule\n",
+    "from configilm.extra.BEN_DataModule import BENDataModule\n",
     "model = LitImageEncoder(config=model_config, lr=lr)\n",
     "dm = BENDataModule(\n",
     "    data_dir=my_data_path,  # path to dataset\n",

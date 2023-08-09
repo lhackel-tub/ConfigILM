@@ -366,7 +366,7 @@ For this example usage we will be using the <a class="reference internal" href="
 <p>Finally, we create the model defined above and our datamodule. We will be using a datamodule from this framework described in the Extra section.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.BEN_DataModule_LMDB_Encoder</span> <span class="kn">import</span> <span class="n">BENDataModule</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.BEN_DataModule</span> <span class="kn">import</span> <span class="n">BENDataModule</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LitImageEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 <span class="n">dm</span> <span class="o">=</span> <span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
@@ -402,7 +402,7 @@ For this example usage we will be using the <a class="reference internal" href="
 <p>Here is an example forward call for the model. Since the input is normalized, the colors are slightly distorted. To display the image anyway, we select only the RGB channels and normalize this image to the range 0 to 1.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/5ca768ae356cae103f2943bf67bcc8064494fc5728cd7c130f194d86b62d1a50.png" src="_images/5ca768ae356cae103f2943bf67bcc8064494fc5728cd7c130f194d86b62d1a50.png" />
+<img alt="_images/f3a4bf0d1efba4b8c25b0accada0792fb34dc7697c859c79af8c6455f575bc75.png" src="_images/f3a4bf0d1efba4b8c25b0accada0792fb34dc7697c859c79af8c6455f575bc75.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Expected: [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     Real: [-0.7550816535949707, 0.320548951625824, -0.65679931640625, -0.4799841642379761, -0.8050575852394104, -0.4397601783275604, -0.839691162109375, -0.9487237930297852, -0.7498438954353333, -0.9058451652526855, 0.004557435400784016, -0.8555901050567627, -0.5166867971420288, -0.9608004689216614, -0.9153728485107422, -0.7557512521743774, -0.5817127227783203, -0.9797934293746948, -0.7838466167449951]
 </pre></div>

@@ -254,8 +254,11 @@ class BENLMDBReader:
         """
         if self.env is None:
             self.env = lmdb.open(
-                str(self.lmdb_dir), readonly=True, lock=False, meminit=False,
-                readahead=True
+                str(self.lmdb_dir),
+                readonly=True,
+                lock=False,
+                meminit=False,
+                readahead=True,
             )
         # get pure patch data
         ben_patch = read_ben_from_lmdb(self.env, item)

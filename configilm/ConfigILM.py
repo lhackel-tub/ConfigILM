@@ -275,8 +275,10 @@ class ConfigILM(nn.Module):
         if hasattr(self, "tokenizer"):
             return self.tokenizer
         else:
-            raise AttributeError(f"ConfigILM of type {self.config.network_type} has no"
-                                 f"tokenizer. Please use a different network type.")
+            raise AttributeError(
+                f"ConfigILM of type {self.config.network_type} has no"
+                f"tokenizer. Please use a different network type."
+            )
 
     def _check_input(self, batch):
         if self.config.network_type == ILMType.IMAGE_CLASSIFICATION:

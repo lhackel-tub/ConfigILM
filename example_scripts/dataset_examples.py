@@ -14,14 +14,14 @@ from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
 
 
 def speedtest(
-        datamodule: Tuple[
-            str,
-            Union[
-                COCOQA_DataModule.COCOQADataModule,
-                BEN_DataModule_LMDB_Encoder.BENDataModule,
-                RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataModule,
-            ],
+    datamodule: Tuple[
+        str,
+        Union[
+            COCOQA_DataModule.COCOQADataModule,
+            BEN_DataModule_LMDB_Encoder.BENDataModule,
+            RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataModule,
         ],
+    ],
 ):
     ds_name, dm = datamodule
     dl = dm.train_dataloader()
@@ -56,15 +56,15 @@ def speedtest(
 
 
 def display_img(
-        dataset: Tuple[
-            str,
-            Union[
-                COCOQA_DataModule.COCOQADataSet,
-                BEN_DataModule_LMDB_Encoder.BENDataSet,
-                RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet,
-            ],
+    dataset: Tuple[
+        str,
+        Union[
+            COCOQA_DataModule.COCOQADataSet,
+            BEN_DataModule_LMDB_Encoder.BENDataSet,
+            RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet,
         ],
-        img_id: int,
+    ],
+    img_id: int,
 ):
     ds_name, ds = dataset
     # get img
@@ -99,28 +99,30 @@ def display_img(
     # also remove most of the white boarder and increase base resolution to 200
     # (~780x780)
     try:
-        plt.savefig(f"{ds_name}_{img_id}_ID[{ds.get_patchname_from_index(img_id)}].png",
-                    bbox_inches="tight", dpi=200)
+        plt.savefig(
+            f"{ds_name}_{img_id}_ID[{ds.get_patchname_from_index(img_id)}].png",
+            bbox_inches="tight",
+            dpi=200,
+        )
     except AttributeError:
-        plt.savefig(f"{ds_name}_{img_id}.png",
-                    bbox_inches="tight", dpi=200)
+        plt.savefig(f"{ds_name}_{img_id}.png", bbox_inches="tight", dpi=200)
 
     plt.show()
 
 
 def main(
-        dataset: str,
-        function: str,
-        data_dir: Union[str, None] = None,
-        channels: int = 3,
-        img_size: int = 120,
-        # only relevant for display
-        img_id: int = 5,
-        # only relevant for speedtest
-        max_img_index: int = 1024 * 100,
-        workers: int = 8,
-        bs: int = 64,
-        seq_length: int = 64,
+    dataset: str,
+    function: str,
+    data_dir: Union[str, None] = None,
+    channels: int = 3,
+    img_size: int = 120,
+    # only relevant for display
+    img_id: int = 5,
+    # only relevant for speedtest
+    max_img_index: int = 1024 * 100,
+    workers: int = 8,
+    bs: int = 64,
+    seq_length: int = 64,
 ):
     dataset = dataset.lower()
     if dataset.lower() in ["ben", "bigearthnet"]:

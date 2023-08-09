@@ -1,12 +1,12 @@
-import time
-
-from configilm.extra.BENDataSet import BENDataSet
+from pathlib import Path
+from typing import Iterable
 from typing import Optional
 from typing import Union
-from typing import Iterable
-from pathlib import Path
+
 import pandas as pd
+
 from configilm.extra.BEN_lmdb_utils import ben19_list_to_onehot
+from configilm.extra.BENDataSet import BENDataSet
 
 
 class BEN2DataSet(BENDataSet):
@@ -33,8 +33,20 @@ class BEN2DataSet(BENDataSet):
         max_img_idx=None,
         img_size=(12, 120, 120),
         return_patchname: bool = False,
-        new_label_file: Union[str, Path, None] = None
+        new_label_file: Union[str, Path, None] = None,
     ):
+        # read label_file and make it a dict for fast access
+        if new_label_file is None:
+            self.new_label_file = Path(root_dir) / "labels.parquet"
+        else:
+            self.new_label_file = Path(new_label_file)
+
+        label_df = pd.read_parquet(self.new_label_file, engine="pyarrow")
+        self.label_dict = dict(zip(label_df.name, label_df.labels))
+
+        # define prefilter function that filter patches before applying max index
+        lblset = set(self.label_dict.keys())
+
         super().__init__(
             root_dir=root_dir,
             csv_files=csv_files,
@@ -42,47 +54,21 @@ class BEN2DataSet(BENDataSet):
             transform=transform,
             max_img_idx=max_img_idx,
             img_size=img_size,
-            return_patchname=True
+            return_patchname=True,
+            patch_prefilter=lambda x: x in lblset,
         )
         # we have to use a different variable here because otherwise super will not
         # return the patchname which we need for the new labels
         self.return_patchname_self = return_patchname
-        if new_label_file is None:
-            self.new_label_file = Path(root_dir) / "labels.parquet"
-        label_df = pd.read_parquet(
-            '~/Documents/datasets/labels.parquet',
-            engine='pyarrow'
-        )
-        self.label_dict = dict(zip(label_df.name, label_df.labels))
 
     def __getitem__(self, idx):
         ret_val = super().__getitem__(idx=idx)
-        assert len(ret_val) == 3, (f"Can't handle {len(ret_val)}-element returnvalues. "
-                                   f"There should be 3 values (img, label, key).")
+        assert len(ret_val) == 3, (
+            f"Can't handle {len(ret_val)}-element returnvalues. "
+            f"There should be 3 values (img, label, key)."
+        )
         img, old_labels, key = ret_val
         labels = ben19_list_to_onehot(self.label_dict[key])
-        if set(labels) == set(old_labels):
-            print(labels)
-            print(old_labels)
         if self.return_patchname_self:
             return img, labels, key
         return img, labels
-
-
-if __name__ == "__main__":
-    from BEN_lmdb_utils import resolve_ben_data_dir
-    from tqdm import tqdm
-
-    ds = BEN2DataSet(
-        root_dir=resolve_ben_data_dir(
-            data_dir=None,
-            force_mock=True
-        )
-    )
-    _ = ds[48]  # Not working: 1, 49, 60, 62
-    for i in tqdm(range(75)):
-        #_ = ds[i]
-        try:
-            _ = ds[i]
-        except KeyError as k:
-            print(i, k)

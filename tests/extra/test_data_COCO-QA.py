@@ -1,9 +1,9 @@
+import warnings
 from typing import Sequence
 from typing import Union
 
 import pytest
 import torch
-import warnings
 
 from configilm.extra.COCOQA_DataModule import COCOQADataModule
 from configilm.extra.COCOQA_DataModule import COCOQADataSet
@@ -45,10 +45,11 @@ def dataloaders_ok(
 ):
 
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Validation and Test set are equal in this "
-                                        "Dataset.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Validation and Test set are equal in this " "Dataset.",
+        )
         dm.setup(stage=None)
     dataloaders = [
         dm.train_dataloader(),
@@ -122,10 +123,11 @@ def test_dm_default(data_dir, split: str):
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
 
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Validation and Test set are equal in this "
-                                        "Dataset.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Validation and Test set are equal in this " "Dataset.",
+        )
         dm.setup(stage=split2stage[split])
     dm.prepare_data()
     if split in ["train", "val"]:
@@ -181,12 +183,12 @@ def test_dm_dataloader(data_dir, bs: int):
 def test_dm_shuffle_false(data_dir):
     dm = COCOQADataModule(data_dir=data_dir, shuffle=False)
 
-
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Validation and Test set are equal in this "
-                                        "Dataset.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Validation and Test set are equal in this " "Dataset.",
+        )
         dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
@@ -205,10 +207,11 @@ def test_dm_shuffle_none(data_dir):
     dm = COCOQADataModule(data_dir=data_dir, shuffle=None)
 
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Validation and Test set are equal in this "
-                                        "Dataset.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Validation and Test set are equal in this " "Dataset.",
+        )
         dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -226,10 +229,11 @@ def test_dm_shuffle_true(data_dir):
     dm = COCOQADataModule(data_dir=data_dir, shuffle=True)
 
     with warnings.catch_warnings():
-        warnings.filterwarnings(action="ignore",
-                                category=UserWarning,
-                                message="Validation and Test set are equal in this "
-                                        "Dataset.")
+        warnings.filterwarnings(
+            action="ignore",
+            category=UserWarning,
+            message="Validation and Test set are equal in this " "Dataset.",
+        )
         dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],

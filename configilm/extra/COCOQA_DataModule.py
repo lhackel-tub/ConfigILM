@@ -25,7 +25,7 @@ from configilm.util import huggingface_tokenize_and_pad
 from configilm.util import Messages
 
 
-def resolve_cocoqa_data_dir(
+def resolve_data_dir(
     data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
 ) -> str:
     """

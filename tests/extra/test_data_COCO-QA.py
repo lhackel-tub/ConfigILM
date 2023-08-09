@@ -7,12 +7,12 @@ import torch
 
 from configilm.extra.COCOQA_DataModule import COCOQADataModule
 from configilm.extra.COCOQA_DataModule import COCOQADataSet
-from configilm.extra.COCOQA_DataModule import resolve_cocoqa_data_dir
+from configilm.extra.COCOQA_DataModule import resolve_data_dir
 
 
 @pytest.fixture
 def data_dir():
-    return resolve_cocoqa_data_dir(None, force_mock=True)
+    return resolve_data_dir(None, allow_mock=True, force_mock=True)
 
 
 def dataset_ok(

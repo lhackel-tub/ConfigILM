@@ -148,7 +148,7 @@ def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
     return ben_channel_mean, ben_channel_std
 
 
-def resolve_ben_data_dir(
+def resolve_data_dir(
     data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
 ) -> str:
     """

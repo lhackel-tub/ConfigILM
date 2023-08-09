@@ -9,7 +9,7 @@ with warnings.catch_warnings():
     from configilm.extra.BENDataSet import BENDataSet
     from configilm.extra.BEN_DataModule import BENDataModule
 
-from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
+from configilm.extra.BEN_lmdb_utils import resolve_data_dir
 from typing import Sequence, Union
 import torch
 from pathlib import Path
@@ -17,7 +17,7 @@ from pathlib import Path
 
 @pytest.fixture
 def data_dir():
-    return resolve_ben_data_dir(None, force_mock=True)
+    return resolve_data_dir(None, force_mock=True)
 
 
 dataset_params = ["train", "val", "test", None]

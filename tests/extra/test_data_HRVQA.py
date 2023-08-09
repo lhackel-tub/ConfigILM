@@ -1,4 +1,3 @@
-import warnings
 from typing import Sequence
 from typing import Tuple
 from typing import Union
@@ -6,9 +5,9 @@ from typing import Union
 import pytest
 import torch
 
-from configilm.extra.HRVQADataSet import resolve_data_dir
-from configilm.extra.HRVQADataSet import HRVQADataSet
 from configilm.extra.HRVQA_DataModule import HRVQADataModule
+from configilm.extra.HRVQADataSet import HRVQADataSet
+from configilm.extra.HRVQADataSet import resolve_data_dir
 
 
 @pytest.fixture
@@ -19,7 +18,7 @@ def data_dir():
 dataset_params = ["train", "val", None]  # this dataset does not support test split
 
 class_number = [10, 100, 250, 1000, 1234]
-img_sizes = [60, 120, 128, 144, 256]
+img_sizes = [60, 120, 128, 144, 256, 1024]
 channels_pass = [1, 3]  # accepted channel configs
 channels_fail = [2, 4, 0, -1, 10, 12]  # not accepted configs
 img_shapes_pass = [(c, hw, hw) for c in channels_pass for hw in img_sizes]
@@ -57,7 +56,7 @@ mock_s2_names = [
     "46738",
     "47903",
     "49129",
-    "51504"
+    "51504",
 ]
 
 mock_data_dict = {
@@ -72,11 +71,11 @@ mock_data_dict = {
 
 
 def dataset_ok(
-        dataset: Union[HRVQADataSet, None],
-        expected_image_shape: Sequence,
-        expected_question_length: int,
-        expected_length: Union[int, None],
-        classes: int,
+    dataset: Union[HRVQADataSet, None],
+    expected_image_shape: Sequence,
+    expected_question_length: int,
+    expected_length: Union[int, None],
+    classes: int,
 ):
     assert dataset is not None
     if expected_length is not None:
@@ -94,10 +93,10 @@ def dataset_ok(
 
 
 def dataloaders_ok(
-        dm: HRVQADataModule,
-        expected_image_shape: Sequence,
-        expected_question_length: int,
-        classes: int,
+    dm: HRVQADataModule,
+    expected_image_shape: Sequence,
+    expected_question_length: int,
+    classes: int,
 ):
     dm.setup(stage=None)
     dataloaders = [
@@ -122,7 +121,7 @@ def test_ds_default(data_dir):
 
     dataset_ok(
         dataset=ds,
-        expected_image_shape=(3, 256, 256),
+        expected_image_shape=(3, 1024, 1024),
         expected_length=None,
         classes=1_000,
         expected_question_length=32,
@@ -133,7 +132,7 @@ def test_ds_default(data_dir):
     "split, classes", [(s, c) for s in dataset_params for c in class_number]
 )
 def test_3c_dataset_splits(data_dir, split: str, classes: int):
-    img_size = (3, 120, 120)
+    img_size = (3, 128, 128)
     seq_length = 32
 
     ds = HRVQADataSet(
@@ -153,11 +152,9 @@ def test_3c_dataset_splits(data_dir, split: str, classes: int):
     )
 
 
-@pytest.mark.parametrize(
-    "classes", class_number
-)
+@pytest.mark.parametrize("classes", class_number)
 def test_3c_dataset_splits_test(data_dir, classes: int):
-    img_size = (3, 120, 120)
+    img_size = (3, 128, 128)
     seq_length = 32
     with pytest.raises(AssertionError):
         # test not supported by this DS
@@ -208,7 +205,7 @@ def test_ds_max_img_idx(data_dir, max_img_index: int):
     )
     dataset_ok(
         dataset=ds,
-        expected_image_shape=(3, 256, 256),
+        expected_image_shape=(3, 1024, 1024),
         expected_length=len_ds,
         classes=1000,
         expected_question_length=32,
@@ -258,14 +255,14 @@ def test_dm_default(data_dir, split: str):
     if split in ["train", "val"]:
         dataset_ok(
             dm.train_ds,
-            expected_image_shape=(3, 256, 256),
+            expected_image_shape=(3, 1024, 1024),
             expected_length=None,
             classes=1_000,
             expected_question_length=32,
         )
         dataset_ok(
             dm.val_ds,
-            expected_image_shape=(3, 256, 256),
+            expected_image_shape=(3, 1024, 1024),
             expected_length=None,
             classes=1000,
             expected_question_length=32,
@@ -275,7 +272,7 @@ def test_dm_default(data_dir, split: str):
         for ds in [dm.train_ds, dm.val_ds]:
             dataset_ok(
                 ds,
-                expected_image_shape=(3, 256, 256),
+                expected_image_shape=(3, 1024, 1024),
                 expected_length=None,
                 classes=1000,
                 expected_question_length=32,
@@ -285,18 +282,18 @@ def test_dm_default(data_dir, split: str):
 
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
-def test_dm_dataloaders(data_dir, bs: int):
+def test_dm_dataloaders_bs(data_dir, bs: int):
     dm = HRVQADataModule(data_dir=data_dir, batch_size=bs)
     dataloaders_ok(
         dm,
-        expected_image_shape=(bs, 3, 256, 256),
+        expected_image_shape=(bs, 3, 1024, 1024),
         expected_question_length=32,
         classes=1000,
     )
 
 
 @pytest.mark.parametrize("img_size", [[1], [1, 2], [1, 2, 3, 4]])
-def test_dm_dataloaders(data_dir, img_size):
+def test_dm_dataloaders_img_size(data_dir, img_size):
     with (pytest.raises(ValueError)):
         _ = HRVQADataModule(data_dir=data_dir, img_size=img_size)
 

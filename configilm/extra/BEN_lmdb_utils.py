@@ -148,7 +148,7 @@ def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
     return ben_channel_mean, ben_channel_std
 
 
-def resolve_ben_data_dir(
+def resolve_data_dir(
     data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
 ) -> str:
     """
@@ -254,8 +254,11 @@ class BENLMDBReader:
         """
         if self.env is None:
             self.env = lmdb.open(
-                str(self.lmdb_dir), readonly=True, lock=False, meminit=False,
-                readahead=True
+                str(self.lmdb_dir),
+                readonly=True,
+                lock=False,
+                meminit=False,
+                readahead=True,
             )
         # get pure patch data
         ben_patch = read_ben_from_lmdb(self.env, item)

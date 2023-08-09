@@ -1,17 +1,20 @@
-import pytorch_lightning as pl
+import os
 from datetime import datetime
 from time import time
 from typing import List
 from typing import Optional
 from typing import Union
-import os
-from configilm.extra.HRVQADataSet import HRVQADataSet, _means, _stds
 
+import pytorch_lightning as pl
 import torch
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
+
 from configilm.extra.CustomTorchClasses import MyGaussianNoise
 from configilm.extra.CustomTorchClasses import MyRotateTransform
+from configilm.extra.HRVQADataSet import _means
+from configilm.extra.HRVQADataSet import _stds
+from configilm.extra.HRVQADataSet import HRVQADataSet
 from configilm.util import Messages
 
 
@@ -55,7 +58,7 @@ class HRVQADataModule(pl.LightningDataModule):
         self.max_img_idx = (
             max_img_idx if max_img_idx is None or max_img_idx > 0 else None
         )
-        self.img_size = (3, 256, 256) if img_size is None else img_size
+        self.img_size = (3, 1024, 1024) if img_size is None else img_size
         self.shuffle = shuffle
         if self.shuffle is not None:
             Messages.hint(
@@ -65,16 +68,16 @@ class HRVQADataModule(pl.LightningDataModule):
             )
         self.selected_answers = selected_answers
 
-        mean = [
-            _means["red"],
-            _means["green"],
-            _means["blue"]
-        ] if self.img_size[0] == 3 else [_means["mono"]]
-        std = [
-            _stds["red"],
-            _stds["green"],
-            _stds["blue"]
-        ] if self.img_size[0] == 3 else [_stds["mono"]]
+        mean = (
+            [_means["red"], _means["green"], _means["blue"]]
+            if self.img_size[0] == 3
+            else [_means["mono"]]
+        )
+        std = (
+            [_stds["red"], _stds["green"], _stds["blue"]]
+            if self.img_size[0] == 3
+            else [_stds["mono"]]
+        )
 
         self.train_transform = transforms.Compose(
             [

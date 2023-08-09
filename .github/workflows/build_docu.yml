@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: ConfigILM Test
+name: ConfigILM Documentation
 
 on:
   push:
@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   test:
-    name: Run tests & display coverage
+    name: Build Documentation
     runs-on: ubuntu-latest
     steps:
       #----------------------------------------------
@@ -53,20 +53,6 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --with dev,extra
-      #----------------------------------------------
-      #  Run test suite + coverage + generate badge
-      #----------------------------------------------
-      - name: Run tests + generate coverage
-        run: |
-          poetry run coverage run --source=configilm -m pytest
-      - name: Log latest CI run
-        run: echo $(date) > latest_ci_run
-      - name: Generate coverage report
-        run: |
-          source .venv/bin/activate
-          coverage report
-      - name: Generate coverage badge
-        uses: tj-actions/coverage-badge-py@v2
 
       #----------------------------------------------
       #  Build Docu
@@ -84,15 +70,6 @@ jobs:
           # do not touch the pr-preview generated files:
           # https://github.com/rossjrw/pr-preview-action
           clean-exclude: pr-preview/
-
-      #----------------------------------------------
-      #  Add Coverage Badge
-      #----------------------------------------------
-      - name: Verify Changed files
-        uses: tj-actions/verify-changed-files@v13
-        id: verify-changed-files
-        with:
-          files: coverage.svg
 
       - name: Commit files
         if: steps.verify-changed-files.outputs.files_changed == 'true'

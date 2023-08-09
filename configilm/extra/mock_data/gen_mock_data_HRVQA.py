@@ -18,9 +18,10 @@ def copy_part_of_json(
     data_new = data[:elems]
     data_new = sorted(data_new, key=lambda x: x["question_id"])
 
-    assert len(set([x["question_id"] for x in data_new])) == elems, \
-        (f"Seed {random_seed} selects elements multiple times - please select different"
-         f" seed or change number of elements")
+    assert len({x["question_id"] for x in data_new}) == elems, (
+        f"Seed {random_seed} selects elements multiple times - please select different"
+        f" seed or change number of elements"
+    )
 
     path = pathlib.Path(".") / "HRVQA" / "jsons" / f_name
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -28,7 +29,7 @@ def copy_part_of_json(
         json.dump({"questions": data_new}, f)
 
     # copy answers to same questions
-    qids = set([x["question_id"] for x in data_new])
+    qids = {x["question_id"] for x in data_new}
     f_name_a = f_name.split("_")[0] + "_answer.json"
     if os.path.isfile(join(base_path, "jsons", f_name_a)):
         with open(join(base_path, "jsons", f_name_a)) as read_file:
@@ -74,5 +75,6 @@ if __name__ == "__main__":
     for f in jsons:
         copy_part_of_json(base_path=base_path, f_name=f)
 
-    img_subset_from_jsons(base_path=base_path, json_base_path="./HRVQA/jsons/",
-                          jsons=jsons)
+    img_subset_from_jsons(
+        base_path=base_path, json_base_path="./HRVQA/jsons/", jsons=jsons
+    )

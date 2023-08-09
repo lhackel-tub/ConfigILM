@@ -25,7 +25,7 @@ from configilm.util import huggingface_tokenize_and_pad
 from configilm.util import Messages
 
 
-def resolve_cocoqa_data_dir(
+def resolve_data_dir(
     data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
 ) -> str:
     """
@@ -54,12 +54,20 @@ def resolve_cocoqa_data_dir(
     # using mock data if allowed and no other found or forced
     if data_dir in [None, "none", "None"] and allow_mock:
         Messages.warn("Mock data being used, no alternative available.")
-        data_dir = str(Path(__file__).parent.joinpath("mock_data").joinpath(
-            "COCO-QA").resolve(True))
+        data_dir = str(
+            Path(__file__)
+            .parent.joinpath("mock_data")
+            .joinpath("COCO-QA")
+            .resolve(True)
+        )
     if force_mock:
         Messages.warn("Forcing Mock data")
-        data_dir = str(Path(__file__).parent.joinpath("mock_data").joinpath(
-            "COCO-QA").resolve(True))
+        data_dir = str(
+            Path(__file__)
+            .parent.joinpath("mock_data")
+            .joinpath("COCO-QA")
+            .resolve(True)
+        )
 
     if data_dir is None:
         raise AssertionError("Could not resolve data directory")

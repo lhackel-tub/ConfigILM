@@ -6,8 +6,8 @@ with warnings.catch_warnings():
     warnings.filterwarnings(
         action="ignore", category=DeprecationWarning, message=".*distutils.*"
     )
-    from configilm.extra.BEN2DataSet import BEN2DataSet
-    from configilm.extra.BEN2_DataModule import BEN2DataModule
+    from configilm.extra.DataSets.BEN2_DataSet import BEN2DataSet
+    from configilm.extra.DataModules.BEN2_DataModule import BEN2DataModule
 
 from configilm.extra.BEN_lmdb_utils import resolve_data_dir
 from typing import Sequence, Union

@@ -10,8 +10,8 @@ from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
 from tqdm import tqdm
-from transformers import BertTokenizer
 
+from configilm.util import get_default_tokenizer
 from configilm.util import huggingface_tokenize_and_pad
 from configilm.util import Messages
 
@@ -62,11 +62,11 @@ def resolve_data_dir(
     # using mock data if allowed and no other found or forced
     if data_dir in [None, "none", "None"] and allow_mock:
         Messages.warn("Mock data being used, no alternative available.")
-        data_dir_p = pathlib.Path(__file__).parent / "mock_data" / "HRVQA"
+        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "HRVQA"
         data_dir = str(data_dir_p.resolve(True))
     if force_mock:
         Messages.warn("Forcing Mock data")
-        data_dir_p = pathlib.Path(__file__).parent / "mock_data" / "HRVQA"
+        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "HRVQA"
         data_dir = str(data_dir_p.resolve(True))
 
     if data_dir is None:
@@ -149,16 +149,8 @@ class HRVQADataSet(Dataset):
                 "result in very bad performance if the used network expected other "
                 "tokens."
             )
-            # get path relative to this script, not relative to the calling main script
-            # TODO: make this more flexible
-            default_tokenizer = (
-                Path(__file__)
-                .parent.parent.joinpath(
-                    "huggingface_tokenizers", "bert-base-uncased.tok"
-                )
-                .resolve(True)
-            )
-            self.tokenizer = BertTokenizer.from_pretrained(default_tokenizer.resolve())
+
+            self.tokenizer = get_default_tokenizer()
         else:
             self.tokenizer = tokenizer
 

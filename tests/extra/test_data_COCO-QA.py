@@ -5,9 +5,9 @@ from typing import Union
 import pytest
 import torch
 
-from configilm.extra.COCOQA_DataModule import COCOQADataModule
-from configilm.extra.COCOQA_DataModule import COCOQADataSet
-from configilm.extra.COCOQA_DataModule import resolve_data_dir
+from configilm.extra.DataModules.COCOQA_DataModule import COCOQADataModule
+from configilm.extra.DataSets.COCOQA_DataSet import COCOQADataSet
+from configilm.extra.DataSets.COCOQA_DataSet import resolve_data_dir
 
 
 @pytest.fixture

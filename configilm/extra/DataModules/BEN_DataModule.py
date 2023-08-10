@@ -18,9 +18,9 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 
 from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
-from configilm.extra.BENDataSet import BENDataSet
 from configilm.extra.CustomTorchClasses import MyGaussianNoise
 from configilm.extra.CustomTorchClasses import MyRotateTransform
+from configilm.extra.DataSets.BEN_DataSet import BENDataSet
 from configilm.util import Messages
 
 

@@ -6,8 +6,8 @@ import pytest
 import torch
 
 from configilm.extra.BEN_lmdb_utils import resolve_data_dir
-from configilm.extra.RSVQAxBEN_DataModule import RSVQAxBENDataModule
-from configilm.extra.RSVQAxBEN_DataModule import RSVQAxBENDataSet
+from configilm.extra.DataModules.RSVQAxBEN_DataModule import RSVQAxBENDataModule
+from configilm.extra.DataModules.RSVQAxBEN_DataModule import RSVQAxBENDataSet
 
 
 @pytest.fixture

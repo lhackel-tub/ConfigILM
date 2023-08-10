@@ -6,7 +6,7 @@ from typing import Union
 import pandas as pd
 
 from configilm.extra.BEN_lmdb_utils import ben19_list_to_onehot
-from configilm.extra.BENDataSet import BENDataSet
+from configilm.extra.DataSets.BEN_DataSet import BENDataSet
 
 
 class BEN2DataSet(BENDataSet):
@@ -26,7 +26,7 @@ class BEN2DataSet(BENDataSet):
 
     def __init__(
         self,
-        root_dir: Union[str, Path] = Path("./"),
+        root_dir: Union[str, Path] = Path("../"),
         csv_files: Optional[Union[Path, Iterable[Path]]] = None,
         split: Optional[str] = None,
         transform=None,

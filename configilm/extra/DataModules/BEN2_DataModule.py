@@ -11,8 +11,8 @@ from time import time
 from typing import Optional
 from typing import Union
 
-from configilm.extra.BEN2DataSet import BEN2DataSet
-from configilm.extra.BEN_DataModule import BENDataModule
+from configilm.extra.DataModules.BEN_DataModule import BENDataModule
+from configilm.extra.DataSets.BEN2_DataSet import BEN2DataSet
 
 
 class BEN2DataModule(BENDataModule):

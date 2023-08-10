@@ -366,7 +366,7 @@ For this example usage we will be using the <a class="reference internal" href="
 <p>Finally, we create the model defined above and our datamodule. We will be using a datamodule from this framework described in the Extra section.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.BEN_DataModule</span> <span class="kn">import</span> <span class="n">BENDataModule</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataModules.BEN_DataModule</span> <span class="kn">import</span> <span class="n">BENDataModule</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LitImageEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 <span class="n">dm</span> <span class="o">=</span> <span class="n">BENDataModule</span><span class="p">(</span>
     <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>

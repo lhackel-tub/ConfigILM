@@ -235,9 +235,9 @@ The full folder structure expected at this path is</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra</span> <span class="kn">import</span> <span class="n">COCOQA_DataModule</span>
+<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">COCOQA_DataSet</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataModule</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataSet</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 
@@ -267,11 +267,11 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <p>As we can see, this Dataset uses a tokenizer to generate the Question out of a natural language text. If no tokenizer is provided, a default one will be used, however this may lead to bad performance if not accounted for. The tokenizer can be configured as input parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.ConfigILM</span> <span class="kn">import</span> <span class="n">get_hf_model</span>
+<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.ConfigILM</span> <span class="kn">import</span> <span class="n">_get_hf_model</span>
 
-<span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataModule</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataSet</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
@@ -290,9 +290,9 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <p>Other parameters are <code class="docutils literal notranslate"><span class="pre">split</span></code> (“train” or “test”), <code class="docutils literal notranslate"><span class="pre">transform</span></code> for image transformations, <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> to limit the number of used images, <code class="docutils literal notranslate"><span class="pre">img_size</span></code>  (channels should be 3, high, width) and <code class="docutils literal notranslate"><span class="pre">seq_length</span></code> of the tokenized question.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
+<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataModule</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataSet</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>

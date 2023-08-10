@@ -114,9 +114,9 @@
    ],
    "source": [
     "# remove-output\n",
-    "from configilm.extra import HRVQADataSet\n",
+    "from configilm.extra.DataSets import HRVQA_DataSet\n",
     "\n",
-    "ds = HRVQADataSet.HRVQADataSet(\n",
+    "ds = HRVQA_DataSet.HRVQADataSet(\n",
     "    root_dir=my_data_path  # path to dataset\n",
     ")\n",
     "\n",
@@ -214,7 +214,7 @@
     "\n",
     "tokenizer, _ = _get_hf_model(\"prajjwal1/bert-tiny\")\n",
     "\n",
-    "ds = HRVQADataSet.HRVQADataSet(\n",
+    "ds = HRVQA_DataSet.HRVQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    tokenizer=tokenizer\n",
     ")\n",
@@ -278,7 +278,7 @@
    ],
    "source": [
     "# remove-output\n",
-    "ds = HRVQADataSet.HRVQADataSet(\n",
+    "ds = HRVQA_DataSet.HRVQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    tokenizer=tokenizer,\n",
     "    seq_length=16\n",
@@ -349,7 +349,7 @@
    ],
    "source": [
     "# remove-output\n",
-    "ds = HRVQADataSet.HRVQADataSet(\n",
+    "ds = HRVQA_DataSet.HRVQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    tokenizer=tokenizer,\n",
     "    seq_length=8\n",
@@ -492,7 +492,7 @@
    ],
    "source": [
     "# remove-output\n",
-    "_ = HRVQADataSet.HRVQADataSet(\n",
+    "_ = HRVQA_DataSet.HRVQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    split=\"val\",\n",
     "    tokenizer=tokenizer\n",
@@ -545,7 +545,7 @@
    ],
    "source": [
     "# hide-output\n",
-    "_ = HRVQADataSet.HRVQADataSet(\n",
+    "_ = HRVQA_DataSet.HRVQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    max_img_idx=5,\n",
     "    tokenizer=tokenizer\n",
@@ -596,7 +596,7 @@
    ],
    "source": [
     "# hide-output\n",
-    "train_ds = HRVQADataSet.HRVQADataSet(\n",
+    "train_ds = HRVQA_DataSet.HRVQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    split=\"train\",\n",
     "    tokenizer=tokenizer,\n",
@@ -640,7 +640,7 @@
     "# remove-output\n",
     "print(f\"Train DS: {train_ds.selected_answers}\")\n",
     "\n",
-    "ds = HRVQADataSet.HRVQADataSet(\n",
+    "ds = HRVQA_DataSet.HRVQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    split=\"val\",\n",
     "    tokenizer=tokenizer,\n",
@@ -648,7 +648,7 @@
     ")\n",
     "print(f\"Val DS 1: {ds.selected_answers}\")\n",
     "\n",
-    "ds = HRVQADataSet.HRVQADataSet(\n",
+    "ds = HRVQA_DataSet.HRVQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    split=\"val\",\n",
     "    tokenizer=tokenizer,\n",
@@ -714,7 +714,7 @@
    ],
    "source": [
     "# remove-output\n",
-    "from configilm.extra import HRVQA_DataModule\n",
+    "from configilm.extra.DataModules import HRVQA_DataModule\n",
     "dm = HRVQA_DataModule.HRVQADataModule(\n",
     "    data_dir=my_data_path  # path to dataset\n",
     ")"

@@ -89,10 +89,10 @@
     }
    ],
    "source": [
-    "from configilm.extra import BENDataSet\n",
-    "from configilm.extra import BEN_DataModule\n",
+    "from configilm.extra.DataSets import BEN_DataSet\n",
+    "from configilm.extra.DataModules import BEN_DataModule\n",
     "\n",
-    "ds = BENDataSet.BENDataSet(\n",
+    "ds = BEN_DataSet.BENDataSet(\n",
     "    root_dir=my_data_path  # path set by to dataset\n",
     ")\n",
     "\n",
@@ -182,7 +182,7 @@
     }
    ],
    "source": [
-    "BENDataSet.BENDataSet.get_available_channel_configurations()"
+    "BEN_DataSet.BENDataSet.get_available_channel_configurations()"
    ],
    "metadata": {
     "collapsed": false,
@@ -218,7 +218,7 @@
     }
    ],
    "source": [
-    "_ = BENDataSet.BENDataSet(\n",
+    "_ = BEN_DataSet.BENDataSet(\n",
     "    root_dir=my_data_path,  # path set by to dataset\n",
     "    split=\"train\"\n",
     ")"
@@ -257,7 +257,7 @@
     }
    ],
    "source": [
-    "_ = BENDataSet.BENDataSet(\n",
+    "_ = BEN_DataSet.BENDataSet(\n",
     "    root_dir=my_data_path,  # path set by to dataset\n",
     "    split=\"train\",\n",
     "    max_img_idx=10\n",
@@ -286,7 +286,7 @@
     }
    ],
    "source": [
-    "_ = BENDataSet.BENDataSet(\n",
+    "_ = BEN_DataSet.BENDataSet(\n",
     "    root_dir=my_data_path,  # path set by to dataset\n",
     "    split=\"train\",\n",
     "    max_img_idx=100\n",

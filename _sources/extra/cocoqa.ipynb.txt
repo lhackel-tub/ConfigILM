@@ -80,9 +80,9 @@
     }
    ],
    "source": [
-    "from configilm.extra import COCOQA_DataModule\n",
+    "from configilm.extra.DataSets import COCOQA_DataSet\n",
     "\n",
-    "ds = COCOQA_DataModule.COCOQADataSet(\n",
+    "ds = COCOQA_DataSet.COCOQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     ")\n",
     "\n",
@@ -155,11 +155,11 @@
     }
    ],
    "source": [
-    "from configilm.ConfigILM import get_hf_model\n",
+    "from configilm.ConfigILM import _get_hf_model\n",
     "\n",
-    "tokenizer, _ = get_hf_model(\"prajjwal1/bert-tiny\")\n",
+    "tokenizer, _ = _get_hf_model(\"prajjwal1/bert-tiny\")\n",
     "\n",
-    "ds = COCOQA_DataModule.COCOQADataSet(\n",
+    "ds = COCOQA_DataSet.COCOQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    tokenizer=tokenizer\n",
     ")\n",
@@ -200,9 +200,9 @@
     }
    ],
    "source": [
-    "tokenizer, _ = get_hf_model(\"prajjwal1/bert-tiny\")\n",
+    "tokenizer, _ = _get_hf_model(\"prajjwal1/bert-tiny\")\n",
     "\n",
-    "ds = COCOQA_DataModule.COCOQADataSet(\n",
+    "ds = COCOQA_DataSet.COCOQADataSet(\n",
     "    root_dir=my_data_path,  # path to dataset\n",
     "    tokenizer=tokenizer,\n",
     "    img_size=(3, 200, 100),\n",

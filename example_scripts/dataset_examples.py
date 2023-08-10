@@ -7,10 +7,16 @@ import torch
 import typer
 from tqdm import tqdm
 
-from configilm.extra import BEN_DataModule_LMDB_Encoder
-from configilm.extra import COCOQA_DataModule
-from configilm.extra import RSVQAxBEN_DataModule_LMDB_Encoder
-from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
+from configilm.extra.BEN_lmdb_utils import resolve_data_dir as resolve_ben_data_dir
+from configilm.extra.DataModules import BEN_DataModule
+from configilm.extra.DataModules import COCOQA_DataModule
+from configilm.extra.DataModules import RSVQAxBEN_DataModule
+from configilm.extra.DataSets import BEN_DataSet
+from configilm.extra.DataSets import COCOQA_DataSet
+from configilm.extra.DataSets import RSVQAxBEN_DataSet
+from configilm.extra.DataSets.COCOQA_DataSet import (
+    resolve_data_dir as resolve_cocoqa_data_dir,
+)
 
 
 def speedtest(
@@ -18,8 +24,8 @@ def speedtest(
         str,
         Union[
             COCOQA_DataModule.COCOQADataModule,
-            BEN_DataModule_LMDB_Encoder.BENDataModule,
-            RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataModule,
+            BEN_DataModule.BENDataModule,
+            RSVQAxBEN_DataModule.RSVQAxBENDataModule,
         ],
     ],
 ):
@@ -59,9 +65,9 @@ def display_img(
     dataset: Tuple[
         str,
         Union[
-            COCOQA_DataModule.COCOQADataSet,
-            BEN_DataModule_LMDB_Encoder.BENDataSet,
-            RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataSet,
+            COCOQA_DataSet.COCOQADataSet,
+            BEN_DataSet.BENDataSet,
+            RSVQAxBEN_DataSet.RSVQAxBENDataSet,
         ],
     ],
     img_id: int,
@@ -128,7 +134,7 @@ def main(
     if dataset.lower() in ["ben", "bigearthnet"]:
         data_dir = resolve_ben_data_dir(data_dir, allow_mock=True)
 
-        dm = BEN_DataModule_LMDB_Encoder.BENDataModule(
+        dm = BEN_DataModule.BENDataModule(
             data_dir=data_dir,
             img_size=(channels, img_size, img_size),
             max_img_idx=max_img_index,
@@ -138,7 +144,7 @@ def main(
     elif dataset.lower() in ["rsvqaxben"]:
         data_dir = resolve_ben_data_dir(data_dir)
 
-        dm = RSVQAxBEN_DataModule_LMDB_Encoder.RSVQAxBENDataModule(
+        dm = RSVQAxBEN_DataModule.RSVQAxBENDataModule(
             data_dir=data_dir,
             img_size=(channels, img_size, img_size),
             max_img_idx=max_img_index,
@@ -147,7 +153,7 @@ def main(
             seq_length=seq_length,
         )
     elif dataset.lower() in ["cocoqa", "coco-qa"]:
-        data_dir = COCOQA_DataModule.resolve_cocoqa_data_dir(data_dir)
+        data_dir = resolve_cocoqa_data_dir(data_dir)
 
         dm = COCOQA_DataModule.COCOQADataModule(
             data_dir=data_dir,

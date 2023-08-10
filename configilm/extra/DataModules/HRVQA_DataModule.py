@@ -12,9 +12,9 @@ from torch.utils.data import DataLoader
 
 from configilm.extra.CustomTorchClasses import MyGaussianNoise
 from configilm.extra.CustomTorchClasses import MyRotateTransform
-from configilm.extra.HRVQADataSet import _means
-from configilm.extra.HRVQADataSet import _stds
-from configilm.extra.HRVQADataSet import HRVQADataSet
+from configilm.extra.DataSets.HRVQA_DataSet import _means
+from configilm.extra.DataSets.HRVQA_DataSet import _stds
+from configilm.extra.DataSets.HRVQA_DataSet import HRVQADataSet
 from configilm.util import Messages
 
 

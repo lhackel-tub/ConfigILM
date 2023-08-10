@@ -5,6 +5,7 @@ Supervised Vision Classification.
 """
 # import packages
 from os.path import isfile
+from typing import List
 from typing import Optional
 
 import pytorch_lightning as pl
@@ -19,8 +20,8 @@ from wandb.sdk import finish as wandb_finish
 from configilm import ConfigILM
 from configilm.ConfigILM import ILMConfiguration
 from configilm.ConfigILM import ILMType
-from configilm.extra.BEN_DataModule_LMDB_Encoder import BENDataModule
-from configilm.extra.BEN_lmdb_utils import resolve_ben_data_dir
+from configilm.extra.BEN_lmdb_utils import resolve_data_dir as resolve_ben_data_dir
+from configilm.extra.DataModules.BEN_DataModule import BENDataModule
 
 
 __author__ = "Leonard Hackel - BIFOLD/RSiM TU Berlin"
@@ -43,8 +44,8 @@ class LitVisionEncoder(pl.LightningModule):
         self.lr = lr
         self.config = config
         self.model = ConfigILM.ConfigILM(config)
-        self.val_output_list = []
-        self.test_output_list = []
+        self.val_output_list: List[dict] = []
+        self.test_output_list: List[dict] = []
 
     def training_step(self, batch, batch_idx):
         x, y = batch

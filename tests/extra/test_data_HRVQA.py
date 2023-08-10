@@ -5,9 +5,9 @@ from typing import Union
 import pytest
 import torch
 
-from configilm.extra.HRVQA_DataModule import HRVQADataModule
-from configilm.extra.HRVQADataSet import HRVQADataSet
-from configilm.extra.HRVQADataSet import resolve_data_dir
+from configilm.extra.DataModules.HRVQA_DataModule import HRVQADataModule
+from configilm.extra.DataSets.HRVQA_DataSet import HRVQADataSet
+from configilm.extra.DataSets.HRVQA_DataSet import resolve_data_dir
 
 
 @pytest.fixture

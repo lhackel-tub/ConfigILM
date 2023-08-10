@@ -50,7 +50,7 @@ class BENDataSet(Dataset):
 
     def __init__(
         self,
-        root_dir: Union[str, Path] = Path("./"),
+        root_dir: Union[str, Path] = Path("../"),
         csv_files: Optional[Union[Path, Iterable[Path]]] = None,
         split: Optional[str] = None,
         transform=None,

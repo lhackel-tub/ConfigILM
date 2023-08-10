@@ -3,10 +3,12 @@ from pathlib import Path
 import pytest
 
 from configilm.extra.BEN_lmdb_utils import resolve_data_dir as resolve_ben_data_dir
-from configilm.extra.COCOQA_DataModule import (
+from configilm.extra.DataSets.COCOQA_DataSet import (
     resolve_data_dir as resolve_cocoqa_data_dir,
 )
-from configilm.extra.HRVQADataSet import resolve_data_dir as resolve_hrvqa_data_dir
+from configilm.extra.DataSets.HRVQA_DataSet import (
+    resolve_data_dir as resolve_hrvqa_data_dir,
+)
 
 expected_paths = {
     "coco-qa": str(

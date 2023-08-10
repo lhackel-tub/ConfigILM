@@ -1,7 +1,18 @@
 import gc
 import sys
+from pathlib import Path
 
 import numpy as np
+from transformers import BertTokenizer
+
+
+def get_default_tokenizer():
+    default_tokenizer = (
+        Path(__file__)
+        .parent.joinpath("extra", "huggingface_tokenizers", "bert-base-uncased.tok")
+        .resolve(True)
+    )
+    return BertTokenizer.from_pretrained(default_tokenizer.resolve())
 
 
 def _indent(s, num_spaces=0, indent_first=False):

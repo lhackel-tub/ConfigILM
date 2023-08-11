@@ -9,7 +9,8 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7998032.svg)](https://doi.org/10.5281/zenodo.7998032)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
-[![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
+[![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
 [![Code Coverage](./coverage.svg)](./.coverage)
 
 <!-- introduction-start -->

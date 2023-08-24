@@ -1,6 +1,8 @@
 import json
 import pathlib
+import random
 from os.path import isdir
+from os.path import isfile
 from pathlib import Path
 from typing import Optional
 from typing import Union
@@ -119,6 +121,103 @@ def select_answers(answers, number_of_answers: int = 1_000):
     return [x[0] for x in selected_answers]
 
 
+def _subsplit_qa(questions, answers, qa_in_split, sub_split, seed):
+    no_samples_val = (
+        qa_in_split
+        if isinstance(qa_in_split, int)
+        else (int(qa_in_split * len(questions)))
+    )
+    # get a random subset based on a seed
+    # to make it reproducible in all contexts,
+    # rebuild the random state afterward
+    random_state = random.getstate()
+    random.seed(seed)
+    sample_set = set(random.sample(range(len(questions)), no_samples_val))
+    random.setstate(random_state)
+    if sub_split == "val":
+        # only use samples from the sample set
+        questions = [questions[i] for i in sample_set]
+        answers = [answers[i] for i in sample_set]
+    else:
+        # only use samples that are not in the sample set
+        inv_sample_set = set(range(len(questions))).difference(sample_set)
+        questions = [questions[i] for i in inv_sample_set]
+        answers = [answers[i] for i in inv_sample_set]
+
+    return questions, answers
+
+
+def _get_question_answers(
+    split: Optional[str],
+    root_dir: pathlib.Path,
+    split_size: Union[int, float],
+    split_seed,
+):
+    subsplit = None  # should never be relevant unless overwritten
+    if split in ["train", "val", "test", None]:
+        subsplit_qa = False
+        if split == "test":
+            q_path = root_dir / "jsons" / f"{split}_question.json"
+            a_path = root_dir / "jsons" / f"{split}_answer.json"
+            if isfile(q_path) and isfile(a_path):
+                pass
+            else:
+                Messages.warn(
+                    "Test json files don't exist. Changing split to 'val' and"
+                    " assuming you want to repeat the val split for testing"
+                )
+                split = "val"
+    else:
+        # we want to subdivide the questions
+        subsplit_qa = True
+        # unless the seed is repeat
+        if split_seed == "repeat":
+            subsplit_qa = False
+        # also we have to save what our actual real split was before overwriting
+        # which is necessary to load the correct files
+        subsplit = "val" if split == "val-div" else "test"
+        split = "val"
+
+    # read questions
+    questions = []
+    if split is not None:
+        f_path = root_dir / "jsons" / f"{split}_question.json"
+        with open(f_path.resolve()) as read_file:
+            questions = json.load(read_file)["questions"]
+    else:
+        splits = ["train", "val"]
+        for s in splits:
+            f_path = root_dir / "jsons" / f"{s}_question.json"
+            with open(f_path.resolve()) as read_file:
+                questions += json.load(read_file)["questions"]
+    questions = sorted(questions, key=lambda x: x["question_id"])
+
+    # read answers
+    answers = []
+    if split is not None:
+        f_path = root_dir / "jsons" / f"{split}_answer.json"
+        with open(f_path.resolve()) as read_file:
+            answers = json.load(read_file)["annotations"]
+    else:
+        splits = ["train", "val"]
+        for s in splits:
+            with open(root_dir / "jsons" / f"{s}_answer.json") as read_file:
+                answers += json.load(read_file)["annotations"]
+    answers = sorted(answers, key=lambda x: x["question_id"])
+
+    # if val set has to be divided into val and test, do it now
+    if subsplit_qa:
+        questions, answers = _subsplit_qa(
+            questions=questions,
+            answers=answers,
+            qa_in_split=split_size,
+            sub_split=subsplit,
+            seed=split_seed,
+        )
+
+    return questions, answers
+
+
 class HRVQADataSet(Dataset):
     def __init__(
         self,
@@ -128,14 +227,17 @@ class HRVQADataSet(Dataset):
         max_img_idx=None,
         img_size=(3, 1024, 1024),
         selected_answers=None,
-        classes=1_000,
+        classes: int = 1_000,
         tokenizer=None,
-        seq_length=32,
+        seq_length: int = 32,
+        div_seed=None,
+        split_size: Union[float, int] = 0.5,
     ):
         super().__init__()
-        assert split in ["train", "val", None], (
+        assert split in [None, "train", "val", "val-div", "test-div", "test"], (
             f"Split '{split}' not supported for " f"HRVQA DataSet"
         )
+
         assert img_size[0] in [1, 3], (
             "HRVQA only supports 3 channel (RGB) or 1 "
             f"channel (grayscale). {img_size[0]} channels "
@@ -164,37 +266,14 @@ class HRVQADataSet(Dataset):
         self.max_img_idx = max_img_idx if max_img_idx is not None else -1
         self.classes = classes
 
-        # read questions
-        self.questions = []
-        if split is not None:
-            f_path = self.root_dir / "jsons" / f"{split}_question.json"
-            with open(f_path.resolve()) as read_file:
-                self.questions = json.load(read_file)["questions"]
-        else:
-            splits = ["train", "val"]
-            for s in splits:
-                f_path = self.root_dir / "jsons" / f"{s}_question.json"
-                with open(f_path.resolve()) as read_file:
-                    self.questions += json.load(read_file)["questions"]
-        self.questions = sorted(self.questions, key=lambda x: x["question_id"])
-
-        # read answers
-        self.answers = []
-        if split is not None:
-            f_path = self.root_dir / "jsons" / f"{split}_answer.json"
-            with open(f_path.resolve()) as read_file:
-                self.answers = json.load(read_file)["annotations"]
-        else:
-            splits = ["train", "val"]
-            for s in splits:
-                with open(self.root_dir / "jsons" / f"{s}_answer.json") as read_file:
-                    self.answers += json.load(read_file)["annotations"]
-        self.answers = sorted(self.answers, key=lambda x: x["question_id"])
-
-        # restrict qs and as
-        if 0 < self.max_img_idx < len(self.questions):
-            self.questions = self.questions[:max_img_idx]
-            self.answers = self.answers[:max_img_idx]
+        # changing the split for some cases
+        # this is a convince feature e.g. for splitting
+        self.questions, self.answers = _get_question_answers(
+            split=split,
+            root_dir=self.root_dir,
+            split_size=split_size,
+            split_seed=div_seed,
+        )
 
         assert len(self.answers) == len(self.questions), (
             f"Number of questions ({len(self.questions)}) is not the same as number of"
@@ -207,6 +286,11 @@ class HRVQADataSet(Dataset):
             "Sets of question and answers do not fit (not same question_ids in both "
             "sets)"
         )
+
+        # restrict qs and as
+        if 0 < self.max_img_idx < len(self.questions):
+            self.questions = self.questions[:max_img_idx]
+            self.answers = self.answers[:max_img_idx]
 
         if selected_answers is None:
             self.selected_answers = select_answers(

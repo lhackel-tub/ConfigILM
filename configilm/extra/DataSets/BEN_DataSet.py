@@ -109,9 +109,12 @@ class BENDataSet(Dataset):
             self.patches = self.patches[:max_img_idx]
 
         print(f"    {len(self.patches)} filtered patches indexed")
-
-        # init loader during first call for DDP support
-        self.BENLoader = None
+        self.BENLoader = BENLMDBReader(
+            lmdb_dir=self.lmdb_dir,
+            label_type="new",
+            image_size=self.image_size,
+            bands=self.image_size[0],
+        )
 
     def get_patchname_from_index(self, idx: int):
         if idx > len(self):
@@ -127,15 +130,6 @@ class BENDataSet(Dataset):
         return len(self.patches)
 
     def __getitem__(self, idx):
-        # init loader during first call for DDP support
-        if self.BENLoader is None:
-            self.BENLoader = BENLMDBReader(
-                lmdb_dir=self.lmdb_dir,
-                label_type="new",
-                image_size=self.image_size,
-                bands=self.image_size[0],
-            )
-
         key = self.patches[idx]
 
         # get (& write) image from (& to) LMDB

@@ -7,11 +7,10 @@ from typing import Union
 
 import pytorch_lightning as pl
 import torch
-import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 
-from configilm.extra.CustomTorchClasses import MyGaussianNoise
-from configilm.extra.CustomTorchClasses import MyRotateTransform
+from configilm.extra.DataModules.dm_defaults import default_train_transform
+from configilm.extra.DataModules.dm_defaults import default_transform
 from configilm.extra.DataSets.HRVQA_DataSet import _means
 from configilm.extra.DataSets.HRVQA_DataSet import _stds
 from configilm.extra.DataSets.HRVQA_DataSet import HRVQADataSet
@@ -81,21 +80,11 @@ class HRVQADataModule(pl.LightningDataModule):
             else [_stds["mono"]]
         )
 
-        self.train_transform = transforms.Compose(
-            [
-                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
-                MyGaussianNoise(20),
-                transforms.RandomHorizontalFlip(),
-                transforms.RandomVerticalFlip(),
-                MyRotateTransform([0, 90, 180, 270]),
-                transforms.Normalize(mean, std),
-            ]
+        self.train_transform = default_train_transform(
+            img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std
         )
-        self.transform = transforms.Compose(
-            [
-                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
-                transforms.Normalize(mean, std),
-            ]
+        self.transform = default_transform(
+            img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std
         )
         # self.transform = None
         self.pin_memory = torch.cuda.device_count() > 0

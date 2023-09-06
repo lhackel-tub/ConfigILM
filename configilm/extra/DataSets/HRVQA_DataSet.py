@@ -79,12 +79,13 @@ def resolve_data_dir(
         return data_dir
 
 
-def select_answers(answers, number_of_answers: int = 1_000):
+def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = False):
     # this dict will store as keys the answers and the values are the frequencies
     # they occur
     freq_dict = {}
 
-    for a in tqdm(answers, desc="Counting Answers"):
+    it = tqdm(answers, desc="Counting Answers") if use_tqdm else answers
+    for a in it:
 
         answer_str = a["multiple_choice_answer"]
 
@@ -127,6 +128,11 @@ def _subsplit_qa(questions, answers, qa_in_split, sub_split, seed):
         if isinstance(qa_in_split, int)
         else (int(qa_in_split * len(questions)))
     )
+    assert 0 < no_samples_val < len(questions), (
+        f"Samples should be between 0 and {len(questions)}, but is {no_samples_val} "
+        f"(specified as {qa_in_split})."
+    )
+
     # get a random subset based on a seed
     # to make it reproducible in all contexts,
     # rebuild the random state afterward
@@ -170,7 +176,7 @@ def _get_question_answers(
     else:
         # we want to subdivide the questions
         subsplit_qa = True
-        # unless the seed is repeat
+        # unless the seed is "repeat"
         if split_seed == "repeat":
             subsplit_qa = False
         # also we have to save what our actual real split was before overwriting

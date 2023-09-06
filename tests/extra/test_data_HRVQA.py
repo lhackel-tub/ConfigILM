@@ -21,7 +21,7 @@ def data_dir():
 # for "x-div" the val split is split into two randomly based on a seed
 dataset_splits = ["train", "val", "val-div", "test-div", "test"]
 div_seeds = ["repeat", 0, 1, 42, 2023]
-div_part = [0.1, 0.3, 0.3141592, 0.7, 2, 5, 8]
+div_part = [0.1, 0.3, 0.3141592, 0.66, 0.7, 2, 5, 8]
 dm_stages = [None, "fit", "test"]
 stage_with_seeds = list(itertools.product(dm_stages, div_seeds))
 

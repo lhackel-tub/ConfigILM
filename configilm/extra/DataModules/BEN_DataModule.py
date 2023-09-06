@@ -14,12 +14,11 @@ from typing import Union
 
 import pytorch_lightning as pl
 import torch
-import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 
 from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
-from configilm.extra.CustomTorchClasses import MyGaussianNoise
-from configilm.extra.CustomTorchClasses import MyRotateTransform
+from configilm.extra.DataModules.dm_defaults import default_train_transform
+from configilm.extra.DataModules.dm_defaults import default_transform
 from configilm.extra.DataSets.BEN_DataSet import BENDataSet
 from configilm.util import Messages
 
@@ -70,21 +69,11 @@ class BENDataModule(pl.LightningDataModule):
         # get mean and std
         ben_mean, ben_std = band_combi_to_mean_std(self.img_size[0])
 
-        self.train_transform = transforms.Compose(
-            [
-                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
-                MyGaussianNoise(20),
-                transforms.RandomHorizontalFlip(),
-                transforms.RandomVerticalFlip(),
-                MyRotateTransform([0, 90, 180, 270]),
-                transforms.Normalize(ben_mean, ben_std),
-            ]
+        self.train_transform = default_train_transform(
+            img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
         )
-        self.transform = transforms.Compose(
-            [
-                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
-                transforms.Normalize(ben_mean, ben_std),
-            ]
+        self.transform = default_transform(
+            img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
         )
         self.pin_memory = torch.cuda.device_count() > 0
 

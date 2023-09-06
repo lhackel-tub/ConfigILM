@@ -1,4 +1,4 @@
-# ConfigILM
+# ConfigILM:server
 ![ConfigILM Logo](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM_v1.png)
 
 <a href="https://bifold.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/BIFOLD_Logo_farbig.png" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
@@ -7,11 +7,15 @@
 <img height="2em" hspace="17em"/>
 <a href="https://rsim.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>
 
+
+[![Release Notes](https://img.shields.io/github/release/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7998032.svg)](https://doi.org/10.5281/zenodo.7998032)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
 [![Code Coverage](./coverage.svg)](./.coverage)
+[![GitHub Star Chart](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)
+[![Open Issues](https://img.shields.io/github/issues-raw/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/issues)
 
 <!-- introduction-start -->
 The library `ConfigILM` is a state-of-the-art tool for Python developers seeking to rapidly and
@@ -41,6 +45,12 @@ tutorial examples, and a detailed overview of the framework's interface, ensurin
 For detailed information please visit the [publication](TODO:arXiv-Link) or the [documentation](https://lhackel-tub.github.io/ConfigILM).
 
 `ConfigILM` is released under the [MIT Software License](https://opensource.org/licenses/mit-0)
+
+## Contributing
+
+As an open-source project in a developing field, we are open to contributions, whether it be in the form of a new or improved feature or better documentation.
+
+For detailed information on how to contribute, see [here](.github/CONTRIBUTING.md).
 
 
 ## Citation

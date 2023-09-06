@@ -1,9 +1,8 @@
 """
 Helpful functions when working with lmdb file which contains BigEarthNet as encoded
 binary patches.
-Functions include reading data and extracting specific band combinations.
-An example of usage can be found in the main function or - if available - the
-Dataloader.
+Functions include reading data and extracting specific band combinations and their
+properties.
 """
 
 __author__ = "Leonard Hackel"
@@ -120,6 +119,13 @@ def ben19_list_to_onehot(lst):
 
 
 def _resolve_band_combi(bands: Union[Iterable, str, int]) -> list:
+    """
+    Resolves a predefined combination of bands or a list of bands into a list of
+    individual bands and checks if all bands contained are actual S1/S2 band names.
+    :param bands: a combination of bands as defined in BAND_COMBINATION_PREDEFINTIONS
+                  or a list of bands
+    :return: a list of bands contained in the predefinition
+    """
     if isinstance(bands, str) or isinstance(bands, int):
         assert bands in BAND_COMBINATION_PREDEFINTIONS.keys(), (
             "Band combination unknown, "
@@ -135,6 +141,13 @@ def _resolve_band_combi(bands: Union[Iterable, str, int]) -> list:
 
 
 def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
+    """
+    Retrievs the mean and standard deviation for a given BigEarthNet
+    BAND_COMBINATION_PREDEFINTIONS or list of bands
+    :param bands: combination of bands as defined in BAND_COMBINATION_PREDEFINTIONS
+                  or a list of bandsmb
+    :return: mean and standard deviation for the given combination in same order
+    """
     bands = _resolve_band_combi(bands)
     S1_bands = ["VH", "VV", "VV/VH"]
     ben_channel_mean = [

@@ -7,11 +7,10 @@ from typing import Union
 
 import pytorch_lightning as pl
 import torch
-import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 
-from configilm.extra.CustomTorchClasses import MyGaussianNoise
-from configilm.extra.CustomTorchClasses import MyRotateTransform
+from configilm.extra.DataModules.dm_defaults import default_train_transform
+from configilm.extra.DataModules.dm_defaults import default_transform
 from configilm.extra.DataSets.HRVQA_DataSet import _means
 from configilm.extra.DataSets.HRVQA_DataSet import _stds
 from configilm.extra.DataSets.HRVQA_DataSet import HRVQADataSet
@@ -36,6 +35,8 @@ class HRVQADataModule(pl.LightningDataModule):
         seq_length=32,
         selected_answers=None,
         pin_memory=None,
+        test_splitting_seed=None,
+        test_splitting_division=None,
     ):
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
@@ -79,21 +80,11 @@ class HRVQADataModule(pl.LightningDataModule):
             else [_stds["mono"]]
         )
 
-        self.train_transform = transforms.Compose(
-            [
-                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
-                MyGaussianNoise(20),
-                transforms.RandomHorizontalFlip(),
-                transforms.RandomVerticalFlip(),
-                MyRotateTransform([0, 90, 180, 270]),
-                transforms.Normalize(mean, std),
-            ]
+        self.train_transform = default_train_transform(
+            img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std
         )
-        self.transform = transforms.Compose(
-            [
-                transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
-                transforms.Normalize(mean, std),
-            ]
+        self.transform = default_transform(
+            img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std
         )
         # self.transform = None
         self.pin_memory = torch.cuda.device_count() > 0
@@ -105,6 +96,17 @@ class HRVQADataModule(pl.LightningDataModule):
 
         self.tokenizer = tokenizer
         self.seq_length = seq_length
+
+        assert isinstance(test_splitting_seed, int) or test_splitting_seed in [
+            "repeat",
+            None,
+        ], (
+            "test_splitting parameter has to be 'repeat' to use the val split for "
+            "testing again, None for no test split or an integer for random splitting "
+            "of the val split"
+        )
+        self.test_splitting_seed = test_splitting_seed
+        self.test_splitting_div = test_splitting_division
 
     def prepare_data(self):
         pass
@@ -130,9 +132,17 @@ class HRVQADataModule(pl.LightningDataModule):
                 self.selected_answers = self.train_ds.selected_answers
 
             if self.val_ds is None:
+                if self.test_splitting_seed is None:
+                    val_split = "val"
+                    division_seed = "Should Not Matter"
+                else:
+                    val_split = "val-div"
+                    division_seed = self.test_splitting_seed
                 self.val_ds = HRVQADataSet(
                     self.data_dir,
-                    split="val",
+                    split=val_split,
+                    div_seed=division_seed,
+                    split_size=self.test_splitting_div,
                     transform=self.transform,
                     max_img_idx=self.max_img_idx,
                     img_size=self.img_size,
@@ -145,7 +155,21 @@ class HRVQADataModule(pl.LightningDataModule):
 
         # Assign test dataset for use in dataloader(s)
         if stage == "test":
-            raise NotImplementedError("Test stage not implemented")
+            if self.test_splitting_seed is None:
+                raise NotImplementedError("Test stage None not implemented")
+            else:
+                self.test_ds = HRVQADataSet(
+                    self.data_dir,
+                    split="test-div",
+                    div_seed=self.test_splitting_seed,
+                    split_size=self.test_splitting_div,
+                    transform=self.transform,
+                    max_img_idx=self.max_img_idx,
+                    img_size=self.img_size,
+                    tokenizer=self.tokenizer,
+                    seq_length=self.seq_length,
+                    selected_answers=self.selected_answers,
+                )
 
         if stage == "predict":
             raise NotImplementedError("Predict stage not implemented")
@@ -172,4 +196,13 @@ class HRVQADataModule(pl.LightningDataModule):
         )
 
     def test_dataloader(self):
-        return None
+        if self.test_splitting_seed is None:
+            return None
+        else:
+            return DataLoader(
+                self.test_ds,
+                batch_size=self.batch_size,
+                shuffle=False if self.shuffle is None else self.shuffle,
+                num_workers=self.num_workers_dataloader,
+                pin_memory=self.pin_memory,
+            )

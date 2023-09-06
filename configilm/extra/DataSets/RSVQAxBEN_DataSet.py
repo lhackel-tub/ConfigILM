@@ -146,12 +146,8 @@ class RSVQAxBENDataSet(Dataset):
 
         self._split_qa()
 
-        self.BENLoader = BENLMDBReader(
-            lmdb_dir=self.lmdb_dir,
-            label_type="new",
-            image_size=self.image_size,
-            bands=self.image_size[0],
-        )
+        # init loader during first call for DDP support
+        self.BENLoader = None
 
     def _split_qa(self):
         # make a lookup for index -> question
@@ -195,6 +191,15 @@ class RSVQAxBENDataSet(Dataset):
         return len(self.questions)
 
     def __getitem__(self, idx):
+        # init loader during first call for DDP support
+        if self.BENLoader is None:
+            self.BENLoader = BENLMDBReader(
+                lmdb_dir=self.lmdb_dir,
+                label_type="new",
+                image_size=self.image_size,
+                bands=self.image_size[0],
+            )
+
         qa_pair = {
             "type": self.types[idx],
             "question": self.idx_to_question[self.questions[idx]],

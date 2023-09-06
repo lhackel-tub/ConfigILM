@@ -362,7 +362,7 @@ Question 2: &#39;how many rectangular basketball courts are&#39;
 </section>
 <section id="splits">
 <h3>Splits<a class="headerlink" href="#splits" title="Permalink to this heading">#</a></h3>
-<p>It is possible to load only a specific split (<code class="docutils literal notranslate"><span class="pre">'train'</span></code>, <code class="docutils literal notranslate"><span class="pre">'val'</span></code>) in the dataset. The images loaded are specified using the csv files in the same folder as the LMDB file. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>), both are loaded into the same <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
+<p>It is possible to load only a specific split (<code class="docutils literal notranslate"><span class="pre">'train'</span></code>, <code class="docutils literal notranslate"><span class="pre">'val'</span></code>) in the dataset. The images are loaded on demand based on the requested question. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>), both are loaded into the same <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
@@ -370,6 +370,63 @@ Question 2: &#39;how many rectangular basketball courts are&#39;
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because the Dataset does not define a <code class="docutils literal notranslate"><span class="pre">'test'</span></code> split, an option to subdivide the <code class="docutils literal notranslate"><span class="pre">'val'</span></code> split was added. This option divides the split at random based on a seed and a ratio provided.<br />
+Using <code class="docutils literal notranslate"><span class="pre">'test'</span></code> means, that the same data as <code class="docutils literal notranslate"><span class="pre">'val'</span></code> is used.<br />
+To split the dataset, use <code class="docutils literal notranslate"><span class="pre">'test-div'</span></code> and <code class="docutils literal notranslate"><span class="pre">'val-div'</span></code>. Provided the same <code class="docutils literal notranslate"><span class="pre">div_seed</span></code> and <code class="docutils literal notranslate"><span class="pre">split_size</span></code> (given as rounded-down proportion of the set that is in the <code class="docutils literal notranslate"><span class="pre">'val'</span></code> split) this option will fully divide the samples without information leak.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_v</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
+    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">div_seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">split_size</span><span class="o">=</span><span class="mf">0.66</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt;&gt; val split length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ds_v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ds_vd</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
+    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val-div&quot;</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">div_seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">split_size</span><span class="o">=</span><span class="mf">0.66</span>
+<span class="p">)</span>
+<span class="n">qv</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;question_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ds_vd</span><span class="o">.</span><span class="n">questions</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt;&gt; val-div split length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ds_vd</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ds_td</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
+    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">split</span><span class="o">=</span><span class="s2">&quot;test-div&quot;</span><span class="p">,</span>
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
+    <span class="n">div_seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">split_size</span><span class="o">=</span><span class="mf">0.66</span>
+<span class="p">)</span>
+<span class="n">qt</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;question_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ds_td</span><span class="o">.</span><span class="n">questions</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt;&gt; test-div split length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ds_td</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&gt;&gt; intersection length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">qv</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">qt</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&gt;&gt; union length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">qv</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">qt</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: There are fewer possible answers then requested (1000 requested, but 6 found).
+The 1000 most frequent answers cover about 100.00 % of the total answers.
+&gt;&gt; val split length 10
+
+WARNING: There are fewer possible answers then requested (1000 requested, but 4 found).
+The 1000 most frequent answers cover about 100.00 % of the total answers.
+&gt;&gt; val-div split length 6
+
+WARNING: There are fewer possible answers then requested (1000 requested, but 4 found).
+The 1000 most frequent answers cover about 100.00 % of the total answers.
+&gt;&gt; test-div split length 4
+
+&gt;&gt; intersection length 0
+
+&gt;&gt; union length 10
 </pre></div>
 </div>
 </div>
@@ -394,17 +451,8 @@ Question 2: &#39;how many rectangular basketball courts are&#39;
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers:   0%|          | 0/5 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers: 100%|██████████| 5/5 [00:00&lt;00:00, 34100.03it/s]
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: There are fewer possible answers then requested (1000 requested, but 4 found).
 The 1000 most frequent answers cover about 100.00 % of the total answers.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -431,16 +479,7 @@ The 1000 most frequent answers cover about 100.00 % of the total answers.
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers:   0%|          | 0/10 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Counting Answers: 100%|██████████| 10/10 [00:00&lt;00:00, 159479.24it/s]
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The 3 most frequent answers cover about 50.00 % of the total answers.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -535,8 +574,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7f0897ae4a00&gt;
-&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7f089c4bf8b0&gt;
+&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7f987af04940&gt;
+&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7f98802bfe80&gt;
 None
 </pre></div>
 </div>

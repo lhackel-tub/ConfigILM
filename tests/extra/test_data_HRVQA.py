@@ -1,3 +1,4 @@
+import itertools
 from typing import Sequence
 from typing import Tuple
 from typing import Union
@@ -15,7 +16,14 @@ def data_dir():
     return resolve_data_dir(None, allow_mock=True, force_mock=True)
 
 
-dataset_params = ["train", "val", None]  # this dataset does not support test split
+# this dataset does not support test split natively
+# instead the val split is reused for test
+# for "x-div" the val split is split into two randomly based on a seed
+dataset_splits = ["train", "val", "val-div", "test-div", "test"]
+div_seeds = ["repeat", 0, 1, 42, 2023]
+div_part = [0.1, 0.3, 0.3141592, 0.66, 0.7, 2, 5, 8]
+dm_stages = [None, "fit", "test"]
+stage_with_seeds = list(itertools.product(dm_stages, div_seeds))
 
 class_number = [10, 100, 250, 1000, 1234]
 img_sizes = [60, 120, 128, 144, 256, 1024]
@@ -23,51 +31,6 @@ channels_pass = [1, 3]  # accepted channel configs
 channels_fail = [2, 4, 0, -1, 10, 12]  # not accepted configs
 img_shapes_pass = [(c, hw, hw) for c in channels_pass for hw in img_sizes]
 img_shapes_fail = [(c, hw, hw) for c in channels_fail for hw in img_sizes]
-max_img_idxs = [0, 1, 100, 10_000]
-max_img_idxs_too_large = [600_000, 1_000_000]
-
-# these are part of the names used in mock data
-mock_s2_names = [
-    "6991",
-    "7731",
-    "9342",
-    "11806",
-    "11844",
-    "12900",
-    "14652",
-    "20116",
-    "21817",
-    "23843",
-    "27286",
-    "27600",
-    "28070",
-    "29400",
-    "30808",
-    "30813",
-    "30988",
-    "31203",
-    "32675",
-    "32822",
-    "33973",
-    "41277",
-    "42569",
-    "43759",
-    "45386",
-    "46738",
-    "47903",
-    "49129",
-    "51504",
-]
-
-mock_data_dict = {
-    i: {
-        "type": "LC",
-        "question": "What is the question?",
-        "answer": f"{i % 2345}",
-        "S2_name": mock_s2_names[i % len(mock_s2_names)],
-    }
-    for i in range(15000)
-}
 
 
 def dataset_ok(
@@ -77,9 +40,11 @@ def dataset_ok(
     expected_length: Union[int, None],
     classes: int,
 ):
-    assert dataset is not None
+    assert dataset is not None, "No dataset found"
     if expected_length is not None:
-        assert len(dataset) == expected_length
+        assert len(dataset) == expected_length, (
+            f"Length is {len(dataset)} but should " f"be {expected_length}"
+        )
 
     if len(dataset) > 0:
         for i in [0, 100, 2000, 5000, 10000]:
@@ -129,9 +94,9 @@ def test_ds_default(data_dir):
 
 
 @pytest.mark.parametrize(
-    "split, classes", [(s, c) for s in dataset_params for c in class_number]
+    "split, classes", [(s, c) for s in dataset_splits for c in class_number]
 )
-def test_3c_dataset_splits(data_dir, split: str, classes: int):
+def test_3c_dataset_splits_classes(data_dir, split: str, classes: int):
     img_size = (3, 128, 128)
     seq_length = 32
 
@@ -152,19 +117,81 @@ def test_3c_dataset_splits(data_dir, split: str, classes: int):
     )
 
 
-@pytest.mark.parametrize("classes", class_number)
-def test_3c_dataset_splits_test(data_dir, classes: int):
+@pytest.mark.parametrize(
+    "split, seed, div_part",
+    [(s, se, d) for s in dataset_splits for se in div_seeds for d in div_part],
+)
+def test_3c_dataset_splits_subdiv(data_dir, split: str, seed, div_part):
     img_size = (3, 128, 128)
     seq_length = 32
-    with pytest.raises(AssertionError):
-        # test not supported by this DS
-        _ = HRVQADataSet(
-            root_dir=data_dir,
-            split="test",
-            img_size=img_size,
-            classes=classes,
-            seq_length=seq_length,
-        )
+    no_qa_full_val = 10  # number of samples in full val set
+
+    ds = HRVQADataSet(
+        root_dir=data_dir,
+        split=split,
+        img_size=img_size,
+        div_seed=seed,
+        split_size=div_part,
+        seq_length=seq_length,
+    )
+
+    div_part_i = (
+        div_part if isinstance(div_part, int) else int(div_part * no_qa_full_val)
+    )
+    if split == "test-div":
+        div_part_i = no_qa_full_val - div_part_i
+    if "-div" not in split or seed == "repeat":
+        div_part_i = no_qa_full_val
+
+    dataset_ok(
+        dataset=ds,
+        expected_image_shape=img_size,
+        expected_length=div_part_i,
+        classes=1_000,
+        expected_question_length=seq_length,
+    )
+
+
+@pytest.mark.parametrize(
+    "split, seed, div_part",
+    [(s, se, d) for s in ["val-div", "test-div"] for se in div_seeds for d in div_part],
+)
+def test_3c_dataset_splits_subdiv_overlap(data_dir, split: str, seed: int, div_part):
+    img_size = (3, 128, 128)
+    seq_length = 32
+    no_qa_full_val = 10  # number of samples in full val set
+    inv_split = "val-div" if split == "test-div" else "test-div"
+
+    ds = HRVQADataSet(
+        root_dir=data_dir,
+        split=split,
+        img_size=img_size,
+        div_seed=seed,
+        split_size=div_part,
+        seq_length=seq_length,
+    )
+
+    ds_i = HRVQADataSet(
+        root_dir=data_dir,
+        split=inv_split,
+        img_size=img_size,
+        div_seed=seed,
+        split_size=div_part,
+        seq_length=seq_length,
+    )
+    q = {x["question_id"] for x in ds.questions}
+    qi = {x["question_id"] for x in ds_i.questions}
+
+    if seed == "repeat":
+        # both have to be same
+        assert q == qi, "Questions sets are not equal but should be"
+    else:
+        assert (
+            q.intersection(qi) == set()
+        ), "There is an intersection between the val and test set"
+        assert (
+            len(q.union(qi)) == no_qa_full_val
+        ), "Val and test set combined do not cover the full set"
 
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
@@ -246,11 +273,20 @@ def test_ds_classes(data_dir, classes: int):
             assert ds.selected_answers[i] == "INVALID"
 
 
-@pytest.mark.parametrize("split", dataset_params)
+@pytest.mark.parametrize("split", ["train", "val", "test", None])
 def test_dm_default(data_dir, split: str):
     dm = HRVQADataModule(data_dir=data_dir)
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
-    dm.setup(stage=split2stage[split])
+    if split2stage[split] in ["test"]:
+        with pytest.raises(NotImplementedError):
+            dm.setup(stage=split2stage[split])
+        # overwrite default
+        dm = HRVQADataModule(
+            data_dir=data_dir, test_splitting_seed=0, test_splitting_division=0.5
+        )
+        dm.setup(stage=split2stage[split])
+    else:
+        dm.setup(stage=split2stage[split])
     dm.prepare_data()
     if split in ["train", "val"]:
         dataset_ok(
@@ -267,7 +303,17 @@ def test_dm_default(data_dir, split: str):
             classes=1000,
             expected_question_length=32,
         )
-        assert dm.test_ds is None
+        assert dm.test_ds is None, "Dataset for test should be None"
+    elif split in ["test"]:
+        assert dm.train_ds is None, "Dataset for train should be None"
+        assert dm.val_ds is None, "Dataset for val should be None"
+        dataset_ok(
+            dm.test_ds,
+            expected_image_shape=(3, 1024, 1024),
+            expected_length=None,
+            classes=1000,
+            expected_question_length=32,
+        )
     elif split is None:
         for ds in [dm.train_ds, dm.val_ds]:
             dataset_ok(
@@ -277,6 +323,9 @@ def test_dm_default(data_dir, split: str):
                 classes=1000,
                 expected_question_length=32,
             )
+        assert dm.test_ds is None, (
+            "Dataset for test should be None as we are not " "splitting"
+        )
     else:
         ValueError(f"split {split} unknown")
 
@@ -298,13 +347,34 @@ def test_dm_dataloaders_img_size(data_dir, img_size):
         _ = HRVQADataModule(data_dir=data_dir, img_size=img_size)
 
 
-@pytest.mark.parametrize("stage", [None, "fit"])
-def test_dm_dataloaders_setup(data_dir, stage):
-    dm = HRVQADataModule(data_dir=data_dir)
+@pytest.mark.parametrize(
+    "stage, seed, div",
+    [(st, se, d) for st in dm_stages for se in div_seeds + [None] for d in div_part],
+)
+def test_dm_dataloaders_with_splitting(data_dir, stage, seed, div):
+    dm = HRVQADataModule(
+        data_dir=data_dir, test_splitting_seed=seed, test_splitting_division=div
+    )
+    if stage == "test" and seed is None:
+        with pytest.raises(NotImplementedError):
+            dm.setup(stage)
+        return
+
     dm.setup(stage)
-    assert dm.train_dataloader() is not None, "Train Dataloader should not be None"
-    assert dm.val_dataloader() is not None, "Val Dataloader should not be None"
-    assert dm.test_dataloader() is None, "Test Dataloader should be None"
+
+    if dm.train_ds is not None:
+        assert dm.train_dataloader() is not None, "Train Dataloader should not be None"
+
+    if dm.val_ds is not None:
+        assert dm.val_dataloader() is not None, "Val Dataloader should not be None"
+
+    if dm.test_ds is not None:
+        if seed is None:
+            assert dm.test_dataloader() is None, "Test Dataloader should be None"
+        else:
+            assert dm.test_dataloader() is not None, (
+                "Test Dataloader should not be " "None"
+            )
 
 
 def test_dm_shuffle_false(data_dir):

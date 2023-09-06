@@ -24,12 +24,15 @@ from configilm.util import huggingface_tokenize_and_pad
 from configilm.util import Messages
 
 
-def select_answers_from_qa_pairs(qa_pairs, number_of_answers=1000):
+def select_answers_from_qa_pairs(
+    qa_pairs, number_of_answers: int = 1_000, use_tqdm: bool = False
+):
     # this dict will store as keys the answers and the values are the frequencies
     # they occur
     freq_dict = {}
 
-    for qa_pair in tqdm(qa_pairs, desc="Counting Answers"):
+    it = tqdm(qa_pairs, desc="Counting Answers") if use_tqdm else qa_pairs
+    for qa_pair in it:
 
         answer_str = qa_pair["answer"]
 

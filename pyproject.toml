@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "configilm"
-version = "0.4.5"
+version = "0.4.6"
 description = "A state-of-the-art tool for Python developers seeking to rapidly and iteratively develop vision and language models within the [`pytorch`](https://pytorch.org/) framework"
 authors = ["Leonard Hackel <l.hackel@tu-berlin.de>"]
 readme = "README.md"
@@ -46,6 +46,7 @@ sphinxcontrib-bibtex = "^2.5.0"
 common-nb-preprocessors = "^1.1.1"
 jupyterlab = "^3.6.1"
 tensorboardx = "^2.6"
+pytest-xdist = "^3.3.1"
 # docs-deps-end
 
 [tool.poetry.group.example.dependencies]

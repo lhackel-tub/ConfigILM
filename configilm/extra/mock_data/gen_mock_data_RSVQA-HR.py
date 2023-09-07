@@ -23,8 +23,10 @@ def copy_part_of_json(
         f" seed or change number of elements"
     )
 
-    print(f"Selected {len(data_new)} elements of which "
-          f"{len([x for x in data_new if x['active']])} are active")
+    print(
+        f"Selected {len(data_new)} elements of which "
+        f"{len([x for x in data_new if x['active']])} are active"
+    )
 
     path = pathlib.Path(".") / "RSVQA-HR" / f_name
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -32,8 +34,8 @@ def copy_part_of_json(
         json.dump({"images": data_new}, f)
 
     # copy answers to same questions
-    qids = [x["questions_ids"] for x in data_new if x["active"]]
-    qids = set([x for l in qids for x in l])
+    qids_l = [x["questions_ids"] for x in data_new if x["active"]]
+    qids = {x for sublist in qids_l for x in sublist}
     f_name_q = f_name.split("_images")[0] + "_questions.json"
     if os.path.isfile(join(base_path, f_name_q)):
         with open(join(base_path, f_name_q)) as read_file:
@@ -46,8 +48,8 @@ def copy_part_of_json(
     else:
         print(f"No question file found for {f_name}")
 
-    qids = [x["answers_ids"] for x in data_new if x["active"]]
-    qids = set([x for l in qids for x in l])
+    qids_l = [x["answers_ids"] for x in data_new if x["active"]]
+    qids = {x for sublist in qids_l for x in sublist}
     f_name_a = f_name_q.split("_questions")[0] + "_answers.json"
     if os.path.isfile(join(base_path, f_name_a)):
         with open(join(base_path, f_name_a)) as read_file:
@@ -73,20 +75,28 @@ def img_subset_from_jsons(
             data = json.load(read_file)["images"]
             subset_elems += [x["id"] for x in data if x["active"]]
 
-    print(f"There are {len(subset_elems)} images ({len(set(subset_elems))} unique) "
-          f"selected.")
+    print(
+        f"There are {len(subset_elems)} images ({len(set(subset_elems))} unique) "
+        f"selected."
+    )
 
     path = pathlib.Path(".") / "RSVQA-HR" / "Images" / "Data"
     path.mkdir(parents=True, exist_ok=True)
     for elem in subset_elems:
         img_name = f"{elem}.png"
         shutil.copy(
-            pathlib.Path(base_path).joinpath("Images").joinpath("Data").joinpath(img_name),
+            pathlib.Path(base_path)
+            .joinpath("Images")
+            .joinpath("Data")
+            .joinpath(img_name),
             path.joinpath(img_name).resolve(),
         )
         img_name = f"{elem}.tif"
         shutil.copy(
-            pathlib.Path(base_path).joinpath("Images").joinpath("Data").joinpath(img_name),
+            pathlib.Path(base_path)
+            .joinpath("Images")
+            .joinpath("Data")
+            .joinpath(img_name),
             path.joinpath(img_name).resolve(),
         )
 
@@ -102,6 +112,4 @@ if __name__ == "__main__":
     for f in jsons:
         copy_part_of_json(base_path=base_path, f_name=f)
 
-    img_subset_from_jsons(
-        base_path=base_path, json_base_path="./RSVQA-HR", jsons=jsons
-    )
+    img_subset_from_jsons(base_path=base_path, json_base_path="./RSVQA-HR", jsons=jsons)

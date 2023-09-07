@@ -34,8 +34,8 @@ def copy_part_of_json(
         json.dump({"images": data_new}, f)
 
     # copy answers to same questions
-    qids = [x["questions_ids"] for x in data_new if x["active"]]
-    qids = {x for l in qids for x in l}
+    qids_l = [x["questions_ids"] for x in data_new if x["active"]]
+    qids = {x for sublist in qids_l for x in sublist}
     f_name_q = f_name.split("_images")[0] + "_questions.json"
     if os.path.isfile(join(base_path, f_name_q)):
         with open(join(base_path, f_name_q)) as read_file:
@@ -48,8 +48,8 @@ def copy_part_of_json(
     else:
         print(f"No question file found for {f_name}")
 
-    qids = [x["answers_ids"] for x in data_new if x["active"]]
-    qids = {x for l in qids for x in l}
+    qids_l = [x["answers_ids"] for x in data_new if x["active"]]
+    qids = {x for sublist in qids_l for x in sublist}
     f_name_a = f_name_q.split("_questions")[0] + "_answers.json"
     if os.path.isfile(join(base_path, f_name_a)):
         with open(join(base_path, f_name_a)) as read_file:

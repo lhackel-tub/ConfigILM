@@ -17,7 +17,8 @@ from configilm.util import get_default_tokenizer
 from configilm.util import huggingface_tokenize_and_pad
 from configilm.util import Messages
 
-# 256
+# values based on train images - of original split
+# at 256 x 256
 # _means = {
 #     "red": 0.4257,
 #     "green": 0.4435,
@@ -32,7 +33,7 @@ from configilm.util import Messages
 #     "mono": 0.1218
 # }
 
-# 1024
+# at 1024 x 1024
 _means = {"red": 0.4255, "green": 0.4433, "blue": 0.4237, "mono": 0.4309}
 
 _stds = {"red": 0.1398, "green": 0.1279, "blue": 0.1203, "mono": 0.1308}
@@ -241,11 +242,11 @@ class HRVQADataSet(Dataset):
     ):
         super().__init__()
         assert split in [None, "train", "val", "val-div", "test-div", "test"], (
-            f"Split '{split}' not supported for " f"HRVQA DataSet"
+            f"Split '{split}' not supported for HRVQA DataSet"
         )
 
         assert img_size[0] in [1, 3], (
-            "HRVQA only supports 3 channel (RGB) or 1 "
+            f"HRVQA only supports 3 channel (RGB) or 1 "
             f"channel (grayscale). {img_size[0]} channels "
             f"unsupported."
         )

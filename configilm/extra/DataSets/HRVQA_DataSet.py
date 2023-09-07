@@ -241,9 +241,14 @@ class HRVQADataSet(Dataset):
         split_size: Union[float, int] = 0.5,
     ):
         super().__init__()
-        assert split in [None, "train", "val", "val-div", "test-div", "test"], (
-            f"Split '{split}' not supported for HRVQA DataSet"
-        )
+        assert split in [
+            None,
+            "train",
+            "val",
+            "val-div",
+            "test-div",
+            "test",
+        ], f"Split '{split}' not supported for HRVQA DataSet"
 
         assert img_size[0] in [1, 3], (
             f"HRVQA only supports 3 channel (RGB) or 1 "

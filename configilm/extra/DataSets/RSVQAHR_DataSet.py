@@ -16,8 +16,8 @@ from configilm.util import huggingface_tokenize_and_pad
 from configilm.util import Messages
 
 # values based on train images - of original split
-_means = {"red": 0.2060, "green": 0.2680, "blue": 0.2884, "mono": 0.2541}
-_stds = {"red": 0.0876, "green": 0.0582, "blue": 0.0484, "mono": 0.0820}
+_means = {"red": 0.4640, "green": 0.4682, "blue": 0.4376, "mono": 0.4566}
+_stds = {"red": 0.1843, "green": 0.1740, "blue": 0.1656, "mono": 0.1764}
 
 
 def resolve_data_dir(
@@ -45,11 +45,11 @@ def resolve_data_dir(
     # using mock data if allowed and no other found or forced
     if data_dir in [None, "none", "None"] and allow_mock:
         Messages.warn("Mock data being used, no alternative available.")
-        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "RSVQA-LR"
+        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "RSVQA-HR"
         data_dir = str(data_dir_p.resolve(True))
     if force_mock:
         Messages.warn("Forcing Mock data")
-        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "RSVQA-LR"
+        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "RSVQA-HR"
         data_dir = str(data_dir_p.resolve(True))
 
     if data_dir is None:
@@ -109,37 +109,48 @@ def _get_question_answers(split: str, root_dir: pathlib.Path):
         n.pop(k)
         return n
 
-    f_name = f"LR_split_{split}_images.json"
+    f_name = f"USGS_split_{split}_images.json"
     with open(root_dir.joinpath(f_name)) as read_file:
         images = json.load(read_file)["images"]
     qids = [x["questions_ids"] for x in images if x["active"]]
     del images
-    qids_set = set([x for sublist in qids for x in sublist])
+    qids_set = {x for sublist in qids for x in sublist}
     del qids
 
-    f_name = f"LR_split_{split}_questions.json"
+    f_name = f"USGS_split_{split}_questions.json"
     with open(root_dir.joinpath(f_name)) as read_file:
         questions = json.load(read_file)["questions"]
     questions = [
-        {"question": x["question"], "type": x["type"], "img_id": x["img_id"], "id": x["id"]} for x in questions if x["id"] in qids_set
+        {
+            "question": x["question"],
+            "type": x["type"],
+            "img_id": x["img_id"],
+            "id": x["id"],
+        }
+        for x in questions
+        if x["id"] in qids_set
     ]
     q_dict = {x["id"]: _remove_key_from_dict(x, "id") for x in questions}
     del questions
 
-    f_name = f"LR_split_{split}_answers.json"
+    f_name = f"USGS_split_{split}_answers.json"
     with open(root_dir.joinpath(f_name)) as read_file:
         answers = json.load(read_file)["answers"]
     answers = [
-        {"answer": x["answer"], "question_id": x["question_id"]} for x in answers if x["question_id"] in qids_set
+        {"answer": x["answer"], "question_id": x["question_id"]}
+        for x in answers
+        if x["question_id"] in qids_set
     ]
     del qids_set
-    a_dict = {x["question_id"]: _remove_key_from_dict(x, "question_id") for x in answers}
+    a_dict = {
+        x["question_id"]: _remove_key_from_dict(x, "question_id") for x in answers
+    }
     del answers
 
     return q_dict, a_dict
 
 
-class RSVQALRDataSet(Dataset):
+class RSVQAHRDataSet(Dataset):
     def __init__(
         self,
         root_dir: Union[Path, str],
@@ -151,14 +162,19 @@ class RSVQALRDataSet(Dataset):
         classes: int = 1_000,
         tokenizer=None,
         seq_length: int = 32,
+        use_file_format: str = "tif",
     ):
         super().__init__()
-        assert split in [None, "train", "val", "test"], (
-            f"Split '{split}' not supported for RSVQA-LR DataSet"
-        )
+        assert split in [
+            None,
+            "train",
+            "val",
+            "test",
+            "test_phili",
+        ], f"Split '{split}' not supported for RSVQA-HR DataSet"
 
         assert img_size[0] in [1, 3], (
-            f"RSVQA-LR only supports 3 channel (RGB) or 1 "
+            f"RSVQA-HR only supports 3 channel (RGB) or 1 "
             f"channel (grayscale). {img_size[0]} channels "
             f"unsupported."
         )
@@ -184,12 +200,13 @@ class RSVQALRDataSet(Dataset):
         self.transform = transform
         self.max_img_idx = max_img_idx if max_img_idx is not None else -1
         self.classes = classes
+        self.use_file_format = use_file_format
 
         if self.split is not None:
             self.questions, self.answers = _get_question_answers(split, self.root_dir)
         else:
             self.questions, self.answers = dict(), dict()
-            for s in ["train", "val", "test"]:
+            for s in ["train", "val", "test", "test_phili"]:
                 q, a = _get_question_answers(s, self.root_dir)
                 self.questions.update(q)
                 self.answers.update(a)
@@ -202,7 +219,9 @@ class RSVQALRDataSet(Dataset):
         # restrict qs and as
         if 0 < self.max_img_idx < len(self.questions):
             allowed_keys = set(list(self.questions.keys())[:max_img_idx])
-            self.questions = {k: v for k, v in self.questions.items() if k in allowed_keys}
+            self.questions = {
+                k: v for k, v in self.questions.items() if k in allowed_keys
+            }
             self.answers = {k: v for k, v in self.answers.items() if k in allowed_keys}
         self.qids = sorted(self.questions.keys())
 
@@ -240,7 +259,12 @@ class RSVQALRDataSet(Dataset):
         )
         label = self._to_labels(answer["answer"])
 
-        img_path = self.root_dir / "Images_LR" / f'{question["img_id"]}.tif'
+        img_path = (
+            self.root_dir
+            / "Images"
+            / "Data"
+            / f'{question["img_id"]}.{self.use_file_format}'
+        )
         img = Image.open(img_path.resolve()).convert("RGB")
         img = self.pre_transforms(img)
         if self.transform:
@@ -252,6 +276,17 @@ class RSVQALRDataSet(Dataset):
 
 
 if __name__ == "__main__":
-    ds = RSVQALRDataSet(root_dir=resolve_data_dir(data_dir=None, allow_mock=True),
-                        split=None, max_img_idx=-1)
-    print(len(ds))
+    import time
+
+    ds = RSVQAHRDataSet(
+        root_dir=resolve_data_dir(data_dir=None, allow_mock=True),
+        split=None,
+        max_img_idx=-1,
+        use_file_format="tif",
+    )
+
+    for j in range(5):
+        t0 = time.time()
+        for i in range(800):
+            _ = ds[i]
+        print(time.time() - t0)

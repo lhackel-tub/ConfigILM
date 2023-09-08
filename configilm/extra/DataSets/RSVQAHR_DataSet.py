@@ -33,9 +33,7 @@ def resolve_data_dir(
     """
     if data_dir in [None, "none", "None"]:
         Messages.warn("No data directory provided, trying to resolve")
-        paths = [
-            # TODO upload data
-        ]
+        paths = ["No path added yet"]  # TODO add paths
         for p in paths:
             if isdir(p):
                 data_dir = p
@@ -203,7 +201,9 @@ class RSVQAHRDataSet(Dataset):
         self.use_file_format = use_file_format
 
         if self.split is not None:
-            self.questions, self.answers = _get_question_answers(split, self.root_dir)
+            self.questions, self.answers = _get_question_answers(
+                self.split, self.root_dir
+            )
         else:
             self.questions, self.answers = dict(), dict()
             for s in ["train", "val", "test", "test_phili"]:
@@ -273,20 +273,3 @@ class RSVQAHRDataSet(Dataset):
             img = img.mean(0).unsqueeze(0)
 
         return img, question_ids, label
-
-
-if __name__ == "__main__":
-    import time
-
-    ds = RSVQAHRDataSet(
-        root_dir=resolve_data_dir(data_dir=None, allow_mock=True),
-        split=None,
-        max_img_idx=-1,
-        use_file_format="tif",
-    )
-
-    for j in range(5):
-        t0 = time.time()
-        for i in range(800):
-            _ = ds[i]
-        print(time.time() - t0)

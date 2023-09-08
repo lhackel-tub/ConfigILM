@@ -1,5 +1,5 @@
 """
-Dataloader and Datamodule for RSVQA LR dataset.
+Dataloader and Datamodule for RSVQA HR dataset.
 """
 import os
 from datetime import datetime
@@ -14,16 +14,16 @@ from torch.utils.data import DataLoader
 
 from configilm.extra.DataModules.dm_defaults import default_train_transform
 from configilm.extra.DataModules.dm_defaults import default_transform
-from configilm.extra.DataSets.RSVQALR_DataSet import _means
-from configilm.extra.DataSets.RSVQALR_DataSet import _stds
-from configilm.extra.DataSets.RSVQALR_DataSet import RSVQALRDataSet
+from configilm.extra.DataSets.RSVQAHR_DataSet import RSVQAHRDataSet
+from configilm.extra.DataSets.RSVQAHR_DataSet import _means
+from configilm.extra.DataSets.RSVQAHR_DataSet import _stds
 from configilm.util import Messages
 
 
-class RSVQALRDataModule(pl.LightningDataModule):
-    train_ds: Union[None, RSVQALRDataSet] = None
-    val_ds: Union[None, RSVQALRDataSet] = None
-    test_ds: Union[None, RSVQALRDataSet] = None
+class RSVQAHRDataModule(pl.LightningDataModule):
+    train_ds: Union[None, RSVQAHRDataSet] = None
+    val_ds: Union[None, RSVQAHRDataSet] = None
+    test_ds: Union[None, RSVQAHRDataSet] = None
     selected_answers: Union[None, List[str]] = None
 
     def __init__(
@@ -38,6 +38,7 @@ class RSVQALRDataModule(pl.LightningDataModule):
         seq_length=32,
         selected_answers=None,
         pin_memory=None,
+        use_phili_test: bool = False
     ):
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
@@ -97,6 +98,7 @@ class RSVQALRDataModule(pl.LightningDataModule):
 
         self.tokenizer = tokenizer
         self.seq_length = seq_length
+        self.use_phili_test = use_phili_test
 
     def prepare_data(self):
         pass
@@ -109,7 +111,7 @@ class RSVQALRDataModule(pl.LightningDataModule):
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
             if self.train_ds is None:
-                self.train_ds = RSVQALRDataSet(
+                self.train_ds = RSVQAHRDataSet(
                     self.data_dir,
                     split="train",
                     transform=self.train_transform,
@@ -122,7 +124,7 @@ class RSVQALRDataModule(pl.LightningDataModule):
                 self.selected_answers = self.train_ds.selected_answers
 
             if self.val_ds is None:
-                self.val_ds = RSVQALRDataSet(
+                self.val_ds = RSVQAHRDataSet(
                     self.data_dir,
                     split="val",
                     transform=self.transform,
@@ -137,9 +139,9 @@ class RSVQALRDataModule(pl.LightningDataModule):
 
         # Assign test dataset for use in dataloader(s)
         if (stage == "test" or stage is None) and self.test_ds is None:
-            self.test_ds = RSVQALRDataSet(
+            self.test_ds = RSVQAHRDataSet(
                 self.data_dir,
-                split="test",
+                split="test_phili" if self.use_phili_test else "test",
                 transform=self.transform,
                 max_img_idx=self.max_img_idx,
                 img_size=self.img_size,

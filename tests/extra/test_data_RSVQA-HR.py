@@ -5,9 +5,9 @@ from typing import Union
 import pytest
 import torch
 
-from configilm.extra.DataModules.RSVQALR_DataModule import RSVQALRDataModule
-from configilm.extra.DataSets.RSVQALR_DataSet import resolve_data_dir
-from configilm.extra.DataSets.RSVQALR_DataSet import RSVQALRDataSet
+from configilm.extra.DataModules.RSVQAHR_DataModule import RSVQAHRDataModule
+from configilm.extra.DataSets.RSVQAHR_DataSet import RSVQAHRDataSet
+from configilm.extra.DataSets.RSVQAHR_DataSet import resolve_data_dir
 
 
 @pytest.fixture
@@ -15,7 +15,7 @@ def data_dir():
     return resolve_data_dir(None, allow_mock=True, force_mock=True)
 
 
-dataset_params = ["train", "val", "test", None]
+dataset_params = ["train", "val", "test", "test_phili", None]
 
 class_number = [10, 100, 250, 1000, 1234]
 img_sizes = [60, 120, 128, 144, 256]
@@ -28,7 +28,7 @@ max_img_idxs_too_large = [600_000, 1_000_000]
 
 
 def dataset_ok(
-    dataset: Union[RSVQALRDataSet, None],
+    dataset: Union[RSVQAHRDataSet, None],
     expected_image_shape: Sequence,
     expected_question_length: int,
     expected_length: Union[int, None],
@@ -50,7 +50,7 @@ def dataset_ok(
 
 
 def dataloaders_ok(
-    dm: RSVQALRDataModule,
+    dm: RSVQAHRDataModule,
     expected_image_shape: Sequence,
     expected_question_length: int,
     classes: int,
@@ -80,7 +80,7 @@ def test_basic_dataset_splits(data_dir, split: str, classes: int):
     img_size = (3, 256, 256)
     seq_length = 32
 
-    ds = RSVQALRDataSet(
+    ds = RSVQAHRDataSet(
         root_dir=data_dir,
         split=split,
         img_size=img_size,
@@ -99,7 +99,7 @@ def test_basic_dataset_splits(data_dir, split: str, classes: int):
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
 def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
-    ds = RSVQALRDataSet(
+    ds = RSVQAHRDataSet(
         root_dir=data_dir, split="val", img_size=img_size, classes=1000, seq_length=32
     )
 
@@ -115,7 +115,7 @@ def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
 @pytest.mark.parametrize("img_size", img_shapes_fail)
 def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
     with pytest.raises(AssertionError):
-        _ = RSVQALRDataSet(
+        _ = RSVQAHRDataSet(
             root_dir=data_dir,
             split="val",
             img_size=img_size,
@@ -124,10 +124,10 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
         )
 
 
-@pytest.mark.parametrize("max_img_index", [1, 16, 74, 10_003, 10_004, None, -1])
+@pytest.mark.parametrize("max_img_index", [1, 16, 74, 9_804, 9_805, None, -1])
 def test_ds_max_img_idx(data_dir, max_img_index: int):
-    ds = RSVQALRDataSet(root_dir=data_dir, max_img_idx=max_img_index)
-    max_len = 10_004
+    ds = RSVQAHRDataSet(root_dir=data_dir, max_img_idx=max_img_index)
+    max_len = 9_805
     len_ds = (
         max_len
         if max_img_index is None or max_img_index > max_len or max_img_index == -1
@@ -142,18 +142,18 @@ def test_ds_max_img_idx(data_dir, max_img_index: int):
     )
 
 
-@pytest.mark.parametrize("max_img_index", [10_005, 20_000, 100_000, 10_000_000])
+@pytest.mark.parametrize("max_img_index", [9_806, 20_000, 100_000, 10_000_000])
 def test_ds_max_img_idx_too_large(data_dir, max_img_index: int):
-    ds = RSVQALRDataSet(root_dir=data_dir, max_img_idx=max_img_index)
+    ds = RSVQAHRDataSet(root_dir=data_dir, max_img_idx=max_img_index)
     assert len(ds) < max_img_index
 
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
 def test_ds_classes(data_dir, classes: int):
-    ds = RSVQALRDataSet(root_dir=data_dir, classes=classes, split="train")
+    ds = RSVQAHRDataSet(root_dir=data_dir, classes=classes, split="train")
     assert ds.classes == classes
     assert len(ds.selected_answers) == classes
-    max_classes_mock_set = 352  # number of classes in the mock data
+    max_classes_mock_set = 236  # number of classes in the mock data
     if classes <= max_classes_mock_set:
         for i in range(classes):
             assert ds.selected_answers[i] != "INVALID"
@@ -166,8 +166,8 @@ def test_ds_classes(data_dir, classes: int):
 
 @pytest.mark.parametrize("split", dataset_params)
 def test_dm_default(data_dir, split: str):
-    dm = RSVQALRDataModule(data_dir=data_dir)
-    split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
+    dm = RSVQAHRDataModule(data_dir=data_dir)
+    split2stage = {"train": "fit", "val": "fit", "test": "test", "test_phili": "test", None: None}
     dm.setup(stage=split2stage[split])
     dm.prepare_data()
     if split in ["train", "val"]:
@@ -211,7 +211,7 @@ def test_dm_default(data_dir, split: str):
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_dm_dataloaders(data_dir, bs: int):
-    dm = RSVQALRDataModule(data_dir=data_dir, batch_size=bs)
+    dm = RSVQAHRDataModule(data_dir=data_dir, batch_size=bs)
     dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 256, 256),
@@ -221,7 +221,7 @@ def test_dm_dataloaders(data_dir, bs: int):
 
 
 def test_dm_shuffle_false(data_dir):
-    dm = RSVQALRDataModule(data_dir=data_dir, shuffle=False)
+    dm = RSVQAHRDataModule(data_dir=data_dir, shuffle=False)
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
@@ -237,7 +237,7 @@ def test_dm_shuffle_false(data_dir):
 
 
 def test_dm_shuffle_none(data_dir):
-    dm = RSVQALRDataModule(data_dir=data_dir, shuffle=None)
+    dm = RSVQAHRDataModule(data_dir=data_dir, shuffle=None)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -252,7 +252,7 @@ def test_dm_shuffle_none(data_dir):
 
 
 def test_dm_shuffle_true(data_dir):
-    dm = RSVQALRDataModule(data_dir=data_dir, shuffle=True)
+    dm = RSVQAHRDataModule(data_dir=data_dir, shuffle=True)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -263,4 +263,15 @@ def test_dm_shuffle_true(data_dir):
     )
     assert not torch.equal(
         next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
+    )
+
+
+def test_different_test_splits(data_dir):
+    dm = RSVQAHRDataModule(data_dir=data_dir, use_phili_test=False)
+    dm.setup("test")
+    dm_p = RSVQAHRDataModule(data_dir=data_dir, use_phili_test=True)
+    dm_p.setup("test")
+
+    assert not torch.equal(
+        next(iter(dm.test_dataloader()))[0], next(iter(dm_p.test_dataloader()))[0]
     )

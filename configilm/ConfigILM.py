@@ -372,6 +372,14 @@ class ConfigILM(nn.Module):
                 )
             )
 
+    def to(self, *args, **kwargs):
+        super().to(*args, **kwargs)
+        if isinstance(self.config.fusion_method, nn.Module):
+            self.config.fusion_method.to(*args, **kwargs)
+
+        if isinstance(self.config.fusion_activation, nn.Module):
+            self.config.fusion_activation.to(*args, **kwargs)
+
     def get_tokenizer(self):
         """
         Getter to the tokenizer of the text model if applicable.

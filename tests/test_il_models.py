@@ -11,6 +11,17 @@ from requests.exceptions import ReadTimeout  # type: ignore
 
 from configilm import ConfigILM
 
+DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
+max_memory_usage = 8  # VRAM usage of largest model during test
+
+# If the available VRAM is smaller than the largest model, some tests will fail due to
+# CUDA Out-Of-Memory errors. Therefore, only use CUDA if there is enough VRAM available.
+if torch.cuda.is_available():
+    cuda_gb_vram = round(
+        torch.cuda.get_device_properties("cuda:0").total_memory / 1024**3, 2
+    )
+    DEVICE = "cuda:0" if cuda_gb_vram >= max_memory_usage else "cpu"
+
 
 def get_classification_batch(
     img_shape: Sequence = (12, 120, 120),
@@ -18,8 +29,10 @@ def get_classification_batch(
     classes: int = 1000,
 ):
     assert len(img_shape) == 3
-    v = torch.ones((batch_size, img_shape[0], img_shape[1], img_shape[2]))
-    lbl = torch.ones((batch_size, classes))
+    v = torch.ones(
+        (batch_size, img_shape[0], img_shape[1], img_shape[2]), device=DEVICE
+    )
+    lbl = torch.ones((batch_size, classes), device=DEVICE)
     return [v, lbl]
 
 
@@ -32,7 +45,7 @@ def get_vqa_batch(
     v, a = get_classification_batch(
         img_shape=img_shape, batch_size=batch_size, classes=classes
     )
-    q = torch.ones((batch_size, text_tokens), dtype=torch.int32)
+    q = torch.ones((batch_size, text_tokens), dtype=torch.int32, device=DEVICE)
     return [v, q, a]
 
 
@@ -50,6 +63,7 @@ def test_bs(batch_size):
             "ignore and restart creation.",
         )
         model = ConfigILM.ConfigILM(config=config)
+        model.to(DEVICE)
     model(x)
     # pass
 
@@ -166,6 +180,7 @@ def apply_timm(model: str, cls: int, bs: int, image_size: int):
             "ignore and restart creation.",
         )
         model = ConfigILM.ConfigILM(config=config)
+        model.to(DEVICE)
     res = model(x)
     assert (
         res.shape == y.shape
@@ -233,7 +248,7 @@ def apply_ilm(config: ConfigILM.ILMConfiguration, bs: int) -> bool:
                     message="Tokenizer was initialized pretrained",
                 )
                 model = ConfigILM.ConfigILM(config=config)
-
+                model.to(DEVICE)
         except ReadTimeout:
             # Model could not load, retry
             i += 1
@@ -244,6 +259,7 @@ def apply_ilm(config: ConfigILM.ILMConfiguration, bs: int) -> bool:
         break
 
     if model is not None:
+
         res = model((v, q))
         assert (
             res.shape == a.shape
@@ -339,7 +355,7 @@ def test_v_wrong_batchshape(n):
         classes=10,
     )
     shape = [16] * n
-    x = torch.ones(shape)
+    x = torch.ones(shape, device=DEVICE)
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",
@@ -349,6 +365,7 @@ def test_v_wrong_batchshape(n):
         )
 
         model = ConfigILM.ConfigILM(config=config)
+        model.to(DEVICE)
     with pytest.raises(AssertionError):
         _ = model(x)
 
@@ -369,9 +386,9 @@ def test_ilm_wrong_batch_parts_shape(img, txt):
     )
     img_shape = [bs] * img
     txt_shape = [bs] * txt
-    v = torch.ones(img_shape)
-    q = torch.ones(txt_shape, dtype=torch.int32)
-    a = torch.ones((bs, cls))
+    v = torch.ones(img_shape, device=DEVICE)
+    q = torch.ones(txt_shape, dtype=torch.int32, device=DEVICE)
+    a = torch.ones((bs, cls), device=DEVICE)
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",
@@ -386,6 +403,7 @@ def test_ilm_wrong_batch_parts_shape(img, txt):
             message="Tokenizer was initialized pretrained",
         )
         model = ConfigILM.ConfigILM(config=config)
+        model.to(DEVICE)
     if img != 4 or txt != 2:
         with pytest.raises(AssertionError):
             _ = model((v, q))
@@ -412,8 +430,8 @@ def test_ilm_wrong_different_batch_sizes():
     )
     img_shape = [16] * 4
     txt_shape = [8] * 2
-    v = torch.ones(img_shape)
-    q = torch.ones(txt_shape, dtype=torch.int32)
+    v = torch.ones(img_shape, device=DEVICE)
+    q = torch.ones(txt_shape, dtype=torch.int32, device=DEVICE)
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",
@@ -428,6 +446,7 @@ def test_ilm_wrong_different_batch_sizes():
             message="Tokenizer was initialized pretrained",
         )
         model = ConfigILM.ConfigILM(config=config)
+        model.to(DEVICE)
     with pytest.raises(AssertionError):
         _ = model((v, q))
 
@@ -445,8 +464,8 @@ def test_ilm_wrong_seq_length_no_pooler():
     )
     img_shape = [16] * 4
     txt_shape = [16] * 2
-    v = torch.ones(img_shape)
-    q = torch.ones(txt_shape, dtype=torch.int32)
+    v = torch.ones(img_shape, device=DEVICE)
+    q = torch.ones(txt_shape, dtype=torch.int32, device=DEVICE)
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",
@@ -461,6 +480,7 @@ def test_ilm_wrong_seq_length_no_pooler():
             message="Tokenizer was initialized pretrained",
         )
         model = ConfigILM.ConfigILM(config=config)
+        model.to(DEVICE)
     with pytest.raises(RuntimeError):
         # This specific one config (hf_model_name="prajjwal1/bert-tiny")
         # will have a runtime error. This may not happen for other configs
@@ -483,8 +503,8 @@ def test_ilm_wrong_input_length():
     )
     img_shape = [16] * 4
     txt_shape = [16] * 2
-    v = torch.ones(img_shape)
-    q = torch.ones(txt_shape, dtype=torch.int32)
+    v = torch.ones(img_shape, device=DEVICE)
+    q = torch.ones(txt_shape, dtype=torch.int32, device=DEVICE)
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",
@@ -499,6 +519,7 @@ def test_ilm_wrong_input_length():
             message="Tokenizer was initialized pretrained",
         )
         model = ConfigILM.ConfigILM(config=config)
+        model.to(DEVICE)
     with pytest.raises(AssertionError):
         # This specific one config (hf_model_name="prajjwal1/bert-tiny") will have a
         # runtime error. This may not happen for other configs
@@ -537,6 +558,7 @@ def test_failty_config():
             message="Tokenizer was initialized pretrained",
         )
         model = ConfigILM.ConfigILM(config=config)
+        model.to(DEVICE)
     with pytest.raises(ValueError):
         _ = model((v, q))
 
@@ -651,16 +673,17 @@ def test_integration():
             message="Tokenizer was initialized pretrained",
         )
         model = ConfigILM.ConfigILM(config=cfg)
+        model.to(DEVICE)
     model.eval()
 
-    in_t = torch.ones((1, 3, 120, 120))
+    in_t = torch.ones((1, 3, 120, 120), device=DEVICE)
     out_t = model(in_t)
 
     assert torch.all(
         torch.isclose(
             out_t[0][:5],
-            torch.tensor([-5.6796, -5.2999, -4.8613, -5.0192, -4.8003]),
-            atol=0.001,
+            torch.tensor([-5.6796, -5.2999, -4.8613, -5.0192, -4.8003], device=DEVICE),
+            atol=0.005,
         )
     )
 
@@ -753,6 +776,7 @@ def test_tokenizer_exists():
             message="Tokenizer was initialized pretrained",
         )
         model = ConfigILM.ConfigILM(config=cfg)
+        model.to(DEVICE)
     _ = model.get_tokenizer()
 
 
@@ -769,6 +793,7 @@ def test_tokenizer_not_exists():
             "ignore and restart creation.",
         )
         model = ConfigILM.ConfigILM(config=cfg)
+        model.to(DEVICE)
 
     with pytest.raises(AttributeError):
         _ = model.get_tokenizer()

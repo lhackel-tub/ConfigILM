@@ -14,9 +14,9 @@ from torch.utils.data import DataLoader
 
 from configilm.extra.DataModules.dm_defaults import default_train_transform
 from configilm.extra.DataModules.dm_defaults import default_transform
-from configilm.extra.DataSets.RSVQAHR_DataSet import RSVQAHRDataSet
 from configilm.extra.DataSets.RSVQAHR_DataSet import _means
 from configilm.extra.DataSets.RSVQAHR_DataSet import _stds
+from configilm.extra.DataSets.RSVQAHR_DataSet import RSVQAHRDataSet
 from configilm.util import Messages
 
 
@@ -38,7 +38,7 @@ class RSVQAHRDataModule(pl.LightningDataModule):
         seq_length=32,
         selected_answers=None,
         pin_memory=None,
-        use_phili_test: bool = False
+        use_phili_test: bool = False,
     ):
         if img_size is not None and len(img_size) != 3:
             raise ValueError(

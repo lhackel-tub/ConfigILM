@@ -6,8 +6,8 @@ import pytest
 import torch
 
 from configilm.extra.DataModules.RSVQAHR_DataModule import RSVQAHRDataModule
-from configilm.extra.DataSets.RSVQAHR_DataSet import RSVQAHRDataSet
 from configilm.extra.DataSets.RSVQAHR_DataSet import resolve_data_dir
+from configilm.extra.DataSets.RSVQAHR_DataSet import RSVQAHRDataSet
 
 
 @pytest.fixture
@@ -167,7 +167,13 @@ def test_ds_classes(data_dir, classes: int):
 @pytest.mark.parametrize("split", dataset_params)
 def test_dm_default(data_dir, split: str):
     dm = RSVQAHRDataModule(data_dir=data_dir)
-    split2stage = {"train": "fit", "val": "fit", "test": "test", "test_phili": "test", None: None}
+    split2stage = {
+        "train": "fit",
+        "val": "fit",
+        "test": "test",
+        "test_phili": "test",
+        None: None,
+    }
     dm.setup(stage=split2stage[split])
     dm.prepare_data()
     if split in ["train", "val"]:

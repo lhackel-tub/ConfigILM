@@ -40,9 +40,7 @@ vqa
 :caption: Extra
 
 extra/BEN_LMDB_Reader
-extra/bigearthnet
-extra/rsvqaxben
-extra/hrvqa
+extra/DataSets and DataModules
 ```
 
 ```{toctree}

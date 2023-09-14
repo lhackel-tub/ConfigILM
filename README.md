@@ -1,4 +1,4 @@
-# ConfigILM:server
+# ConfigILM
 ![ConfigILM Logo](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM_v1.png)
 
 <a href="https://bifold.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/BIFOLD_Logo_farbig.png" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>

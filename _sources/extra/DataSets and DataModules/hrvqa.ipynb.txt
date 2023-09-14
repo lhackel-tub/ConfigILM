@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# HRVQA Dataset & Datamodule\n",
+    "# HRVQA\n",
     "\n",
     "\n",
     "This page describes the usage of Dataloader and Datamodule for [HRVQA](https://hrvqa.nl), a high-resolution aerial VQA dataset based on the\n",
@@ -33,7 +33,7 @@
     "from pprint import pprint\n",
     "import torch\n",
     "\n",
-    "my_data_path = str(pathlib.Path(\"\").resolve().parent.parent.joinpath(\"configilm\").joinpath(\"extra\").joinpath(\"mock_data\").joinpath(\"HRVQA\").resolve(strict=True))"
+    "my_data_path = str(pathlib.Path(\"\").resolve().parent.parent.parent.joinpath(\"configilm\").joinpath(\"extra\").joinpath(\"mock_data\").joinpath(\"HRVQA\").resolve(strict=True))"
    ]
   },
   {
@@ -120,8 +120,7 @@
     "    root_dir=my_data_path  # path to dataset\n",
     ")\n",
     "\n",
-    "img, question, answer = ds[4]\n",
-    "# img = torch.flip(img, [0]) # only choose BGR axis for display and bring into RGB order"
+    "img, question, answer = ds[4]"
    ]
   },
   {
@@ -226,7 +225,7 @@
    "metadata": {},
    "source": [
     ":::{tip}\n",
-    "Usually this tokenizer is provided by the model itself as shown in the [VQA example](../vqa.ipynb) during dataset creation.\n",
+    "Usually this tokenizer is provided by the model itself as shown in the [VQA example](../../vqa.ipynb) during dataset creation.\n",
     ":::"
    ]
   },

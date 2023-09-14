@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="BigEarthNet Dataset &amp; Datamodule" href="bigearthnet.html" /><link rel="prev" title="Visual Question Answering (VQA)" href="../vqa.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DataSets and DataModules" href="DataSets%20and%20DataModules.html" /><link rel="prev" title="Visual Question Answering (VQA)" href="../vqa.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>Using the BigEarthNet LMDB Reader - ConfigILM</title>
@@ -168,9 +168,14 @@
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul class="current">
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Using the BigEarthNet LMDB Reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigearthnet.html">BigEarthNet Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hrvqa.html">HRVQA Dataset &amp; Datamodule</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="DataSets%20and%20DataModules.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/bigearthnet.html">BigEarthNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
@@ -301,7 +306,7 @@ Labels:
 </section>
 <section id="label-types">
 <h2>Label types<a class="headerlink" href="#label-types" title="Permalink to this heading">#</a></h2>
-<p>We can also request the labels in the “new” 19-label version as introduced in <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id5" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">5</a>]</span>. Here we see that the Label ‘Water bodies’ gets converted into ‘Inland waters’ as expected.</p>
+<p>We can also request the labels in the “new” 19-label version as introduced in <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id5" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">6</a>]</span>. Here we see that the Label ‘Water bodies’ gets converted into ‘Inland waters’ as expected.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
@@ -384,12 +389,12 @@ Mean 2: [590.23569706, 340.76769064, 2266.46036911]
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="bigearthnet.html">
+          <a class="next-page" href="DataSets%20and%20DataModules.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">BigEarthNet Dataset &amp; Datamodule</div>
+                <div class="title">DataSets and DataModules</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>

@@ -168,9 +168,14 @@
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="extra/BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra/bigearthnet.html">BigEarthNet Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra/rsvqaxben.html">RSVQAxBEN Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="extra/hrvqa.html">HRVQA Dataset &amp; Datamodule</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="extra/DataSets%20and%20DataModules.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/bigearthnet.html">BigEarthNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
@@ -216,7 +221,7 @@
           <section class="tex2jax_ignore mathjax_ignore" id="visual-question-answering-vqa">
 <h1>Visual Question Answering (VQA)<a class="headerlink" href="#visual-question-answering-vqa" title="Permalink to this heading">#</a></h1>
 <p>The Framework is set up in way, that it is easy to combine an image model from the <a class="reference external" href="https://github.com/huggingface/pytorch-image-models/tree/main/timm/models">timm</a> library with a language model from <a class="reference external" href="https://huggingface.co/">huggingface</a>. For both models, either pre-trained weights can be used or the models can be trained as a composite in an end-to-end fashion.
-For this example usage we will be using the <a class="reference internal" href="extra/rsvqaxben.html"><span class="doc std std-doc"><code class="docutils literal notranslate"><span class="pre">RSVQAxBEN</span> <span class="pre">DataModule</span></code></span></a> which loads the <em>RSVQAxBEN</em> dataset published by <span id="id1">Lobry <em>et al.</em> [<a class="reference internal" href="references.html#id7" title="Sylvain Lobry, Begüm Demir, and Devis Tuia. Rsvqa meets bigearthnet: a new, large-scale, visual question answering dataset for remote sensing. In 2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS, 1218–1221. IEEE, 2021.">2</a>]</span> inside a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/"><code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">lightning</span></code></a> trainer. The network will be integrated into a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html"><code class="docutils literal notranslate"><span class="pre">LightningModule</span></code></a>.</p>
+For this example usage we will be using the [<code class="docutils literal notranslate"><span class="pre">RSVQAxBEN</span> <span class="pre">DataModule</span></code>](extra/DataSets and DataModules/rsvqaxben.ipynb) which loads the <em>RSVQAxBEN</em> dataset published by <span id="id1">Lobry <em>et al.</em> [<a class="reference internal" href="references.html#id7" title="Sylvain Lobry, Begüm Demir, and Devis Tuia. Rsvqa meets bigearthnet: a new, large-scale, visual question answering dataset for remote sensing. In 2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS, 1218–1221. IEEE, 2021.">2</a>]</span> inside a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/"><code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">lightning</span></code></a> trainer. The network will be integrated into a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html"><code class="docutils literal notranslate"><span class="pre">LightningModule</span></code></a>.</p>
 <p>First we start by importing the needed packages from <code class="docutils literal notranslate"><span class="pre">torch</span></code> and <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> so that we can set up the <code class="docutils literal notranslate"><span class="pre">LightningModule</span></code>.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">

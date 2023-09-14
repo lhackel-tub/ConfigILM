@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="BigEarthNet" href="DataSets%20and%20DataModules/bigearthnet.html" /><link rel="prev" title="Using the BigEarthNet LMDB Reader" href="BEN_LMDB_Reader.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>COCO-QA - ConfigILM</title>
+        <title>DataSets and DataModules - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -135,7 +135,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -166,11 +166,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../vqa.html">Visual Question Answering (VQA)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigearthnet.html">BigEarthNet Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN Dataset &amp; Datamodule</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hrvqa.html">HRVQA Dataset &amp; Datamodule</a></li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/bigearthnet.html">BigEarthNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
@@ -207,123 +212,25 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="coco-qa">
-<h1>COCO-QA<a class="headerlink" href="#coco-qa" title="Permalink to this heading">#</a></h1>
-<p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://www.cs.toronto.edu/~mren/research/imageqa/data/cocoqa/">COCO-QA</a>, a VQA dataset based on the COCO Dataset. It was first published in <span id="id1">Ren <em>et al.</em> [<a class="reference internal" href="../references.html#id6" title="Mengye Ren, Ryan Kiros, and Richard Zemel. Exploring models and data for image question answering. Advances in neural information processing systems, 2015.">3</a>]</span>.</p>
-<section id="cocoqa-dataset">
-<h2>COCOQA DataSet<a class="headerlink" href="#cocoqa-dataset" title="Permalink to this heading">#</a></h2>
-<p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the path of the data, if the path is not “./”.
-The full folder structure expected at this path is</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
-├── images
-│   ├── COCO_train2014_&lt;id a&gt;.jpg
-│   ├── COCO_train2014_&lt;id b&gt;.jpg
-│   ├── ...
-│   ├── COCO_train2014_&lt;id i&gt;.jpg
-│   ├── COCO_val2014_&lt;id j&gt;.jpg
-│   ├── ...
-│   └── COCO_val2014_&lt;id z&gt;.jpg
-├── COCO-QA_QA_test.json
-└── COCO-QA_QA_train.json
-</pre></div>
+          <section class="tex2jax_ignore mathjax_ignore" id="datasets-and-datamodules">
+<h1>DataSets and DataModules<a class="headerlink" href="#datasets-and-datamodules" title="Permalink to this heading">#</a></h1>
+<p>The current version of <code class="docutils literal notranslate"><span class="pre">ConfigILM</span></code> includes recommended setups of DataSets and DataModules.
+We may remove this section in the future, or extend it, depending on feedback 🙂.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DataSets%20and%20DataModules/bigearthnet.html">BigEarthNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+</ul>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">COCOQA_DataSet</span>
-
-<span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataSet</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
-<span class="p">)</span>
-
-<span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: No tokenizer was provided, using BertTokenizer (uncased). This may result in very bad performance if the used network expected other tokens
-Loading COCOQA data for None...
-        50 QA-pairs indexed
-        50 QA-pairs in reduced data set
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 120, 120])
-Question (start): [101, 2054, 2003, 1996, 3609, 1997, 1996, 3933, 102, 0, 0, 0, 0, 0, 0]
-Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
-</pre></div>
-</div>
-<img alt="../_images/008e6e0dd2208c56a69d1e068fdc78079f306e9ad484f22fffecd7a30d805e27.png" src="../_images/008e6e0dd2208c56a69d1e068fdc78079f306e9ad484f22fffecd7a30d805e27.png" />
-</div>
-</div>
-<p>As we can see, this Dataset uses a tokenizer to generate the Question out of a natural language text. If no tokenizer is provided, a default one will be used, however this may lead to bad performance if not accounted for. The tokenizer can be configured as input parameter.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.ConfigILM</span> <span class="kn">import</span> <span class="n">_get_hf_model</span>
-
-<span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
-
-<span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataSet</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
-    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
-<span class="p">)</span>
-<span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading COCOQA data for None...
-        50 QA-pairs indexed
-        50 QA-pairs in reduced data set
-</pre></div>
-</div>
-</div>
-</div>
-<p>Other parameters are <code class="docutils literal notranslate"><span class="pre">split</span></code> (“train” or “test”), <code class="docutils literal notranslate"><span class="pre">transform</span></code> for image transformations, <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> to limit the number of used images, <code class="docutils literal notranslate"><span class="pre">img_size</span></code>  (channels should be 3, high, width) and <code class="docutils literal notranslate"><span class="pre">seq_length</span></code> of the tokenized question.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
-
-<span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataSet</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
-    <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
-    <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-    <span class="n">seq_length</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
-    <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span>
-<span class="p">)</span>
-<span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading COCOQA data for train...
-        25 QA-pairs indexed
-         5 QA-pairs in reduced data set
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 200, 100])
-Question (start): [101, 3157, 2417, 1012, 2054, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
-</pre></div>
-</div>
-<img alt="../_images/6cd29ea0f4d92ab52d1fd82a1ef1c52d4877a98412412ab4f63eb269099ab730.png" src="../_images/6cd29ea0f4d92ab52d1fd82a1ef1c52d4877a98412412ab4f63eb269099ab730.png" />
-</div>
-</div>
-</section>
 </section>
 
         </article>
@@ -331,8 +238,26 @@ Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="DataSets%20and%20DataModules/bigearthnet.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">BigEarthNet</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="BEN_LMDB_Reader.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Using the BigEarthNet LMDB Reader</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -479,27 +404,8 @@ Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">COCO-QA</a><ul>
-<li><a class="reference internal" href="#cocoqa-dataset">COCOQA DataSet</a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>

@@ -3,7 +3,7 @@
   {
    "cell_type": "markdown",
    "source": [
-    "# RSVQAxBEN Dataset & Datamodule\n",
+    "# RSVQAxBEN\n",
     "\n",
     "\n",
     "This page describes the usage of Dataloader and Datamodule for [RSVQAxBEN](https://zenodo.org/record/5084904#.ZAsFWNLMIUE), a VQA dataset based on the\n",
@@ -37,7 +37,7 @@
     "from pprint import pprint\n",
     "import torch\n",
     "\n",
-    "my_data_path = str(pathlib.Path(\"\").resolve().parent.parent.joinpath(\"configilm\").joinpath(\"extra\").joinpath(\"mock_data\").resolve(strict=True))"
+    "my_data_path = str(pathlib.Path(\"\").resolve().parent.parent.parent.joinpath(\"configilm\").joinpath(\"extra\").joinpath(\"mock_data\").resolve(strict=True))"
    ],
    "metadata": {
     "collapsed": false
@@ -195,7 +195,7 @@
    "cell_type": "markdown",
    "source": [
     ":::{tip}\n",
-    "Usually this tokenizer is provided by the model itself as shown in the [VQA example](../vqa.ipynb) during dataset creation.\n",
+    "Usually this tokenizer is provided by the model itself as shown in the [VQA example](../../vqa.ipynb) during dataset creation.\n",
     ":::"
    ],
    "metadata": {

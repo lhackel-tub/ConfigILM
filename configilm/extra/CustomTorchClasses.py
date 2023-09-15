@@ -6,10 +6,13 @@ import torchvision.transforms.functional as TF
 
 
 class MyRotateTransform:
-    # Rotates an image by one of the given degrees,
-    # instead of a degree in the given range as transforms.RandomRotate does
-    # Rotation is counter-clockwise.
-    # Code credit to https://github.com/pytorch/vision/issues/566
+    """
+    Rotates an image by one of the given degrees, instead of a degree in the given range
+    as transforms.RandomRotate does.
+    Rotation is counter-clockwise.
+    Code credit to https://github.com/pytorch/vision/issues/566
+    """
+
     def __init__(self, angles: Sequence[int]):
         assert len(angles) > 0, (
             "Choice of no angles not possible. "
@@ -23,9 +26,12 @@ class MyRotateTransform:
 
 
 class MyGaussianNoise:
-    # Adds gaussian noise with sigma in the specified range
-    # Not usable for complex types or similar
-    # Code credit to https://github.com/pytorch/vision/issues/6192
+    """
+    Adds gaussian noise with sigma in the specified range.
+    Not usable for complex types or similar.
+    Code credit to https://github.com/pytorch/vision/issues/6192
+    """
+
     def __init__(self, sigma: float):
         self.sigma = sigma
 

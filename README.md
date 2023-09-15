@@ -9,7 +9,7 @@
 
 
 [![Release Notes](https://img.shields.io/github/release/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/releases)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7998032.svg)](https://doi.org/10.5281/zenodo.7998032)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8348912.svg)](https://doi.org/10.5281/zenodo.8348912)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
@@ -60,16 +60,18 @@ If you use this work, please cite
 
 ```bibtex
 @software{lhackel_tub_2023,
-  author       = {Leonard Hackel and
-                  Kai Norman Clasen and
-                  Begüm Demir},
-  title        = {lhackel-tub/ConfigILM: v0.4.3},
-  month        = apr,
+  author       = {Hackel, Leonard and
+                  Clasen, Kai Norman and
+                  Demir, Begüm},
+  title        = {ConfigILM},
+  month        = sep,
   year         = 2023,
+  note         = {{If you use this software, please cite it using the
+                   metadata from this file.}},
   publisher    = {Zenodo},
-  version      = {v0.4.3},
-  doi          = {10.5281/zenodo.7998032},
-  url          = {https://doi.org/10.5281/zenodo.7875799803206}
+  version      = {v0.4.6},
+  doi          = {10.5281/zenodo.8348912},
+  url          = {https://doi.org/10.5281/zenodo.8348912}
 }
 ```
 <!-- citation-end -->

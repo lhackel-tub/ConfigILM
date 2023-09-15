@@ -341,7 +341,7 @@ def test_ilm_untrained():
         classes=10,
         network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
         max_sequence_length=32,
-        load_hf_if_available=False,
+        load_pretrained_hf_if_available=False,
     )
     apply_ilm(config=config, bs=bs)
 
@@ -536,7 +536,7 @@ def test_failty_config():
         classes=10,
         network_type=-5,
         max_sequence_length=32,
-        load_hf_if_available=False,
+        load_pretrained_hf_if_available=False,
     )
     v, q, a = get_vqa_batch(
         (config.channels, config.image_size, config.image_size),
@@ -657,7 +657,7 @@ def test_integration():
     cfg = ConfigILM.ILMConfiguration(
         timm_model_name=default_image_test_model,
         classes=1000,
-        load_timm_if_available=True,
+        load_pretrained_timm_if_available=True,
     )
     with warnings.catch_warnings():
         warnings.filterwarnings(

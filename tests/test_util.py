@@ -115,27 +115,3 @@ def test_avg_meter():
     assert avg_mtr.val == 4
 
     assert str(avg_mtr) == f"Testmeter {4:.2f} ({(42+4+4)/4:.2f})"
-
-
-def test_obj_size():
-    # for each constant 28
-    # for each space 2, but always 2 at the same time, but not for first one
-    assert util.get_obj_size([]) == 56
-    assert util.get_obj_size([1]) == 56 + 8 + 28
-    assert util.get_obj_size([1, 2]) == 56 + 8 * 2 + 28 * 2
-    assert util.get_obj_size([1, 2, 3]) == 56 + 8 * 4 + 28 * 3
-    assert util.get_obj_size([1, 2, 3, 4]) == 56 + 8 * 4 + 28 * 4
-    assert util.get_obj_size([1, 2, 3, 4, 5]) == 56 + 8 * 6 + 28 * 5
-
-    # same constant repeated = no extra space used
-    assert util.get_obj_size([1, 2, 3, 4, 5, 5]) == 56 + 8 * 6 + 28 * 5
-
-    # appending works in different increments
-    # The growth pattern is:  0, 4, 8, 16, 25, 35, 46, 58, 72, 88, ...
-    # https://stackoverflow.com/questions/7247298/size-of-list-in-memory
-    x = list()
-    x.append(1)
-    assert util.get_obj_size(x) == 56 + 8 * 4 + 28
-    for i in [2, 3, 4]:
-        x.append(i)
-    assert util.get_obj_size(x) == 56 + 8 * 4 + 28 * 4

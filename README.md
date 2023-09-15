@@ -16,6 +16,10 @@
 [![Code Coverage](./coverage.svg)](./.coverage)
 [![GitHub Star Chart](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)
 [![Open Issues](https://img.shields.io/github/issues-raw/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/issues)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/configilm)](https://pypi.org/project/configilm/)
+[![PyPI - Version](https://img.shields.io/pypi/v/configilm)](https://pypi.org/project/configilm/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/configilm)](https://pypi.org/project/configilm/)
+
 
 <!-- introduction-start -->
 The library `ConfigILM` is a state-of-the-art tool for Python developers seeking to rapidly and

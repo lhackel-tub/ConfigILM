@@ -266,8 +266,8 @@ class ILMConfiguration:
     max_sequence_length: int = 32
 
     # pretrained models
-    load_timm_if_available: bool = False
-    load_hf_if_available: bool = True
+    load_pretrained_timm_if_available: bool = False
+    load_pretrained_hf_if_available: bool = True
 
 
 class ConfigILM(nn.Module):
@@ -294,7 +294,7 @@ class ConfigILM(nn.Module):
                 "in_chans": self.config.channels,
                 "drop_rate": self.config.drop_rate,
                 "drop_path_rate": self.config.drop_rate,
-                "pretrained": self.config.load_timm_if_available,
+                "pretrained": self.config.load_pretrained_timm_if_available,
             }
 
             # create timm_model
@@ -307,7 +307,7 @@ class ConfigILM(nn.Module):
             ), "Requesting huggingface model but not specifying which"
             self.tokenizer, self.text_encoder = _get_hf_model(
                 config.hf_model_name,
-                load_pretrained_if_available=config.load_hf_if_available,
+                load_pretrained_if_available=config.load_pretrained_hf_if_available,
             )
 
         if config.network_type == ILMType.VQA_CLASSIFICATION:

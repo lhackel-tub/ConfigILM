@@ -163,6 +163,17 @@ def get_obj_size(obj):
 
 
 def huggingface_tokenize_and_pad(tokenizer, string: str, seq_length: int):
+    """
+    Tokenizes a string given a huggingface tokenizer.
+    Assumes, that the tokenizer has a "[CLS]" start token, a "[SEP]" end token and a
+    "[PAD]" padding token.
+    If the string is too long it will be cut to the specific length.
+    It the string is too short, it will be padded with the "[PAD]" token.
+    :param tokenizer: hugging face tokenizer
+    :param string: string to be encoded
+    :param seq_length: length of the output
+    :return: list of integers (IDs) of the tokenized string of length seq_length
+    """
     # tokenize the questions
     token_start = tokenizer.convert_tokens_to_ids(["[CLS]"])[0]
     token_end = tokenizer.convert_tokens_to_ids(["[SEP]"])[0]

@@ -9,7 +9,7 @@ import lmdb
 
 
 def copy_part_of_json(
-    base_path: str, f_name: str, elems: int = 25, random_seed: int = 0
+    base_path: str, f_name: str, elems: int = 10, random_seed: int = 0
 ):
     random.seed(random_seed)
     with open(join(base_path, f_name)) as read_file:
@@ -79,7 +79,7 @@ def lmdb_subset_from_jsons(
 
 
 if __name__ == "__main__":
-    base_path = "/home/lhackel/Documents/datasets/BEN/"
+    base_path = "/media/lhackel/My Passport/lhackel/Datasets/BEN"
     rsvqaxben_jsons = [
         "VQA_RSVQAxBEN/RSVQAxBEN_QA_train.json",
         "VQA_RSVQAxBEN/RSVQAxBEN_QA_val.json",

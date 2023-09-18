@@ -124,10 +124,10 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
         )
 
 
-@pytest.mark.parametrize("max_img_index", [1, 16, 74, 9_804, 9_805, None, -1])
+@pytest.mark.parametrize("max_img_index", [1, 16, 74, 1200, 1201, None, -1])
 def test_ds_max_img_idx(data_dir, max_img_index: int):
     ds = RSVQAHRDataSet(root_dir=data_dir, max_img_idx=max_img_index)
-    max_len = 9_805
+    max_len = 1201
     len_ds = (
         max_len
         if max_img_index is None or max_img_index > max_len or max_img_index == -1
@@ -142,7 +142,7 @@ def test_ds_max_img_idx(data_dir, max_img_index: int):
     )
 
 
-@pytest.mark.parametrize("max_img_index", [9_806, 20_000, 100_000, 10_000_000])
+@pytest.mark.parametrize("max_img_index", [1202, 20_000, 100_000, 10_000_000])
 def test_ds_max_img_idx_too_large(data_dir, max_img_index: int):
     ds = RSVQAHRDataSet(root_dir=data_dir, max_img_idx=max_img_index)
     assert len(ds) < max_img_index
@@ -153,7 +153,7 @@ def test_ds_classes(data_dir, classes: int):
     ds = RSVQAHRDataSet(root_dir=data_dir, classes=classes, split="train")
     assert ds.classes == classes
     assert len(ds.selected_answers) == classes
-    max_classes_mock_set = 236  # number of classes in the mock data
+    max_classes_mock_set = 26  # number of classes in the mock data
     if classes <= max_classes_mock_set:
         for i in range(classes):
             assert ds.selected_answers[i] != "INVALID"

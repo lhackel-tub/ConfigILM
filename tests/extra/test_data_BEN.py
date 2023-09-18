@@ -73,13 +73,13 @@ def dataloaders_ok(dm: BENDataModule, expected_image_shape: Sequence):
 def test_4c_ben_dataset_patchname_getter(data_dir):
     ds = BENDataSet(root_dir=data_dir, split="val", return_patchname=True)
     assert (
-        ds.get_patchname_from_index(0) == "S2A_MSIL2A_20180413T95032_25_43"
+        ds.get_patchname_from_index(0) == "S2A_MSIL2A_20180413T95032_90_7"
     ), "Patch name does not match"
     assert (
         ds.get_patchname_from_index(1_000_000) is None
     ), "Patch index OOB should not work"
     assert (
-        ds.get_index_from_patchname("S2A_MSIL2A_20180413T95032_25_43") == 0
+        ds.get_index_from_patchname("S2A_MSIL2A_20180413T95032_90_7") == 0
     ), "Index name does not match"
     assert (
         ds.get_index_from_patchname("abc") is None
@@ -92,7 +92,7 @@ def test_4c_ben_dataset_patchname(data_dir):
     ds = BENDataSet(root_dir=data_dir, split="val", return_patchname=True)
     assert len(ds[0]) == 3, "Three items should have been returned"
     assert type(ds[0][2]) == str, "Third item should be a string"
-    assert ds[0][2] == "S2A_MSIL2A_20180413T95032_25_43", "Patch name does not match"
+    assert ds[0][2] == "S2A_MSIL2A_20180413T95032_90_7", "Patch name does not match"
 
 
 def test_4c_ben_dataset_from_csv(data_dir):
@@ -104,7 +104,7 @@ def test_4c_ben_dataset_from_csv(data_dir):
         csv_files=Path(data_dir) / "val.csv",
     )
 
-    dataset_ok(dataset=ds, expected_image_shape=img_size, expected_length=25)
+    dataset_ok(dataset=ds, expected_image_shape=img_size, expected_length=10)
 
 
 def test_4c_ben_dataset_from_csv_with_split(data_dir, capsys):
@@ -170,7 +170,7 @@ def test_ben_fail_image_retrieve(data_dir):
 @pytest.mark.parametrize("max_img_idx", max_img_idxs)
 def test_ben_max_index(data_dir, max_img_idx: int):
     mocked_datadir = "mock" in data_dir
-    max_len = 25 if mocked_datadir else 123_723
+    max_len = 10 if mocked_datadir else 123_723
     length = (
         max_len
         if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1

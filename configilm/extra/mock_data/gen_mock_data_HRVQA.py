@@ -22,6 +22,7 @@ def copy_part_of_json(
         f"Seed {random_seed} selects elements multiple times - please select different"
         f" seed or change number of elements"
     )
+    print(f"Selected {len(data_new)} elements for {f_name}.")
 
     path = pathlib.Path(".") / "HRVQA" / "jsons" / f_name
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -63,6 +64,7 @@ def img_subset_from_jsons(
             pathlib.Path(base_path).joinpath("images").joinpath(img_name),
             path.joinpath(img_name).resolve(),
         )
+    print(f"Copied {len(subset_elems)} images.")
 
 
 if __name__ == "__main__":
@@ -73,7 +75,7 @@ if __name__ == "__main__":
         "test_question.json",
     ]
     for f in jsons:
-        copy_part_of_json(base_path=base_path, f_name=f)
+        copy_part_of_json(base_path=base_path, f_name=f, elems=5)
 
     img_subset_from_jsons(
         base_path=base_path, json_base_path="./HRVQA/jsons/", jsons=jsons

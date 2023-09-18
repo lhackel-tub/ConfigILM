@@ -3,8 +3,24 @@ import warnings
 import pytest
 import torch
 
+from configilm.extra.CustomTorchClasses import LinearWarmupCosineAnnealingLR
 from configilm.extra.CustomTorchClasses import MyGaussianNoise
 from configilm.extra.CustomTorchClasses import MyRotateTransform
+
+
+class MockModel(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.linear = torch.nn.Linear(1, 1)
+
+    def forward(self, x):
+        return self.linear(x)
+
+
+def control_lr(lr_is: float, lr_should: float, epoch):
+    assert torch.isclose(
+        torch.Tensor([lr_is]), torch.tensor([lr_should]), atol=1e-4
+    ), f"LR is {lr_is} but should be {lr_should} after {epoch} epochs."
 
 
 def test_rotate_single():
@@ -84,3 +100,115 @@ def test_gaussian_dtype(dtype):
     else:
         t = torch.ones([10, 10], dtype=dtype)
     assert gt(t).dtype == t.dtype, "Datatype changed"
+
+
+def test_lwcalr_scheduler_basic():
+    warmup_epochs = 10
+    max_epochs = 1000
+    warmup_start_lr = 0.0
+    eta_min = 0.0
+    scheduler = LinearWarmupCosineAnnealingLR(
+        optimizer=torch.optim.SGD(MockModel().parameters(), lr=1),
+        warmup_epochs=warmup_epochs,
+        max_epochs=max_epochs,
+        warmup_start_lr=warmup_start_lr,
+        eta_min=eta_min,
+    )
+
+    for i in range(max_epochs):
+        lr = scheduler.get_lr()[0]
+        if i == 0:
+            control_lr(lr, 0.0, i)
+        if i == 10:
+            control_lr(lr, 1.0, i)
+        if i == 504:
+            control_lr(lr, 0.5, i)
+        if i == 999:
+            control_lr(lr, 0.0, i)
+        scheduler.step()
+
+
+def test_lwcalr_scheduler_non_zero_start():
+    warmup_epochs = 10
+    max_epochs = 1000
+    warmup_start_lr = 0.5
+    eta_min = 0.0
+    scheduler = LinearWarmupCosineAnnealingLR(
+        optimizer=torch.optim.SGD(MockModel().parameters(), lr=1),
+        warmup_epochs=warmup_epochs,
+        max_epochs=max_epochs,
+        warmup_start_lr=warmup_start_lr,
+        eta_min=eta_min,
+    )
+
+    for i in range(max_epochs):
+        lr = scheduler.get_lr()[0]
+        if i == 0:
+            control_lr(lr, 0.5, i)
+        if i == 10:
+            control_lr(lr, 1.0, i)
+        if i == 504:
+            control_lr(lr, 0.5, i)
+        if i == 999:
+            control_lr(lr, 0.0, i)
+        scheduler.step()
+
+
+def test_lwcalr_scheduler_non_zero_end():
+    warmup_epochs = 10
+    max_epochs = 1000
+    warmup_start_lr = 0.0
+    eta_min = 0.5
+    scheduler = LinearWarmupCosineAnnealingLR(
+        optimizer=torch.optim.SGD(MockModel().parameters(), lr=1),
+        warmup_epochs=warmup_epochs,
+        max_epochs=max_epochs,
+        warmup_start_lr=warmup_start_lr,
+        eta_min=eta_min,
+    )
+
+    for i in range(max_epochs):
+        lr = scheduler.get_lr()[0]
+        if i == 0:
+            control_lr(lr, 0.0, i)
+        if i == 10:
+            control_lr(lr, 1.0, i)
+        if i == 504:
+            control_lr(lr, 0.75, i)
+        if i == 999:
+            control_lr(lr, 0.5, i)
+        scheduler.step()
+
+
+def test_lwcalr_scheduler_closed_form():
+    warmup_epochs = 10
+    max_epochs = 1000
+    warmup_start_lr = 0.0
+    eta_min = 0.0
+    scheduler = LinearWarmupCosineAnnealingLR(
+        optimizer=torch.optim.SGD(MockModel().parameters(), lr=1),
+        warmup_epochs=warmup_epochs,
+        max_epochs=max_epochs,
+        warmup_start_lr=warmup_start_lr,
+        eta_min=eta_min,
+    )
+
+    for i in range(max_epochs):
+        lr = scheduler.get_lr()[0]
+        if i == 0:
+            control_lr(lr, 0.0, i)
+        if i == 10:
+            control_lr(lr, 1.0, i)
+        if i == 504:
+            control_lr(lr, 0.5, i)
+        if i == 999:
+            control_lr(lr, 0.0, i)
+        scheduler.step()
+
+    scheduler.step(4)
+    lr = scheduler.get_lr()[0]
+    control_lr(lr, 0.5555, epoch="4 second time")
+
+    scheduler.step(504)
+    lr = scheduler.get_lr()[0]
+    control_lr(lr, 0.5, epoch="504 second time")

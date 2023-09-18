@@ -57,13 +57,14 @@ def select_answers_from_qa_pairs(
 
     selected_answers = answers_by_appearence[:number_of_answers]
 
-    # print the percentage of used answers
-    perc_answers = sum([x[1] for x in selected_answers]) / len(qa_pairs) * 100
-    print(
-        f"The {number_of_answers} most frequent answers cover about "
-        f"{perc_answers:5.2f} "
-        f"% of the total answers."
-    )
+    if len(qa_pairs) > 0:
+        # print the percentage of used answers
+        perc_answers = sum([x[1] for x in selected_answers]) / len(qa_pairs) * 100
+        print(
+            f"The {number_of_answers} most frequent answers cover about "
+            f"{perc_answers:5.2f} "
+            f"% of the total answers."
+        )
 
     # return only the strings, not how often they appear
     return [x[0] for x in selected_answers]

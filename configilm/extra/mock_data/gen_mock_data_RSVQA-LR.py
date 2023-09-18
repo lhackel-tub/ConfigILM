@@ -98,6 +98,7 @@ if __name__ == "__main__":
         "LR_split_test_images.json",
     ]
     for f in jsons:
-        copy_part_of_json(base_path=base_path, f_name=f)
+        elems = 5 if "train" in f else 25
+        copy_part_of_json(base_path=base_path, f_name=f, elems=elems)
 
     img_subset_from_jsons(base_path=base_path, json_base_path="./RSVQA-LR", jsons=jsons)

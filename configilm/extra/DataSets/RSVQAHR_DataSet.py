@@ -89,13 +89,14 @@ def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = Fal
 
     selected_answers = answers_by_appearence[:number_of_answers]
 
-    # print the percentage of used answers
-    perc_answers = sum([x[1] for x in selected_answers]) / len(answers) * 100
-    print(
-        f"The {number_of_answers} most frequent answers cover about "
-        f"{perc_answers:5.2f} "
-        f"% of the total answers."
-    )
+    if len(answers) > 0:
+        # print the percentage of used answers
+        perc_answers = sum([x[1] for x in selected_answers]) / len(answers) * 100
+        print(
+            f"The {number_of_answers} most frequent answers cover about "
+            f"{perc_answers:5.2f} "
+            f"% of the total answers."
+        )
 
     # return only the strings, not how often they appear
     return [x[0] for x in selected_answers]

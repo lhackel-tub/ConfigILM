@@ -21,7 +21,7 @@ def data_dir():
 # for "x-div" the val split is split into two randomly based on a seed
 dataset_splits = ["train", "val", "val-div", "test-div", "test"]
 div_seeds = ["repeat", 0, 1, 42, 2023]
-div_part = [0.1, 0.3, 0.3141592, 0.66, 0.7, 2, 5, 8]
+div_part = [0.1, 0.3, 0.3141592, 0.66, 0.7, 2, 4, 5]
 dm_stages = [None, "fit", "test"]
 stage_with_seeds = list(itertools.product(dm_stages, div_seeds))
 
@@ -31,6 +31,8 @@ channels_pass = [1, 3]  # accepted channel configs
 channels_fail = [2, 4, 0, -1, 10, 12]  # not accepted configs
 img_shapes_pass = [(c, hw, hw) for c in channels_pass for hw in img_sizes]
 img_shapes_fail = [(c, hw, hw) for c in channels_fail for hw in img_sizes]
+
+no_qa_full_val = 5  # number of samples in full val set
 
 
 def dataset_ok(
@@ -124,7 +126,6 @@ def test_3c_dataset_splits_classes(data_dir, split: str, classes: int):
 def test_3c_dataset_splits_subdiv(data_dir, split: str, seed, div_part):
     img_size = (3, 128, 128)
     seq_length = 32
-    no_qa_full_val = 10  # number of samples in full val set
 
     ds = HRVQADataSet(
         root_dir=data_dir,
@@ -159,7 +160,6 @@ def test_3c_dataset_splits_subdiv(data_dir, split: str, seed, div_part):
 def test_3c_dataset_splits_subdiv_overlap(data_dir, split: str, seed: int, div_part):
     img_size = (3, 128, 128)
     seq_length = 32
-    no_qa_full_val = 10  # number of samples in full val set
     inv_split = "val-div" if split == "test-div" else "test-div"
 
     ds = HRVQADataSet(
@@ -224,7 +224,7 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
 @pytest.mark.parametrize("max_img_index", [1, 16, 74, 75, None, -1])
 def test_ds_max_img_idx(data_dir, max_img_index: int):
     ds = HRVQADataSet(root_dir=data_dir, max_img_idx=max_img_index)
-    max_len = 20
+    max_len = 10
     len_ds = (
         max_len
         if max_img_index is None or max_img_index > max_len or max_img_index == -1
@@ -242,7 +242,7 @@ def test_ds_max_img_idx(data_dir, max_img_index: int):
 @pytest.mark.parametrize("idx", [0, 1, 5, 10, 19, 20, 50, 100, 1_000, 10_000, 100_000])
 def test_ds_img_access_by_index(data_dir, idx: int):
     ds = HRVQADataSet(root_dir=data_dir)
-    expected_len = 20
+    expected_len = 10
     assert len(ds) == expected_len, f"There should be {expected_len} samples exactly."
     if idx < len(ds):
         _ = ds[idx]
@@ -260,7 +260,7 @@ def test_ds_max_img_idx_too_large(data_dir, max_img_index: int):
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
 def test_ds_classes(data_dir, classes: int):
     ds = HRVQADataSet(root_dir=data_dir, classes=classes, split="train")
-    gt_classes = 8  # number of classes in the mock data
+    gt_classes = 4  # number of classes in the mock data
     assert ds.classes == classes
     assert len(ds.selected_answers) == classes
     if classes <= gt_classes:

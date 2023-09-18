@@ -266,11 +266,11 @@ A small example of the data used is distributed with this package.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 256, 256])
-Question (start): [101, 2129, 2116, 4925, 2012, 1996, 3953, 1997, 1037, 2311, 2024, 2045, 1029, 102, 0]
-Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
+Question (start): [101, 2054, 2003, 1996, 2181, 3139, 2011, 2300, 2752, 1029, 102, 0, 0, 0, 0]
+Answer (start): tensor([0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../../_images/5ca81dab73fb4a5a774ed98ff4ae012dbae291b6de4e85106a1fd0f3d502e9e2.png" src="../../_images/5ca81dab73fb4a5a774ed98ff4ae012dbae291b6de4e85106a1fd0f3d502e9e2.png" />
+<img alt="../../_images/c6be1ad3e32c18e539e6628324eed7020cc0e06b0ed8a7ab556be661416cdcd3.png" src="../../_images/c6be1ad3e32c18e539e6628324eed7020cc0e06b0ed8a7ab556be661416cdcd3.png" />
 </div>
 </div>
 <section id="tokenizer-and-tokenization">
@@ -315,7 +315,7 @@ Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2003, 2045, 1037, 2346, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2003, 1037, 3293, 2311, 2556, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0]
 </pre></div>
 </div>
 </div>
@@ -335,7 +335,7 @@ Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2003, 2045, 1037, 2346, 1029, 102, 0]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2003, 1037, 3293, 2311, 2556, 1029, 102]
 </pre></div>
 </div>
 </div>
@@ -349,8 +349,8 @@ Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;[CLS] is there a road? [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]&#39;
-Question 2: &#39;[CLS] is there a road? [SEP] [PAD]&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;[CLS] is a commercial building present? [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]&#39;
+Question 2: &#39;[CLS] is a commercial building present? [SEP]&#39;
 </pre></div>
 </div>
 </div>
@@ -364,8 +364,8 @@ Question 2: &#39;[CLS] is there a road? [SEP] [PAD]&#39;
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;is there a road?&#39;
-Question 2: &#39;is there a road?&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;is a commercial building present?&#39;
+Question 2: &#39;is a commercial building present?&#39;
 </pre></div>
 </div>
 </div>
@@ -484,7 +484,7 @@ The 1000 most frequent answers cover about 100.00 % of the total answers.
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The 3 most frequent answers cover about 74.76 % of the total answers.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The 3 most frequent answers cover about 73.00 % of the total answers.
 </pre></div>
 </div>
 </div>
@@ -580,8 +580,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet object at 0x7f4df2b052d0&gt;
-&lt;configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet object at 0x7f4de518a4d0&gt;
+&lt;configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet object at 0x7f465c90d3c0&gt;
+&lt;configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet object at 0x7f472c520040&gt;
 None
 </pre></div>
 </div>
@@ -596,7 +596,7 @@ None
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>369
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>25
 </pre></div>
 </div>
 </div>
@@ -626,7 +626,7 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1476
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100
 </pre></div>
 </div>
 </div>
@@ -727,12 +727,12 @@ HINT: pin_memory set to False via overwrite
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 1 workers
 
 HINT: pin_memory set to None 
-(16:14:14) Datamodule setup called
+(08:44:36) Datamodule setup called
 
-WARNING: There are fewer possible answers then requested (1000 requested, but 88 found).
+WARNING: There are fewer possible answers then requested (1000 requested, but 19 found).
 The 1000 most frequent answers cover about 100.00 % of the total answers.
-setup took 0.02 seconds
-  Total test samples:    2,000
+setup took 0.00 seconds
+  Total test samples:      300
 </pre></div>
 </div>
 </div>
@@ -759,12 +759,12 @@ setup took 0.02 seconds
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 1 workers
 
 HINT: pin_memory set to None 
-(16:14:15) Datamodule setup called
+(08:44:36) Datamodule setup called
 
-WARNING: There are fewer possible answers then requested (1000 requested, but 61 found).
+WARNING: There are fewer possible answers then requested (1000 requested, but 18 found).
 The 1000 most frequent answers cover about 100.00 % of the total answers.
-setup took 0.01 seconds
-  Total test samples:      801
+setup took 0.00 seconds
+  Total test samples:      201
 </pre></div>
 </div>
 </div>

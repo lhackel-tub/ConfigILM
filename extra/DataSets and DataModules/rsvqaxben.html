@@ -255,11 +255,11 @@ For the usage in this context, the dataset was extended from its RGB form to inc
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 120, 120])
-Question (start): [101, 2024, 2070, 6138, 2556, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0]
+Question (start): [101, 2024, 3884, 5380, 1998, 6138, 2556, 1029, 102, 0, 0, 0, 0, 0, 0]
 Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../../_images/7e9f96bc47c9d0ba1360bdafa0cc5595f9bc120c5a4a56b33425b420c7257866.png" src="../../_images/7e9f96bc47c9d0ba1360bdafa0cc5595f9bc120c5a4a56b33425b420c7257866.png" />
+<img alt="../../_images/633d940d23765132f606d2aa5e2a8551044899b50bb118734f73428711a9013d.png" src="../../_images/633d940d23765132f606d2aa5e2a8551044899b50bb118734f73428711a9013d.png" />
 </div>
 </div>
 <section id="tokenizer-and-tokenization">
@@ -423,14 +423,14 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for None...
-              75 QA-pairs indexed
+              30 QA-pairs indexed
               10 QA-pairs in reduced data set
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/10 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 10/10 [00:00&lt;00:00, 44290.43it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 10/10 [00:00&lt;00:00, 76121.67it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -456,14 +456,14 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for None...
-              75 QA-pairs indexed
-              75 QA-pairs in reduced data set
+              30 QA-pairs indexed
+              30 QA-pairs in reduced data set
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/75 [00:00&lt;?, ?it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/30 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 75/75 [00:00&lt;00:00, 253687.74it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 30/30 [00:00&lt;00:00, 202297.62it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -494,15 +494,17 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for train...
-              25 QA-pairs indexed
-              25 QA-pairs in reduced data set
-The 3 most frequent answers cover about 96.00 % of the total answers.
+              10 QA-pairs indexed
+              10 QA-pairs in reduced data set
+
+WARNING: There are fewer possible answers then requested (3 requested, but 2 found).
+The 3 most frequent answers cover about 100.00 % of the total answers.
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/25 [00:00&lt;?, ?it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/10 [00:00&lt;?, ?it/s]
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 25/25 [00:00&lt;00:00, 91658.74it/s]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 10/10 [00:00&lt;00:00, 76121.67it/s]
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -541,7 +543,7 @@ The 3 most frequent answers cover about 96.00 % of the total answers.
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train DS: [&#39;yes&#39;, &#39;no&#39;, &#39;mixed forest and transitional woodland/shrub&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train DS: [&#39;yes&#39;, &#39;no&#39;, &#39;INVALID&#39;]
 Val DS 1: [&#39;yes&#39;, &#39;no&#39;]
 Val DS 2: [&#39;yes&#39;, &#39;no&#39;]
 </pre></div>
@@ -601,8 +603,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f5327505630&gt;
-&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f53ca65b310&gt;
+&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f61f15016c0&gt;
+&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f61e32f8d90&gt;
 None
 </pre></div>
 </div>
@@ -617,7 +619,7 @@ None
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 </div>
@@ -647,7 +649,7 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
 </pre></div>
 </div>
 </div>

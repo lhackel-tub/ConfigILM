@@ -246,7 +246,7 @@
     <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path set by to dataset</span>
 <span class="p">)</span>
 
-<span class="n">img</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">56</span><span class="p">]</span>
+<span class="n">img</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">26</span><span class="p">]</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">img</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># only choose BGR axis for display and bring into RGB order</span>
 </pre></div>
 </div>
@@ -257,9 +257,9 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading BEN data for None...
-    75 patches indexed
-    75 pre-filtered patches indexed
-    75 filtered patches indexed
+    30 patches indexed
+    30 pre-filtered patches indexed
+    30 filtered patches indexed
 </pre></div>
 </div>
 </div>
@@ -268,11 +268,11 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 120, 120])
 Labels:
-tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
-        0.])
+tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+        1.])
 </pre></div>
 </div>
-<img alt="../../_images/c62304d575e5b625e0cb3f6aa8dff4531fe180e06b8866861e25c1c99d2f7ef2.png" src="../../_images/c62304d575e5b625e0cb3f6aa8dff4531fe180e06b8866861e25c1c99d2f7ef2.png" />
+<img alt="../../_images/b60ac41d7a1d82cf18ecae92601cea6485ccaeb848560c28f9784ac411bb4713.png" src="../../_images/b60ac41d7a1d82cf18ecae92601cea6485ccaeb848560c28f9784ac411bb4713.png" />
 </div>
 </div>
 <section id="selecting-bands">
@@ -311,9 +311,9 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading BEN data for train...
-    25 patches indexed
-    25 pre-filtered patches indexed
-    25 filtered patches indexed
+    10 patches indexed
+    10 pre-filtered patches indexed
+    10 filtered patches indexed
 </pre></div>
 </div>
 </div>
@@ -334,8 +334,8 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading BEN data for train...
-    25 patches indexed
-    25 pre-filtered patches indexed
+    10 patches indexed
+    10 pre-filtered patches indexed
     10 filtered patches indexed
 </pre></div>
 </div>
@@ -353,9 +353,9 @@ tensor([0., 0., 0., 1., 0., 1., 0., 0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 1.,
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading BEN data for train...
-    25 patches indexed
-    25 pre-filtered patches indexed
-    25 filtered patches indexed
+    10 patches indexed
+    10 pre-filtered patches indexed
+    10 filtered patches indexed
 </pre></div>
 </div>
 </div>
@@ -394,22 +394,22 @@ None
 None
 
 === SETUP ===
-(16:13:56) Datamodule setup called
+(08:44:24) Datamodule setup called
 Loading BEN data for train...
-    25 patches indexed
-    25 pre-filtered patches indexed
-    25 filtered patches indexed
+    10 patches indexed
+    10 pre-filtered patches indexed
+    10 filtered patches indexed
 Loading BEN data for val...
-    25 patches indexed
-    25 pre-filtered patches indexed
-    25 filtered patches indexed
+    10 patches indexed
+    10 pre-filtered patches indexed
+    10 filtered patches indexed
 setup took 0.00 seconds
-  Total training samples:       25  Total validation samples:       25
+  Total training samples:       10  Total validation samples:       10
 === END SETUP ===
 
 After:
-&lt;configilm.extra.DataSets.BEN_DataSet.BENDataSet object at 0x7f80a9c15570&gt;
-&lt;configilm.extra.DataSets.BEN_DataSet.BENDataSet object at 0x7f817a316800&gt;
+&lt;configilm.extra.DataSets.BEN_DataSet.BENDataSet object at 0x7f9c87a1fb50&gt;
+&lt;configilm.extra.DataSets.BEN_DataSet.BENDataSet object at 0x7f9c87a1cf10&gt;
 None
 </pre></div>
 </div>
@@ -424,7 +424,7 @@ None
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 </div>
@@ -451,20 +451,20 @@ None
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataloader using 1 workers
 
 === SETUP ===
-(16:13:56) Datamodule setup called
+(08:44:24) Datamodule setup called
 Loading BEN data for train...
-    25 patches indexed
-    25 pre-filtered patches indexed
-    25 filtered patches indexed
+    10 patches indexed
+    10 pre-filtered patches indexed
+    10 filtered patches indexed
 Loading BEN data for val...
-    25 patches indexed
-    25 pre-filtered patches indexed
-    25 filtered patches indexed
+    10 patches indexed
+    10 pre-filtered patches indexed
+    10 filtered patches indexed
 setup took 0.00 seconds
-  Total training samples:       25  Total validation samples:       25
+  Total training samples:       10  Total validation samples:       10
 === END SETUP ===
 
-7
+3
 </pre></div>
 </div>
 </div>

@@ -111,13 +111,14 @@ def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = Fal
 
     selected_answers = answers_by_appearence[:number_of_answers]
 
-    # print the percentage of used answers
-    perc_answers = sum([x[1] for x in selected_answers]) / len(answers) * 100
-    print(
-        f"The {number_of_answers} most frequent answers cover about "
-        f"{perc_answers:5.2f} "
-        f"% of the total answers."
-    )
+    if len(answers) > 0:
+        # print the percentage of used answers
+        perc_answers = sum([x[1] for x in selected_answers]) / len(answers) * 100
+        print(
+            f"The {number_of_answers} most frequent answers cover about "
+            f"{perc_answers:5.2f} "
+            f"% of the total answers."
+        )
 
     # return only the strings, not how often they appear
     return [x[0] for x in selected_answers]
@@ -129,10 +130,14 @@ def _subsplit_qa(questions, answers, qa_in_split, sub_split, seed):
         if isinstance(qa_in_split, int)
         else (int(qa_in_split * len(questions)))
     )
-    assert 0 < no_samples_val < len(questions), (
+    assert 0 <= no_samples_val <= len(questions), (
         f"Samples should be between 0 and {len(questions)}, but is {no_samples_val} "
         f"(specified as {qa_in_split})."
     )
+    if no_samples_val == 0:
+        Messages.warn(
+            "There are zero (0) samples in your selected split configuration."
+        )
 
     # get a random subset based on a seed
     # to make it reproducible in all contexts,

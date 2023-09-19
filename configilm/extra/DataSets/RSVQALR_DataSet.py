@@ -138,7 +138,7 @@ def _get_question_answers(split: str, root_dir: pathlib.Path):
     answers = [
         {"answer": x["answer"], "question_id": x["question_id"]}
         for x in answers
-        if x["question_id"] in qids_set
+        if x["active"] and x["question_id"] in qids_set
     ]
     del qids_set
     a_dict = {

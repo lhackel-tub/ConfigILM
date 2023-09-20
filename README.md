@@ -46,7 +46,7 @@ tutorial examples, and a detailed overview of the framework's interface, ensurin
 
 ![Concept of ConfigILM](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM-ILMType.VQA_CLASSIFICATION.png)
 
-For detailed information please visit the [publication](TODO:arXiv-Link) or the [documentation](https://lhackel-tub.github.io/ConfigILM).
+For detailed information please visit the [publication](TODO:arXiv-Link) (comming soon) or the [documentation](https://lhackel-tub.github.io/ConfigILM).
 
 `ConfigILM` is released under the [MIT Software License](https://opensource.org/licenses/mit-0)
 

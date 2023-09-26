@@ -48,7 +48,7 @@ class MIDFusion(AbstractFusion):
             nn.Sigmoid(),
             nn.Dropout(fusion_drop_out),
             nn.Linear(fusion_dim, 2),
-            nn.Softmax(),
+            nn.Softmax(dim=0),
         )
 
     def forward(self, global_feature, local_feature):

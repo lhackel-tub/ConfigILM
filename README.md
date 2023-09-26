@@ -1,5 +1,6 @@
-# ConfigILM
-![ConfigILM Logo](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM_v1.png)
+# <img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/logo_ConfigILM.png" style="font-size: 1rem; height: 2em; width: auto" alt="ConfigILM Logo"/> ConfigILM
+
+![ConfigILM Banner](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM_v1.png)
 
 <a href="https://bifold.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/BIFOLD_Logo_farbig.png" style="font-size: 1rem; height: 2em; width: auto; margin-right: 1em" alt="BIFOLD Logo"/>
 <img height="2em" hspace="10em"/>
@@ -9,7 +10,7 @@
 
 
 [![Release Notes](https://img.shields.io/github/release/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/releases)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8359350.svg)](https://doi.org/10.5281/zenodo.8359350)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8360104.svg)](https://doi.org/10.5281/zenodo.8360104)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
@@ -73,9 +74,9 @@ If you use this work, please cite
   note         = {{If you use this software, please cite it using the
                    metadata from this file.}},
   publisher    = {Zenodo},
-  version      = {v0.4.7},
-  doi          = {10.5281/zenodo.8359350},
-  url          = {https://doi.org/10.5281/zenodo.8359350}
+  version      = {v0.4.8},
+  doi          = {10.5281/zenodo.8360104},
+  url          = {https://doi.org/10.5281/zenodo.8360104}
 }
 ```
 <!-- citation-end -->

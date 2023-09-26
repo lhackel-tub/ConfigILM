@@ -149,6 +149,29 @@ def _get_question_answers(split: str, root_dir: pathlib.Path):
     return q_dict, a_dict
 
 
+def _quantize_answers(a_dict: dict):
+    def _to_bucket(x: int):
+        if x == 0:
+            return "0m2"
+        if 1 <= x <= 10:
+            return "between 1m2 and 10m2"
+        if 11 <= x <= 100:
+            return "between 11m2 and 100m2"
+        if 101 <= x <= 1_000:
+            return "between 101m2 and 1000m2"
+        if x > 1_000:
+            return "more than 1000m2"
+        raise ValueError("Buckets are only defined for non-negative values.")
+
+    for k, v in a_dict.items():
+        a_dict[k] = (
+            {"answer": _to_bucket(int(v["answer"][:-2]))}
+            if v["answer"].endswith("m2")
+            else v
+        )
+    return a_dict
+
+
 class RSVQAHRDataSet(Dataset):
     def __init__(
         self,
@@ -158,10 +181,11 @@ class RSVQAHRDataSet(Dataset):
         max_img_idx=None,
         img_size=(3, 256, 256),
         selected_answers=None,
-        classes: int = 1_000,
+        classes: int = 94,
         tokenizer=None,
         seq_length: int = 32,
         use_file_format: str = "tif",
+        quantize_answers: bool = True,
     ):
         super().__init__()
         assert split in [
@@ -225,6 +249,9 @@ class RSVQAHRDataSet(Dataset):
             }
             self.answers = {k: v for k, v in self.answers.items() if k in allowed_keys}
         self.qids = sorted(self.questions.keys())
+
+        if quantize_answers:
+            self.answers = _quantize_answers(self.answers)
 
         if selected_answers is None:
             self.selected_answers = select_answers(

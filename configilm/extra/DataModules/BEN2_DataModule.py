@@ -8,6 +8,7 @@ https://bigearth.net/
 from datetime import datetime
 from pathlib import Path
 from time import time
+from typing import Mapping
 from typing import Optional
 from typing import Union
 
@@ -25,6 +26,7 @@ class BEN2DataModule(BENDataModule):
         max_img_idx=None,
         shuffle=None,
         new_label_file: Union[str, Path, None] = None,
+        dataset_kwargs: Optional[Mapping] = None,
     ):
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
@@ -38,6 +40,7 @@ class BEN2DataModule(BENDataModule):
             num_workers_dataloader=num_workers_dataloader,
             max_img_idx=max_img_idx,
             shuffle=shuffle,
+            dataset_kwargs=dataset_kwargs,
         )
         self.new_label_file = new_label_file
 
@@ -58,6 +61,7 @@ class BEN2DataModule(BENDataModule):
                 max_img_idx=self.max_img_idx,
                 img_size=self.img_size,
                 new_label_file=self.new_label_file,
+                **self.ds_kwargs,
             )
 
             self.val_ds = BEN2DataSet(
@@ -67,6 +71,7 @@ class BEN2DataModule(BENDataModule):
                 max_img_idx=self.max_img_idx,
                 img_size=self.img_size,
                 new_label_file=self.new_label_file,
+                **self.ds_kwargs,
             )
             sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
@@ -80,6 +85,7 @@ class BEN2DataModule(BENDataModule):
                 max_img_idx=self.max_img_idx,
                 img_size=self.img_size,
                 new_label_file=self.new_label_file,
+                **self.ds_kwargs,
             )
             sample_info_msg += f"  Total test samples: {len(self.test_ds):8,d}"
 

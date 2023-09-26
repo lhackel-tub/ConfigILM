@@ -12,7 +12,7 @@ from configilm.Fusion.blocks import GuidedSelfAttention
 from configilm.Fusion.blocks import SelfAttention
 
 
-class MIDF(AbstractFusion):
+class MIDFusion(AbstractFusion):
     # based on https://github.com/xiaoyuan1996/GaLR/blob/main/layers/GaLR.py#L20
     def __init__(self, opt: Optional[Mapping] = None):
         super().__init__(opt)

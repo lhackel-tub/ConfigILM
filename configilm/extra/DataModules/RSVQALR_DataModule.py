@@ -5,8 +5,8 @@ import os
 from datetime import datetime
 from time import time
 from typing import List
+from typing import Mapping
 from typing import Optional
-from typing import Union
 
 import pytorch_lightning as pl
 import torch
@@ -21,23 +21,24 @@ from configilm.util import Messages
 
 
 class RSVQALRDataModule(pl.LightningDataModule):
-    train_ds: Union[None, RSVQALRDataSet] = None
-    val_ds: Union[None, RSVQALRDataSet] = None
-    test_ds: Union[None, RSVQALRDataSet] = None
-    selected_answers: Union[None, List[str]] = None
+    train_ds: Optional[RSVQALRDataSet] = None
+    val_ds: Optional[RSVQALRDataSet] = None
+    test_ds: Optional[RSVQALRDataSet] = None
+    selected_answers: Optional[List[str]] = None
 
     def __init__(
         self,
         batch_size=16,
         data_dir: str = "./",
         img_size=None,
-        num_workers_dataloader=None,
-        max_img_idx=None,
-        shuffle=None,
+        num_workers_dataloader: Optional[int] = None,
+        max_img_idx: Optional[int] = None,
+        shuffle: Optional[bool] = None,
         tokenizer=None,
-        seq_length=32,
+        seq_length: int = 32,
         selected_answers=None,
-        pin_memory=None,
+        pin_memory: Optional[bool] = None,
+        dataset_kwargs: Optional[Mapping] = None,
     ):
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
@@ -69,6 +70,7 @@ class RSVQALRDataModule(pl.LightningDataModule):
                 f"configuration."
             )
         self.selected_answers = selected_answers
+        self.ds_kwargs = dataset_kwargs if dataset_kwargs is not None else dict()
 
         mean = (
             [_means["red"], _means["green"], _means["blue"]]
@@ -117,6 +119,7 @@ class RSVQALRDataModule(pl.LightningDataModule):
                     img_size=self.img_size,
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
+                    **self.ds_kwargs,
                 )
             if self.selected_answers is None:
                 self.selected_answers = self.train_ds.selected_answers
@@ -131,6 +134,7 @@ class RSVQALRDataModule(pl.LightningDataModule):
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
                     selected_answers=self.selected_answers,
+                    **self.ds_kwargs,
                 )
             sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
@@ -146,6 +150,7 @@ class RSVQALRDataModule(pl.LightningDataModule):
                 tokenizer=self.tokenizer,
                 seq_length=self.seq_length,
                 selected_answers=self.selected_answers,
+                **self.ds_kwargs,
             )
             sample_info_msg += f"  Total test samples: {len(self.test_ds):8,d}"
 

@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from time import time
 from typing import List
+from typing import Mapping
 from typing import Optional
 from typing import Union
 
@@ -37,6 +38,7 @@ class HRVQADataModule(pl.LightningDataModule):
         pin_memory=None,
         test_splitting_seed=None,
         test_splitting_division=None,
+        dataset_kwargs: Optional[Mapping] = None,
     ):
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
@@ -96,6 +98,7 @@ class HRVQADataModule(pl.LightningDataModule):
 
         self.tokenizer = tokenizer
         self.seq_length = seq_length
+        self.ds_kwargs = dataset_kwargs if dataset_kwargs is not None else dict()
 
         assert isinstance(test_splitting_seed, int) or test_splitting_seed in [
             "repeat",
@@ -127,6 +130,7 @@ class HRVQADataModule(pl.LightningDataModule):
                     img_size=self.img_size,
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
+                    **self.ds_kwargs,
                 )
             if self.selected_answers is None:
                 self.selected_answers = self.train_ds.selected_answers
@@ -149,6 +153,7 @@ class HRVQADataModule(pl.LightningDataModule):
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
                     selected_answers=self.selected_answers,
+                    **self.ds_kwargs,
                 )
             sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
@@ -169,6 +174,7 @@ class HRVQADataModule(pl.LightningDataModule):
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
                     selected_answers=self.selected_answers,
+                    **self.ds_kwargs,
                 )
 
         if stage == "predict":

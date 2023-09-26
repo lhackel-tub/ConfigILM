@@ -284,3 +284,11 @@ def test_ben_shuffle_true(data_dir):
     assert not torch.equal(
         next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
     )
+
+
+def test_dm_unexposed_kwargs(data_dir):
+    dm = BENDataModule(data_dir=data_dir, dataset_kwargs={"return_patchname": True})
+    dm.setup(None)
+    assert (
+        len(dm.train_ds[0]) == 3
+    ), f"This change should have returned 3 items but does {len(dm.train_ds[0])}"

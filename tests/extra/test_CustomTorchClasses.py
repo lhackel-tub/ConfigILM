@@ -107,8 +107,9 @@ def test_lwcalr_scheduler_basic():
     max_epochs = 1000
     warmup_start_lr = 0.0
     eta_min = 0.0
+    optim = torch.optim.SGD(MockModel().parameters(), lr=1)
     scheduler = LinearWarmupCosineAnnealingLR(
-        optimizer=torch.optim.SGD(MockModel().parameters(), lr=1),
+        optimizer=optim,
         warmup_epochs=warmup_epochs,
         max_epochs=max_epochs,
         warmup_start_lr=warmup_start_lr,
@@ -125,6 +126,8 @@ def test_lwcalr_scheduler_basic():
             control_lr(lr, 0.5, i)
         if i == 999:
             control_lr(lr, 0.0, i)
+        # just to supress warnings that optimizer should step before scheduler
+        optim.step()
         scheduler.step()
 
 
@@ -133,8 +136,9 @@ def test_lwcalr_scheduler_non_zero_start():
     max_epochs = 1000
     warmup_start_lr = 0.5
     eta_min = 0.0
+    optim = torch.optim.SGD(MockModel().parameters(), lr=1)
     scheduler = LinearWarmupCosineAnnealingLR(
-        optimizer=torch.optim.SGD(MockModel().parameters(), lr=1),
+        optimizer=optim,
         warmup_epochs=warmup_epochs,
         max_epochs=max_epochs,
         warmup_start_lr=warmup_start_lr,
@@ -151,6 +155,8 @@ def test_lwcalr_scheduler_non_zero_start():
             control_lr(lr, 0.5, i)
         if i == 999:
             control_lr(lr, 0.0, i)
+        # just to supress warnings that optimizer should step before scheduler
+        optim.step()
         scheduler.step()
 
 
@@ -159,8 +165,9 @@ def test_lwcalr_scheduler_non_zero_end():
     max_epochs = 1000
     warmup_start_lr = 0.0
     eta_min = 0.5
+    optim = torch.optim.SGD(MockModel().parameters(), lr=1)
     scheduler = LinearWarmupCosineAnnealingLR(
-        optimizer=torch.optim.SGD(MockModel().parameters(), lr=1),
+        optimizer=optim,
         warmup_epochs=warmup_epochs,
         max_epochs=max_epochs,
         warmup_start_lr=warmup_start_lr,
@@ -177,6 +184,8 @@ def test_lwcalr_scheduler_non_zero_end():
             control_lr(lr, 0.75, i)
         if i == 999:
             control_lr(lr, 0.5, i)
+        # just to supress warnings that optimizer should step before scheduler
+        optim.step()
         scheduler.step()
 
 
@@ -185,8 +194,9 @@ def test_lwcalr_scheduler_closed_form():
     max_epochs = 1000
     warmup_start_lr = 0.0
     eta_min = 0.0
+    optim = torch.optim.SGD(MockModel().parameters(), lr=1)
     scheduler = LinearWarmupCosineAnnealingLR(
-        optimizer=torch.optim.SGD(MockModel().parameters(), lr=1),
+        optimizer=optim,
         warmup_epochs=warmup_epochs,
         max_epochs=max_epochs,
         warmup_start_lr=warmup_start_lr,
@@ -203,12 +213,18 @@ def test_lwcalr_scheduler_closed_form():
             control_lr(lr, 0.5, i)
         if i == 999:
             control_lr(lr, 0.0, i)
+        # just to supress warnings that optimizer should step before scheduler
+        optim.step()
         scheduler.step()
 
+    # just to supress warnings that optimizer should step before scheduler
+    optim.step()
     scheduler.step(4)
     lr = scheduler.get_lr()[0]
     control_lr(lr, 0.5555, epoch="4 second time")
 
+    # just to supress warnings that optimizer should step before scheduler
+    optim.step()
     scheduler.step(504)
     lr = scheduler.get_lr()[0]
     control_lr(lr, 0.5, epoch="504 second time")

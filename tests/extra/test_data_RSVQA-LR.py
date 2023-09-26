@@ -100,14 +100,14 @@ def test_basic_dataset_splits(data_dir, split: str, classes: int):
 @pytest.mark.parametrize("img_size", img_shapes_pass)
 def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
     ds = RSVQALRDataSet(
-        root_dir=data_dir, split="val", img_size=img_size, classes=1000, seq_length=32
+        root_dir=data_dir, split="val", img_size=img_size, classes=9, seq_length=32
     )
 
     dataset_ok(
         dataset=ds,
         expected_image_shape=img_size,
         expected_length=None,
-        classes=1000,
+        classes=9,
         expected_question_length=32,
     )
 
@@ -119,7 +119,7 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
             root_dir=data_dir,
             split="val",
             img_size=img_size,
-            classes=1000,
+            classes=9,
             seq_length=32,
         )
 
@@ -137,7 +137,7 @@ def test_ds_max_img_idx(data_dir, max_img_index: int):
         dataset=ds,
         expected_image_shape=(3, 256, 256),
         expected_length=len_ds,
-        classes=1000,
+        classes=9,
         expected_question_length=32,
     )
 
@@ -150,7 +150,27 @@ def test_ds_max_img_idx_too_large(data_dir, max_img_index: int):
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
 def test_ds_classes(data_dir, classes: int):
-    ds = RSVQALRDataSet(root_dir=data_dir, classes=classes, split="train")
+    ds = RSVQALRDataSet(
+        root_dir=data_dir, classes=classes, split="train", quantize_answers=True
+    )
+    assert ds.classes == classes
+    assert len(ds.selected_answers) == classes
+    max_classes_mock_set = 7  # number of classes in the mock data
+    if classes <= max_classes_mock_set:
+        for i in range(classes):
+            assert ds.selected_answers[i] != "INVALID"
+    else:
+        for i in range(max_classes_mock_set):
+            assert ds.selected_answers[i] != "INVALID"
+        for i in range(max_classes_mock_set, classes):
+            assert ds.selected_answers[i] == "INVALID"
+
+
+@pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
+def test_ds_classes_unbucketed(data_dir, classes: int):
+    ds = RSVQALRDataSet(
+        root_dir=data_dir, classes=classes, split="train", quantize_answers=False
+    )
     assert ds.classes == classes
     assert len(ds.selected_answers) == classes
     max_classes_mock_set = 36  # number of classes in the mock data
@@ -175,14 +195,14 @@ def test_dm_default(data_dir, split: str):
             dm.train_ds,
             expected_image_shape=(3, 256, 256),
             expected_length=None,
-            classes=1000,
+            classes=9,
             expected_question_length=32,
         )
         dataset_ok(
             dm.val_ds,
             expected_image_shape=(3, 256, 256),
             expected_length=None,
-            classes=1000,
+            classes=9,
             expected_question_length=32,
         )
         assert dm.test_ds is None
@@ -191,7 +211,7 @@ def test_dm_default(data_dir, split: str):
             dm.test_ds,
             expected_image_shape=(3, 256, 256),
             expected_length=None,
-            classes=1000,
+            classes=9,
             expected_question_length=32,
         )
         assert dm.train_ds is None
@@ -202,7 +222,7 @@ def test_dm_default(data_dir, split: str):
                 ds,
                 expected_image_shape=(3, 256, 256),
                 expected_length=None,
-                classes=1000,
+                classes=9,
                 expected_question_length=32,
             )
     else:
@@ -216,7 +236,7 @@ def test_dm_dataloaders(data_dir, bs: int):
         dm,
         expected_image_shape=(bs, 3, 256, 256),
         expected_question_length=32,
-        classes=1000,
+        classes=9,
     )
 
 
@@ -264,3 +284,17 @@ def test_dm_shuffle_true(data_dir):
     assert not torch.equal(
         next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
     )
+
+
+def test_dm_unexposed_kwargs(data_dir):
+    classes = 3
+    dm = RSVQALRDataModule(data_dir=data_dir, dataset_kwargs={"classes": classes})
+    dm.setup(None)
+    assert len(dm.train_ds.selected_answers) == classes, (
+        f"There should only be {classes} answers, but there are "
+        f"{len(dm.train_ds.selected_answers)}"
+    )
+    assert (
+        dm.train_ds.classes == classes
+    ), f"There should only be {classes} classes, but there are {dm.train_ds.classes}"
+    _ = RSVQALRDataModule(data_dir=data_dir, dataset_kwargs={"quantize_answers": False})

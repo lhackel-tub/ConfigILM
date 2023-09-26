@@ -5,6 +5,7 @@ import os
 from datetime import datetime
 from time import time
 from typing import List
+from typing import Mapping
 from typing import Optional
 from typing import Union
 
@@ -39,6 +40,7 @@ class RSVQAHRDataModule(pl.LightningDataModule):
         selected_answers=None,
         pin_memory=None,
         use_phili_test: bool = False,
+        dataset_kwargs: Optional[Mapping] = None,
     ):
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
@@ -99,6 +101,7 @@ class RSVQAHRDataModule(pl.LightningDataModule):
         self.tokenizer = tokenizer
         self.seq_length = seq_length
         self.use_phili_test = use_phili_test
+        self.ds_kwargs = dataset_kwargs if dataset_kwargs is not None else dict()
 
     def prepare_data(self):
         pass
@@ -119,6 +122,7 @@ class RSVQAHRDataModule(pl.LightningDataModule):
                     img_size=self.img_size,
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
+                    **self.ds_kwargs,
                 )
             if self.selected_answers is None:
                 self.selected_answers = self.train_ds.selected_answers
@@ -133,6 +137,7 @@ class RSVQAHRDataModule(pl.LightningDataModule):
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
                     selected_answers=self.selected_answers,
+                    **self.ds_kwargs,
                 )
             sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
@@ -148,6 +153,7 @@ class RSVQAHRDataModule(pl.LightningDataModule):
                 tokenizer=self.tokenizer,
                 seq_length=self.seq_length,
                 selected_answers=self.selected_answers,
+                **self.ds_kwargs,
             )
             sample_info_msg += f"  Total test samples: {len(self.test_ds):8,d}"
 

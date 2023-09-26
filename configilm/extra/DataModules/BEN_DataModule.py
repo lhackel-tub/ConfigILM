@@ -9,6 +9,7 @@ import os
 from datetime import datetime
 from pathlib import Path
 from time import time
+from typing import Mapping
 from typing import Optional
 from typing import Union
 
@@ -37,6 +38,7 @@ class BENDataModule(pl.LightningDataModule):
         num_workers_dataloader=None,
         max_img_idx=None,
         shuffle=None,
+        dataset_kwargs: Optional[Mapping] = None,
     ):
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
@@ -59,6 +61,7 @@ class BENDataModule(pl.LightningDataModule):
         self.max_img_idx = max_img_idx
         self.img_size = (12, 120, 120) if img_size is None else img_size
         self.shuffle = shuffle
+        self.ds_kwargs = dataset_kwargs if dataset_kwargs is not None else dict()
         if self.shuffle is not None:
             Messages.hint(
                 f"Shuffle was set to {self.shuffle}. This is not recommended for most "
@@ -93,6 +96,7 @@ class BENDataModule(pl.LightningDataModule):
                 transform=self.train_transform,
                 max_img_idx=self.max_img_idx,
                 img_size=self.img_size,
+                **self.ds_kwargs,
             )
 
             self.val_ds = BENDataSet(
@@ -101,6 +105,7 @@ class BENDataModule(pl.LightningDataModule):
                 transform=self.transform,
                 max_img_idx=self.max_img_idx,
                 img_size=self.img_size,
+                **self.ds_kwargs,
             )
             sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
@@ -113,6 +118,7 @@ class BENDataModule(pl.LightningDataModule):
                 transform=self.transform,
                 max_img_idx=self.max_img_idx,
                 img_size=self.img_size,
+                **self.ds_kwargs,
             )
             sample_info_msg += f"  Total test samples: {len(self.test_ds):8,d}"
 

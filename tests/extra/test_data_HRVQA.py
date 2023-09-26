@@ -424,3 +424,12 @@ def test_dm_predict_stage_setup(data_dir):
     dm = HRVQADataModule(data_dir=data_dir)
     with pytest.raises(NotImplementedError):
         dm.setup("predict")
+
+
+def test_dm_unexposed_kwargs(data_dir):
+    classes = 3
+    dm = HRVQADataModule(data_dir=data_dir, dataset_kwargs={"classes": classes})
+    dm.setup(None)
+    assert (
+        dm.train_ds.classes == classes
+    ), f"There should only be {classes} classes, but there are {dm.train_ds.classes}"

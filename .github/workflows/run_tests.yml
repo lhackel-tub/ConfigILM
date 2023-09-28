@@ -25,6 +25,8 @@ jobs:
       #----------------------------------------------
       - name: Check out repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
       - name: Set up python
         id: setup-python
         uses: actions/setup-python@v4
@@ -61,7 +63,7 @@ jobs:
       #----------------------------------------------
       - name: Run tests + generate coverage
         run: |
-          poetry run coverage run --omit="*/baselines/*" --source=configilm -m pytest
+          poetry run coverage run --omit="*/baselines/*" --source=configilm -m pytest tests/test_util.py
       - name: Log latest CI run
         run: echo $(date) > latest_ci_run
       - name: Generate coverage report
@@ -93,4 +95,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.github_token }}
-          branch: ${{ github.ref }}
+          branch: ${{ github.head_ref }}

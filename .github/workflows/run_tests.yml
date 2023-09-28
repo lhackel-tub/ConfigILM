@@ -91,7 +91,9 @@ jobs:
           git commit -m "Updated coverage.svg"
 
       - name: Push changes
-        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        # only push if something changed and only for one python version
+        # this helps to remove conflicts
+        if: (steps.verify-changed-files.outputs.files_changed == 'true') && (matrix.python-version == '3.9')
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.github_token }}

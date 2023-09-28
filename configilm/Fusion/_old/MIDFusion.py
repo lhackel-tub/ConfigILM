@@ -15,7 +15,8 @@ from configilm.Fusion.blocks import SelfAttention
 class MIDFusion(AbstractFusion):
     # based on https://github.com/xiaoyuan1996/GaLR/blob/main/layers/GaLR.py#L20
     def __init__(self, opt: Optional[Mapping] = None):
-        super().__init__(opt)
+        super().__init__()
+        self.opt = opt if opt is not None else {}
         embed_dim = self.opt["embed_dim"]
         num_heads = self.opt["num_heads"]
         fusion_dim = self.opt["fusion_dim"]

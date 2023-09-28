@@ -8,7 +8,7 @@ import torch.nn as nn
 from configilm.Fusion.AbstractFusion import AbstractFusion
 
 
-class MLB(AbstractFusion):
+class LinearSum(AbstractFusion):
     def __init__(
         self,
         input_dims: Sequence[int],
@@ -39,5 +39,5 @@ class MLB(AbstractFusion):
 
     def forward(self, input_0: torch.Tensor, input_1: torch.Tensor) -> torch.Tensor:
         x0, x1 = self._dual_linear(input_0, input_1)
-        z = x0 * x1
+        z = x0 + x1
         return self._norm_lin_out(z)

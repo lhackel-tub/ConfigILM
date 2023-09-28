@@ -3,47 +3,30 @@
 from typing import Optional
 
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.nn.init
 
 
-class FullyConnectedLayer(nn.Module):
-    def __init__(self, in_size, out_size, dropout_r=0.0, use_relu=True):
+class MLP(nn.Module):
+    def __init__(self, input_dim, dimensions, activation="relu", dropout=0.0):
         super().__init__()
-        self.dropout_r = dropout_r
-        self.use_relu = use_relu
-
-        self.linear = nn.Linear(in_size, out_size)
-
-        if use_relu:
-            self.relu = nn.ReLU(inplace=True)
-
-        if dropout_r > 0:
-            self.dropout = nn.Dropout(dropout_r)
+        self.input_dim = input_dim
+        self.dimensions = dimensions
+        self.activation = activation
+        self.dropout = dropout
+        # Modules
+        self.linears = nn.ModuleList([nn.Linear(input_dim, dimensions[0])])
+        for din, dout in zip(dimensions[:-1], dimensions[1:]):
+            self.linears.append(nn.Linear(din, dout))
 
     def forward(self, x):
-        x = self.linear(x)
-
-        if self.use_relu:
-            x = self.relu(x)
-
-        if self.dropout_r > 0:
-            x = self.dropout(x)
-
+        for i, lin in enumerate(self.linears):
+            x = lin(x)
+            if i < len(self.linears) - 1:
+                x = F.__dict__[self.activation](x)
+                if self.dropout > 0:
+                    x = F.dropout(x, self.dropout, training=self.training)
         return x
-
-
-class MultiLayerPerceptron(nn.Module):
-    def __init__(self, in_size, mid_size, out_size, dropout_r=0.0, use_relu=True):
-        super().__init__()
-
-        self.fc = FullyConnectedLayer(
-            in_size, mid_size, dropout_r=dropout_r, use_relu=use_relu
-        )
-        self.linear = nn.Linear(mid_size, out_size)
-
-    def forward(self, x):
-        out = self.fc(x)
-        return self.linear(out)
 
 
 class LayerNorm(nn.Module):
@@ -76,12 +59,10 @@ class FeedForwardNetwork(nn.Module):
     ):
         super().__init__()
         out_size = in_size if out_size is None else out_size
-        self.mlp = MultiLayerPerceptron(
-            in_size=in_size,
-            mid_size=hidden_size,
-            out_size=out_size,
-            dropout_r=drop_out,
-            use_relu=True,
+        self.mlp = MLP(
+            input_dim=in_size,
+            dimensions=[hidden_size, out_size],
+            dropout=drop_out,
         )
 
     def forward(self, x):

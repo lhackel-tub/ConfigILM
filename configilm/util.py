@@ -57,9 +57,10 @@ class Messages:
 
     Example::
 
-        print(f"{Messages.WARNING}This is a Warning.{Messages.ENDC}")
+        print(f"{Messages.WARNING}WARNING: This is a Warning.{Messages.ENDC}")
         Messages.warn("This is a Warning.")  # equal result
     """
+
     HEADER = "\033[95m"
     OKBLUE = "\033[94m"
     OKCYAN = "\033[96m"
@@ -122,11 +123,12 @@ def round_to(x, base):
     :return: rounded number
 
     :Example:
-        round_to(5, 2) == 4
-
-        round_to(5.1, 0.2) == 5.0
-
-        round_to(5.199, 0.2) == 5.2
+        >>> round_to(5, 2)
+        4
+        >>> round_to(5.1, 0.2)
+        5.0
+        >>> round_to(5.199, 0.2)
+        5.2
     """
     return base * round(x / base)
 
@@ -163,6 +165,7 @@ class AverageMeter:
     """
     Computes and stores the average and current value of some kind of sequential calls.
     """
+
     val: float
     avg: float
     sum: float
@@ -232,7 +235,7 @@ def huggingface_tokenize_and_pad(tokenizer, string: str, seq_length: int):
     ids = tokenizer.convert_tokens_to_ids(tokens)
 
     # get sublist if length of sequence is longer than max length
-    ids = ids[0: seq_length - 2] if len(ids) >= seq_length - 2 else ids
+    ids = ids[0 : seq_length - 2] if len(ids) >= seq_length - 2 else ids
     # prepend start token
     ids.insert(0, token_start)
     # append end token

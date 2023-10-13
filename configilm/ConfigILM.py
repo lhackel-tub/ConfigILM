@@ -33,6 +33,7 @@ from appdirs import user_cache_dir
 def _available_hf_models(base_path: Path):
     """
     Searches a local path and returns names of all available huggingface models
+
     :param base_path: path to search in
     :return: list of all available models
     """
@@ -61,15 +62,16 @@ def _get_hf_model(
     Loads a huggingface model including tokenizer. Searches local files first.
     If the model is not available locally, first download it to the local
     directory, cache it and then load it.
+
     :param model_name: huggingface model name
     :param load_pretrained_if_available: load the model including pretrained
-                                         weights, not just the architecture
+        weights, not just the architecture
     :param save_directory: local directory to use for search and caching
     :return: tokenizer and model
     :raises: Connection error if no Internet connection can be established
-             (only if model is not found locally)
+        (only if model is not found locally)
     :raises: HTTP error if no name matches the one given (locally or on
-             huggingface hub)
+        huggingface hub)
     """
     save_directory = Path(user_cache_dir(appname="configilm")).joinpath(
         "pretrained_models", "huggingface_models"
@@ -124,8 +126,9 @@ def _get_timm_model(model_name: str, kwargs: dict):
     Wrapper around timm.create_model that tries to create a model with specified keyword
     arguments. If an argument does not work, it will be removed from the list and
     creation is retried until successful.
+
     :param model_name: string name of the requested model - see timm.list_models("*")
-    for all available models
+        for all available models
     :param kwargs: arguments passed to the create function of timm
     :return: pytorch model of requested timm style
     """
@@ -151,130 +154,183 @@ class ILMType(Enum):
     IMAGE_CLASSIFICATION = 0
     VQA_CLASSIFICATION = 1
 
+    def __str__(self):
+        return f"{self.name} (value: {self.value})"
+
 
 @dataclass
 class ILMConfiguration:
     """
     Configuration dataclass that defines all properties of ConfigILM models.
-
-    Fields:
-        channels: Number of input channels for the image model.
-
-        class_names: Names of the classes in the classifier. Usable for class-specific
-            performance. If none, classes will be enumerated with numbers.
-            Default: None
-
-        classes: Number of classes for the output of IMAGE_CLASSIFICATION classifier or
-            VQA_CLASSIFICATION classifier.
-            Default: 10
-
-        drop_rate: Dropout and drop path rate for timm models.
-            Default: 0.2
-
-        fusion_activation: Activation function inside all classification head layers.
-            Default: nn.tanh()
-
-        fusion_dropout_rate: Drop rate inside all classification head layers.
-            Default: 0.25
-
-        fusion_hidden: Number of neurons inside the hidden layer of the classification
-            head.
-            Default: 256
-
-        fusion_in: Input dimension to the fusion method.
-            Default: 512
-
-        fusion_method: Fusion method to combine text and image features. Callable with
-            two inputs (tensor, tensor) and a single output (tensor) where each tensor
-            is single dimension (plus batch dimension). First input is flatten output of
-            image model with dimension fusion_in, second input is flatten output of the
-            text model with dimension fusion_in. Output should have the dimension
-            fusion_out.
-            Default: torch.mul
-
-        fusion_out: Output dimension of the fusion method. If None, output will be same
-            as input (e.g. for point-wise operations).
-            Default: None
-
-        hf_model_name: Name of the text model from huggingface if applicable. The model
-            has to be a model for text sequence classification.
-            Default: None
-
-        image_size: Size of input images for image models. Only applicable for some
-            specific models.
-            Default: 120
-
-        load_hf_if_available: Load pretrained weights for huggingface model.
-            Default: True
-
-        load_timm_if_available: Load pretrained weights for timm model.
-            Default: False
-
-        max_seq_length: Maximum sequence length of huggingface models. Sequences that
-            are shorter will be padded, longer ones are cropped to this maximum length.
-            Default: 32
-
-        network_type: Type of ILM-network. Available types are listed in ILMType enum.
-            Default: ILMType.IMAGE_CLASSIFICATION
-
-        t_dropout_rate: Dropout rate of the mapping from the huggingface text model to
-            the dimension of the fusion method.
-            Default: 0.25
-
-        timm_model_name: Name of the image model as defined in timm.list_models()
-
-        use_pooler_output: Use the pooler output of the huggingface model if applicable
-            and available. Otherwise, last hidden features will be flattened and used
-            instead.
-            Default: True
-
-        v_dropout_rate: Dropout rate of the mapping from the timm image model to
-            the dimension of the fusion method.
-            Default: 0.25
-
-        visual_features_out: Output dimension of the timm image model. Dimension will be
-            linearly mapped to fusion_in dimension with activation and dropout as
-            specified.
-            Default: 512
     """
 
-    timm_model_name: str
-    hf_model_name: Union[None, str] = None
+    def __init__(
+        self,
+        timm_model_name: str,
+        hf_model_name: Union[None, str] = None,
+        image_size: int = 120,
+        channels: int = 3,
+        classes: int = 10,
+        class_names: Union[None, Sequence[str]] = None,
+        network_type: ILMType = ILMType.IMAGE_CLASSIFICATION,
+        visual_features_out: int = 512,
+        fusion_in: int = 512,
+        fusion_out: Union[None, int] = None,  # if None, same as fusion_in
+        fusion_hidden: int = 256,
+        v_dropout_rate: float = 0.25,
+        t_dropout_rate: float = 0.25,
+        fusion_dropout_rate: float = 0.25,
+        fusion_method: Callable[[torch.Tensor, torch.Tensor], torch.Tensor] = torch.mul,
+        fusion_activation: Callable[[torch.Tensor], torch.Tensor] = nn.Tanh(),
+        drop_rate: Union[float, None] = 0.2,
+        use_pooler_output: bool = True,
+        max_sequence_length: int = 32,
+        load_pretrained_timm_if_available: bool = False,
+        load_pretrained_hf_if_available: bool = True,
+    ):
+        """
+        Initializes a configuration dataclass that defines all properties of ConfigILM
+        models.
 
-    # values with default
-    image_size: int = 120
-    channels: int = 3
-    classes: int = 10
-    class_names: Union[None, Sequence[str]] = None
-    network_type: ILMType = ILMType.IMAGE_CLASSIFICATION
 
-    # currently only used for VQA_CLASSIFICATION
-    visual_features_out: int = 512
-    fusion_in: int = 512
-    fusion_out: Union[None, int] = None  # if None, same as fusion_in
-    fusion_hidden: int = 256
-    v_dropout_rate: float = 0.25
-    t_dropout_rate: float = 0.25
-    fusion_dropout_rate: float = 0.25
-    fusion_method: Callable[[torch.Tensor, torch.Tensor], torch.Tensor] = torch.mul
-    fusion_activation: Callable[[torch.Tensor], torch.Tensor] = nn.Tanh()
+        :param channels: Number of input channels for the image model.
 
-    # specific for timm lib
-    drop_rate: Union[float, None] = 0.2
-    # specific for hf
-    use_pooler_output: bool = True
-    max_sequence_length: int = 32
+            :Default: 3
 
-    # pretrained models
-    load_pretrained_timm_if_available: bool = False
-    load_pretrained_hf_if_available: bool = True
+        :param class_names: Names of the classes in the classifier. Usable for
+            class-specific performance. If none, classes will be enumerated with
+            numbers.
+
+            :Default: None
+
+        :param classes: Number of classes for the output of IMAGE_CLASSIFICATION
+            classifier or VQA_CLASSIFICATION classifier.
+
+            :Default: 10
+
+        :param drop_rate: Dropout and drop path rate for timm models.
+
+            :Default: 0.2
+
+        :param fusion_activation: Activation function inside all classification head
+            layers.
+
+            :Default: nn.tanh()
+
+        :param fusion_dropout_rate: Drop rate inside all classification head layers.
+
+            :Default: 0.25
+
+        :param fusion_hidden: Number of neurons inside the hidden layer of the
+            classification head.
+
+            :Default: 256
+
+        :param fusion_in: Input dimension to the fusion method.
+
+            :Default: 512
+
+        :param fusion_method: Fusion method to combine text and image features. Callable
+            with two inputs (tensor, tensor) and a single output (tensor) where each
+            tensor is single dimension (plus batch dimension). First input is flatten
+            output of image model with dimension fusion_in, second input is flatten
+            output of the text model with dimension fusion_in. Output should have the
+            dimension fusion_out.
+
+            :Default: torch.mul
+
+        :param fusion_out: Output dimension of the fusion method. If None, output will
+            be same as input (e.g. for point-wise operations).
+
+            :Default: None
+
+        :param hf_model_name: Name of the text model from huggingface if applicable. The
+            model has to be a model for text sequence classification.
+
+            :Default: None
+
+        :param image_size: Size of input images for image models. Only applicable for
+            some specific models.
+
+            :Default: 120
+
+        :param load_pretrained_hf_if_available: Load pretrained weights for huggingface
+            model.
+
+            :Default: True
+
+        :param load_pretrained_timm_if_available: Load pretrained weights for timm
+            model.
+
+            :Default: False
+
+        :param max_sequence_length: Maximum sequence length of huggingface models.
+            Sequences that are shorter will be padded, longer ones are cropped to this
+            maximum length.
+
+            :Default: 32
+
+        :param network_type: Type of ILM-network. Available types are listed in ILMType
+            enum.
+
+            :Default: ILMType.IMAGE_CLASSIFICATION
+
+        :param t_dropout_rate: Dropout rate of the mapping from the huggingface text
+            model to the dimension of the fusion method.
+
+            :Default: 0.25
+
+        :param timm_model_name: (required) Name of the image model as defined in
+            timm.list_models()
+
+        :param use_pooler_output: Use the pooler output of the huggingface model if
+            applicable and available. Otherwise, last hidden features will be flattened
+            and used instead.
+
+            :Default: True
+
+        :param v_dropout_rate: Dropout rate of the mapping from the timm image model to
+            the dimension of the fusion method.
+
+            :Default: 0.25
+
+        :param visual_features_out: Output dimension of the timm image model. Dimension
+            will be linearly mapped to fusion_in dimension with activation and dropout
+            as specified.
+
+            :Default: 512
+        """
+        super().__init__()
+        self.timm_model_name = timm_model_name
+        self.hf_model_name = hf_model_name
+        self.image_size = image_size
+        self.channels = channels
+        self.classes = classes
+        self.class_names = class_names
+        self.network_type = network_type
+        self.visual_features_out = visual_features_out
+        self.fusion_in = fusion_in
+        self.fusion_out = fusion_out
+        self.fusion_hidden = fusion_hidden
+        self.v_dropout_rate = v_dropout_rate
+        self.t_dropout_rate = t_dropout_rate
+        self.fusion_dropout_rate = fusion_dropout_rate
+        self.fusion_method = fusion_method
+        self.fusion_activation = fusion_activation
+        self.drop_rate = drop_rate
+        self.use_pooler_output = use_pooler_output
+        self.max_sequence_length = max_sequence_length
+        self.load_pretrained_timm_if_available = load_pretrained_timm_if_available
+        self.load_pretrained_hf_if_available = load_pretrained_hf_if_available
 
 
 class ConfigILM(nn.Module):
     def __init__(self, config: ILMConfiguration):
         """
-        Creates a ConfigILM model according to the ILMConfiguration
+        Creates a ConfigILM model according to the provided ILMConfiguration
+
         :param config: Configuration file of the model. See ILMConfiguration for details
+        :returns: self
         """
         super().__init__()
         self.config = config
@@ -373,6 +429,13 @@ class ConfigILM(nn.Module):
             )
 
     def to(self, *args, **kwargs):
+        """
+        Moves the model parts as well as the fusion methods and activations to a device
+        or casts to a different type.
+
+        :param args: device, dtype or other specified formats. See `nn.module.to()`
+        :param kwargs: device, dtype or other specified formats. See `nn.module.to()`
+        """
         super().to(*args, **kwargs)
         if isinstance(self.config.fusion_method, nn.Module):
             self.config.fusion_method.to(*args, **kwargs)
@@ -383,6 +446,7 @@ class ConfigILM(nn.Module):
     def get_tokenizer(self):
         """
         Getter to the tokenizer of the text model if applicable.
+
         :return: Tokenizer to specified huggingface text model.
         :raises: AttributeError if no text model is used
         """
@@ -398,6 +462,7 @@ class ConfigILM(nn.Module):
         """
         Helper function that checks if the batch has the right dimension for the
         specified model.
+
         :param batch: Input batch
         :raises: AssertionError if the shape does not fit to the configuration
         :raises: ValueError if the configuration type is not known
@@ -443,8 +508,10 @@ class ConfigILM(nn.Module):
         """
         Model forward function that decides which parts of the model to use based on the
         configuration after checking that the input works with this kind of network.
-        :param batch: Input batch
-        :return: logits of the network
+
+        :param batch: Input batch of single modality of list of batches of multiple
+            modalities
+        :returns: logits of the network
         """
         # check that input is correct before running network
         self._check_input(batch)

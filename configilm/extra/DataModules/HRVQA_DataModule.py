@@ -12,8 +12,8 @@ from torch.utils.data import DataLoader
 
 from configilm.extra.DataModules.dm_defaults import default_train_transform
 from configilm.extra.DataModules.dm_defaults import default_transform
-from configilm.extra.DataSets.HRVQA_DataSet import _means
-from configilm.extra.DataSets.HRVQA_DataSet import _stds
+from configilm.extra.DataSets.HRVQA_DataSet import _means_1024
+from configilm.extra.DataSets.HRVQA_DataSet import _stds_1024
 from configilm.extra.DataSets.HRVQA_DataSet import HRVQADataSet
 from configilm.util import Messages
 
@@ -38,14 +38,103 @@ class HRVQADataModule(pl.LightningDataModule):
         pin_memory=None,
         test_splitting_seed=None,
         test_splitting_division=None,
+        print_infos: bool = False,
         dataset_kwargs: Optional[Mapping] = None,
     ):
+        """
+        Initializes a pytorch lightning data module.
+
+        :param batch_size: batch size for data loaders
+
+            :Default: 16
+
+        :param data_dir: root directory to images and jsons folder
+
+            :Default: ./
+
+        :param img_size: Size to which all channels will be scaled. Interpolation is
+            applied bicubic before any transformation. Also selects if the returned
+            images are RGB or grayscale based on the number of channels.
+
+            :Default: (3, 1024, 1024)
+
+        :param num_workers_dataloader: number of workers used for data loading
+
+            :Default: #CPU_cores/2
+
+        :param max_img_idx: maximum number of images to load per split. If this number
+            is higher than the images found in the csv, None or -1, all images will be
+            loaded.
+
+            :Default: None
+
+        :param shuffle: Flag if dataset should be shuffled. If set to None, only train
+            will be shuffled and validation and test won't.
+
+            :Default: None
+
+        :param tokenizer: Tokenizer to use for tokenization of input questions. Expects
+            standard huggingface tokenizer. If not set, a default tokenizer will be
+            used and a warning shown.
+
+            :Default: None
+
+        :param seq_length: Length of tokenized question. Will be caped to this as
+            maximum and expanded to this if the question is too short. Includes start
+            and end token.
+
+            :Default: 32
+
+        :param selected_answers: List of selected answers or None. If set to None,
+            answers will be selected based on `classes` for the data set in order of
+            frequency of the training set.
+
+            :Default: None
+
+        :param pin_memory: Flag if memory should be pinned for data loading. If not
+            specified set to True if cuda devices are used, else false.
+
+            :Default: None
+
+        :param test_splitting_seed: Seed for random division of the "val-div" and
+            "test-div" splits. If not set, an AssertionError is raised. If set to
+            "repeat", val and test will be the same data.
+
+            For division, the set defined for validation is split into "val-div" and
+            "test-div" depending on the `div_seed` and `split_size`. All random states
+            are rebuild after a call to the division.
+
+            To get the disjoint sets for validation and test, call the dataset with the
+            same parameters once for "val-div" and once for "test-div".
+
+            :Default: None
+
+        :param test_splitting_division: relative size of the validation div if
+            subdivision of the validation split is applicable.
+
+            :Default: 0.5
+
+        :param print_infos: Flag, if additional information during setup() and reading
+            should be printed (e.g. number of workers detected, number of images loaded)
+
+            :Default: False
+
+        :param dataset_kwargs: Other keyword arguments to pass to the dataset during
+            creation.
+
+        Split example:
+            >>> ds_v = HRVQADataSet(..., div_seed=0, split_size=0.3, split="val-div")
+            >>> ds_t = HRVQADataSet(..., div_seed=0, split_size=0.3, split="test-div")
+            ds_v and ds_t are disjoint with dv containing 30% of all validation samples
+            and dt 70%
+        """
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
                 f"Expected image_size with 3 dimensions (HxWxC) or None but got "
                 f"{len(img_size)} dimensions instead"
             )
         super().__init__()
+        self.print_infos = print_infos
         if num_workers_dataloader is None:
             cpu_count = os.cpu_count()
             if type(cpu_count) is int:
@@ -72,14 +161,14 @@ class HRVQADataModule(pl.LightningDataModule):
         self.selected_answers = selected_answers
 
         mean = (
-            [_means["red"], _means["green"], _means["blue"]]
+            [_means_1024["red"], _means_1024["green"], _means_1024["blue"]]
             if self.img_size[0] == 3
-            else [_means["mono"]]
+            else [_means_1024["mono"]]
         )
         std = (
-            [_stds["red"], _stds["green"], _stds["blue"]]
+            [_stds_1024["red"], _stds_1024["green"], _stds_1024["blue"]]
             if self.img_size[0] == 3
-            else [_stds["mono"]]
+            else [_stds_1024["mono"]]
         )
 
         self.train_transform = default_train_transform(
@@ -111,11 +200,21 @@ class HRVQADataModule(pl.LightningDataModule):
         self.test_splitting_seed = test_splitting_seed
         self.test_splitting_div = test_splitting_division
 
-    def prepare_data(self):
-        pass
-
     def setup(self, stage: Optional[str] = None):
-        print(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
+        """
+        Prepares the data sets for the specific stage.
+
+        - "fit": train and validation data set
+        - "test": test data set
+        - None: all data sets
+
+        Prints the time it needed for this operation and other statistics if print_infos
+        is set.
+
+        :param stage: None, "fit" or "test"
+        """
+        if self.print_infos:
+            print(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
         sample_info_msg = ""
         t0 = time()
 
@@ -180,10 +279,17 @@ class HRVQADataModule(pl.LightningDataModule):
         if stage == "predict":
             raise NotImplementedError("Predict stage not implemented")
 
-        print(f"setup took {time() - t0:.2f} seconds")
-        print(sample_info_msg)
+        if self.print_infos:
+            print(f"setup took {time() - t0:.2f} seconds")
+            print(sample_info_msg)
 
     def train_dataloader(self):
+        """
+        Create a Dataloader according to the specification in the `__init__` call.
+        Uses the train set and expects it to be set (e.g. via `setup()` call)
+
+        :return: torch DataLoader for the train set
+        """
         return DataLoader(
             self.train_ds,
             batch_size=self.batch_size,
@@ -193,6 +299,12 @@ class HRVQADataModule(pl.LightningDataModule):
         )
 
     def val_dataloader(self):
+        """
+        Create a Dataloader according to the specification in the `__init__` call.
+        Uses the validation set and expects it to be set (e.g. via `setup()` call)
+
+        :return: torch DataLoader for the validation set
+        """
         return DataLoader(
             self.val_ds,
             batch_size=self.batch_size,
@@ -202,6 +314,12 @@ class HRVQADataModule(pl.LightningDataModule):
         )
 
     def test_dataloader(self):
+        """
+        Create a Dataloader according to the specification in the `__init__` call.
+        Uses the test set and expects it to be set (e.g. via `setup()` call)
+
+        :return: torch DataLoader for the test set
+        """
         if self.test_splitting_seed is None:
             return None
         else:

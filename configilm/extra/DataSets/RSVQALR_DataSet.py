@@ -25,6 +25,7 @@ def resolve_data_dir(
 ) -> str:
     """
     Helper function that tries to resolve the correct directory
+
     :param data_dir: current path that is suggested
     :param allow_mock: allows mock data path to be returned
     :param force_mock: only mock data path will be returned. Useful for debugging with
@@ -59,6 +60,21 @@ def resolve_data_dir(
 
 
 def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = False):
+    """
+    Selects the most frequently present answers and returns them in order of frequency.
+
+    :param answers: input list of answers
+    :param number_of_answers: how many answers should be selected
+
+        :Default: 1_000
+
+    :param use_tqdm: Flag to use tqdm as progress bar
+
+        :Default: False
+
+    :return: most frequent answers (list of length number_of_answers), ordered by
+        frequency
+    """
     # this dict will store as keys the answers and the values are the frequencies
     # they occur
     freq_dict = {}
@@ -184,6 +200,58 @@ class RSVQALRDataSet(Dataset):
         seq_length: int = 32,
         quantize_answers: bool = True,
     ):
+        """
+        :param root_dir: root directory to images and jsons folder
+
+        :param split: "train", "val" or "test" or None for all
+
+            :Default: None (loads all splits)
+
+        :param transform: transformations to be applied to loaded images aside from
+            scaling all bands to img_size.
+
+            :Default: None
+
+        :param max_img_idx: maximum number of images to load. If this number is higher
+            than the images found in the csv, None or -1, all images will be loaded.
+
+            :Default: None
+
+        :param img_size: Size to which all channels will be scaled. Interpolation is
+            applied bicubic before any transformation. Also selects if the returned
+            images are RGB or grayscale based on the number of channels.
+
+            :Default: (3, 256, 256)
+
+        :param selected_answers: List of selected answers or None. If set to None,
+            answers will be selected based on `classes` in order of frequency of the
+            set.
+
+            :Default: None
+
+        :param classes: Number of classes (possible answers)
+
+            :Default: 9
+
+        :param tokenizer: Tokenizer to use for tokenization of input questions. Expects
+            standard huggingface tokenizer. If not set, a default tokenizer will be
+            used and a warning shown.
+
+            :Default: None
+
+        :param seq_length: Length of tokenized question. Will be caped to this as
+            maximum and expanded to this if the question is too short. Includes start
+            and end token.
+
+            :Default: 32
+
+        :param quantize_answers: Flag, if answers should be quantized by magnitude as
+            done in the original paper. This means that classes 1, 2, ... 10 are
+            collected into one class, 11, 12, ... 100 into another one etc. Done for
+            both count and area.
+
+            :Default: True
+        """
         super().__init__()
         assert split in [
             None,
@@ -211,9 +279,18 @@ class RSVQALRDataSet(Dataset):
             self.tokenizer = tokenizer
 
         self.seq_length = seq_length
-        self.pre_transforms = transforms.Compose(
-            [transforms.Resize(img_size[1:]), transforms.ToTensor()]
-        )
+        if self.is_rgb:
+            self.pre_transforms = transforms.Compose(
+                [transforms.Resize(img_size[1:]), transforms.ToTensor()]
+            )
+        else:
+            self.pre_transforms = transforms.Compose(
+                [
+                    transforms.Grayscale(),
+                    transforms.Resize(img_size[1:]),
+                    transforms.ToTensor(),
+                ]
+            )
         self.root_dir = Path(root_dir)
         self.split = split
         self.transform = transform

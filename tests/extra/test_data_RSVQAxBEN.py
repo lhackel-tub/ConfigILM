@@ -254,6 +254,12 @@ def test_dm_dataloaders(data_dir, bs: int):
     )
 
 
+@pytest.mark.parametrize("pi", [True, False])
+def test_dm_print_on_setup(data_dir, pi):
+    dm = RSVQAxBENDataModule(data_dir=data_dir, print_infos=pi)
+    dm.setup()
+
+
 def test_dm_shuffle_false(data_dir):
     dm = RSVQAxBENDataModule(data_dir=data_dir, shuffle=False)
     dm.setup(None)

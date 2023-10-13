@@ -85,7 +85,7 @@ class BEN2DataModule(BENDataModule):
             max_img_idx=max_img_idx,
             shuffle=shuffle,
             dataset_kwargs=dataset_kwargs,
-            print_infos=print_infos
+            print_infos=print_infos,
         )
         self.new_label_file = new_label_file
         self.print_infos = print_infos

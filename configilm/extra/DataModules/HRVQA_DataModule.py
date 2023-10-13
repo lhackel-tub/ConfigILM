@@ -200,6 +200,16 @@ class HRVQADataModule(pl.LightningDataModule):
         self.test_splitting_seed = test_splitting_seed
         self.test_splitting_div = test_splitting_division
 
+    def _print_info(self, info):
+        """
+        Helper method that only prints if `print_info` is set. Used to reduce
+        complexity in functions.
+        """
+        if self.print_infos:
+            print(info)
+        else:
+            pass
+
     def setup(self, stage: Optional[str] = None):
         """
         Prepares the data sets for the specific stage.
@@ -213,8 +223,9 @@ class HRVQADataModule(pl.LightningDataModule):
 
         :param stage: None, "fit" or "test"
         """
-        if self.print_infos:
-            print(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
+        self._print_info(
+            f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called"
+        )
         sample_info_msg = ""
         t0 = time()
 
@@ -279,9 +290,8 @@ class HRVQADataModule(pl.LightningDataModule):
         if stage == "predict":
             raise NotImplementedError("Predict stage not implemented")
 
-        if self.print_infos:
-            print(f"setup took {time() - t0:.2f} seconds")
-            print(sample_info_msg)
+        self._print_info(f"setup took {time() - t0:.2f} seconds")
+        self._print_info(sample_info_msg)
 
     def train_dataloader(self):
         """

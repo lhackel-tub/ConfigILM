@@ -27,7 +27,7 @@ _stds_1024 = {"red": 0.1398, "green": 0.1279, "blue": 0.1203, "mono": 0.1308}
 
 
 def resolve_data_dir(
-        data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
+    data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
 ) -> str:
     """
     Helper function that tries to resolve the correct directory
@@ -109,7 +109,7 @@ def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = Fal
             f"requested, but {len(answers_by_appearence)} found)."
         )
         answers_by_appearence += [("INVALID", 0)] * (
-                number_of_answers - len(answers_by_appearence)
+            number_of_answers - len(answers_by_appearence)
         )
 
     selected_answers = answers_by_appearence[:number_of_answers]
@@ -163,10 +163,10 @@ def _subsplit_qa(questions, answers, qa_in_split, sub_split, seed):
 
 
 def _get_question_answers(
-        split: Optional[str],
-        root_dir: pathlib.Path,
-        split_size: Union[int, float],
-        split_seed,
+    split: Optional[str],
+    root_dir: pathlib.Path,
+    split_size: Union[int, float],
+    split_seed,
 ):
     subsplit = None  # should never be relevant unless overwritten
     if split in ["train", "val", "test", None]:
@@ -235,18 +235,18 @@ def _get_question_answers(
 
 class HRVQADataSet(Dataset):
     def __init__(
-            self,
-            root_dir: Union[Path, str],
-            split: Optional[str] = None,
-            transform=None,
-            max_img_idx=None,
-            img_size=(3, 1024, 1024),
-            selected_answers=None,
-            classes: int = 1_000,
-            tokenizer=None,
-            seq_length: int = 32,
-            div_seed=None,
-            split_size: Union[float, int] = 0.5,
+        self,
+        root_dir: Union[Path, str],
+        split: Optional[str] = None,
+        transform=None,
+        max_img_idx=None,
+        img_size=(3, 1024, 1024),
+        selected_answers=None,
+        classes: int = 1_000,
+        tokenizer=None,
+        seq_length: int = 32,
+        div_seed=None,
+        split_size: Union[float, int] = 0.5,
     ):
         """
         :param root_dir: root directory to images and jsons folder
@@ -352,7 +352,11 @@ class HRVQADataSet(Dataset):
             )
         else:
             self.pre_transforms = transforms.Compose(
-                [transforms.Grayscale(), transforms.Resize(img_size[1:]), transforms.ToTensor()]
+                [
+                    transforms.Grayscale(),
+                    transforms.Resize(img_size[1:]),
+                    transforms.ToTensor(),
+                ]
             )
 
         self.root_dir = Path(root_dir)
@@ -413,7 +417,7 @@ class HRVQADataSet(Dataset):
         question = self.questions[idx]
         answer = self.answers[idx]
         assert (
-                question["question_id"] == answer["question_id"]
+            question["question_id"] == answer["question_id"]
         ), f"ID mismatch for question and answer for index {idx}"
         img_path = self.root_dir / "images" / f'{question["image_id"]}.png'
         img = Image.open(img_path.resolve()).convert("RGB")

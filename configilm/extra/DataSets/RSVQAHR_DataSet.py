@@ -206,7 +206,7 @@ class RSVQAHRDataSet(Dataset):
         """
         :param root_dir: root directory to images and jsons folder
 
-        :param split: "train", "val", "val-div", "test-div" or "test" or None for all
+        :param split: "train", "val", "test_phili" or "test" or None for all
 
             :Default: None (loads all splits)
 
@@ -234,7 +234,7 @@ class RSVQAHRDataSet(Dataset):
 
         :param classes: Number of classes (possible answers)
 
-            :Default: 1_000
+            :Default: 94
 
         :param tokenizer: Tokenizer to use for tokenization of input questions. Expects
             standard huggingface tokenizer. If not set, a default tokenizer will be

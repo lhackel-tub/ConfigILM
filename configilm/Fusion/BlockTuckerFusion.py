@@ -24,6 +24,29 @@ class BlockTucker(AbstractFusion):
         dropout_output: float = 0.0,
         pos_norm: str = "before_cat",
     ):
+        """
+        Initializes internal Module state of Block Tucker Fusion of "BLOCK: Bilinear
+        Superdiagonal Fusion for Visual Question Answering and Visual Relationship
+        Detection". Uses Tucker decomposition for tensor complexity restriction instead
+        of rank limitation while limiting the intermediate state complexity via division
+        into chunks (blocks).
+
+        :param input_dims: Sequence of dimensions of different inputs. Only the first
+                           two dimensions are used
+        :param output_dim: Dimension of output tensor
+        :param mm_dim: intermediate multi-modal dimension
+        :param chunks: number of chunks the intermediate dimension will be divided into.
+                       Has to be smaller or equal then mm_dim. If mm_dim is not
+                       divisible by chunks, the last chunk will be smaller
+        :param shared: flag if the input mappings are shared between both inputs. Only
+                       works, if all input_dims are equal
+        :param dropout_input: Dropout rate of the inputs
+        :param dropout_pre_lin: Dropout rate before linear mapping
+        :param dropout_output: Dropout rate before the output
+        :param pos_norm: position of normalization, has to be "before_cat" or
+                         "after_cat"
+        :returns: Block-Tucker-Fusion torch.nn module
+        """
         super().__init__()
         self.input_dims = input_dims
         self.output_dim = output_dim
@@ -51,6 +74,13 @@ class BlockTucker(AbstractFusion):
         self.n_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
 
     def forward(self, input_0: torch.Tensor, input_1: torch.Tensor) -> torch.Tensor:
+        """
+        Forward call to Block-Tucker-Fusion
+
+        :param input_0: first modality input
+        :param input_1: second modality input
+        :return: multi modality output
+        """
         x0 = self.linear0(input_0)
         x1 = self.linear1(input_1)
 

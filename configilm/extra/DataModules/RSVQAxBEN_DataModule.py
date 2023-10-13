@@ -126,7 +126,8 @@ class RSVQAxBENDataModule(pl.LightningDataModule):
                 self.num_workers_dataloader = 0
         else:
             self.num_workers_dataloader = num_workers_dataloader
-        print(f"Dataloader using {self.num_workers_dataloader} workers")
+        if self.print_infos:
+            print(f"Dataloader using {self.num_workers_dataloader} workers")
 
         self.data_dir = data_dir
         self.batch_size = batch_size

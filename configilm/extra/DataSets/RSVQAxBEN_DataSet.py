@@ -27,6 +27,21 @@ from configilm.util import Messages
 def select_answers_from_qa_pairs(
     qa_pairs, number_of_answers: int = 1_000, use_tqdm: bool = False
 ):
+    """
+    Selects the most frequently present answers and returns them in order of frequency.
+
+    :param qa_pairs: list of dicts with an "answer" field for each dict
+    :param number_of_answers: how many answers should be selected
+
+        :Default: 1_000
+
+    :param use_tqdm: Flag to use tqdm as progress bar
+
+        :Default: False
+
+    :return: most frequent answers (list of length number_of_answers), ordered by
+        frequency
+    """
     # this dict will store as keys the answers and the values are the frequencies
     # they occur
     freq_dict = {}
@@ -81,10 +96,59 @@ class RSVQAxBENDataSet(Dataset):
         max_img_idx=None,
         img_size=(12, 120, 120),
         selected_answers=None,
-        classes=1000,
+        classes=1_000,
         tokenizer=None,
         seq_length=32,
     ):
+        """
+        :param root_dir: root directory to images and jsons folder
+
+            :Default: ./
+
+        :param split: "train", "val" or "test" or None for all
+
+            :Default: None (loads all splits)
+
+        :param transform: transformations to be applied to loaded images aside from
+            scaling all bands to img_size.
+
+            :Default: None
+
+        :param max_img_idx: maximum number of images to load. If this number is higher
+            than the images found in the csv, None or -1, all images will be loaded.
+
+            :Default: None
+
+        :param img_size: Size to which all channels will be scaled. Interpolation is
+            applied bicubic before any transformation.
+
+            Also specifies which channels to load.
+            See `BENDataSet.get_available_channel_configurations()` for details.
+
+            :Default: (12, 120, 120)
+
+        :param selected_answers: List of selected answers or None. If set to None,
+            answers will be selected based on `classes` in order of frequency of the
+            set.
+
+            :Default: None
+
+        :param classes: Number of classes (possible answers)
+
+            :Default: 1_000
+
+        :param tokenizer: Tokenizer to use for tokenization of input questions. Expects
+            standard huggingface tokenizer. If not set, a default tokenizer will be
+            used and a warning shown.
+
+            :Default: None
+
+        :param seq_length: Length of tokenized question. Will be caped to this as
+            maximum and expanded to this if the question is too short. Includes start
+            and end token.
+
+            :Default: 32
+        """
         super().__init__()
         self.root_dir = root_dir
         self.lmdb_dir = os.path.join(self.root_dir, "BigEarthNetEncoded.lmdb")

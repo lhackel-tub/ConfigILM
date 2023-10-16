@@ -291,3 +291,9 @@ def test_dm_unexposed_kwargs(data_dir):
     assert (
         len(dm.train_ds[0]) == 3
     ), f"This change should have returned 3 items but does {len(dm.train_ds[0])}"
+
+
+@pytest.mark.parametrize("pi", [True, False])
+def test_dm_print_on_setup(data_dir, pi):
+    dm = BEN2DataModule(data_dir=data_dir, print_infos=pi)
+    dm.setup()

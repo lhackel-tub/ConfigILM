@@ -43,6 +43,17 @@ extra/BEN_LMDB_Reader
 extra/DataSets and DataModules
 ```
 
+
+```{toctree}
+:hidden:
+:caption: API
+
+API/api_configilm
+API/api_datasets
+API/api_fusion
+API/api_util
+```
+
 ```{toctree}
 :hidden:
 :caption: Other

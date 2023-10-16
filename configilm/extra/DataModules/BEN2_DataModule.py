@@ -1,5 +1,5 @@
 """
-Dataloader and Datamodule for BigEarthNet dataset. Files can be requested by contacting
+Datamodule for updated BigEarthNet dataset. Files can be requested by contacting
 the author.
 Original Paper of Image Data:
 https://arxiv.org/abs/2105.07921
@@ -26,8 +26,52 @@ class BEN2DataModule(BENDataModule):
         max_img_idx=None,
         shuffle=None,
         new_label_file: Union[str, Path, None] = None,
+        print_infos: bool = False,
         dataset_kwargs: Optional[Mapping] = None,
     ):
+        """
+        Initializes a pytorch lightning data module.
+
+        :param batch_size: batch size for data loaders
+
+            :Default: 16
+
+        :param data_dir: base data directory for lmdb and csv files
+
+            :Default: ./
+
+        :param img_size: image size `(c, h, w)` in accordance with `BENDataSet`
+
+            :Default: None uses default of dataset
+
+        :param num_workers_dataloader: number of workers used for data loading
+
+            :Default: #CPU_cores/2
+
+        :param max_img_idx: maximum number of images to load per split. If this number
+            is higher than the images found in the csv, None or -1, all images will be
+            loaded.
+
+            :Default: None
+
+        :param shuffle: Flag if dataset should be shuffled. If set to None, only train
+            will be shuffled and validation and test won't.
+
+            :Default: None
+
+        :param new_label_file: Path to parquet file with new label information or None,
+            if the file is called "labels.parquet" and located in the data_dir.
+
+            :Default: None
+
+        :param print_infos: Flag, if additional information during setup() and reading
+            should be printed (e.g. number of workers detected, number of images loaded)
+
+            :Default: False
+
+        :param dataset_kwargs: Other keyword arguments to pass to the dataset during
+            creation.
+        """
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
                 f"Expected image_size with 3 dimensions (HxWxC) or None but got "
@@ -41,14 +85,14 @@ class BEN2DataModule(BENDataModule):
             max_img_idx=max_img_idx,
             shuffle=shuffle,
             dataset_kwargs=dataset_kwargs,
+            print_infos=print_infos,
         )
         self.new_label_file = new_label_file
-
-    def prepare_data(self):
-        pass
+        self.print_infos = print_infos
 
     def setup(self, stage: Optional[str] = None):
-        print(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
+        if self.print_infos:
+            print(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
         sample_info_msg = ""
         t0 = time()
 
@@ -92,5 +136,6 @@ class BEN2DataModule(BENDataModule):
         if stage == "predict":
             raise NotImplementedError("Predict stage not implemented")
 
-        print(f"setup took {time() - t0:.2f} seconds")
-        print(sample_info_msg)
+        if self.print_infos:
+            print(f"setup took {time() - t0:.2f} seconds")
+            print(sample_info_msg)

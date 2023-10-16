@@ -3,6 +3,7 @@ Dataset for BigEarthNet dataset. Files can be requested by contacting
 the author.
 Original Paper of Image Data:
 https://arxiv.org/abs/2105.07921
+
 https://bigearth.net/
 """
 import csv
@@ -44,6 +45,9 @@ class BENDataSet(Dataset):
 
     @classmethod
     def get_available_channel_configurations(cls):
+        """
+        Prints all available preconfigured channel combinations.
+        """
         print("Available channel configurations are:")
         for c, m in cls.avail_chan_configs.items():
             print(f"    {c:>3} -> {m}")
@@ -59,6 +63,53 @@ class BENDataSet(Dataset):
         return_patchname: bool = False,
         patch_prefilter: Optional[Callable[[str], bool]] = None,
     ):
+        """
+        Creates a torch Dataset for the BigEarthNet dataset.
+        Assumes that the cvs files named after the requested split are located next to
+        the lmdb file (folder), which was created using BigEarthNetEncoder.
+
+        Image lmdb file is expected to be named "BigEarthNetEncoded.lmdb"
+
+        :param root_dir: root directory to lmdb file and optional train/val/test.csv
+
+            :Default: ../
+
+        :param csv_files: None (uses split-specific csv files) or csv file specifying
+            patch names
+
+            :Default: None
+
+        :param split: "train", "val" or "test" or None for all
+
+            :Default: None (loads all splits)
+
+        :param transform: transformations to be applied to loaded images aside from
+            scaling all bands to img_size.
+
+            :Default: None
+
+        :param max_img_idx: maximum number of images to load. If this number is higher
+            than the images found in the csv, None or -1, all images will be loaded.
+
+            :Default: None
+
+        :param img_size: Size to which all channels will be scaled. Interpolation is
+            applied bicubic before any transformation.
+
+            Also specifies which channels to load.
+            See `BENDataSet.get_available_channel_configurations()` for details.
+
+            :Default: (12, 120, 120)
+
+        :param return_patchname: If set to True, __getitem__ will return
+            (img, lbl, patch_name) instead of (img, lbl)
+
+            :Default: False
+
+        :param patch_prefilter: Callable to filter patches after reading csv files
+
+            :Default: None
+        """
         super().__init__()
         self.return_patchname = return_patchname
         self.root_dir = Path(root_dir)
@@ -116,12 +167,27 @@ class BENDataSet(Dataset):
             bands=self.image_size[0],
         )
 
-    def get_patchname_from_index(self, idx: int):
+    def get_patchname_from_index(self, idx: int) -> Optional[None]:
+        """
+        Gives the patch name of the image at the specified index. May return invalid
+        names (names that are not actually loadable because they are not part of the
+        lmdb file) if the name is included in the csv file.
+
+        :param idx: index of an image
+        :return: patch name of the image or None, if the index is invalid
+        """
         if idx > len(self):
             return None
         return self.patches[idx]
 
-    def get_index_from_patchname(self, patchname: str):
+    def get_index_from_patchname(self, patchname: str) -> Optional[int]:
+        """
+        Gives the index of the image of a specific name. Does not distinguish between
+        invalid names (not in original BigEarthNet) and names not in loaded list.
+
+        :param patchname: name of an image
+        :return: index of the image or None, if the name is not loaded
+        """
         if patchname not in set(self.patches):
             return None
         return self.patches.index(patchname)

@@ -9,7 +9,7 @@ def test_indent_simple():
     test_string = "test 123 test"
     for n in range(5):
         assert (
-            util._indent(test_string, num_spaces=n, indent_first=True)
+            util.indent(test_string, num_spaces=n, indent_first=True)
             == " " * n + test_string
         )
 
@@ -17,25 +17,25 @@ def test_indent_simple():
 def test_indent_multiline():
     test_string = "this is a\ntest string"
     expected = "this is a\n    test string"
-    assert util._indent(test_string, num_spaces=4) == expected
+    assert util.indent(test_string, num_spaces=4) == expected
 
 
 def test_indent_multiline_first():
     test_string = "this is a\ntest string"
     expected = "    this is a\n    test string"
-    assert util._indent(test_string, num_spaces=4, indent_first=True) == expected
+    assert util.indent(test_string, num_spaces=4, indent_first=True) == expected
 
 
 def test_indent_multiline_first_lstrip():
     test_string = "  this is a\n   test string"
     expected = "    this is a\n    test string"
-    assert util._indent(test_string, num_spaces=4, indent_first=True) == expected
+    assert util.indent(test_string, num_spaces=4, indent_first=True) == expected
 
 
 def test_indent_multiline_first_no_rstrip():
     test_string = "  this is a    \n   test string  "
     expected = "    this is a\n    test string"
-    assert util._indent(test_string, num_spaces=4, indent_first=True) != expected
+    assert util.indent(test_string, num_spaces=4, indent_first=True) != expected
 
 
 def test_round_to():

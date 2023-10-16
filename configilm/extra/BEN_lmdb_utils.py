@@ -108,9 +108,8 @@ valid_labels_classification = [x.lower() for x in valid_labels_classification]
 def ben19_list_to_onehot(lst):
     """
     Converts a list of [BEN19 Labels] to a one hot vector.
-    Elements in the vector are sorted alphabetically:
-        -> [0] = 'Agro-forestry areas'
-        -> [18] = 'Urban fabric'
+    Elements in the vector are sorted alphabetically. See
+    `valid_labels_classification()` for details.
     """
     # all the valid ones and one additional if none are valid
     res = torch.tensor(ben_19_labels_to_multi_hot(lst, lex_sorted=True))
@@ -122,8 +121,9 @@ def _resolve_band_combi(bands: Union[Iterable, str, int]) -> list:
     """
     Resolves a predefined combination of bands or a list of bands into a list of
     individual bands and checks if all bands contained are actual S1/S2 band names.
+
     :param bands: a combination of bands as defined in BAND_COMBINATION_PREDEFINTIONS
-                  or a list of bands
+        or a list of bands
     :return: a list of bands contained in the predefinition
     """
     if isinstance(bands, str) or isinstance(bands, int):
@@ -143,9 +143,10 @@ def _resolve_band_combi(bands: Union[Iterable, str, int]) -> list:
 def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
     """
     Retrievs the mean and standard deviation for a given BigEarthNet
-    BAND_COMBINATION_PREDEFINTIONS or list of bands
+    BAND_COMBINATION_PREDEFINTIONS or list of bands.
+
     :param bands: combination of bands as defined in BAND_COMBINATION_PREDEFINTIONS
-                  or a list of bandsmb
+        or a list of bandsmb
     :return: mean and standard deviation for the given combination in same order
     """
     bands = _resolve_band_combi(bands)
@@ -165,11 +166,12 @@ def resolve_data_dir(
     data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
 ) -> str:
     """
-    Helper function that tries to resolve the correct directory
+    Helper function that tries to resolve the correct directory.
+
     :param data_dir: current path that is suggested
     :param allow_mock: allows mock data path to be returned
     :param force_mock: only mock data path will be returned. Useful for debugging with
-                       small data
+        small data
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
     if data_dir in [None, "none", "None"]:
@@ -211,7 +213,8 @@ def resolve_data_dir(
 
 def read_ben_from_lmdb(env, key):
     """
-    Reads a BigEarthNet_S1_S2_Patch from a lmdb environment and decodes it
+    Reads a BigEarthNet_S1_S2_Patch from a lmdb environment and decodes it.
+
     :param env: lmdb environment containing encoded BigEarthNet_S1_S2_Patch
     :param key: patch name as defined in BigEarthNet as string
     :return: Decoded BigEarthNet_S1_S2_Patch
@@ -234,13 +237,14 @@ class BENLMDBReader:
         label_type: str,
     ):
         """
-        Initialize a BigEarthNet Reader object that reads from a lmdb encoded file
+        Initialize a BigEarthNet Reader object that reads from a lmdb encoded file.
+
         :param lmdb_dir: base path that contains a data.mdb and lock.mdb
         :param image_size: final size of the image that it is interpolated to
         :param bands: bands to use for stacking e.g. ["B08", "B03", "VV"] or a string of
-                      BAND_COMBINATION_PREDEFINTIONS
+            BAND_COMBINATION_PREDEFINTIONS
         :param label_type: "new" or "old" depending on if the old labels (43) or new
-                           ones (19) should be returned
+            ones (19) should be returned
         """
         assert (
             len(image_size) == 3
@@ -262,7 +266,7 @@ class BENLMDBReader:
         Reads from lmdb file and returns image interpolated to specified size as well as
         the labels
         :param item: name of the S2 patch. If only S1 bands are used, still S2 patch
-                     name has to be provided
+            name has to be provided
         :return: tuple (interpolated image, labels)
         """
         if self.env is None:

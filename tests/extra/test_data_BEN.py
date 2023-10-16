@@ -240,6 +240,12 @@ def test_ben_dm_dataloaders(data_dir, bs):
     dataloaders_ok(dm, expected_image_shape=(bs, 12, 120, 120))
 
 
+@pytest.mark.parametrize("pi", [True, False])
+def test_dm_print_on_setup(data_dir, pi):
+    dm = BENDataModule(data_dir=data_dir, print_infos=pi)
+    dm.setup()
+
+
 def test_ben_shuffle_false(data_dir):
     dm = BENDataModule(data_dir=data_dir, shuffle=False)
     dm.setup(None)

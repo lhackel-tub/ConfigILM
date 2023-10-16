@@ -1,5 +1,5 @@
 """
-Dataloader and Datamodule for BigEarthNet dataset. Files can be requested by contacting
+Datamodule for BigEarthNet dataset. Files can be requested by contacting
 the author.
 Original Paper of Image Data:
 https://arxiv.org/abs/2105.07921
@@ -38,14 +38,54 @@ class BENDataModule(pl.LightningDataModule):
         num_workers_dataloader=None,
         max_img_idx=None,
         shuffle=None,
+        print_infos: bool = False,
         dataset_kwargs: Optional[Mapping] = None,
     ):
+        """
+        Initializes a pytorch lightning data module.
+
+        :param batch_size: batch size for data loaders
+
+            :Default: 16
+
+        :param data_dir: base data directory for lmdb and csv files
+
+            :Default: ./
+
+        :param img_size: image size `(c, h, w)` in accordance with `BENDataSet`
+
+            :Default: None uses default of dataset
+
+        :param num_workers_dataloader: number of workers used for data loading
+
+            :Default: #CPU_cores/2
+
+        :param max_img_idx: maximum number of images to load per split. If this number
+            is higher than the images found in the csv, None or -1, all images will be
+            loaded.
+
+            :Default: None
+
+        :param shuffle: Flag if dataset should be shuffled. If set to None, only train
+            will be shuffled and validation and test won't.
+
+            :Default: None
+
+        :param print_infos: Flag, if additional information during setup() and reading
+            should be printed (e.g. number of workers detected, number of images loaded)
+
+            :Default: False
+
+        :param dataset_kwargs: Other keyword arguments to pass to the dataset during
+            creation.
+        """
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
                 f"Expected image_size with 3 dimensions (HxWxC) or None but got "
                 f"{len(img_size)} dimensions instead"
             )
         super().__init__()
+        self.print_infos = print_infos
         if num_workers_dataloader is None:
             cpu_count = os.cpu_count()
             if type(cpu_count) is int:
@@ -54,7 +94,8 @@ class BENDataModule(pl.LightningDataModule):
                 self.num_workers_dataloader = 0
         else:
             self.num_workers_dataloader = num_workers_dataloader
-        print(f"Dataloader using {self.num_workers_dataloader} workers")
+        if self.print_infos:
+            print(f"Dataloader using {self.num_workers_dataloader} workers")
 
         self.data_dir = data_dir
         self.batch_size = batch_size
@@ -80,11 +121,21 @@ class BENDataModule(pl.LightningDataModule):
         )
         self.pin_memory = torch.cuda.device_count() > 0
 
-    def prepare_data(self):
-        pass
+    def setup(self, stage: Optional[str] = None) -> None:
+        """
+        Prepares the data sets for the specific stage.
 
-    def setup(self, stage: Optional[str] = None):
-        print(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
+        - "fit": train and validation data set
+        - "test": test data set
+        - None: all data sets
+
+        Prints the time it needed for this operation and other statistics if print_infos
+        is set.
+
+        :param stage: None, "fit" or "test"
+        """
+        if self.print_infos:
+            print(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
         sample_info_msg = ""
         t0 = time()
 
@@ -125,10 +176,17 @@ class BENDataModule(pl.LightningDataModule):
         if stage == "predict":
             raise NotImplementedError("Predict stage not implemented")
 
-        print(f"setup took {time() - t0:.2f} seconds")
-        print(sample_info_msg)
+        if self.print_infos:
+            print(f"setup took {time() - t0:.2f} seconds")
+            print(sample_info_msg)
 
     def train_dataloader(self):
+        """
+        Create a Dataloader according to the specification in the `__init__` call.
+        Uses the train set and expects it to be set (e.g. via `setup()` call)
+
+        :return: torch DataLoader for the train set
+        """
         return DataLoader(
             self.train_ds,
             batch_size=self.batch_size,
@@ -138,6 +196,12 @@ class BENDataModule(pl.LightningDataModule):
         )
 
     def val_dataloader(self):
+        """
+        Create a Dataloader according to the specification in the `__init__` call.
+        Uses the validation set and expects it to be set (e.g. via `setup()` call)
+
+        :return: torch DataLoader for the validation set
+        """
         return DataLoader(
             self.val_ds,
             batch_size=self.batch_size,
@@ -147,6 +211,12 @@ class BENDataModule(pl.LightningDataModule):
         )
 
     def test_dataloader(self):
+        """
+        Create a Dataloader according to the specification in the `__init__` call.
+        Uses the test set and expects it to be set (e.g. via `setup()` call)
+
+        :return: torch DataLoader for the test set
+        """
         return DataLoader(
             self.test_ds,
             batch_size=self.batch_size,

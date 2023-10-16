@@ -17,26 +17,13 @@ from configilm.util import get_default_tokenizer
 from configilm.util import huggingface_tokenize_and_pad
 from configilm.util import Messages
 
-# values based on train images - of original split
-# at 256 x 256
-# _means = {
-#     "red": 0.4257,
-#     "green": 0.4435,
-#     "blue": 0.4239,
-#     "mono": 0.4310
-# }
-#
-# _stds = {
-#     "red": 0.1335,
-#     "green": 0.1202,
-#     "blue": 0.1117,
-#     "mono": 0.1218
-# }
+# values based on train images of original split at 256 x 256
+_means_256 = {"red": 0.4257, "green": 0.4435, "blue": 0.4239, "mono": 0.4310}
+_stds_256 = {"red": 0.1335, "green": 0.1202, "blue": 0.1117, "mono": 0.1218}
 
-# at 1024 x 1024
-_means = {"red": 0.4255, "green": 0.4433, "blue": 0.4237, "mono": 0.4309}
-
-_stds = {"red": 0.1398, "green": 0.1279, "blue": 0.1203, "mono": 0.1308}
+# values based on train images of original split at 1024 x 1024
+_means_1024 = {"red": 0.4255, "green": 0.4433, "blue": 0.4237, "mono": 0.4309}
+_stds_1024 = {"red": 0.1398, "green": 0.1279, "blue": 0.1203, "mono": 0.1308}
 
 
 def resolve_data_dir(
@@ -44,10 +31,11 @@ def resolve_data_dir(
 ) -> str:
     """
     Helper function that tries to resolve the correct directory
+
     :param data_dir: current path that is suggested
     :param allow_mock: allows mock data path to be returned
     :param force_mock: only mock data path will be returned. Useful for debugging with
-                       small data
+        small data
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
     if data_dir in [None, "none", "None"]:
@@ -81,6 +69,21 @@ def resolve_data_dir(
 
 
 def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = False):
+    """
+    Selects the most frequently present answers and returns them in order of frequency.
+
+    :param answers: input list of answers
+    :param number_of_answers: how many answers should be selected
+
+        :Default: 1_000
+
+    :param use_tqdm: Flag to use tqdm as progress bar
+
+        :Default: False
+
+    :return: most frequent answers (list of length number_of_answers), ordered by
+        frequency
+    """
     # this dict will store as keys the answers and the values are the frequencies
     # they occur
     freq_dict = {}
@@ -245,6 +248,75 @@ class HRVQADataSet(Dataset):
         div_seed=None,
         split_size: Union[float, int] = 0.5,
     ):
+        """
+        :param root_dir: root directory to images and jsons folder
+
+        :param split: "train", "val", "val-div", "test-div" or "test" or None for all
+
+            :Default: None (loads all splits)
+
+        :param transform: transformations to be applied to loaded images aside from
+            scaling all bands to img_size.
+
+            :Default: None
+
+        :param max_img_idx: maximum number of images to load. If this number is higher
+            than the images found in the csv, None or -1, all images will be loaded.
+
+            :Default: None
+
+        :param img_size: Size to which all channels will be scaled. Interpolation is
+            applied bicubic before any transformation. Also selects if the returned
+            images are RGB or grayscale based on the number of channels.
+
+            :Default: (3, 1024, 1024)
+
+        :param selected_answers: List of selected answers or None. If set to None,
+            answers will be selected based on `classes` in order of frequency of the
+            set.
+
+            :Default: None
+
+        :param classes: Number of classes (possible answers)
+
+            :Default: 1_000
+
+        :param tokenizer: Tokenizer to use for tokenization of input questions. Expects
+            standard huggingface tokenizer. If not set, a default tokenizer will be
+            used and a warning shown.
+
+            :Default: None
+
+        :param seq_length: Length of tokenized question. Will be caped to this as
+            maximum and expanded to this if the question is too short. Includes start
+            and end token.
+
+            :Default: 32
+
+        :param div_seed: Seed for random division of the "val-div" and "test-div"
+            splits. If not set, the system time is used. If set to "repeat", val and
+            test will be the same data.
+
+            For division, the set defined for validation is split into "val-div" and
+            "test-div" depending on the `div_seed` and `split_size`. All random states
+            are rebuild after a call to the division.
+
+            To get the disjoint sets for validation and test, call the dataset with the
+            same parameters once for "val-div" and once for "test-div".
+
+            :Example:
+                >>> dv = HRVQADataSet(..., div_seed=0, split_size=0.3, split="val-div")
+                >>> dt = HRVQADataSet(..., div_seed=0, split_size=0.3, split="test-div")
+                dv and dt are disjoint with dv containing 30% of all validation samples
+                and dt 70%
+
+            :Default: None
+
+        :param split_size: relative size of the validation div if subdivision of the
+            validation split is applicable.
+
+            :Default: 0.5
+        """
         super().__init__()
         assert split in [
             None,
@@ -274,9 +346,19 @@ class HRVQADataSet(Dataset):
             self.tokenizer = tokenizer
 
         self.seq_length = seq_length
-        self.pre_transforms = transforms.Compose(
-            [transforms.Resize(img_size[1:]), transforms.ToTensor()]
-        )
+        if self.is_rgb:
+            self.pre_transforms = transforms.Compose(
+                [transforms.Resize(img_size[1:]), transforms.ToTensor()]
+            )
+        else:
+            self.pre_transforms = transforms.Compose(
+                [
+                    transforms.Grayscale(),
+                    transforms.Resize(img_size[1:]),
+                    transforms.ToTensor(),
+                ]
+            )
+
         self.root_dir = Path(root_dir)
         self.split = split
         self.transform = transform

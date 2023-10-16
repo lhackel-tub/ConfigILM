@@ -414,6 +414,12 @@ def test_dm_shuffle_true(data_dir):
     )
 
 
+@pytest.mark.parametrize("pi", [True, False])
+def test_dm_print_on_setup(data_dir, pi):
+    dm = HRVQADataModule(data_dir=data_dir, print_infos=pi)
+    dm.setup()
+
+
 def test_dm_test_stage_setup(data_dir):
     dm = HRVQADataModule(data_dir=data_dir)
     with pytest.raises(NotImplementedError):

@@ -1,0 +1,4 @@
+/* make right-hand TOC width custom (default: 15em)*/
+aside.toc-drawer {
+    width: 20em;
+}

@@ -1,0 +1,772 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Fusion Methods" href="../api_fusion.html" /><link rel="prev" title="RSVQA-HR DataSets and DataModules" href="api_ds_RSVQAHR.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
+        <title>RSVQAxBEN DataSets and DataModules - ConfigILM</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">ConfigILM</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">ConfigILM</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">ConfigILM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Features</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../ilmconfiguration.html">Model Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sup_pretraining.html">Supervised Image Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vqa.html">Visual Question Answering (VQA)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Extra</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../extra/BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/bigearthnet.html">BigEarthNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../api_configilm.html">ILMConfiguration</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../api_datasets.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api_BEN_reader.html">BigEarthNet Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">RSVQAxBEN DataSets and DataModules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_fusion.html">Fusion Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_util.html">Utilities</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Other</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../general/contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../general/code_of_conduct.html">Contributor Covenant Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../general/dependencies.html">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../general/license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">Further references</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.extra.DataSets.RSVQAxBEN_DataSet">
+<span id="rsvqaxben-datasets-and-datamodules"></span><span id="api-datasets-rsvqaxben"></span><h1>RSVQAxBEN DataSets and DataModules<a class="headerlink" href="#module-configilm.extra.DataSets.RSVQAxBEN_DataSet" title="Permalink to this heading">#</a></h1>
+<p>Dataloader and Datamodule for RSVQAxBEN dataset. Files can be requested by contacting
+the author.
+Original Paper of Dataset:
+<a class="reference external" href="https://rsvqa.sylvainlobry.com/IGARSS21.pdf">https://rsvqa.sylvainlobry.com/IGARSS21.pdf</a>
+Based on Image Data from:
+<a class="reference external" href="https://arxiv.org/abs/2105.07921">https://arxiv.org/abs/2105.07921</a>
+<a class="reference external" href="https://bigearth.net/">https://bigearth.net/</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAxBEN_DataSet.</span></span><span class="sig-name descname"><span class="pre">RSVQAxBENDataSet</span></span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet" title="Permalink to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.__init__" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root_dir</strong> – <p>root directory to images and jsons folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>./</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>“train”, “val” or “test” or None for all</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None (loads all splits)</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>transform</strong> – <p>transformations to be applied to loaded images aside from
+scaling all bands to img_size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
+than the images found in the csv, None or -1, all images will be loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>img_size</strong> – <p>Size to which all channels will be scaled. Interpolation is
+applied bicubic before any transformation.</p>
+<p>Also specifies which channels to load.
+See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>(12, 120, 120)</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>selected_answers</strong> – <p>List of selected answers or None. If set to None,
+answers will be selected based on <cite>classes</cite> in order of frequency of the
+set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>classes</strong> – <p>Number of classes (possible answers)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1_000</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>tokenizer</strong> – <p>Tokenizer to use for tokenization of input questions. Expects
+standard huggingface tokenizer. If not set, a default tokenizer will be
+used and a warning shown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>seq_length</strong> – <p>Length of tokenized question. Will be caped to this as
+maximum and expanded to this if the question is too short. Includes start
+and end token.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>32</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.select_answers_from_qa_pairs">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAxBEN_DataSet.</span></span><span class="sig-name descname"><span class="pre">select_answers_from_qa_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qa_pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tqdm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.select_answers_from_qa_pairs" title="Permalink to this definition">#</a></dt>
+<dd><p>Selects the most frequently present answers and returns them in order of frequency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qa_pairs</strong> – list of dicts with an “answer” field for each dict</p></li>
+<li><p><strong>number_of_answers</strong> (<em>int</em>) – <p>how many answers should be selected</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>1_000</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>use_tqdm</strong> (<em>bool</em>) – <p>Flag to use tqdm as progress bar</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>most frequent answers (list of length number_of_answers), ordered by
+frequency</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-configilm.extra.DataModules.RSVQAxBEN_DataModule"></span><p>Dataloader and Datamodule for RSVQAxBEN dataset. Files can be requested by contacting
+the author.
+Original Paper of Dataset:
+<a class="reference external" href="https://rsvqa.sylvainlobry.com/IGARSS21.pdf">https://rsvqa.sylvainlobry.com/IGARSS21.pdf</a>
+Based on Image Data from:
+<a class="reference external" href="https://arxiv.org/abs/2105.07921">https://arxiv.org/abs/2105.07921</a>
+<a class="reference external" href="https://bigearth.net/">https://bigearth.net/</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataModules.RSVQAxBEN_DataModule.</span></span><span class="sig-name descname"><span class="pre">RSVQAxBENDataModule</span></span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule" title="Permalink to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_infos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Initializes a pytorch lightning data module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>batch_size</strong> – <p>batch size for data loaders</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>16</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>data_dir</strong> (<em>str</em>) – <p>root directory to images and jsons folder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>./</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
+than the images found in the csv, None or -1, all images will be loaded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>img_size</strong> – <p>Size to which all channels will be scaled. Interpolation is
+applied bicubic before any transformation.</p>
+<p>Also specifies which channels to load.
+See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>(12, 120, 120)</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>shuffle</strong> – <p>Flag if dataset should be shuffled. If set to None, only train
+will be shuffled and validation and test won’t.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>num_workers_dataloader</strong> – <p>number of workers used for data loading</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>#CPU_cores/2</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>selected_answers</strong> – <p>List of selected answers or None. If set to None,
+answers will be selected based on <cite>classes</cite> for the data set in order of
+frequency of the training set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>tokenizer</strong> – <p>Tokenizer to use for tokenization of input questions. Expects
+standard huggingface tokenizer. If not set, a default tokenizer will be
+used and a warning shown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>seq_length</strong> – <p>Length of tokenized question. Will be caped to this as
+maximum and expanded to this if the question is too short. Includes start
+and end token.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>32</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>print_infos</strong> (<em>bool</em>) – <p>Flag, if additional information during setup() and reading
+should be printed (e.g. number of workers detected, number of images loaded)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>pin_memory</strong> – <p>Flag if memory should be pinned for data loading. If not
+specified set to True if cuda devices are used, else false.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>dataset_kwargs</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>]</em>) – Other keyword arguments to pass to the dataset during
+creation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.setup" title="Permalink to this definition">#</a></dt>
+<dd><p>Prepares the data sets for the specific stage.</p>
+<ul class="simple">
+<li><p>“fit”: train and validation data set</p></li>
+<li><p>“test”: test data set</p></li>
+<li><p>None: all data sets</p></li>
+</ul>
+<p>Prints the time it needed for this operation and other statistics if print_infos
+is set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stage</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – None, “fit” or “test”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.test_dataloader">
+<span class="sig-name descname"><span class="pre">test_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.test_dataloader" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
+Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>torch DataLoader for the test set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.train_dataloader">
+<span class="sig-name descname"><span class="pre">train_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.train_dataloader" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
+Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>torch DataLoader for the train set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.val_dataloader">
+<span class="sig-name descname"><span class="pre">val_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.val_dataloader" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
+Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>torch DataLoader for the validation set</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../api_fusion.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Fusion Methods</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="api_ds_RSVQAHR.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">RSVQA-HR DataSets and DataModules</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Leonard Wayne Hackel
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://bifold.berlin/" aria-label="BIFOLD">
+            <svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            viewBox="0 0 932.3 187"
+            style="enable-background:new 0 0 932.3 187; display: block; height: 16pt;
+            width: auto;" xml:space="preserve">
+            <style type="text/css">
+                .st0{fill:#7FCCE0;}
+                .st1{fill:#002D62;}
+                .st2{fill:#B1DEEB;}
+                .st3{fill:#2ABAD4;}
+            </style>
+            <polygon class="st0" points="233.7,67.5 166.2,0 150.5,140.5 338,171.8 "/>
+            <polygon class="st1" points="348,60.6 240.6,60.6 348,167.9 "/>
+            <polygon class="st2" points="166.2,0 0,73.6 150.5,140.5 "/>
+            <polygon class="st3" points="150.5,140.5 253.2,187 338,171.8 "/>
+            <g>
+                <path class="st1" d="M881.9,80.6H862V148h18.8c8,0,14.3-2.8,
+                19-8.5c4.6-5.7,7-14.3,7-25.9c0-10.2-2.1-18.3-6.3-24.2
+                    C896.2,83.5,890.1,80.6,881.9,80.6 M881.9,167.9h-44.5V60.5h44.9c10.7,
+                    0,19.9,2.3,27.4,6.8c7.5,4.5,13.2,10.8,17,18.7
+                    c3.8,8,5.7,17.1,5.7,27.6c0,11.1-2.1,20.7-6.2,28.8c-4.1,8.2-10,
+                    14.5-17.5,18.9C901.1,165.7,892.2,167.9,881.9,167.9 M822.9,167.9
+                    h-74.1V60.5h24.6v88.1H820L822.9,167.9z M648,114.5c0,10.3,2.6,18.7,
+                    7.7,25.2c5.1,6.5,12,9.7,20.8,9.7c5.4,0,10.2-1.3,14.6-4
+                    c4.4-2.7,7.8-6.7,10.3-12.1c2.5-5.4,
+                    3.8-12,3.8-19.7c0-6.6-1.2-12.6-3.5-17.8c-2.3-5.3-5.6-9.4-9.9-12.4c-4.3-3-9.2-4.5-14.9-4.5
+                    c-5.3,0-10.1,1.5-14.5,4.4c-4.4,2.9-7.9,7.1-10.5,12.6C649.3,101.2,
+                    648,107.5,648,114.5 M676.6,58.1c11.2,0,20.8,2.4,29,7.3
+                    c8.2,4.9,14.4,11.6,18.7,20c4.3,8.4,6.5,17.8,6.5,28.1c0,11-2.3,20.7-6.9,29.2c-4.6,8.5-11,15.2-19.2,20
+                    c-8.2,4.8-17.6,7.2-28.1,7.3c-11.1,0-20.7-2.4-28.8-7.3c-8.2-4.9-14.4-11.6-18.8-20c-4.4-8.4-6.6-17.8-6.6-28.1
+                    c0-10.8,2.3-20.5,6.9-29.1c4.6-8.5,11-15.2,19.2-20.1C656.7,60.7,
+                    666.1,58.3,676.6,58.1 M606.8,125h-36.2v43H546V60.7h65.4
+                    l2.8,19.3h-43.6v25.6h33.3L606.8,125z M495.3,
+                    60.5h24.6v107.4h-24.6V60.5z M437.1,122.4h-17.8v25.7h17.2c5.1,0,
+                    9.1-1.1,12.2-3.2
+                    c3.1-2.2,4.6-5.2,4.6-9.1c0-4.2-1.4-7.5-4.3-9.9C446,123.6,
+                    442.1,122.4,437.1,122.4 M432.2,80.4h-13v22.3H430
+                    c5.4,0,9.8-0.9,13.2-2.7c3.4-1.8,5.1-4.5,5.1-8.1C448.3,84.3,443,80.4,
+                    432.2,80.4 M437,167.9h-42.3V60.5h39.6
+                    c11.9,0,21.5,2.5,28.8,7.5c7.3,5,11,12.7,11,23c0,6.5-3.6,13-10.7,19.3c4.7,2.9,8.5,6.6,11.3,10.9c2.8,4.3,4.2,9.3,4.2,14.8
+                    c0,10.6-3.9,18.6-11.7,23.9C459.3,165.3,449.3,167.9,437,167.9"/>
+            </g>
+            </svg>
+            </a>
+              <a class="muted-link " href="https://rsim.berlin/" aria-label="RSiM">
+            <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+             width="987.000000pt" height="165.000000pt"
+             viewBox="0 0 987.000000 337.000000"
+             preserveAspectRatio="xMidYMid meet" style="display: block; height: 16pt;
+             width: auto">
+            <g transform="translate(0.000000,337.000000) scale(0.100000,-0.100000)"
+            fill="#070685" stroke="none">
+            <path d="M3555 3350 c-149 -15 -344 -74 -454 -138 -293 -169 -426 -437 -392
+            -788 31 -317 172 -523 475 -696 77 -43 284 -138 336 -153 27 -8 99 -35 245
+            -92 128 -50 293 -133 357 -181 81 -60 142 -133 174 -209 26 -64 28 -77 28
+            -208 1 -133 -1 -143 -29 -209 -43 -99 -144 -202 -247 -250 -263 -124 -663
+            -122 -1133 3 -44 12 -89 26 -100 31 -11 5 -42 16 -69 25 -26 8 -57 20 -67 26
+            -18 9 -19 3 -19 -174 l0 -183 43 -21 c62 -30 206 -70 342 -95 102 -18 167 -22
+            430 -25 l310 -4 140 30 c277 58 462 159 608 330 72 84 128 194 157 308 21 81
+            29 235 19 342 -30 314 -190 514 -554 693 -94 46 -313 138 -330 138 -20 0 -310
+            122 -399 168 -88 46 -126 73 -191 137 -68 66 -87 92 -111 150 -27 66 -28 78
+            -29 215 l0 145 37 71 c66 128 184 213 356 257 174 44 513 24 737 -44 62 -18
+            233 -76 276 -94 13 -5 26 24 72 154 32 88 57 163 57 168 0 22 -283 108 -474
+            144 -175 32 -446 45 -601 29z"/>
+            <path d="M5407 3324 c-159 -43 -325 -149 -417 -265 -35 -46 -26 -41 50 24 58
+            50 149 101 241 134 69 25 86 27 234 28 152 0 164 -2 240 -29 94 -33 192 -89
+            254 -144 l44 -38 -84 -51 c-144 -86 -213 -121 -229 -115 -8 3 -37 15 -65 28
+            -94 42 -167 74 -171 74 -2 0 -4 -82 -4 -182 l0 -183 -58 -24 c-31 -13 -91 -39
+            -133 -57 -42 -19 -79 -34 -83 -34 -3 0 -6 73 -6 163 l0 162 33 19 c17 11 49
+            27 69 37 38 19 57 39 39 39 -6 0 -11 -4 -11 -10 0 -5 -5 -10 -10 -10 -6 0 -33
+            -11 -62 -25 -54 -26 -74 -30 -80 -17 -1 5 -39 28 -83 52 -139 75 -212 144
+            -191 179 4 6 22 13 41 17 19 3 33 10 30 14 -6 10 -99 22 -118 14 -64 -24 12
+            -142 202 -310 l106 -94 6 57 c5 46 6 39 5 -35 l-1 -94 -202 -111 c-111 -62
+            -201 -116 -200 -121 2 -5 43 -26 92 -48 106 -46 100 -47 305 32 l135 52 50
+            -15 c28 -9 70 -23 95 -33 45 -17 46 -17 110 8 36 14 76 29 90 33 24 7 24 7 5
+            -8 -19 -14 -11 -20 145 -95 91 -43 172 -82 180 -85 8 -3 53 -22 100 -42 51
+            -21 110 -38 147 -42 59 -6 63 -4 92 25 34 33 38 61 19 123 -14 50 -28 50 -28
+            0 0 -43 -20 -71 -51 -71 -19 0 -19 3 9 53 57 100 83 197 85 315 1 59 -2 135
+            -6 168 l-8 61 33 14 c18 7 36 18 40 23 4 6 8 84 8 173 l0 162 -37 -14 c-21 -7
+            -78 -31 -128 -53 l-90 -40 -48 40 c-110 92 -198 138 -335 173 -135 34 -270 34
+            -395 -1z m968 -226 c3 -24 5 -77 3 -118 l-3 -74 -200 -81 c-110 -45 -216 -88
+            -235 -97 -19 -8 -53 -21 -75 -28 -22 -7 -44 -16 -50 -20 -5 -3 -32 -15 -59
+            -25 -27 -10 -61 -24 -75 -31 -14 -8 -29 -10 -34 -5 -4 4 -7 46 -5 92 l3 84 75
+            37 c93 46 330 159 470 224 58 26 119 56 135 66 17 10 33 18 37 18 4 0 10 -19
+            13 -42z m-137 -361 c33 -88 47 -224 33 -325 -13 -97 -28 -152 -41 -152 -35 0
+            -219 119 -332 215 -72 60 -78 63 -78 40 0 -14 -4 -25 -9 -25 -5 0 -18 -3 -28
+            -6 -17 -6 -17 -6 1 8 14 11 20 33 25 94 l6 79 195 66 c107 36 198 64 202 62 4
+            -2 15 -27 26 -56z m-492 -272 c-11 -8 -27 -14 -35 -14 -13 1 -12 2 2 6 9 2 17
+            9 17 14 0 5 8 9 18 9 15 -1 15 -2 -2 -15z"/>
+            <path d="M30 1681 l0 -1641 200 0 200 0 0 680 0 680 334 0 335 0 44 -77 c67
+            -118 148 -258 207 -358 29 -49 77 -130 105 -180 29 -49 99 -171 157 -270 58
+            -99 143 -245 190 -325 l84 -145 232 -3 c128 -1 232 1 232 4 0 4 -21 43 -47 86
+            -27 44 -62 102 -79 131 -17 29 -88 146 -159 262 -70 116 -142 235 -160 265
+            -17 30 -89 149 -160 265 -71 116 -141 233 -157 260 -16 28 -47 79 -68 114 -42
+            66 -49 91 -26 91 25 0 171 72 246 122 178 118 285 263 347 469 26 89 28 105
+            28 284 0 167 -3 200 -23 275 -87 320 -291 508 -650 596 -180 44 -225 46 -829
+            51 l-583 5 0 -1641z m1219 1260 c327 -76 461 -243 461 -576 0 -323 -141 -510
+            -445 -593 -86 -23 -107 -24 -462 -29 l-373 -5 0 617 0 617 363 -5 c327 -4 371
+            -6 456 -26z"/>
+            <path d="M6620 1680 l0 -1630 175 0 175 0 0 1183 c0 1051 -7 1530 -26 1665 -6
+            48 9 57 24 15 6 -16 38 -100 72 -188 34 -88 70 -182 80 -210 43 -116 122 -322
+            134 -350 7 -16 18 -43 24 -60 10 -29 77 -202 127 -330 13 -33 42 -109 65 -170
+            82 -217 91 -240 101 -265 6 -14 34 -86 61 -160 62 -163 79 -209 158 -415 34
+            -88 73 -189 87 -225 13 -36 35 -92 48 -125 13 -33 35 -91 49 -130 15 -38 31
+            -79 36 -90 5 -11 19 -48 31 -82 l22 -63 153 0 c136 0 154 2 163 18 5 9 55 136
+            111 282 55 146 107 279 115 295 7 17 16 41 20 55 4 14 13 39 20 55 8 17 30 73
+            50 125 78 204 107 276 115 295 5 11 20 49 33 85 13 36 59 155 101 265 43 110
+            89 229 102 265 14 36 31 79 39 95 7 17 16 41 20 55 4 14 17 50 30 80 12 30 34
+            85 49 123 14 37 37 95 50 130 14 34 41 105 61 157 20 52 50 131 67 175 17 44
+            36 94 43 110 7 17 30 74 51 128 20 54 40 94 44 90 4 -4 3 -48 -2 -98 -5 -49
+            -12 -696 -14 -1437 l-5 -1348 188 0 188 0 0 1630 0 1630 -286 0 -286 0 -12
+            -42 c-7 -24 -19 -56 -26 -73 -8 -16 -44 -109 -80 -205 -37 -96 -73 -188 -81
+            -205 -7 -16 -22 -55 -33 -85 -11 -30 -58 -154 -106 -275 -48 -121 -95 -245
+            -106 -275 -10 -30 -23 -64 -28 -75 -6 -11 -26 -63 -46 -115 -90 -233 -107
+            -277 -120 -305 -7 -16 -16 -41 -20 -55 -4 -14 -13 -38 -20 -55 -8 -16 -29 -70
+            -48 -120 -19 -49 -57 -148 -85 -220 -50 -129 -105 -271 -184 -475 -23 -58 -43
+            -107 -45 -109 -11 -14 -29 26 -103 224 -54 145 -122 324 -134 350 -8 17 -17
+            41 -21 55 -4 14 -13 39 -20 55 -15 34 -52 130 -150 385 -65 170 -87 228 -141
+            368 -34 88 -64 168 -104 272 -45 117 -117 303 -145 375 -56 142 -167 433 -195
+            512 -37 103 -2 93 -325 93 l-285 0 0 -1630z"/>
+            <path d="M5420 1080 l0 -1030 190 0 190 0 0 1030 0 1030 -190 0 -190 0 0
+            -1030z"/>
+            </g>
+            </svg>
+            </a>
+              <a class="muted-link " href="https://github.com/lhackel-tub/ConfigILM" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53
+                     5.47 7.59.4.07.55-.17.55-.38
+                     0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+                     1.08.58 1.23.82.72 1.21 1.87.87
+                     2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+                     0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                    0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27
+                    1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82
+                    2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01
+                    1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16
+                    8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">RSVQAxBEN DataSets and DataModules</a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataSet</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.__init__"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataSet.__init__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.select_answers_from_qa_pairs"><code class="docutils literal notranslate"><span class="pre">select_answers_from_qa_pairs()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataModule</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.__init__"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataModule.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.setup"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataModule.setup()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.test_dataloader"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataModule.test_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.train_dataloader"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataModule.train_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.val_dataloader"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataModule.val_dataloader()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    </body>
+</html>

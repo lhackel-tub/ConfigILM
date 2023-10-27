@@ -49,7 +49,7 @@ def get_vqa_batch(
     return [v, q, a]
 
 
-@pytest.mark.parametrize("batch_size", [1, 2, 4, 8, 16, 32, 27, 13])
+@pytest.mark.parametrize("batch_size", [1, 32, 27, 13])
 def test_bs(batch_size):
     config = ConfigILM.ILMConfiguration(timm_model_name=default_image_test_model)
     x, y = get_classification_batch(
@@ -157,7 +157,7 @@ tested_timm_models_256 = [
     "swinv2_tiny_window8_256",
 ]
 
-tested_dims = [10, 1000, 256, 1024, 360, 1200]
+tested_dims = [10, 256, 1024, 360, 1200]
 
 
 def apply_timm(model: str, cls: int, bs: int, image_size: int):

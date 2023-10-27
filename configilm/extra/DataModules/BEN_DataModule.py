@@ -39,6 +39,7 @@ class BENDataModule(pl.LightningDataModule):
         max_img_idx=None,
         shuffle=None,
         print_infos: bool = False,
+        pin_memory: Optional[bool] = None,
         dataset_kwargs: Optional[Mapping] = None,
     ):
         """
@@ -75,6 +76,11 @@ class BENDataModule(pl.LightningDataModule):
             should be printed (e.g. number of workers detected, number of images loaded)
 
             :Default: False
+
+        :param pin_memory: Flag if memory should be pinned for data loading. If not
+            specified set to True if cuda devices are used, else false.
+
+            :Default: None
 
         :param dataset_kwargs: Other keyword arguments to pass to the dataset during
             creation.
@@ -120,6 +126,7 @@ class BENDataModule(pl.LightningDataModule):
             img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
         )
         self.pin_memory = torch.cuda.device_count() > 0
+        self.pin_memory = self.pin_memory if pin_memory is None else pin_memory
 
     def setup(self, stage: Optional[str] = None) -> None:
         """

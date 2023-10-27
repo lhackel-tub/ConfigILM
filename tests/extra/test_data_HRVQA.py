@@ -332,7 +332,9 @@ def test_dm_default(data_dir, split: str):
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_dm_dataloaders_bs(data_dir, bs: int):
-    dm = HRVQADataModule(data_dir=data_dir, batch_size=bs)
+    dm = HRVQADataModule(
+        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
+    )
     dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 1024, 1024),
@@ -344,7 +346,12 @@ def test_dm_dataloaders_bs(data_dir, bs: int):
 @pytest.mark.parametrize("img_size", [[1], [1, 2], [1, 2, 3, 4]])
 def test_dm_dataloaders_img_size(data_dir, img_size):
     with (pytest.raises(ValueError)):
-        _ = HRVQADataModule(data_dir=data_dir, img_size=img_size)
+        _ = HRVQADataModule(
+            data_dir=data_dir,
+            img_size=img_size,
+            num_workers_dataloader=0,
+            pin_memory=False,
+        )
 
 
 @pytest.mark.parametrize(
@@ -353,7 +360,11 @@ def test_dm_dataloaders_img_size(data_dir, img_size):
 )
 def test_dm_dataloaders_with_splitting(data_dir, stage, seed, div):
     dm = HRVQADataModule(
-        data_dir=data_dir, test_splitting_seed=seed, test_splitting_division=div
+        data_dir=data_dir,
+        test_splitting_seed=seed,
+        test_splitting_division=div,
+        num_workers_dataloader=0,
+        pin_memory=False,
     )
     if stage == "test" and seed is None:
         with pytest.raises(NotImplementedError):
@@ -378,7 +389,9 @@ def test_dm_dataloaders_with_splitting(data_dir, stage, seed, div):
 
 
 def test_dm_shuffle_false(data_dir):
-    dm = HRVQADataModule(data_dir=data_dir, shuffle=False)
+    dm = HRVQADataModule(
+        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
@@ -391,7 +404,9 @@ def test_dm_shuffle_false(data_dir):
 
 
 def test_dm_shuffle_none(data_dir):
-    dm = HRVQADataModule(data_dir=data_dir, shuffle=None)
+    dm = HRVQADataModule(
+        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -403,7 +418,9 @@ def test_dm_shuffle_none(data_dir):
 
 
 def test_dm_shuffle_true(data_dir):
-    dm = HRVQADataModule(data_dir=data_dir, shuffle=True)
+    dm = HRVQADataModule(
+        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -416,25 +433,32 @@ def test_dm_shuffle_true(data_dir):
 
 @pytest.mark.parametrize("pi", [True, False])
 def test_dm_print_on_setup(data_dir, pi):
-    dm = HRVQADataModule(data_dir=data_dir, print_infos=pi)
+    dm = HRVQADataModule(
+        data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup()
 
 
 def test_dm_test_stage_setup(data_dir):
-    dm = HRVQADataModule(data_dir=data_dir)
+    dm = HRVQADataModule(data_dir=data_dir, num_workers_dataloader=0, pin_memory=False)
     with pytest.raises(NotImplementedError):
         dm.setup("test")
 
 
 def test_dm_predict_stage_setup(data_dir):
-    dm = HRVQADataModule(data_dir=data_dir)
+    dm = HRVQADataModule(data_dir=data_dir, num_workers_dataloader=0, pin_memory=False)
     with pytest.raises(NotImplementedError):
         dm.setup("predict")
 
 
 def test_dm_unexposed_kwargs(data_dir):
     classes = 3
-    dm = HRVQADataModule(data_dir=data_dir, dataset_kwargs={"classes": classes})
+    dm = HRVQADataModule(
+        data_dir=data_dir,
+        dataset_kwargs={"classes": classes},
+        num_workers_dataloader=0,
+        pin_memory=False,
+    )
     dm.setup(None)
     assert (
         dm.train_ds.classes == classes

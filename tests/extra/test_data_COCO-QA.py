@@ -171,7 +171,9 @@ def test_dm_default(data_dir, split: str):
 
 @pytest.mark.parametrize("bs", [1, 2, 3, 4, 16, 32])
 def test_dm_dataloader(data_dir, bs: int):
-    dm = COCOQADataModule(data_dir=data_dir, batch_size=bs)
+    dm = COCOQADataModule(
+        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
+    )
     dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 120, 120),
@@ -181,7 +183,9 @@ def test_dm_dataloader(data_dir, bs: int):
 
 
 def test_dm_shuffle_false(data_dir):
-    dm = COCOQADataModule(data_dir=data_dir, shuffle=False)
+    dm = COCOQADataModule(
+        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
+    )
 
     with warnings.catch_warnings():
         warnings.filterwarnings(
@@ -204,7 +208,9 @@ def test_dm_shuffle_false(data_dir):
 
 
 def test_dm_shuffle_none(data_dir):
-    dm = COCOQADataModule(data_dir=data_dir, shuffle=None)
+    dm = COCOQADataModule(
+        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
+    )
 
     with warnings.catch_warnings():
         warnings.filterwarnings(
@@ -226,7 +232,9 @@ def test_dm_shuffle_none(data_dir):
 
 
 def test_dm_shuffle_true(data_dir):
-    dm = COCOQADataModule(data_dir=data_dir, shuffle=True)
+    dm = COCOQADataModule(
+        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
+    )
 
     with warnings.catch_warnings():
         warnings.filterwarnings(

@@ -38,7 +38,7 @@ class RSVQAHRDataModule(pl.LightningDataModule):
         tokenizer=None,
         seq_length=32,
         selected_answers=None,
-        pin_memory=None,
+        pin_memory: Optional[bool] = None,
         use_phili_test: bool = False,
         print_infos: bool = False,
         dataset_kwargs: Optional[Mapping] = None,

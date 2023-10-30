@@ -32,6 +32,7 @@ class COCOQADataModule(pl.LightningDataModule):
         shuffle=None,
         tokenizer=None,
         seq_length=64,
+        pin_memory: Optional[bool] = None,
     ):
         super().__init__()
         if num_workers_dataloader is None:
@@ -77,6 +78,7 @@ class COCOQADataModule(pl.LightningDataModule):
         )
         # self.transform = None
         self.pin_memory = torch.cuda.device_count() > 0
+        self.pin_memory = self.pin_memory if pin_memory is None else pin_memory
 
     def prepare_data(self):
         pass

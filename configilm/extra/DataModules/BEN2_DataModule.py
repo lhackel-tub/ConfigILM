@@ -27,6 +27,7 @@ class BEN2DataModule(BENDataModule):
         shuffle=None,
         new_label_file: Union[str, Path, None] = None,
         print_infos: bool = False,
+        pin_memory: Optional[bool] = None,
         dataset_kwargs: Optional[Mapping] = None,
     ):
         """
@@ -69,6 +70,11 @@ class BEN2DataModule(BENDataModule):
 
             :Default: False
 
+        :param pin_memory: Flag if memory should be pinned for data loading. If not
+            specified set to True if cuda devices are used, else false.
+
+            :Default: None
+
         :param dataset_kwargs: Other keyword arguments to pass to the dataset during
             creation.
         """
@@ -86,6 +92,7 @@ class BEN2DataModule(BENDataModule):
             shuffle=shuffle,
             dataset_kwargs=dataset_kwargs,
             print_infos=print_infos,
+            pin_memory=pin_memory,
         )
         self.new_label_file = new_label_file
         self.print_infos = print_infos

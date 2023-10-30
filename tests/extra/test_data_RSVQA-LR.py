@@ -231,7 +231,9 @@ def test_dm_default(data_dir, split: str):
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_dm_dataloaders(data_dir, bs: int):
-    dm = RSVQALRDataModule(data_dir=data_dir, batch_size=bs)
+    dm = RSVQALRDataModule(
+        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
+    )
     dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 256, 256),
@@ -242,12 +244,16 @@ def test_dm_dataloaders(data_dir, bs: int):
 
 @pytest.mark.parametrize("pi", [True, False])
 def test_dm_print_on_setup(data_dir, pi):
-    dm = RSVQALRDataModule(data_dir=data_dir, print_infos=pi)
+    dm = RSVQALRDataModule(
+        data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup()
 
 
 def test_dm_shuffle_false(data_dir):
-    dm = RSVQALRDataModule(data_dir=data_dir, shuffle=False)
+    dm = RSVQALRDataModule(
+        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
@@ -263,7 +269,9 @@ def test_dm_shuffle_false(data_dir):
 
 
 def test_dm_shuffle_none(data_dir):
-    dm = RSVQALRDataModule(data_dir=data_dir, shuffle=None)
+    dm = RSVQALRDataModule(
+        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -278,7 +286,9 @@ def test_dm_shuffle_none(data_dir):
 
 
 def test_dm_shuffle_true(data_dir):
-    dm = RSVQALRDataModule(data_dir=data_dir, shuffle=True)
+    dm = RSVQALRDataModule(
+        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -294,7 +304,12 @@ def test_dm_shuffle_true(data_dir):
 
 def test_dm_unexposed_kwargs(data_dir):
     classes = 3
-    dm = RSVQALRDataModule(data_dir=data_dir, dataset_kwargs={"classes": classes})
+    dm = RSVQALRDataModule(
+        data_dir=data_dir,
+        dataset_kwargs={"classes": classes},
+        num_workers_dataloader=0,
+        pin_memory=False,
+    )
     dm.setup(None)
     assert len(dm.train_ds.selected_answers) == classes, (
         f"There should only be {classes} answers, but there are "

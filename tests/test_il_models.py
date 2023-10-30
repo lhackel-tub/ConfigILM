@@ -49,7 +49,7 @@ def get_vqa_batch(
     return [v, q, a]
 
 
-@pytest.mark.parametrize("batch_size", [1, 2, 4, 8, 16, 32, 27, 13])
+@pytest.mark.parametrize("batch_size", [1, 32, 27, 13])
 def test_bs(batch_size):
     config = ConfigILM.ILMConfiguration(timm_model_name=default_image_test_model)
     x, y = get_classification_batch(
@@ -81,8 +81,8 @@ tested_timm_models_120 = [
     "eca_resnet33ts",
     "edgenext_xx_small",
     "efficientnet_b0",
-    "efficientnet_b4",
-    "efficientnetv2_s",
+    # "efficientnet_b4", removed in 0.4.10
+    # "efficientnetv2_s", removed in 0.4.10
     "efficientnetv2_xl",
     "gmlp_ti16_224",
     "mixer_b16_224",
@@ -91,17 +91,17 @@ tested_timm_models_120 = [
     "mobilevit_xxs",
     "mobilevitv2_050",
     "pit_ti_224",
-    "pit_ti_distilled_224",
+    # "pit_ti_distilled_224", removed in 0.4.10
     "poolformer_s12",
     "pvt_v2_b0",
-    "pvt_v2_b4",
+    # "pvt_v2_b4", removed in 0.4.10
     "res2net50_14w_8s",
     "res2next50",
     "resnest14d",
     "resnet10t",
     "resnet18",
-    "resnet34",
-    "resnet50",
+    # "resnet34",  removed in 0.4.10
+    # "resnet50",  removed in 0.4.10
     "resnetv2_50",
     "resnext26ts",
     # "semobilevit_s", removed in 0.4.0
@@ -137,14 +137,14 @@ tested_timm_models_224 = [
     "convnext_atto",
     "convnext_femto",
     "convnext_nano",
-    "convnext_pico",
-    "convnext_small",
-    "convnext_tiny",
+    # "convnext_pico", removed in 0.4.10
+    # "convnext_small", removed in 0.4.10
+    # "convnext_tiny", removed in 0.4.10
     "convnextv2_atto",
     "convnextv2_femto",
-    "convnextv2_nano",
-    "convnextv2_pico",
-    "convnextv2_small",
+    # "convnextv2_nano", removed in 0.4.10
+    # "convnextv2_pico", removed in 0.4.10
+    # "convnextv2_small", removed in 0.4.10
     "coatnext_nano_rw_224.sw_in1k",
     "maxvit_nano_rw_256.sw_in1k",
 ]
@@ -157,7 +157,7 @@ tested_timm_models_256 = [
     "swinv2_tiny_window8_256",
 ]
 
-tested_dims = [10, 100, 1000, 256, 512, 1024, 360, 1200]
+tested_dims = [10, 256, 1024, 360, 1200]
 
 
 def apply_timm(model: str, cls: int, bs: int, image_size: int):

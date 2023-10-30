@@ -35,7 +35,7 @@ class HRVQADataModule(pl.LightningDataModule):
         tokenizer=None,
         seq_length=32,
         selected_answers=None,
-        pin_memory=None,
+        pin_memory: Optional[bool] = None,
         test_splitting_seed=None,
         test_splitting_division=None,
         print_infos: bool = False,

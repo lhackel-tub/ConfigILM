@@ -231,23 +231,31 @@ def test_ben_dm_default(data_dir, split: str):
 @pytest.mark.parametrize("img_size", [[1], [1, 2], [1, 2, 3, 4]])
 def test_ben_dm_wrong_imagesize(data_dir, img_size):
     with pytest.raises(ValueError):
-        _ = BENDataModule(data_dir, img_size=img_size)
+        _ = BENDataModule(
+            data_dir, img_size=img_size, num_workers_dataloader=0, pin_memory=False
+        )
 
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_ben_dm_dataloaders(data_dir, bs):
-    dm = BENDataModule(data_dir=data_dir, batch_size=bs)
+    dm = BENDataModule(
+        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
+    )
     dataloaders_ok(dm, expected_image_shape=(bs, 12, 120, 120))
 
 
 @pytest.mark.parametrize("pi", [True, False])
 def test_dm_print_on_setup(data_dir, pi):
-    dm = BENDataModule(data_dir=data_dir, print_infos=pi)
+    dm = BENDataModule(
+        data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup()
 
 
 def test_ben_shuffle_false(data_dir):
-    dm = BENDataModule(data_dir=data_dir, shuffle=False)
+    dm = BENDataModule(
+        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
@@ -263,7 +271,9 @@ def test_ben_shuffle_false(data_dir):
 
 
 def test_ben_shuffle_none(data_dir):
-    dm = BENDataModule(data_dir=data_dir, shuffle=None)
+    dm = BENDataModule(
+        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -278,7 +288,9 @@ def test_ben_shuffle_none(data_dir):
 
 
 def test_ben_shuffle_true(data_dir):
-    dm = BENDataModule(data_dir=data_dir, shuffle=True)
+    dm = BENDataModule(
+        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
+    )
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -293,7 +305,12 @@ def test_ben_shuffle_true(data_dir):
 
 
 def test_dm_unexposed_kwargs(data_dir):
-    dm = BENDataModule(data_dir=data_dir, dataset_kwargs={"return_patchname": True})
+    dm = BENDataModule(
+        data_dir=data_dir,
+        dataset_kwargs={"return_patchname": True},
+        num_workers_dataloader=0,
+        pin_memory=False,
+    )
     dm.setup(None)
     assert (
         len(dm.train_ds[0]) == 3

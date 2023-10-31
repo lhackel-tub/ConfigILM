@@ -57,7 +57,7 @@ jobs:
       #----------------------------------------------
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --with dev,extra
+        run: poetry install --no-interaction --with dev --all-extras
       #----------------------------------------------
       #  Run test suite + coverage + generate badge
       #----------------------------------------------

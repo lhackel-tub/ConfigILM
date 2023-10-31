@@ -34,7 +34,10 @@ def resolve_data_dir(
     """
     if data_dir in [None, "none", "None"]:
         Messages.warn("No data directory provided, trying to resolve")
-        paths = ["No path added yet"]  # TODO add paths
+        paths = [
+            "/mnt/storagecube/data/datasets/RSVQA/RSVQA-HR",  # MARS Storagecube
+            "/media/storagecube/data/datasets/RSVQA/RSVQA-HR",  # ERDE Storagecube
+        ]
         for p in paths:
             if isdir(p):
                 data_dir = p

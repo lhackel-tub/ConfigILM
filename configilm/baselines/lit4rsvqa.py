@@ -7,12 +7,9 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import typer
-from fvcore.nn import FlopCountAnalysis
-from fvcore.nn import parameter_count
 from pytorch_lightning.callbacks import LearningRateMonitor
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
-from sklearn.metrics import accuracy_score
 from torch import optim
 from torchmetrics.classification import MultilabelF1Score
 from tqdm import tqdm
@@ -24,6 +21,20 @@ from configilm.ConfigILM import ILMType
 from configilm.extra.BEN_lmdb_utils import resolve_data_dir
 from configilm.extra.CustomTorchClasses import LinearWarmupCosineAnnealingLR
 from configilm.extra.DataModules.RSVQAxBEN_DataModule import RSVQAxBENDataModule
+
+
+try:
+    from fvcore.nn import FlopCountAnalysis
+    from fvcore.nn import parameter_count
+except ImportError:
+    print("Please install fvcore to run this baseline.")
+    exit(1)
+
+try:
+    from sklearn.metrics import accuracy_score
+except ImportError:
+    print("Please install scikit-learn to run this baseline.")
+    exit(1)
 
 __author__ = "Leonard Hackel - BIFOLD/RSiM TU Berlin"
 

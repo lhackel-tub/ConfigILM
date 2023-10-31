@@ -21,7 +21,7 @@ _stds = {"red": 0.0876, "green": 0.0582, "blue": 0.0484, "mono": 0.0820}
 
 
 def resolve_data_dir(
-    data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
+        data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
 ) -> str:
     """
     Helper function that tries to resolve the correct directory
@@ -34,7 +34,10 @@ def resolve_data_dir(
     """
     if data_dir in [None, "none", "None"]:
         Messages.warn("No data directory provided, trying to resolve")
-        paths = ["No path added yet"]  # TODO add paths
+        paths = [
+            "/mnt/storagecube/data/datasets/RSVQA/RSVQA-LR",  # MARS Storagecube
+            "/media/storagecube/data/datasets/RSVQA/RSVQA-LR",  # ERDE Storagecube
+        ]
         for p in paths:
             if isdir(p):
                 data_dir = p
@@ -100,7 +103,7 @@ def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = Fal
             f"requested, but {len(answers_by_appearence)} found)."
         )
         answers_by_appearence += [("INVALID", 0)] * (
-            number_of_answers - len(answers_by_appearence)
+                number_of_answers - len(answers_by_appearence)
         )
 
     selected_answers = answers_by_appearence[:number_of_answers]
@@ -188,17 +191,17 @@ def _quantize_answers(a_dict: dict):
 
 class RSVQALRDataSet(Dataset):
     def __init__(
-        self,
-        root_dir: Union[Path, str],
-        split: Optional[str] = None,
-        transform=None,
-        max_img_idx=None,
-        img_size=(3, 256, 256),
-        selected_answers=None,
-        classes: int = 9,
-        tokenizer=None,
-        seq_length: int = 32,
-        quantize_answers: bool = True,
+            self,
+            root_dir: Union[Path, str],
+            split: Optional[str] = None,
+            transform=None,
+            max_img_idx=None,
+            img_size=(3, 256, 256),
+            selected_answers=None,
+            classes: int = 9,
+            tokenizer=None,
+            seq_length: int = 32,
+            quantize_answers: bool = True,
     ):
         """
         :param root_dir: root directory to images and jsons folder

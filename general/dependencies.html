@@ -241,33 +241,38 @@
 <h2>Python (Poetry) Dependencies<a class="headerlink" href="#python-poetry-dependencies" title="Permalink to this heading">#</a></h2>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.poetry.dependencies]</span>
 <span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.9&quot;</span>
-<span class="n">torch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;2.0.0&quot;</span><span class="w">  </span><span class="c1"># locking for now as pytorch has a dependency problem right now</span>
-<span class="n">numpy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.24.1&quot;</span>
+<span class="c1"># pytorch dependencies for cuda are not set correctly in pypi right now</span>
+<span class="c1"># therefore we cannot use the newest versions</span>
+<span class="n">torch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^2.0.0, != 2.0.1, != 2.1.0&quot;</span>
 <span class="n">timm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.9.2&quot;</span>
 <span class="n">transformers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^4.26.0&quot;</span>
 <span class="n">appdirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.4.4&quot;</span>
+<span class="c1"># pydantic version 2 is incompatible with bigearthnet-encoder</span>
+<span class="n">pydantic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.8&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
 <span class="n">lmdb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.4.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
+<span class="n">pyarrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^12.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
 <span class="n">bigearthnet-encoder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.3.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
 <span class="n">pytorch-lightning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^2.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
-<span class="n">matplotlib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.6.3&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
-<span class="n">scikit-learn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.2.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
-<span class="n">lightning-bolts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.6.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
-<span class="n">fvcore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.1.5.post20221221&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
-<span class="n">pyarrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^12.0.1&quot;</span>
-<span class="n">pydantic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.8&quot;</span><span class="w"> </span><span class="c1"># version 2 is incompatible with bigearthnet-encoder</span>
 
-<span class="k">[tool.poetry.group.extra.dependencies]</span>
-<span class="n">lmdb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.4.0&quot;</span>
-<span class="n">bigearthnet-encoder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.3.0&quot;</span>
-<span class="n">pytorch-lightning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^2.0.0&quot;</span>
-<span class="n">matplotlib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.6.3&quot;</span>
-<span class="n">scikit-learn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.2.1&quot;</span>
-<span class="n">lightning-bolts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.6.0&quot;</span>
-<span class="n">fvcore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.1.5.post20221221&quot;</span>
-<span class="n">psutil</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^5.9.4&quot;</span>
+
+<span class="k">[tool.poetry.extras]</span>
+<span class="n">bigearthnet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s">&quot;lmdb&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;bigearthnet-encoder&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;pydantic&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;pyarrow&quot;</span><span class="w">  </span><span class="c1"># for parquet files</span>
+<span class="p">]</span>
+<span class="n">full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s">&quot;lmdb&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;bigearthnet-encoder&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;pytorch-lightning&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;pydantic&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;pyarrow&quot;</span>
+<span class="p">]</span>
 
 
 <span class="k">[tool.poetry.group.dev.dependencies]</span>
+<span class="n">matplotlib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.6.3&quot;</span>
 <span class="n">pytest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^7.2.1&quot;</span>
 <span class="n">coverage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^7.1.0&quot;</span>
 <span class="n">pre-commit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.0.2&quot;</span>

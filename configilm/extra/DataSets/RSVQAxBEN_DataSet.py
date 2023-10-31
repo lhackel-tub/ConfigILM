@@ -178,16 +178,15 @@ class RSVQAxBENDataSet(Dataset):
 
         print(f"Loading split RSVQAxBEN data for {split}...")
         # check that enough ram (in GB) is available, otherwise use subset
-        subset = "_subset" if psutil.virtual_memory().total / 1024**3 < 32 else ""
         self.qa_pairs = {}
         if split is not None:
-            f_name = f"RSVQAxBEN_QA_{split}{subset}.json"
+            f_name = f"RSVQAxBEN_QA_{split}.json"
             with open(join(self.root_dir, "VQA_RSVQAxBEN", f_name)) as read_file:
                 self.qa_pairs.update(json.load(read_file))
         else:
             splits = ["train", "val", "test"]
             for s in splits:
-                f_name = f"RSVQAxBEN_QA_{s}{subset}.json"
+                f_name = f"RSVQAxBEN_QA_{s}.json"
                 with open(join(self.root_dir, "VQA_RSVQAxBEN", f_name)) as read_file:
                     self.qa_pairs.update(json.load(read_file))
 

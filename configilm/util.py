@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import numpy as np
 from transformers import BertTokenizer
 
 
@@ -146,11 +145,11 @@ def convert(multi_true, multi_pred):
     :return: (labels, logits) as requested by wandb.plot
     """
     # convert tensor to array
-    multi_pred = [list(np.asarray(x)) for x in multi_pred]
+    multi_pred = multi_pred.tolist()
     # convert multi hot to index list
     # tensor(0,0,1,0,0,0,1,..,0)
     # -> array(2,6,...)
-    multi_true = [list(np.where(x == 1)[0]) for x in multi_true]
+    multi_true = [[i for i, e in enumerate(sl) if e == 1] for sl in multi_true.tolist()]
 
     t = []
     p = []
@@ -235,7 +234,7 @@ def huggingface_tokenize_and_pad(tokenizer, string: str, seq_length: int):
     ids = tokenizer.convert_tokens_to_ids(tokens)
 
     # get sublist if length of sequence is longer than max length
-    ids = ids[0 : seq_length - 2] if len(ids) >= seq_length - 2 else ids
+    ids = ids[0: seq_length - 2] if len(ids) >= seq_length - 2 else ids
     # prepend start token
     ids.insert(0, token_start)
     # append end token

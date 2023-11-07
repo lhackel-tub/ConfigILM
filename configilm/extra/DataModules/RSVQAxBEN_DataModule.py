@@ -19,9 +19,9 @@ import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader
 
+from configilm.extra._defaults import default_train_transform
+from configilm.extra._defaults import default_transform
 from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
-from configilm.extra.DataModules.dm_defaults import default_train_transform
-from configilm.extra.DataModules.dm_defaults import default_transform
 from configilm.extra.DataSets.RSVQAxBEN_DataSet import RSVQAxBENDataSet
 from configilm.util import Messages
 

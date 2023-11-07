@@ -10,8 +10,8 @@ import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader
 
-from configilm.extra.DataModules.dm_defaults import default_train_transform
-from configilm.extra.DataModules.dm_defaults import default_transform
+from configilm.extra._defaults import default_train_transform
+from configilm.extra._defaults import default_transform
 from configilm.extra.DataSets.HRVQA_DataSet import _means_1024
 from configilm.extra.DataSets.HRVQA_DataSet import _stds_1024
 from configilm.extra.DataSets.HRVQA_DataSet import HRVQADataSet

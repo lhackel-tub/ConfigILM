@@ -11,7 +11,6 @@ import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import typer
-from sklearn.metrics import accuracy_score
 from torch import optim
 from torchmetrics.classification import AveragePrecision
 from tqdm import tqdm
@@ -21,6 +20,12 @@ from configilm.ConfigILM import ILMConfiguration
 from configilm.ConfigILM import ILMType
 from configilm.extra import BEN_lmdb_utils
 from configilm.extra.DataModules.RSVQAxBEN_DataModule import RSVQAxBENDataModule
+
+try:
+    from sklearn.metrics import accuracy_score
+except ImportError:
+    print("Please install scikit-learn to run this baseline.")
+    exit(1)
 
 __author__ = "Leonard Hackel - BIFOLD/RSiM TU Berlin"
 
@@ -34,9 +39,9 @@ class LitVisionEncoder(pl.LightningModule):
     """
 
     def __init__(
-            self,
-            config: ConfigILM.ILMConfiguration,
-            lr: float = 1e-3,
+        self,
+        config: ConfigILM.ILMConfiguration,
+        lr: float = 1e-3,
     ):
         super().__init__()
         self.lr = lr
@@ -162,16 +167,16 @@ class LitVisionEncoder(pl.LightningModule):
 
 
 def main(
-        vision_model: str = "resnet18",
-        text_model: str = "prajjwal1/bert-tiny",
-        data_dir: Optional[str] = None,
-        number_of_channels: int = 12,
-        image_size: int = 120,
-        batch_size: int = 32,
-        num_workers: int = 4,
-        max_img_index: int = 7 * 128,
-        epochs: int = 10,
-        lr: float = 5e-4,
+    vision_model: str = "resnet18",
+    text_model: str = "prajjwal1/bert-tiny",
+    data_dir: Optional[str] = None,
+    number_of_channels: int = 12,
+    image_size: int = 120,
+    batch_size: int = 32,
+    num_workers: int = 4,
+    max_img_index: int = 7 * 128,
+    epochs: int = 10,
+    lr: float = 5e-4,
 ):
     # some static parameters
     seed = 42

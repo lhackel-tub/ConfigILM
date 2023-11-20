@@ -12,8 +12,8 @@ import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader
 
-from configilm.extra.DataModules.dm_defaults import default_train_transform
-from configilm.extra.DataModules.dm_defaults import default_transform
+from configilm.extra._defaults import default_train_transform
+from configilm.extra._defaults import default_transform
 from configilm.extra.DataSets.RSVQALR_DataSet import _means
 from configilm.extra.DataSets.RSVQALR_DataSet import _stds
 from configilm.extra.DataSets.RSVQALR_DataSet import RSVQALRDataSet

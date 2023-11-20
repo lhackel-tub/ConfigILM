@@ -43,7 +43,6 @@ def dataloaders_ok(
     expected_question_length: int,
     classes: int,
 ):
-
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",

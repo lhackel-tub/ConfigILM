@@ -258,10 +258,10 @@ In the following, we will list a couple of ways on how you can contribute to thi
 <p><a class="reference external" href="https://python-poetry.org/">Poetry</a> is used to manage all <a class="reference external" href="https://www.python.org/">Python</a> dependencies.</p>
 <p>To set up the development environment</p>
 <ol class="arabic simple">
-<li><p><a class="reference external" href="https://python-poetry.org/">Download and install Poetry</a></p></li>
+<li><p><a class="reference external" href="https://python-poetry.org/">Download and install Poetry</a>. Make sure to use a valid python version in the environment that you install Poetry in. Check the README for details.</p></li>
 <li><p>Clone this repository with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/lhackel-tub/ConfigILM/</span></code></p></li>
 <li><p>Change to the downloaded directory with <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">ConfigILM</span></code></p></li>
-<li><p>Replicate the development environment with <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code> (this may take some time depending on your download speed)</p></li>
+<li><p>Replicate the development environment (with all additional dependencies) with <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span> <span class="pre">--with</span> <span class="pre">dev</span> <span class="pre">-E</span> <span class="pre">full</span></code> (this may take some time depending on your download speed)</p></li>
 <li><p>Start hacking 😁</p></li>
 </ol>
 <p>If you create a <a class="reference external" href="https://docs.github.com/en/get-started/quickstart/hello-world#opening-a-pull-request">PR</a>, an automatic test suite will check if the framework still passes its requirements and the documentation can be successfully regenerated.

@@ -259,7 +259,6 @@ def apply_ilm(config: ConfigILM.ILMConfiguration, bs: int) -> bool:
         break
 
     if model is not None:
-
         res = model((v, q))
         assert (
             res.shape == a.shape

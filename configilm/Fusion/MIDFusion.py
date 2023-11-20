@@ -1,8 +1,5 @@
 # functions are partially based on
 #   https://github.com/xiaoyuan1996/GaLR/blob/main/layers/GaLR.py
-from typing import Mapping
-from typing import Optional
-
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -12,44 +9,62 @@ from configilm.Fusion.blocks import GuidedSelfAttention
 from configilm.Fusion.blocks import SelfAttention
 
 
-class MIDFusion(AbstractFusion):
+class MIDF(AbstractFusion):
     # based on https://github.com/xiaoyuan1996/GaLR/blob/main/layers/GaLR.py#L20
-    def __init__(self, opt: Optional[Mapping] = None):
-        super().__init__()
-        self.opt = opt if opt is not None else {}
-        embed_dim = self.opt["embed_dim"]
-        num_heads = self.opt["num_heads"]
-        fusion_dim = self.opt["fusion_dim"]
-        attention_drop_out = self.opt["attention_drop_out"]
-        fusion_drop_out = self.opt["fusion_drop_out"]
+    def __init__(
+        self,
+        input_dim: int,
+        mm_dim: int = 1200,
+        heads: int = 2,
+        activ_fusion: str = "sigmoid",
+        dropout_attention: float = 0.0,
+        dropout_output: float = 0.0,
+    ):
+        """
+        Initializes internal Module state of Multi-Level Information Dynamic fusion of
+        "Remote Sensing Cross-Modal Text-Image Retrieval Based on Global and Local
+        Information".
+        Self-Attention and Guided Attention followed by a Multi-Layer Perceptron.
+        The output of the MLP is used to weight the different modality features.
 
+        :param input_dim: Dimension of different inputs. All the inputs are of the same
+                          dimension
+        :param mm_dim: intermediate multi-modal dimension
+        :param heads: number of heads in the self-attention layer
+        :param activ_fusion: activation function in the MLP
+        :param dropout_attention: Dropout rate of the inputs in attention layer
+        :param dropout_output: Dropout rate before the output
+        :returns: MID-Fusion torch.nn module
+        """
+        super().__init__()
         # local trans
         self.l2l_SA = SelfAttention(
-            embed_dim=embed_dim, num_heads=num_heads, drop_out=attention_drop_out
+            embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention
         )
 
         # global trans
         self.g2g_SA = SelfAttention(
-            embed_dim=embed_dim, num_heads=num_heads, drop_out=attention_drop_out
+            embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention
         )
 
         # local correction
         self.g2l_GSA = GuidedSelfAttention(
-            embed_dim=embed_dim, num_heads=num_heads, drop_out=attention_drop_out
+            embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention
         )
 
         # global supplement
         self.l2g_GSA = GuidedSelfAttention(
-            embed_dim=embed_dim, num_heads=num_heads, drop_out=attention_drop_out
+            embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention
         )
+
+        self.linear1 = nn.Linear(input_dim, mm_dim)
+        self.activ_fusion = getattr(F, activ_fusion)
 
         # dynamic fusion
         self.dynamic_weight = nn.Sequential(
-            nn.Linear(embed_dim, fusion_dim),
-            nn.Sigmoid(),
-            nn.Dropout(fusion_drop_out),
-            nn.Linear(fusion_dim, 2),
-            nn.Softmax(dim=0),
+            nn.Dropout(dropout_output),
+            nn.Linear(mm_dim, 2),
+            nn.Softmax(dim=-1),
         )
 
     def forward(self, global_feature, local_feature):
@@ -70,12 +85,14 @@ class MIDFusion(AbstractFusion):
         global_feature_t = torch.squeeze(global_feature, dim=1)
         local_feature_t = torch.squeeze(local_feature, dim=1)
 
-        global_feature = F.sigmoid(local_feature_t) * global_feature_t
+        global_feature = self.activ_fusion(local_feature_t) * global_feature_t
         local_feature = global_feature_t + local_feature_t
 
         # dynamic fusion
         feature_gl = global_feature + local_feature
-        dynamic_weight = self.dynamic_weight(feature_gl)
+        dynamic_weight = self.linear1(feature_gl)
+        dynamic_weight = self.activ_fusion(dynamic_weight)
+        dynamic_weight = self.dynamic_weight(dynamic_weight)
 
         weight_global = (
             dynamic_weight[:, 0]

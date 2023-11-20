@@ -85,7 +85,7 @@ def test_convert():
         assert len(a) == len(e)
         for av, ev in zip(a, e):
             assert fequal(av, ev, abs_tol=abs_tol), (
-                f"{av} is not the same as {ev}:\n" f"diff: {abs(av-ev)} > {abs_tol}"
+                f"{av} is not the same as {ev}:\n" f"diff: {abs(av - ev)} > {abs_tol}"
             )
 
 
@@ -114,4 +114,4 @@ def test_avg_meter():
     assert avg_mtr.count == 4
     assert avg_mtr.val == 4
 
-    assert str(avg_mtr) == f"Testmeter {4:.2f} ({(42+4+4)/4:.2f})"
+    assert str(avg_mtr) == f"Testmeter {4:.2f} ({(42 + 4 + 4) / 4:.2f})"

@@ -131,7 +131,6 @@ def test_4c_ben_dataset_splits(data_dir, split: str, classes: int):
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
 def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
-
     ds = RSVQAxBENDataSet(
         root_dir=data_dir, split="val", img_size=img_size, classes=1000, seq_length=32
     )
@@ -147,7 +146,6 @@ def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
 
 @pytest.mark.parametrize("img_size", img_shapes_fail)
 def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
-
     with pytest.raises(AssertionError):
         _ = RSVQAxBENDataSet(
             root_dir=data_dir,

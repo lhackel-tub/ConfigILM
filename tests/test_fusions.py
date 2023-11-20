@@ -7,6 +7,7 @@ from configilm.Fusion.ConcatMLPFusion import ConcatMLP
 from configilm.Fusion.LinearSumFusion import LinearSum
 from configilm.Fusion.MFBFusion import MFB
 from configilm.Fusion.MFHFusion import MFH
+from configilm.Fusion.MIDFusion import MIDF
 from configilm.Fusion.MLBFusion import MLB
 from configilm.Fusion.MutanFusion import Mutan
 from configilm.Fusion.TuckerFusion import Tucker
@@ -372,3 +373,28 @@ def test_tucker_fusion_shared(dim_1, dim_2, shared):
         with pytest.raises(RuntimeError):
             # shared with different dims fails
             assert_basic_fusion(fusion=fusion, dim_1=dim_1, dim_2=dim_2, dim_mm=64)
+
+
+@pytest.mark.parametrize(
+    "dim, dim_out, dim_mm, do_in, do_o, heads, ff",
+    [
+        (dim, dim_out, dmm, do_in, do_o, heads, ff)
+        for dim in [128, 256]
+        for dim_out in [2, 100]
+        for dmm in [64, 128]
+        for do_in in [0, 0.2]
+        for do_o in [0, 0.3]
+        for heads in [2, 16]
+        for ff in ["sigmoid", "relu"]
+    ],
+)
+def test_mid_fusion(dim, dim_out, dim_mm, do_in, do_o, heads, ff):
+    fusion = MIDF(
+        input_dim=dim,
+        mm_dim=dim_mm,
+        dropout_output=do_o,
+        dropout_attention=do_in,
+        heads=heads,
+        activ_fusion=ff,
+    )
+    assert_basic_fusion(fusion=fusion, dim_1=dim, dim_2=dim, dim_mm=dim)

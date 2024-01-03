@@ -68,7 +68,7 @@ If you use this work, please cite
   author       = {Hackel, Leonard and
                   Clasen, Kai Norman and
                   Demir, Begüm},
-  title        = {ConfigILM},
+  title        = {{ConfigILM}},
   month        = oct,
   year         = 2023,
   publisher    = {Zenodo},

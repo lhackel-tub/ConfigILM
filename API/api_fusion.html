@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utilities" href="api_util.html" /><link rel="prev" title="RSVQAxBEN DataSets and DataModules" href="ds/api_ds_RSVQAxBEN.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
@@ -249,7 +249,7 @@ Detection”. Limits complexity of intermediate states by dividing the
 intermediate dimension into chunks (blocks). Inverse bottleneck expansion of
 multi-modal fusion is defined by rank.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_dims</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – Sequence of dimensions of different inputs. Only the first
 two dimensions are used</p></li>
@@ -269,7 +269,7 @@ works, if all input_dims are equal</p></li>
 “after_cat”</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Block-Fusion torch.nn module</p>
 </dd>
 </dl>
@@ -280,16 +280,16 @@ works, if all input_dims are equal</p></li>
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.Fusion.BlockFusion.Block.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Forward call to Block-Fusion</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_0</strong> (<em>Tensor</em>) – first modality input</p></li>
 <li><p><strong>input_1</strong> (<em>Tensor</em>) – second modality input</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>multi modality output</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
@@ -309,7 +309,7 @@ Detection”. Uses Tucker decomposition for tensor complexity restriction instea
 of rank limitation while limiting the intermediate state complexity via division
 into chunks (blocks).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_dims</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – Sequence of dimensions of different inputs. Only the first
 two dimensions are used</p></li>
@@ -327,7 +327,7 @@ works, if all input_dims are equal</p></li>
 “after_cat”</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Block-Tucker-Fusion torch.nn module</p>
 </dd>
 </dl>
@@ -338,16 +338,16 @@ works, if all input_dims are equal</p></li>
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.Fusion.BlockTuckerFusion.BlockTucker.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Forward call to Block-Tucker-Fusion</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_0</strong> (<em>Tensor</em>) – first modality input</p></li>
 <li><p><strong>input_1</strong> (<em>Tensor</em>) – second modality input</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>multi modality output</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
@@ -365,7 +365,7 @@ works, if all input_dims are equal</p></li>
 and passes them through linear layers defined by dimensions and output_dim.
 Activation and dropout is applied after every linear layer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_dims</strong> (<em>Iterable</em><em>[</em><em>int</em><em>]</em>) – Sequence of dimensions of different inputs. Only the first
 two dimensions are used</p></li>
@@ -376,7 +376,7 @@ manually</p></li>
 <li><p><strong>dropout</strong> (<em>float</em>) – Dropout rate after every activation</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>ConcatMLP-Fusion torch.nn module</p>
 </dd>
 </dl>
@@ -387,16 +387,16 @@ manually</p></li>
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.Fusion.ConcatMLPFusion.ConcatMLP.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Forward call to ConcatMLP-Fusion</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_0</strong> (<em>Tensor</em>) – first modality input</p></li>
 <li><p><strong>input_1</strong> (<em>Tensor</em>) – second modality input</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>multi modality output</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
@@ -415,7 +415,7 @@ independent of each other through a linear layer to map into a common
 dimension. Results are added (point-wise) and mapped to the output dimension.
 Normalization, dropout and activations are applied if set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_dims</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – Sequence of dimensions of different inputs. Only the first
 two dimensions are used</p></li>
@@ -429,7 +429,7 @@ two dimensions are used</p></li>
 <li><p><strong>dropout_output</strong> (<em>float</em>) – Dropout rate before the output</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>LinearSum-Fusion torch.nn module</p>
 </dd>
 </dl>
@@ -440,16 +440,16 @@ two dimensions are used</p></li>
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.Fusion.LinearSumFusion.LinearSum.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Forward call to Pointwise-Linear-Addition-Fusion</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_0</strong> (<em>Tensor</em>) – first modality input</p></li>
 <li><p><strong>input_1</strong> (<em>Tensor</em>) – second modality input</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>multi modality output</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
@@ -469,7 +469,7 @@ for Visual Question Answering”.
 Linear mapping of inputs to higher dimension paired with a point-wise
 multiplication, pooling and output mapping.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_dims</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – Sequence of dimensions of different inputs. Only the first
 two dimensions are used</p></li>
@@ -484,7 +484,7 @@ two dimensions are used</p></li>
 <li><p><strong>normalize</strong> (<em>bool</em>) – flag if normalization should be applied or not</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>MFB-Fusion torch.nn module</p>
 </dd>
 </dl>
@@ -495,16 +495,16 @@ two dimensions are used</p></li>
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.Fusion.MFBFusion.MFB.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Forward call to Multi-Modal Factorized Bilinear Pooling Fusion</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_0</strong> (<em>Tensor</em>) – first modality input</p></li>
 <li><p><strong>input_1</strong> (<em>Tensor</em>) – second modality input</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>multi modality output</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
@@ -524,7 +524,7 @@ High-order Pooling for Visual Question Answering”.
 Linear mapping of inputs to higher dimension paired with a point-wise
 multiplications, poolings, additional linear mappings and an output mapping.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_dims</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – Sequence of dimensions of different inputs. Only the first
 two dimensions are used</p></li>
@@ -539,7 +539,7 @@ two dimensions are used</p></li>
 <li><p><strong>normalize</strong> (<em>bool</em>) – flag if normalization should be applied or not</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>MFH-Fusion torch.nn module</p>
 </dd>
 </dl>
@@ -550,16 +550,16 @@ two dimensions are used</p></li>
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.Fusion.MFHFusion.MFH.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Forward call to Generalized Multimodal Factorized High-order Pooling Fusion</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_0</strong> (<em>Tensor</em>) – first modality input</p></li>
 <li><p><strong>input_1</strong> (<em>Tensor</em>) – second modality input</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>multi modality output</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
@@ -578,7 +578,7 @@ Bilinear Pooling Fusion of “Hadamard Product for Low-rank Bilinear Pooling”.
 Linear mapping of inputs to higher dimension paired with a point-wise
 multiplication and output mapping.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_dims</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – Sequence of dimensions of different inputs. Only the first
 two dimensions are used</p></li>
@@ -592,7 +592,7 @@ two dimensions are used</p></li>
 <li><p><strong>normalize</strong> (<em>bool</em>) – flag if normalization should be applied or not</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>MLB-Fusion torch.nn module</p>
 </dd>
 </dl>
@@ -604,16 +604,16 @@ two dimensions are used</p></li>
 <dd><p>Forward call to Multi-Modal Hadamard Product for Low-rank Bilinear Pooling
 Fusion</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_0</strong> (<em>Tensor</em>) – first modality input</p></li>
 <li><p><strong>input_1</strong> (<em>Tensor</em>) – second modality input</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>multi modality output</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
@@ -632,7 +632,7 @@ Multimodal tucker fusion for visual question answering”. Uses Tucker
 decomposition for tensor complexity restriction. Inverse bottleneck expansion of
 multi-modal fusion is defined by rank.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_dims</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – Sequence of dimensions of different inputs. Only the first
 two dimensions are used</p></li>
@@ -648,7 +648,7 @@ works, if all input_dims are equal</p></li>
 <li><p><strong>dropout_output</strong> (<em>float</em>) – Dropout rate before the output</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Multimodal-Tucker-Fusion torch.nn module</p>
 </dd>
 </dl>
@@ -659,16 +659,16 @@ works, if all input_dims are equal</p></li>
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.Fusion.MutanFusion.Mutan.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Forward call to Multimodal-Tucker-Fusion</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_0</strong> (<em>Tensor</em>) – first modality input</p></li>
 <li><p><strong>input_1</strong> (<em>Tensor</em>) – second modality input</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>multi modality output</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>
@@ -686,7 +686,7 @@ works, if all input_dims are equal</p></li>
 fusion for visual question answering”. Uses Tucker decomposition for tensor
 complexity restriction.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_dims</strong> (<em>Sequence</em><em>[</em><em>int</em><em>]</em>) – Sequence of dimensions of different inputs. Only the first
 two dimensions are used</p></li>
@@ -700,7 +700,7 @@ works, if all input_dims are equal</p></li>
 <li><p><strong>normalize</strong> (<em>bool</em>) – flag if normalization should be applied or not</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tucker-Fusion torch.nn module</p>
 </dd>
 </dl>
@@ -711,16 +711,16 @@ works, if all input_dims are equal</p></li>
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.Fusion.TuckerFusion.Tucker.forward" title="Permalink to this definition">#</a></dt>
 <dd><p>Forward call to Tucker-Fusion</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_0</strong> (<em>Tensor</em>) – first modality input</p></li>
 <li><p><strong>input_1</strong> (<em>Tensor</em>) – second modality input</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>multi modality output</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Tensor</em></p>
 </dd>
 </dl>

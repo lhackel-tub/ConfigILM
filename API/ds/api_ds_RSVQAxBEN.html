@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Fusion Methods" href="../api_fusion.html" /><link rel="prev" title="RSVQA-HR DataSets and DataModules" href="api_ds_RSVQAHR.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
@@ -251,18 +251,18 @@ Based on Image Data from:
 <dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.__init__" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>root_dir</strong> – <p>root directory to images and jsons folder</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>./</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>“train”, “val” or “test” or None for all</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None (loads all splits)</p>
 </dd>
 </dl>
@@ -270,7 +270,7 @@ Based on Image Data from:
 <li><p><strong>transform</strong> – <p>transformations to be applied to loaded images aside from
 scaling all bands to img_size.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -278,7 +278,7 @@ scaling all bands to img_size.</p>
 <li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
 than the images found in the csv, None or -1, all images will be loaded.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -288,7 +288,7 @@ applied bicubic before any transformation.</p>
 <p>Also specifies which channels to load.
 See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(12, 120, 120)</p>
 </dd>
 </dl>
@@ -297,14 +297,14 @@ See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.<
 answers will be selected based on <cite>classes</cite> in order of frequency of the
 set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>classes</strong> – <p>Number of classes (possible answers)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>1_000</p>
 </dd>
 </dl>
@@ -313,7 +313,7 @@ set.</p>
 standard huggingface tokenizer. If not set, a default tokenizer will be
 used and a warning shown.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -322,7 +322,7 @@ used and a warning shown.</p>
 maximum and expanded to this if the question is too short. Includes start
 and end token.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>32</p>
 </dd>
 </dl>
@@ -339,26 +339,26 @@ and end token.</p>
 <span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAxBEN_DataSet.</span></span><span class="sig-name descname"><span class="pre">select_answers_from_qa_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qa_pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tqdm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.select_answers_from_qa_pairs" title="Permalink to this definition">#</a></dt>
 <dd><p>Selects the most frequently present answers and returns them in order of frequency.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>qa_pairs</strong> – list of dicts with an “answer” field for each dict</p></li>
 <li><p><strong>number_of_answers</strong> (<em>int</em>) – <p>how many answers should be selected</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>1_000</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>use_tqdm</strong> (<em>bool</em>) – <p>Flag to use tqdm as progress bar</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
 </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>most frequent answers (list of length number_of_answers), ordered by
 frequency</p>
 </dd>
@@ -380,18 +380,18 @@ Based on Image Data from:
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_infos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Initializes a pytorch lightning data module.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>batch_size</strong> – <p>batch size for data loaders</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>16</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>data_dir</strong> (<em>str</em>) – <p>root directory to images and jsons folder</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>./</p>
 </dd>
 </dl>
@@ -399,7 +399,7 @@ Based on Image Data from:
 <li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
 than the images found in the csv, None or -1, all images will be loaded.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -409,7 +409,7 @@ applied bicubic before any transformation.</p>
 <p>Also specifies which channels to load.
 See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(12, 120, 120)</p>
 </dd>
 </dl>
@@ -417,14 +417,14 @@ See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.<
 <li><p><strong>shuffle</strong> – <p>Flag if dataset should be shuffled. If set to None, only train
 will be shuffled and validation and test won’t.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>num_workers_dataloader</strong> – <p>number of workers used for data loading</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>#CPU_cores/2</p>
 </dd>
 </dl>
@@ -433,7 +433,7 @@ will be shuffled and validation and test won’t.</p>
 answers will be selected based on <cite>classes</cite> for the data set in order of
 frequency of the training set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -442,7 +442,7 @@ frequency of the training set.</p>
 standard huggingface tokenizer. If not set, a default tokenizer will be
 used and a warning shown.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -451,7 +451,7 @@ used and a warning shown.</p>
 maximum and expanded to this if the question is too short. Includes start
 and end token.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>32</p>
 </dd>
 </dl>
@@ -459,7 +459,7 @@ and end token.</p>
 <li><p><strong>print_infos</strong> (<em>bool</em>) – <p>Flag, if additional information during setup() and reading
 should be printed (e.g. number of workers detected, number of images loaded)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
@@ -467,7 +467,7 @@ should be printed (e.g. number of workers detected, number of images loaded)</p>
 <li><p><strong>pin_memory</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Flag if memory should be pinned for data loading. If not
 specified set to True if cuda devices are used, else false.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -491,7 +491,7 @@ creation.</p></li>
 <p>Prints the time it needed for this operation and other statistics if print_infos
 is set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>stage</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – None, “fit” or “test”</p>
 </dd>
 </dl>
@@ -503,7 +503,7 @@ is set.</p>
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch DataLoader for the test set</p>
 </dd>
 </dl>
@@ -515,7 +515,7 @@ Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)<
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch DataLoader for the train set</p>
 </dd>
 </dl>
@@ -527,7 +527,7 @@ Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch DataLoader for the validation set</p>
 </dd>
 </dl>

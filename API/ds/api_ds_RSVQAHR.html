@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="RSVQAxBEN DataSets and DataModules" href="api_ds_RSVQAxBEN.html" /><link rel="prev" title="RSVQA-LR DataSets and DataModules" href="api_ds_RSVQALR.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
@@ -244,12 +244,12 @@
 <dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">256,</span> <span class="pre">256)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">94</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tif'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantize_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.__init__" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>root_dir</strong> (<em>Union</em><em>[</em><em>Path</em><em>, </em><em>str</em><em>]</em>) – root directory to images and jsons folder</p></li>
 <li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>“train”, “val”, “test_phili” or “test” or None for all</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None (loads all splits)</p>
 </dd>
 </dl>
@@ -257,7 +257,7 @@
 <li><p><strong>transform</strong> – <p>transformations to be applied to loaded images aside from
 scaling all bands to img_size.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -265,7 +265,7 @@ scaling all bands to img_size.</p>
 <li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
 than the images found in the csv, None or -1, all images will be loaded.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -274,7 +274,7 @@ than the images found in the csv, None or -1, all images will be loaded.</p>
 applied bicubic before any transformation. Also selects if the returned
 images are RGB or grayscale based on the number of channels.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(3, 256, 256)</p>
 </dd>
 </dl>
@@ -283,14 +283,14 @@ images are RGB or grayscale based on the number of channels.</p>
 answers will be selected based on <cite>classes</cite> in order of frequency of the
 set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>classes</strong> (<em>int</em>) – <p>Number of classes (possible answers)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>94</p>
 </dd>
 </dl>
@@ -299,7 +299,7 @@ set.</p>
 standard huggingface tokenizer. If not set, a default tokenizer will be
 used and a warning shown.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -308,14 +308,14 @@ used and a warning shown.</p>
 maximum and expanded to this if the question is too short. Includes start
 and end token.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>32</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>use_file_format</strong> (<em>str</em>) – <p>file type to use (“png” or “tif”)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>”tif”</p>
 </dd>
 </dl>
@@ -325,7 +325,7 @@ done in the original paper. This means that classes 1, 2, … 10 are
 collected into one class, 11, 12, … 100 into another one etc. Done for
 both count and area.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True</p>
 </dd>
 </dl>
@@ -342,14 +342,14 @@ both count and area.</p>
 <span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAHR_DataSet.</span></span><span class="sig-name descname"><span class="pre">resolve_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAHR_DataSet.resolve_data_dir" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper function that tries to resolve the correct directory</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_dir</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – current path that is suggested</p></li>
 <li><p><strong>allow_mock</strong> (<em>bool</em>) – allows mock data path to be returned</p></li>
 <li><p><strong>force_mock</strong> (<em>bool</em>) – only mock data path will be returned. Useful for debugging with</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -362,26 +362,26 @@ both count and area.</p>
 <span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAHR_DataSet.</span></span><span class="sig-name descname"><span class="pre">select_answers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">answers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tqdm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAHR_DataSet.select_answers" title="Permalink to this definition">#</a></dt>
 <dd><p>Selects the most frequently present answers and returns them in order of frequency.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>answers</strong> – input list of answers</p></li>
 <li><p><strong>number_of_answers</strong> (<em>int</em>) – <p>how many answers should be selected</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>1_000</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>use_tqdm</strong> (<em>bool</em>) – <p>Flag to use tqdm as progress bar</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
 </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>most frequent answers (list of length number_of_answers), ordered by
 frequency</p>
 </dd>
@@ -397,18 +397,18 @@ frequency</p>
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_phili_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_infos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Initializes a pytorch lightning data module.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>batch_size</strong> – <p>batch size for data loaders</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>16</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>data_dir</strong> (<em>str</em>) – <p>root directory to images and jsons folder</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>./</p>
 </dd>
 </dl>
@@ -416,7 +416,7 @@ frequency</p>
 <li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
 than the images found in the csv, None or -1, all images will be loaded.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -425,7 +425,7 @@ than the images found in the csv, None or -1, all images will be loaded.</p>
 applied bicubic before any transformation. Also selects if the returned
 images are RGB or grayscale based on the number of channels.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(3, 256, 256)</p>
 </dd>
 </dl>
@@ -433,14 +433,14 @@ images are RGB or grayscale based on the number of channels.</p>
 <li><p><strong>shuffle</strong> – <p>Flag if dataset should be shuffled. If set to None, only train
 will be shuffled and validation and test won’t.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>num_workers_dataloader</strong> – <p>number of workers used for data loading</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>#CPU_cores/2</p>
 </dd>
 </dl>
@@ -449,7 +449,7 @@ will be shuffled and validation and test won’t.</p>
 answers will be selected based on <cite>classes</cite> for the data set in order of
 frequency of the training set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -458,7 +458,7 @@ frequency of the training set.</p>
 standard huggingface tokenizer. If not set, a default tokenizer will be
 used and a warning shown.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -467,7 +467,7 @@ used and a warning shown.</p>
 maximum and expanded to this if the question is too short. Includes start
 and end token.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>32</p>
 </dd>
 </dl>
@@ -475,7 +475,7 @@ and end token.</p>
 <li><p><strong>print_infos</strong> (<em>bool</em>) – <p>Flag, if additional information during setup() and reading
 should be printed (e.g. number of workers detected, number of images loaded)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
@@ -483,7 +483,7 @@ should be printed (e.g. number of workers detected, number of images loaded)</p>
 <li><p><strong>pin_memory</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Flag if memory should be pinned for data loading. If not
 specified set to True if cuda devices are used, else false.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -491,7 +491,7 @@ specified set to True if cuda devices are used, else false.</p>
 <li><p><strong>use_phili_test</strong> (<em>bool</em>) – <p>Flag if the test set 1 or 2 (Philadelphia Test Set)
 should be used. See original paper for details.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
@@ -515,7 +515,7 @@ creation.</p></li>
 <p>Prints the time it needed for this operation and other statistics if print_infos
 is set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>stage</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – None, “fit” or “test”</p>
 </dd>
 </dl>
@@ -527,7 +527,7 @@ is set.</p>
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch DataLoader for the test set (1 or 2 based on <cite>__init__</cite> call)</p>
 </dd>
 </dl>
@@ -539,7 +539,7 @@ Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)<
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch DataLoader for the train set</p>
 </dd>
 </dl>
@@ -551,7 +551,7 @@ Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch DataLoader for the validation set</p>
 </dd>
 </dl>

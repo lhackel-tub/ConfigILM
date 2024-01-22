@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DataSets and DataModules" href="api_datasets.html" /><link rel="prev" title="HRVQA" href="../extra/DataSets%20and%20DataModules/hrvqa.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
@@ -246,10 +246,10 @@
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ConfigILM.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a ConfigILM model according to the provided ILMConfiguration</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>config</strong> (<a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration" title="configilm.ConfigILM.ILMConfiguration"><em>ILMConfiguration</em></a>) – Configuration file of the model. See ILMConfiguration for details</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>self</p>
 </dd>
 </dl>
@@ -261,11 +261,11 @@
 <dd><p>Model forward function that decides which parts of the model to use based on the
 configuration after checking that the input works with this kind of network.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>batch</strong> – Input batch of single modality of list of batches of multiple
 modalities</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>logits of the network</p>
 </dd>
 </dl>
@@ -276,10 +276,10 @@ modalities</p>
 <span class="sig-name descname"><span class="pre">get_tokenizer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ConfigILM.get_tokenizer" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter to the tokenizer of the text model if applicable.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tokenizer to specified huggingface text model.</p>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p>AttributeError if no text model is used</p>
 </dd>
 </dl>
@@ -291,7 +291,7 @@ modalities</p>
 <dd><p>Moves the model parts as well as the fusion methods and activations to a device
 or casts to a different type.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>args</strong> – device, dtype or other specified formats. See <cite>nn.module.to()</cite></p></li>
 <li><p><strong>kwargs</strong> – device, dtype or other specified formats. See <cite>nn.module.to()</cite></p></li>
@@ -312,11 +312,11 @@ or casts to a different type.</p>
 <dd><p>Initializes a configuration dataclass that defines all properties of ConfigILM
 models.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>channels</strong> (<em>int</em>) – <p>Number of input channels for the image model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>3</p>
 </dd>
 </dl>
@@ -325,7 +325,7 @@ models.</p>
 class-specific performance. If none, classes will be enumerated with
 numbers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -333,14 +333,14 @@ numbers.</p>
 <li><p><strong>classes</strong> (<em>int</em>) – <p>Number of classes for the output of IMAGE_CLASSIFICATION
 classifier or VQA_CLASSIFICATION classifier.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>10</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>drop_rate</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – <p>Dropout and drop path rate for timm models.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0.2</p>
 </dd>
 </dl>
@@ -348,14 +348,14 @@ classifier or VQA_CLASSIFICATION classifier.</p>
 <li><p><strong>fusion_activation</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>]</em><em>, </em><em>Tensor</em><em>]</em>) – <p>Activation function inside all classification head
 layers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>nn.tanh()</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>fusion_dropout_rate</strong> (<em>float</em>) – <p>Drop rate inside all classification head layers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0.25</p>
 </dd>
 </dl>
@@ -363,14 +363,14 @@ layers.</p>
 <li><p><strong>fusion_hidden</strong> (<em>int</em>) – <p>Number of neurons inside the hidden layer of the
 classification head.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>256</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>fusion_in</strong> (<em>int</em>) – <p>Input dimension to the fusion method.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>512</p>
 </dd>
 </dl>
@@ -382,7 +382,7 @@ output of image model with dimension fusion_in, second input is flatten
 output of the text model with dimension fusion_in. Output should have the
 dimension fusion_out.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch.mul</p>
 </dd>
 </dl>
@@ -390,7 +390,7 @@ dimension fusion_out.</p>
 <li><p><strong>fusion_out</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>int</em><em>]</em>) – <p>Output dimension of the fusion method. If None, output will
 be same as input (e.g. for point-wise operations).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -398,7 +398,7 @@ be same as input (e.g. for point-wise operations).</p>
 <li><p><strong>hf_model_name</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>str</em><em>]</em>) – <p>Name of the text model from huggingface if applicable. The
 model has to be a model for text sequence classification.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -406,7 +406,7 @@ model has to be a model for text sequence classification.</p>
 <li><p><strong>image_size</strong> (<em>int</em>) – <p>Size of input images for image models. Only applicable for
 some specific models.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>120</p>
 </dd>
 </dl>
@@ -414,7 +414,7 @@ some specific models.</p>
 <li><p><strong>load_pretrained_hf_if_available</strong> (<em>bool</em>) – <p>Load pretrained weights for huggingface
 model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True</p>
 </dd>
 </dl>
@@ -422,7 +422,7 @@ model.</p>
 <li><p><strong>load_pretrained_timm_if_available</strong> (<em>bool</em>) – <p>Load pretrained weights for timm
 model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
@@ -431,7 +431,7 @@ model.</p>
 Sequences that are shorter will be padded, longer ones are cropped to this
 maximum length.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>32</p>
 </dd>
 </dl>
@@ -439,7 +439,7 @@ maximum length.</p>
 <li><p><strong>network_type</strong> (<a class="reference internal" href="#configilm.ConfigILM.ILMType" title="configilm.ConfigILM.ILMType"><em>ILMType</em></a>) – <p>Type of ILM-network. Available types are listed in ILMType
 enum.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ILMType.IMAGE_CLASSIFICATION</p>
 </dd>
 </dl>
@@ -447,7 +447,7 @@ enum.</p>
 <li><p><strong>t_dropout_rate</strong> (<em>float</em>) – <p>Dropout rate of the mapping from the huggingface text
 model to the dimension of the fusion method.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0.25</p>
 </dd>
 </dl>
@@ -458,7 +458,7 @@ timm.list_models()</p></li>
 applicable and available. Otherwise, last hidden features will be flattened
 and used instead.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True</p>
 </dd>
 </dl>
@@ -466,7 +466,7 @@ and used instead.</p>
 <li><p><strong>v_dropout_rate</strong> (<em>float</em>) – <p>Dropout rate of the mapping from the timm image model to
 the dimension of the fusion method.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0.25</p>
 </dd>
 </dl>
@@ -475,7 +475,7 @@ the dimension of the fusion method.</p>
 will be linearly mapped to fusion_in dimension with activation and dropout
 as specified.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>512</p>
 </dd>
 </dl>

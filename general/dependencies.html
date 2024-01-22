@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="License" href="license.html" /><link rel="prev" title="Contributor Covenant Code of Conduct" href="code_of_conduct.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
@@ -240,51 +240,51 @@
 <section id="python-poetry-dependencies">
 <h2>Python (Poetry) Dependencies<a class="headerlink" href="#python-poetry-dependencies" title="Permalink to this heading">#</a></h2>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.poetry.dependencies]</span>
-<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.9, &lt;3.12&quot;</span>
+<span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.9, &lt;3.12&quot;</span>
 <span class="c1"># pytorch dependencies for cuda are not set correctly in pypi right now</span>
 <span class="c1"># therefore we cannot use the newest versions</span>
-<span class="n">torch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^2.0.0, != 2.0.1, != 2.1.0&quot;</span>
-<span class="n">timm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.9.2&quot;</span>
-<span class="n">transformers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^4.26.0&quot;</span>
-<span class="n">appdirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.4.4&quot;</span>
+<span class="n">torch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^2.0.0, != 2.0.1, != 2.1.0&quot;</span>
+<span class="n">timm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^0.9.2&quot;</span>
+<span class="n">transformers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^4.26.0&quot;</span>
+<span class="n">appdirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^1.4.4&quot;</span>
 <span class="c1"># pydantic version 2 is incompatible with bigearthnet-encoder</span>
-<span class="n">pydantic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.8&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
-<span class="n">lmdb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.4.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
-<span class="n">pyarrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^12.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
-<span class="n">bigearthnet-encoder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.3.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
-<span class="n">pytorch-lightning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^2.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"> </span><span class="p">}</span>
+<span class="n">pydantic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^1.8&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+<span class="n">lmdb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^1.4.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+<span class="n">pyarrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^12.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+<span class="n">bigearthnet-encoder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^0.3.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+<span class="n">pytorch-lightning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^2.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
 
 
 <span class="k">[tool.poetry.extras]</span>
 <span class="n">bigearthnet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s">&quot;lmdb&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s">&quot;bigearthnet-encoder&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s">&quot;pydantic&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s">&quot;pyarrow&quot;</span><span class="w">  </span><span class="c1"># for parquet files</span>
+<span class="w">    </span><span class="s2">&quot;lmdb&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;bigearthnet-encoder&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pydantic&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pyarrow&quot;</span><span class="w">  </span><span class="c1"># for parquet files</span>
 <span class="p">]</span>
 <span class="n">full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s">&quot;lmdb&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s">&quot;bigearthnet-encoder&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s">&quot;pytorch-lightning&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s">&quot;pydantic&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s">&quot;pyarrow&quot;</span>
+<span class="w">    </span><span class="s2">&quot;lmdb&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;bigearthnet-encoder&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pytorch-lightning&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pydantic&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pyarrow&quot;</span>
 <span class="p">]</span>
 
 
 <span class="k">[tool.poetry.group.dev.dependencies]</span>
-<span class="n">matplotlib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.6.3&quot;</span>
-<span class="n">pytest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^7.2.1&quot;</span>
-<span class="n">coverage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^7.1.0&quot;</span>
-<span class="n">pre-commit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.0.2&quot;</span>
-<span class="n">pytest-mock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.10.0&quot;</span>
-<span class="n">furo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^2022.03.23&quot;</span>
-<span class="n">myst-nb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^0.17.1&quot;</span>
-<span class="n">sphinx-autobuild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^2021.3.14&quot;</span>
-<span class="n">sphinxcontrib-bibtex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^2.5.0&quot;</span>
-<span class="n">common-nb-preprocessors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^1.1.1&quot;</span>
-<span class="n">jupyterlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.6.1&quot;</span>
-<span class="n">tensorboardx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^2.6&quot;</span>
-<span class="n">pytest-xdist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;^3.3.1&quot;</span>
+<span class="n">matplotlib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.6.3&quot;</span>
+<span class="n">pytest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^7.2.1&quot;</span>
+<span class="n">coverage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^7.1.0&quot;</span>
+<span class="n">pre-commit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.0.2&quot;</span>
+<span class="n">pytest-mock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.10.0&quot;</span>
+<span class="n">furo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^2022.03.23&quot;</span>
+<span class="n">myst-nb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^0.17.1&quot;</span>
+<span class="n">sphinx-autobuild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^2021.3.14&quot;</span>
+<span class="n">sphinxcontrib-bibtex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^2.5.0&quot;</span>
+<span class="n">common-nb-preprocessors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^1.1.1&quot;</span>
+<span class="n">jupyterlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.6.1&quot;</span>
+<span class="n">tensorboardx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^2.6&quot;</span>
+<span class="n">pytest-xdist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.3.1&quot;</span>
 </pre></div>
 </div>
 </section>

@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Updated BigEarthNet DataSets and DataModules" href="api_ds_BEN2.html" /><link rel="prev" title="BigEarthNet Utils" href="api_BEN_reader.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
@@ -253,11 +253,11 @@ Assumes that the cvs files named after the requested split are located next to
 the lmdb file (folder), which was created using BigEarthNetEncoder.</p>
 <p>Image lmdb file is expected to be named “BigEarthNetEncoded.lmdb”</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>root_dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – <p>root directory to lmdb file and optional train/val/test.csv</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>../</p>
 </dd>
 </dl>
@@ -265,14 +265,14 @@ the lmdb file (folder), which was created using BigEarthNetEncoder.</p>
 <li><p><strong>csv_files</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Path</em><em>, </em><em>Iterable</em><em>[</em><em>Path</em><em>]</em><em>]</em><em>]</em>) – <p>None (uses split-specific csv files) or csv file specifying
 patch names</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>“train”, “val” or “test” or None for all</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None (loads all splits)</p>
 </dd>
 </dl>
@@ -280,7 +280,7 @@ patch names</p>
 <li><p><strong>transform</strong> – <p>transformations to be applied to loaded images aside from
 scaling all bands to img_size.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -288,7 +288,7 @@ scaling all bands to img_size.</p>
 <li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
 than the images found in the csv, None or -1, all images will be loaded.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -298,7 +298,7 @@ applied bicubic before any transformation.</p>
 <p>Also specifies which channels to load.
 See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(12, 120, 120)</p>
 </dd>
 </dl>
@@ -306,14 +306,14 @@ See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.<
 <li><p><strong>return_patchname</strong> (<em>bool</em>) – <p>If set to True, __getitem__ will return
 (img, lbl, patch_name) instead of (img, lbl)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>patch_prefilter</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>str</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>]</em>) – <p>Callable to filter patches after reading csv files</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -335,13 +335,13 @@ See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.<
 <dd><p>Gives the index of the image of a specific name. Does not distinguish between
 invalid names (not in original BigEarthNet) and names not in loaded list.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>patchname</strong> (<em>str</em>) – name of an image</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>index of the image or None, if the name is not loaded</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Optional</em>[int]</p>
 </dd>
 </dl>
@@ -354,13 +354,13 @@ invalid names (not in original BigEarthNet) and names not in loaded list.</p>
 names (names that are not actually loadable because they are not part of the
 lmdb file) if the name is included in the csv file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>idx</strong> (<em>int</em>) – index of an image</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>patch name of the image or None, if the index is invalid</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -381,32 +381,32 @@ Original Paper of Image Data:
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_infos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Initializes a pytorch lightning data module.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>batch_size</strong> – <p>batch size for data loaders</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>16</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>data_dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – <p>base data directory for lmdb and csv files</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>./</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>img_size</strong> – <p>image size <cite>(c, h, w)</cite> in accordance with <cite>BENDataSet</cite></p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None uses default of dataset</p>
 </dd>
 </dl>
 </p></li>
 <li><p><strong>num_workers_dataloader</strong> – <p>number of workers used for data loading</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>#CPU_cores/2</p>
 </dd>
 </dl>
@@ -415,7 +415,7 @@ Original Paper of Image Data:
 is higher than the images found in the csv, None or -1, all images will be
 loaded.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -423,7 +423,7 @@ loaded.</p>
 <li><p><strong>shuffle</strong> – <p>Flag if dataset should be shuffled. If set to None, only train
 will be shuffled and validation and test won’t.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -431,7 +431,7 @@ will be shuffled and validation and test won’t.</p>
 <li><p><strong>print_infos</strong> (<em>bool</em>) – <p>Flag, if additional information during setup() and reading
 should be printed (e.g. number of workers detected, number of images loaded)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
@@ -439,7 +439,7 @@ should be printed (e.g. number of workers detected, number of images loaded)</p>
 <li><p><strong>pin_memory</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Flag if memory should be pinned for data loading. If not
 specified set to True if cuda devices are used, else false.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default</dt>
+<dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -463,10 +463,10 @@ creation.</p></li>
 <p>Prints the time it needed for this operation and other statistics if print_infos
 is set.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>stage</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – None, “fit” or “test”</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -478,7 +478,7 @@ is set.</p>
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch DataLoader for the test set</p>
 </dd>
 </dl>
@@ -490,7 +490,7 @@ Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)<
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch DataLoader for the train set</p>
 </dd>
 </dl>
@@ -502,7 +502,7 @@ Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>torch DataLoader for the validation set</p>
 </dd>
 </dl>

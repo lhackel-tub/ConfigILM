@@ -22,7 +22,7 @@ import torch.nn.functional as F
 import lmdb
 from os.path import isdir
 
-from configilm.util import Messages
+from configilm.extra.data_dir import resolve_data_dir_for_ds
 
 BAND_COMBINATION_PREDEFINTIONS = {
     "S1": ["VH", "VV"],
@@ -174,41 +174,9 @@ def resolve_data_dir(
         small data
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
-    if data_dir in [None, "none", "None"]:
-        Messages.warn("No data directory provided, trying to resolve")
-        paths = [
-            "/dev/shm/BEN/",  # shared memory
-            "/home/lhackel/Documents/datasets/BEN/",  # laptop
-            "/data/leonard/BEN_VQA/",  # MARS
-            "/faststorage/leonard/",  # ERDE
-            "/mnt/storagecube/leonard/",  # last resort: storagecube (MARS)
-            "/media/storagecube/leonard/",  # (ERDE)
-            "/faststorage/BENVQA-DS",  # eolab legacy
-        ]
-        for p in paths:
-            if isdir(p):
-                data_dir = p
-                Messages.warn(f"Changing path to {data_dir}")
-                break
-
-    # using mock data if allowed and no other found or forced
-    if data_dir in [None, "none", "None"] and allow_mock:
-        Messages.warn("Mock data being used, no alternative available.")
-        data_dir = str(
-            pathlib.Path(__file__).parent.joinpath("mock_data").resolve(True)
-        )
-    if force_mock:
-        Messages.warn("Forcing Mock data")
-        data_dir = str(
-            pathlib.Path(__file__).parent.joinpath("mock_data").resolve(True)
-        )
-
-    if data_dir is None:
-        raise AssertionError("Could not resolve data directory")
-    elif data_dir in ["none", "None"]:
-        raise AssertionError("Could not resolve data directory")
-    else:
-        return data_dir
+    return resolve_data_dir_for_ds(
+        "benv1", data_dir, allow_mock=allow_mock, force_mock=force_mock
+    )
 
 
 def read_ben_from_lmdb(env, key):

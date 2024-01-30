@@ -1,190 +1,111 @@
-import json
 import os
-from os.path import isdir
+from collections import Counter
 from os.path import join
 from pathlib import Path
 from typing import Optional
 from typing import Union
+from typing import Callable
+from typing import Mapping
 
 import torch
 import torch.nn.functional as F
 from PIL import Image
-from torch.utils.data import Dataset
 from torchvision import transforms
 
-from configilm.util import get_default_tokenizer
-from configilm.util import huggingface_tokenize_and_pad
+from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
+from configilm.extra.data_dir import resolve_data_dir_for_ds
 from configilm.util import Messages
 
 
 def resolve_data_dir(
-    data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
-) -> str:
+        data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
+) -> Mapping[str, Union[str, Path]]:
     """
     Helper function that tries to resolve the correct directory
     :param data_dir: current path that is suggested
-    :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
+    :param allow_mock: if True, mock data will be used if no real data is found
+    :param force_mock: if True, only mock data will be used
+
+    :return: a dict with all paths to the data
     """
-    if data_dir in [None, "none", "None"]:
-        Messages.warn("No data directory provided, trying to resolve")
-
-        paths = [
-            "",  # shared memory
-            "/home/lhackel/Documents/datasets/COCO-QA/",  # laptop
-            "",  # MARS
-            "",  # ERDE
-            "",  # last resort: storagecube (MARS)
-            "",  # (ERDE)
-            "",  # eolab legacy
-        ]
-        for p in paths:
-            if isdir(p):
-                data_dir = p
-                Messages.warn(f"Changing path to {data_dir}")
-                break
-
-    # using mock data if allowed and no other found or forced
-    if data_dir in [None, "none", "None"] and allow_mock:
-        Messages.warn("Mock data being used, no alternative available.")
-        data_dir = str(
-            Path(__file__)
-            .parent.parent.joinpath("mock_data")
-            .joinpath("COCO-QA")
-            .resolve(True)
-        )
-    if force_mock:
-        Messages.warn("Forcing Mock data")
-        data_dir = str(
-            Path(__file__)
-            .parent.parent.joinpath("mock_data")
-            .joinpath("COCO-QA")
-            .resolve(True)
-        )
-
-    if data_dir is None:
-        raise AssertionError("Could not resolve data directory")
-    elif data_dir in ["none", "None"]:
-        raise AssertionError("Could not resolve data directory")
-    else:
-        return data_dir
+    return resolve_data_dir_for_ds("cocoqa", data_dir, allow_mock, force_mock)
 
 
-class COCOQADataSet(Dataset):
-    num_classes = 430
+def _txts_to_dict(base_dir: str):
+    # collect all .txt files in dir
+    txt_files = [join(base_dir, x) for x in os.listdir(base_dir) if x.endswith(".txt")]
+    data = {
+        "answers": [],
+        "img_ids": [],
+        "questions": [],
+        "types": [],
+    }
+    # read all files
+    for f_name in sorted(txt_files):
+        key = Path(f_name).stem
+        assert key in data, f"Unknown file {f_name}"
+        with open(join(base_dir, f_name)) as f:
+            data[key] = f.readlines()
+    # remove \n from all strings
+    data = {k: [x.strip() for x in v] for k, v in data.items()}
+    # correct img_ids to match image names
+    split = "train" if "train" in Path(base_dir).stem else "val"
+    data["img_ids"] = [f"COCO_{split}2014_{x:>012}.jpg" for x in data["img_ids"]]
+    # zip all lists together to one list of 4 item tuples
+    data = list(zip(data["img_ids"], data["questions"], data["answers"], data["types"]))
+    return data
 
+
+class COCOQADataSet(ClassificationVQADataset):
     def __init__(
-        self,
-        root_dir="./",
-        split: Optional[str] = None,
-        transform=None,
-        max_img_idx=None,
-        img_size=(3, 120, 120),
-        tokenizer=None,
-        seq_length=64,
+            self,
+            data_dirs: Mapping[str, Union[str, Path]],
+            split: Optional[str] = None,
+            transform: Optional[Callable] = None,
+            max_len: Optional[int] = None,
+            img_size: Optional[tuple] = (3, 120, 120),
+            selected_answers: Optional[list] = None,
+            num_classes: Optional[int] = 430,
+            tokenizer: Optional[Callable] = None,
+            seq_length: int = 64,
+            return_extras: bool = False,
     ):
-        super().__init__()
-        self.root_dir = root_dir
-        self.transform = transform
-        self.image_size = img_size
-
-        if tokenizer is None:
-            Messages.warn(
-                "No tokenizer was provided, using BertTokenizer (uncased). "
-                "This may result in very bad performance if the used network "
-                "expected other tokens"
-            )
-            self.tokenizer = get_default_tokenizer()
-        else:
-            self.tokenizer = tokenizer
-        self.seq_length = seq_length
-
         print(f"Loading COCOQA data for {split}...")
-        self.qa_pairs = {}
-        if split is not None:
-            f_name = f"COCO-QA_QA_{split}.json"
-            with open(join(self.root_dir, f_name)) as read_file:
-                self.qa_pairs.update(json.load(read_file))
+        super().__init__(
+            data_dirs=data_dirs,
+            split=split,
+            transform=transform,
+            max_len=max_len,
+            img_size=img_size,
+            selected_answers=selected_answers,
+            num_classes=num_classes,
+            tokenizer=tokenizer,
+            seq_length=seq_length,
+            return_extras=return_extras,
+        )
+        self.convert = transforms.ToTensor()
+
+    def prepare_split(self, split: str):
+        if split == "train":
+            return _txts_to_dict(self.data_dirs["train_data"])
         else:
-            splits = ["train", "test"]
-            for s in splits:
-                f_name = f"COCO-QA_QA_{s}.json"
-                with open(join(self.root_dir, f_name)) as read_file:
-                    qa_pairs = json.load(read_file)
-                    qa_pairs = {f"{k}_{s}": v for k, v in qa_pairs.items()}
-                    self.qa_pairs.update(qa_pairs)
+            return _txts_to_dict(self.data_dirs["test_data"])
 
-        #  sort list for reproducibility
-        self.qa_values = [self.qa_pairs[key] for key in sorted(self.qa_pairs)]
-        del self.qa_pairs
-        print(f"    {len(self.qa_values):6,d} QA-pairs indexed")
-        if (
-            max_img_idx is not None
-            and max_img_idx < len(self.qa_values)
-            and max_img_idx != -1
-        ):
-            self.qa_values = self.qa_values[:max_img_idx]
-
-        image_name_mapping = os.listdir(join(self.root_dir, "images"))
-        self.image_name_mapping = {int(x[-14:-4]): x for x in image_name_mapping}
-
-        print(f"    {len(self.qa_values):6,d} QA-pairs in reduced data set")
-
-        self.answers = sorted(list({x["answer"] for x in self.qa_values}))
-        assert self.num_classes >= len(
-            self.answers
-        ), "There are more different answers than classes, this should not happen"
-
-    def _load_image(self, name):
-        name = self.image_name_mapping[int(name)]
-        convert = transforms.ToTensor()
-
-        img = Image.open(join(self.root_dir, "images", name)).convert("RGB")
-        tensor = convert(img)
+    def load_image(self, key: str) -> torch.Tensor:
+        img_split = "train2014" if "train" in key else "val2014"
+        img_dir = join(self.data_dirs["images"], img_split, key)
+        img = Image.open(img_dir).convert("RGB")
+        tensor = self.convert(img)
         # for some reason, HEIGHT and WIDTH are swapped in ToTensor() ... sometimes
         # FIXME: axis are only sometimes swapped
         # tensor = tensor.swapaxes(1, 2)
         tensor = F.interpolate(
             tensor.unsqueeze(dim=0),
-            self.image_size[-2:],
-            mode="bicubic",
+            self.img_size[-2:],
+            mode="bilinear",
             align_corners=True,
         ).squeeze(dim=0)
         return tensor
 
-    def _answer_to_onehot(self, answer):
-        label = torch.zeros(self.num_classes)
-        try:
-            label_idx = self.answers.index(answer)
-            label[label_idx] = 1
-        except ValueError:
-            # label not in list, return empty vector
-            pass
-        except AttributeError:
-            pass
-        return label
-
-    def __len__(self):
-        return len(self.qa_values)
-
-    def __getitem__(self, idx):
-        data = self.qa_values[idx]
-
-        # get image
-        # get answer
-        img = self._load_image(data["img_id"])
-        question_ids = huggingface_tokenize_and_pad(
-            tokenizer=self.tokenizer,
-            string=data["question"],
-            seq_length=self.seq_length,
-        )
-        answer = self._answer_to_onehot(data["answer"])
-        assert answer.sum() == 1, "Answer not valid, sum not 1"
-
-        if self.transform:
-            img = self.transform(img)
-
-        assert img.shape == self.image_size or self.transform is None, (
-            f"Shape mismatch for index {idx}\n "
-            f"Is {img.shape} but should be {self.image_size}"
-        )
-        return img, question_ids, answer
+    def split_names(self) -> set[str]:
+        return {"train", "test"}

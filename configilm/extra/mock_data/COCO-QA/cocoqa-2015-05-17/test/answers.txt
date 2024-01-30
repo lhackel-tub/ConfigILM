@@ -1,0 +1,10 @@
+hill
+carrots
+train
+car
+zebras
+bench
+green
+surfboard
+bus
+horse

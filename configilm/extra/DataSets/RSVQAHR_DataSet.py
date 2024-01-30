@@ -1,6 +1,5 @@
 import json
 import pathlib
-from os.path import isdir
 from pathlib import Path
 from typing import Optional
 from typing import Union
@@ -11,9 +10,10 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from tqdm import tqdm
 
+from configilm.extra.data_dir import resolve_data_dir_for_ds
+from configilm.util import Messages
 from configilm.util import get_default_tokenizer
 from configilm.util import huggingface_tokenize_and_pad
-from configilm.util import Messages
 
 # values based on train images - of original split
 _means = {"red": 0.4640, "green": 0.4682, "blue": 0.4376, "mono": 0.4566}
@@ -21,7 +21,7 @@ _stds = {"red": 0.1843, "green": 0.1740, "blue": 0.1656, "mono": 0.1764}
 
 
 def resolve_data_dir(
-    data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
+        data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
 ) -> str:
     """
     Helper function that tries to resolve the correct directory
@@ -32,34 +32,12 @@ def resolve_data_dir(
     small data
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
-    if data_dir in [None, "none", "None"]:
-        Messages.warn("No data directory provided, trying to resolve")
-        paths = [
-            "/mnt/storagecube/data/datasets/RSVQA/RSVQA-HR",  # MARS Storagecube
-            "/media/storagecube/data/datasets/RSVQA/RSVQA-HR",  # ERDE Storagecube
-        ]
-        for p in paths:
-            if isdir(p):
-                data_dir = p
-                Messages.warn(f"Changing path to {data_dir}")
-                break
-
-    # using mock data if allowed and no other found or forced
-    if data_dir in [None, "none", "None"] and allow_mock:
-        Messages.warn("Mock data being used, no alternative available.")
-        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "RSVQA-HR"
-        data_dir = str(data_dir_p.resolve(True))
-    if force_mock:
-        Messages.warn("Forcing Mock data")
-        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "RSVQA-HR"
-        data_dir = str(data_dir_p.resolve(True))
-
-    if data_dir is None:
-        raise AssertionError("Could not resolve data directory")
-    elif data_dir in ["none", "None"]:
-        raise AssertionError("Could not resolve data directory")
-    else:
-        return data_dir
+    return resolve_data_dir_for_ds(
+        dataset_name="rsvqa-hr",
+        data_dir=data_dir,
+        allow_mock=allow_mock,
+        force_mock=force_mock,
+    )
 
 
 def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = False):
@@ -103,7 +81,7 @@ def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = Fal
             f"requested, but {len(answers_by_appearence)} found)."
         )
         answers_by_appearence += [("INVALID", 0)] * (
-            number_of_answers - len(answers_by_appearence)
+                number_of_answers - len(answers_by_appearence)
         )
 
     selected_answers = answers_by_appearence[:number_of_answers]
@@ -193,18 +171,18 @@ def _quantize_answers(a_dict: dict):
 
 class RSVQAHRDataSet(Dataset):
     def __init__(
-        self,
-        root_dir: Union[Path, str],
-        split: Optional[str] = None,
-        transform=None,
-        max_img_idx=None,
-        img_size=(3, 256, 256),
-        selected_answers=None,
-        classes: int = 94,
-        tokenizer=None,
-        seq_length: int = 32,
-        use_file_format: str = "tif",
-        quantize_answers: bool = True,
+            self,
+            root_dir: Union[Path, str],
+            split: Optional[str] = None,
+            transform=None,
+            max_img_idx=None,
+            img_size=(3, 256, 256),
+            selected_answers=None,
+            classes: int = 94,
+            tokenizer=None,
+            seq_length: int = 32,
+            use_file_format: str = "tif",
+            quantize_answers: bool = True,
     ):
         """
         :param root_dir: root directory to images and jsons folder
@@ -372,10 +350,10 @@ class RSVQAHRDataSet(Dataset):
         label = self._to_labels(answer["answer"])
 
         img_path = (
-            self.root_dir
-            / "Images"
-            / "Data"
-            / f'{question["img_id"]}.{self.use_file_format}'
+                self.root_dir
+                / "Images"
+                / "Data"
+                / f'{question["img_id"]}.{self.use_file_format}'
         )
         img = Image.open(img_path.resolve()).convert("RGB")
         img = self.pre_transforms(img)

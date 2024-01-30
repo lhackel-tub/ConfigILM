@@ -73,42 +73,42 @@ class Messages:
     @classmethod
     def warn(cls, message: str) -> None:
         """
-        Prints a yellow warning message with aligned indent and "WARNING:".
+        Prints a yellow warning message with aligned indent and "[WARNING]".
         If the message has multiple lines, it is aligned to the right of the colon.
 
         :param message: Message to print
         """
-        print(f"\n{cls.WARNING}WARNING: {indent(message, 9)}{cls.ENDC}")
+        print(f"\n{cls.WARNING}[WARNING] {indent(message, 9)}{cls.ENDC}")
 
     @classmethod
     def error(cls, message: str) -> None:
         """
-        Prints a red error message with aligned indent and "ERROR:".
+        Prints a red error message with aligned indent and "[ERROR]".
         If the message has multiple lines, it is aligned to the right of the colon.
 
         :param message: Message to print
         """
-        print(f"\n{cls.FAIL}ERROR: {indent(message, 7)}{cls.ENDC}")
+        print(f"\n{cls.FAIL}[ERROR]   {indent(message, 7)}{cls.ENDC}")
 
     @classmethod
     def success(cls, message: str) -> None:
         """
-        Prints a green success message with aligned indent and "SUCCESS:"
+        Prints a green success message with aligned indent and "[SUCCESS]"
         If the message has multiple lines, it is aligned to the right of the colon.
 
         :param message: Message to print
         """
-        print(f"\n{cls.OKGREEN}SUCCESS: {indent(message, 10)}{cls.ENDC}")
+        print(f"\n{cls.OKGREEN}[SUCCESS] {indent(message, 10)}{cls.ENDC}")
 
     @classmethod
     def hint(cls, message: str) -> None:
         """
-        Prints a blue hint message with aligned indent and "HINT:".
+        Prints a blue hint message with aligned indent and "[HINT]".
         If the message has multiple lines, it is aligned to the right of the colon.
 
         :param message: Message to print
         """
-        print(f"\n{cls.OKCYAN}HINT: {indent(message, 6)}{cls.ENDC}")
+        print(f"\n{cls.OKCYAN}[HINT]    {indent(message, 6)}{cls.ENDC}")
 
 
 def round_to(x, base):

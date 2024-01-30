@@ -1,6 +1,5 @@
 import json
 import pathlib
-from os.path import isdir
 from pathlib import Path
 from typing import Optional
 from typing import Union
@@ -11,9 +10,10 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 from tqdm import tqdm
 
+from configilm.extra.data_dir import resolve_data_dir_for_ds
+from configilm.util import Messages
 from configilm.util import get_default_tokenizer
 from configilm.util import huggingface_tokenize_and_pad
-from configilm.util import Messages
 
 # values based on train images - of original split
 _means = {"red": 0.2060, "green": 0.2680, "blue": 0.2884, "mono": 0.2541}
@@ -32,34 +32,12 @@ def resolve_data_dir(
                        small data
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
-    if data_dir in [None, "none", "None"]:
-        Messages.warn("No data directory provided, trying to resolve")
-        paths = [
-            "/mnt/storagecube/data/datasets/RSVQA/RSVQA-LR",  # MARS Storagecube
-            "/media/storagecube/data/datasets/RSVQA/RSVQA-LR",  # ERDE Storagecube
-        ]
-        for p in paths:
-            if isdir(p):
-                data_dir = p
-                Messages.warn(f"Changing path to {data_dir}")
-                break
-
-    # using mock data if allowed and no other found or forced
-    if data_dir in [None, "none", "None"] and allow_mock:
-        Messages.warn("Mock data being used, no alternative available.")
-        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "RSVQA-LR"
-        data_dir = str(data_dir_p.resolve(True))
-    if force_mock:
-        Messages.warn("Forcing Mock data")
-        data_dir_p = pathlib.Path(__file__).parent.parent / "mock_data" / "RSVQA-LR"
-        data_dir = str(data_dir_p.resolve(True))
-
-    if data_dir is None:
-        raise AssertionError("Could not resolve data directory")
-    elif data_dir in ["none", "None"]:
-        raise AssertionError("Could not resolve data directory")
-    else:
-        return data_dir
+    return resolve_data_dir_for_ds(
+        dataset_name="rsvqa-lr",
+        data_dir=data_dir,
+        allow_mock=allow_mock,
+        force_mock=force_mock,
+    )
 
 
 def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = False):

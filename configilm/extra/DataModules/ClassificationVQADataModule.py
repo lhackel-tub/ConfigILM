@@ -32,6 +32,60 @@ class ClassificationVQADataModule(LightningDataModule):
             seq_length: int = 64,
             pin_memory: Optional[bool] = None,
     ):
+        """
+        This class is a base class for datamodules that are used for classification
+        of visual question answering. It provides some basic functionality that
+        is shared between different datamodules. It is not intended to be used
+        directly, but rather must be subclassed.
+
+        :param data_dirs: A mapping from file key to file path. The file key is
+            used to identify the function of the file. For example, the key
+            "questions.txt" is used to identify the file that contains the
+            questions. The file path can be either a string or a Path object.
+            Required keys are "images", "train_data" and "test_data".
+
+        :param batch_size: The batch size to use for the dataloaders.
+
+            :default: 16
+
+        :param img_size: The size of the images. Note that this includes the
+            number of channels. For example, if the images are RGB images, the
+            size should be (3, 120, 120) but for grayscale images, the size should
+            be (1, 120, 120). This is dataset specific.
+
+            :default: (3, 120, 120)
+
+        :param num_workers_dataloader: The number of workers to use for the
+            dataloaders.
+
+            :default: 4
+
+        :param shuffle: Whether to shuffle the data or not. If None is provided,
+            the data is shuffled for training and not shuffled for validation and
+            test. This is recommended for most training scenarios.
+
+            :default: None
+
+        :param max_len: The maximum number of qa-pairs to use. If None or -1 is
+            provided, all qa-pairs are used.
+
+            :default: None
+
+        :param tokenizer: A callable that is used to tokenize the questions. If
+            set to None, the default tokenizer (from configilm.util) is used.
+
+            :default: None
+
+        :param seq_length: The maximum length of the tokenized questions.
+
+            :default: 64
+
+        :param pin_memory: Whether to pin the memory or not. If None is provided,
+            the memory is pinned if a GPU is available. Cannot be set to True if
+            no GPU is available.
+
+            :default: None
+        """
         super().__init__()
         self.data_dirs = data_dirs
         self.batch_size = batch_size
@@ -57,6 +111,9 @@ class ClassificationVQADataModule(LightningDataModule):
         raise NotImplementedError("This method must be implemented by subclasses.")
 
     def train_dataloader(self):
+        """
+        Returns the dataloader for the training data.
+        """
         assert self.train_ds is not None, "setup() for training must be called before train_dataloader()"
         return DataLoader(
             self.train_ds,
@@ -67,6 +124,12 @@ class ClassificationVQADataModule(LightningDataModule):
         )
 
     def val_dataloader(self):
+        """
+        Returns the dataloader for the validation data.
+
+        :raises: AssertionError if the validation dataset is not set up. This can happen if the setup()
+            method is not called before this method or the dataset has no validation data.
+        """
         assert self.val_ds is not None, "setup() for validation must be called before val_dataloader()"
         return DataLoader(
             self.val_ds,
@@ -77,6 +140,12 @@ class ClassificationVQADataModule(LightningDataModule):
         )
 
     def test_dataloader(self):
+        """
+        Returns the dataloader for the test data.
+
+        :raises: AssertionError if the test dataset is not set up. This can happen if the setup()
+            method is not called before this method or the dataset has no test data.
+        """
         assert self.test_ds is not None, "setup() for testing must be called before test_dataloader()"
         return DataLoader(
             self.test_ds,

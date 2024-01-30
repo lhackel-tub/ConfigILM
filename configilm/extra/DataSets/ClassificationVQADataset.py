@@ -23,7 +23,7 @@ class ClassificationVQADataset(Dataset):
             max_len: Optional[int] = None,
             img_size: Optional[tuple] = (3, 120, 120),
             selected_answers: Optional[list] = None,
-            num_classes: Optional[int] = 9,
+            num_classes: Optional[int] = 1000,
             tokenizer: Optional[Callable] = None,
             seq_length: int = 64,
             return_extras: bool = False,
@@ -41,26 +41,47 @@ class ClassificationVQADataset(Dataset):
         :param split: The name of the split to use. This is dataset specific. If
             None is provided, the dataset is expected to provide a method called
             split_names that returns a set of strings, each string being the name
-            of a split. All splits will be used in this case (default). If
+            of a split. All splits will be used in this case. If
             split_names is not implemented, the default implementation will
             return {"train", "val", "test"}.
+
+            :default: None
+
         :param transform: A callable that is used to transform the images after
             loading them. This is dataset specific. If None is provided, no
-            transformation is applied (default).
-        :param max_len: The maximum number of qa-pairs to use. If None is
-            provided, all qa-pairs are used (default). If max_len is -1, no
-            qa-pairs are used.
-        :param img_size: The size of the images. This is dataset specific. If
-            None is provided, the default value is (3, 120, 120).
+            transformation is applied.
+
+            :default: None
+
+        :param max_len: The maximum number of qa-pairs to use. If None or -1 is
+            provided, all qa-pairs are used.
+
+            :default: None
+
+        :param img_size: The size of the images. This is dataset specific.
+
+            :default: (3, 120, 120)
+
         :param selected_answers: A list of answers that should be used. If None
             is provided, the num_classes most common answers are used. If
             selected_answers is not None, num_classes is ignored.
+
+            :default: None
+
         :param num_classes: The number of classes to use. Only used if
             selected_answers is None. If set to None, all answers are used.
+
+            :default: 1000
+
         :param tokenizer: A callable that is used to tokenize the questions. If
             set to None, the default tokenizer (from configilm.util) is used.
-        :param seq_length: The maximum length of the tokenized questions. If
-            None is provided, the default value is 64.
+
+            :default: None
+
+        :param seq_length: The maximum length of the tokenized questions.
+
+                :default: 64
+
         :param return_extras: If set to True, the __getitem__ method will return
             a tuple of (image, question_ids, answer, *extras). The extras are
             dataset specific and are provided by the dataset implementation. They
@@ -68,6 +89,8 @@ class ClassificationVQADataset(Dataset):
             prepare_split method at index 3 and higher. If set to False, the
             __getitem__ method will return a tuple of (image, question_ids,
             answer).
+
+            :default: False
         """
         super().__init__()
         self.data_dirs = data_dirs
@@ -138,6 +161,7 @@ class ClassificationVQADataset(Dataset):
         """
         This method should return a list of tuples, where each tuple contains
         the following elements:
+
         - The key of the image at index 0
         - The question at index 1
         - The answer at index 2

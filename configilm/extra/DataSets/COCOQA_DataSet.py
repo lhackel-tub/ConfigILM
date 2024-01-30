@@ -22,10 +22,15 @@ def resolve_data_dir(
 ) -> Mapping[str, Union[str, Path]]:
     """
     Helper function that tries to resolve the correct directory
+
     :param data_dir: current path that is suggested
+
     :param allow_mock: if True, mock data will be used if no real data is found
+
+        :Default: False
     :param force_mock: if True, only mock data will be used
 
+        :Default: False
     :return: a dict with all paths to the data
     """
     return resolve_data_dir_for_ds("cocoqa", data_dir, allow_mock, force_mock)
@@ -70,6 +75,61 @@ class COCOQADataSet(ClassificationVQADataset):
             seq_length: int = 64,
             return_extras: bool = False,
     ):
+        """
+        This class implements the COCOQA dataset. It is a subclass of
+        ClassificationVQADataset and provides some dataset specific functionality.
+
+        :param data_dirs: A mapping from file key to file path. The file key is
+            used to identify the function of the file. For example, the key
+            "questions.txt" is used to identify the file that contains the
+            questions. The file path can be either a string or a Path object.
+            Required keys are "images", "train_data" and "test_data".
+
+        :param split: The name of the split to use. Can be either "train" or
+            "test". If None is provided, all splits will be used (default).
+            "train" will use the training split, "test" will use the test split.
+
+            :default: None
+
+        :param transform: A callable that is used to transform the images after
+            loading them. If None is provided, no transformation is applied.
+
+            :default: None
+
+        :param max_len: The maximum number of qa-pairs to use. If None or -1 is
+            provided, all qa-pairs are used.
+
+            :default: None
+
+        :param img_size: The size of the images.
+
+            :default: (3, 120, 120)
+
+        :param selected_answers: A list of answers that should be used. If None
+            is provided, the num_classes most common answers are used. If
+            selected_answers is not None, num_classes is ignored.
+
+            :default: None
+
+        :param num_classes: The number of classes to use. Only used if
+            selected_answers is None. If set to None, all answers are used.
+
+            :default: 430
+
+        :param tokenizer: A callable that is used to tokenize the questions. If
+            set to None, the default tokenizer (from configilm.util) is used.
+
+            :default: None
+
+        :param seq_length: The maximum length of the tokenized questions.
+
+                :default: 64
+
+        :param return_extras: If True, the dataset will return the type of the
+            question in addition to the image, question and answer.
+
+            :default: False
+        """
         print(f"Loading COCOQA data for {split}...")
         super().__init__(
             data_dirs=data_dirs,

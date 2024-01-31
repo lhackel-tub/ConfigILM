@@ -50,7 +50,7 @@ class COCOQADataModule(ClassificationVQADataModule):
                 # normalize?
             ]
         )
-        self.transform = transforms.Compose(
+        self.eval_transforms = transforms.Compose(
             [
                 transforms.Resize((self.img_size[1], self.img_size[2]), antialias=True),
                 # normalize?
@@ -82,7 +82,7 @@ class COCOQADataModule(ClassificationVQADataModule):
             self.val_ds = COCOQADataSet(
                 self.data_dirs,
                 split="test",
-                transform=self.transform,
+                transform=self.eval_transforms,
                 max_len=self.max_len,
                 img_size=self.img_size,
                 tokenizer=self.tokenizer,
@@ -98,7 +98,7 @@ class COCOQADataModule(ClassificationVQADataModule):
             self.test_ds = COCOQADataSet(
                 self.data_dirs,
                 split="test",
-                transform=self.transform,
+                transform=self.eval_transforms,
                 max_len=self.max_len,
                 img_size=self.img_size,
                 tokenizer=self.tokenizer,

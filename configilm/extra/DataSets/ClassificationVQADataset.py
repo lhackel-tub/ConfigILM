@@ -4,7 +4,6 @@ from typing import Callable
 from typing import List
 from typing import Mapping
 from typing import Optional
-from typing import Union
 from warnings import warn
 
 import torch
@@ -17,7 +16,7 @@ from configilm.util import huggingface_tokenize_and_pad
 class ClassificationVQADataset(Dataset):
     def __init__(
         self,
-        data_dirs: Mapping[str, Union[str, Path]],
+        data_dirs: Mapping[str, Path],
         split: Optional[str] = None,
         transform: Optional[Callable] = None,
         max_len: Optional[int] = None,
@@ -130,8 +129,11 @@ class ClassificationVQADataset(Dataset):
         else:
             selected_answers = sorted(set(selected_answers))
         self.answers = selected_answers
+        # "INVALID" is used to indicate that the answer is not in the self.answers list
+        # add this string to the end of the list until the list has the correct length
+        assert num_classes is not None, "num_classes should have been set at this point, manually or automatically"
+        self.answers.extend(["INVALID"] * (num_classes - len(self.answers)))
         self.num_classes = num_classes
-        assert self.num_classes is not None, "num_classes should have been set at this point, manually or automatically"
         assert (
             len(self.answers) <= self.num_classes
         ), f"Number of answers ({len(self.answers)}) is larger than num_classes ({self.num_classes})"

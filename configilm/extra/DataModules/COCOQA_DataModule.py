@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Callable
 from typing import Mapping
 from typing import Optional
-from typing import Union
 
 from torchvision import transforms
 
@@ -17,7 +16,7 @@ from configilm.extra.DataSets.COCOQA_DataSet import COCOQADataSet
 class COCOQADataModule(ClassificationVQADataModule):
     def __init__(
         self,
-        data_dirs: Mapping[str, Union[str, Path]],
+        data_dirs: Mapping[str, Path],
         batch_size: int = 16,
         img_size: tuple = (3, 120, 120),
         num_workers_dataloader: int = 4,

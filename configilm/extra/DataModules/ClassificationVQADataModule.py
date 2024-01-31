@@ -22,7 +22,7 @@ class ClassificationVQADataModule(LightningDataModule):
 
     def __init__(
         self,
-        data_dirs: Mapping[str, Union[str, Path]],
+        data_dirs: Mapping[str, Path],
         batch_size: int = 16,
         img_size: tuple = (3, 120, 120),
         num_workers_dataloader: int = 4,

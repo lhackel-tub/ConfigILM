@@ -151,8 +151,8 @@ def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
 
 
 def resolve_data_dir(
-    data_dir: Optional[Mapping[str, Union[str, Path]]], allow_mock: bool = False, force_mock: bool = False
-) -> Mapping[str, Union[str, Path]]:
+    data_dir: Optional[Mapping[str, Path]], allow_mock: bool = False, force_mock: bool = False
+) -> Mapping[str, Path]:
     """
     Helper function that tries to resolve the correct directory.
 

@@ -2,7 +2,6 @@ from os.path import isdir
 from pathlib import Path
 from typing import Mapping
 from typing import Optional
-from typing import Union
 
 from configilm.util import Messages
 
@@ -156,10 +155,10 @@ mock_data_path = {
 
 def resolve_data_dir_for_ds(
     dataset_name: str,
-    data_dir_mapping: Optional[Mapping[str, Union[str, Path]]],
+    data_dir_mapping: Optional[Mapping[str, Path]],
     allow_mock: bool = False,
     force_mock: bool = False,
-) -> Mapping[str, Union[str, Path]]:
+) -> Mapping[str, Path]:
     """
     Resolves the data directory for the given dataset name.
 
@@ -199,4 +198,5 @@ def resolve_data_dir_for_ds(
     if data_dir_mapping is None:
         raise AssertionError("Could not resolve data directory")
     else:
-        return data_dir_mapping
+        # convert all values to a Path
+        return {k: Path(v) for k, v in data_dir_mapping.items()}

@@ -17,7 +17,7 @@ from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQAD
 
 
 def resolve_data_dir(
-    data_dir: Optional[Mapping[str, Union[str, Path]]], allow_mock: bool = False, force_mock: bool = False
+    data_dir: Optional[Mapping[str, Path]], allow_mock: bool = False, force_mock: bool = False
 ) -> Mapping[str, Union[str, Path]]:
     """
     Helper function that tries to resolve the correct directory
@@ -62,7 +62,7 @@ def _txts_to_dict(base_dir: str):
 class COCOQADataSet(ClassificationVQADataset):
     def __init__(
         self,
-        data_dirs: Mapping[str, Union[str, Path]],
+        data_dirs: Mapping[str, Path],
         split: Optional[str] = None,
         transform: Optional[Callable] = None,
         max_len: Optional[int] = None,

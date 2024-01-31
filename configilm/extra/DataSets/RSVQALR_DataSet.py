@@ -3,7 +3,10 @@ from pathlib import Path
 from typing import Callable
 from typing import Mapping
 from typing import Optional
-from typing import Union
+
+import numpy as np
+import torch
+from PIL import Image
 
 from configilm.extra.data_dir import resolve_data_dir_for_ds
 from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
@@ -14,8 +17,8 @@ _stds = {"red": 0.0876, "green": 0.0582, "blue": 0.0484, "mono": 0.0820}
 
 
 def resolve_data_dir(
-    data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
-) -> Mapping[str, Union[str, Path]]:
+    data_dir: Optional[Mapping[str, Path]], allow_mock: bool = False, force_mock: bool = False
+) -> Mapping[str, Path]:
     """
     Helper function that tries to resolve the correct directory
     for the RSVQA-LR dataset.
@@ -41,14 +44,14 @@ def resolve_data_dir(
 
 
 def _get_question_answers(
-    data_dirs: Mapping[str, Union[str, Path]], split: str, quantize_answers: bool = True
+    data_dirs: Mapping[str, Path], split: str, quantize_answers: bool = True
 ) -> list[tuple[str, str, str, str]]:
     def _remove_key_from_dict(d: dict, k: str):
         n = d.copy()
         n.pop(k)
         return n
 
-    split_data_dir = data_dirs[split]
+    split_data_dir = data_dirs[f"{split}_data"]
 
     # get all question ids
     f_name = f"LR_split_{split}_images.json"
@@ -112,11 +115,11 @@ def _quantize_answers(a_dict: Mapping[str, str]) -> Mapping[str, str]:
 class RSVQALRDataSet(ClassificationVQADataset):
     def __init__(
         self,
-        data_dirs: Mapping[str, Union[str, Path]],
+        data_dirs: Mapping[str, Path],
         split: Optional[str] = None,
         transform: Optional[Callable] = None,
         max_len: Optional[int] = None,
-        img_size: Optional[tuple] = (3, 120, 120),
+        img_size: tuple = (3, 256, 256),
         selected_answers: Optional[list] = None,
         num_classes: Optional[int] = 9,
         tokenizer: Optional[Callable] = None,
@@ -154,7 +157,7 @@ class RSVQALRDataSet(ClassificationVQADataset):
 
         :param img_size: The size of the images.
 
-            :default: (3, 120, 120)
+            :default: (3, 256, 256)
 
         :param selected_answers: A list of answers that should be used. If None
             is provided, the num_classes most common answers are used. If
@@ -182,6 +185,8 @@ class RSVQALRDataSet(ClassificationVQADataset):
             :default: False
         """
         self.quantize_answers = quantize_answers
+        assert split in {"train", "val", "test", None}, f"Invalid split: {split}"
+        assert img_size[0] == 3, "RSVQA-LR only supports RGB images."
         super().__init__(
             data_dirs=data_dirs,
             split=split,
@@ -204,3 +209,13 @@ class RSVQALRDataSet(ClassificationVQADataset):
 
     def split_names(self) -> set[str]:
         return {"train", "val", "test"}
+
+    def load_image(self, key: str) -> torch.Tensor:
+        img_path = self.data_dirs["images"] / f"{key}.tif"
+        img = Image.open(img_path).convert("RGB")
+        tensor = torch.tensor(np.array(img)).permute(2, 0, 1)
+        # resize image
+        tensor = torch.nn.functional.interpolate(
+            tensor.unsqueeze(0), size=self.img_size[1:], mode="bilinear", align_corners=False
+        ).squeeze(0)
+        return tensor

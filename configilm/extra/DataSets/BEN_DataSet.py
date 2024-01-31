@@ -58,7 +58,7 @@ class BENDataSet(Dataset):
         split: Optional[str] = None,
         transform: Optional[Callable] = None,
         max_len: Optional[int] = None,
-        img_size: Optional[tuple] = (3, 120, 120),
+        img_size: tuple = (3, 120, 120),
         return_extras: bool = False,
         patch_prefilter: Optional[Callable[[str], bool]] = None,
     ):
@@ -127,7 +127,7 @@ class BENDataSet(Dataset):
             csv_files = [data_dirs[f"{split}_data"]]
 
         # get data from this csv file(s)
-        self.patches = _csv_files_to_patch_list(csv_files)
+        self.patches = _csv_files_to_patch_list([Path(x) for x in csv_files])
         print(f"    {len(self.patches)} patches indexed")
 
         # if a prefilter is provided, filter patches based on function

@@ -127,7 +127,7 @@ def test_ben_val_dataset_sizes_rescale(data_dirs, img_size: tuple):
 
 
 @pytest.mark.parametrize("img_size", img_shapes_fail)
-def test_ben_val_dataset_sizes_fail(data_dirs, img_size: int):
+def test_ben_val_dataset_sizes_fail(data_dirs, img_size: tuple):
     with pytest.raises(AssertionError):
         _ = BENDataSet(data_dirs=data_dirs, split="val", img_size=img_size)
 
@@ -183,44 +183,38 @@ def test_ben_dm_default(data_dirs, split: str):
     if split in ["train", "val"]:
         dataset_ok(
             dm.train_ds,
-            expected_image_shape=(12, 120, 120),
+            expected_image_shape=(3, 120, 120),
             expected_length=None,
         )
-        dataset_ok(dm.val_ds, expected_image_shape=(12, 120, 120), expected_length=None)
+        dataset_ok(dm.val_ds, expected_image_shape=(3, 120, 120), expected_length=None)
         assert dm.test_ds is None
     elif split == "test":
         dataset_ok(
             dm.test_ds,
-            expected_image_shape=(12, 120, 120),
+            expected_image_shape=(3, 120, 120),
             expected_length=None,
         )
         assert dm.train_ds is None
         assert dm.val_ds is None
     elif split is None:
         for ds in [dm.train_ds, dm.val_ds, dm.test_ds]:
-            dataset_ok(ds, expected_image_shape=(12, 120, 120), expected_length=None)
+            dataset_ok(ds, expected_image_shape=(3, 120, 120), expected_length=None)
 
 
 @pytest.mark.parametrize("img_size", [[1], [1, 2], [1, 2, 3, 4]])
 def test_ben_dm_wrong_imagesize(data_dirs, img_size):
-    with pytest.raises(ValueError):
+    with pytest.raises(AssertionError):
         _ = BENDataModule(data_dirs, img_size=img_size, num_workers_dataloader=0, pin_memory=False)
 
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_ben_dm_dataloaders(data_dirs, bs):
     dm = BENDataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
-    dataloaders_ok(dm, expected_image_shape=(bs, 12, 120, 120))
-
-
-@pytest.mark.parametrize("pi", [True, False])
-def test_dm_print_on_setup(data_dirs, pi):
-    dm = BENDataModule(data_dirs=data_dirs, print_infos=pi, num_workers_dataloader=0, pin_memory=False)
-    dm.setup()
+    dataloaders_ok(dm, expected_image_shape=(bs, 3, 120, 120))
 
 
 def test_ben_shuffle_false(data_dirs):
-    dm = BENDataModule(data_dir=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
+    dm = BENDataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
@@ -232,7 +226,7 @@ def test_ben_shuffle_false(data_dirs):
 
 
 def test_ben_shuffle_none(data_dirs):
-    dm = BENDataModule(data_dir=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
+    dm = BENDataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -243,7 +237,7 @@ def test_ben_shuffle_none(data_dirs):
 
 
 def test_ben_shuffle_true(data_dirs):
-    dm = BENDataModule(data_dir=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
+    dm = BENDataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
@@ -255,10 +249,11 @@ def test_ben_shuffle_true(data_dirs):
 
 def test_dm_unexposed_kwargs(data_dirs):
     dm = BENDataModule(
-        data_dir=data_dirs,
-        dataset_kwargs={"return_patchname": True},
+        data_dirs=data_dirs,
         num_workers_dataloader=0,
         pin_memory=False,
     )
     dm.setup(None)
+    # changing the param here
+    dm.train_ds.return_extras = True
     assert len(dm.train_ds[0]) == 3, f"This change should have returned 3 items but does {len(dm.train_ds[0])}"

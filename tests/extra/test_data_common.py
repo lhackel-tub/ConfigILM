@@ -24,7 +24,7 @@ def dataset_ok(
             sample = dataset[i]
             assert len(sample) == 3
             v, q, a = sample
-            assert v.shape == expected_image_shape
+            assert tuple(v.shape) == tuple(expected_image_shape)
             assert len(q) == expected_question_length
             assert list(a.size()) == [classes]
 

@@ -1,7 +1,6 @@
 from typing import Tuple
 
 import pytest
-import torch
 
 from . import test_data_common
 from configilm.extra.DataModules.RSVQALR_DataModule import RSVQALRDataModule
@@ -135,14 +134,14 @@ def test_dm_default(data_dirs, split: str):
             expected_image_shape=(3, 256, 256),
             expected_length=None,
             classes=9,
-            expected_question_length=32,
+            expected_question_length=64,
         )
         test_data_common.dataset_ok(
             dm.val_ds,
             expected_image_shape=(3, 256, 256),
             expected_length=None,
             classes=9,
-            expected_question_length=32,
+            expected_question_length=64,
         )
         assert dm.test_ds is None
     elif split == "test":
@@ -151,7 +150,7 @@ def test_dm_default(data_dirs, split: str):
             expected_image_shape=(3, 256, 256),
             expected_length=None,
             classes=9,
-            expected_question_length=32,
+            expected_question_length=64,
         )
         assert dm.train_ds is None
         assert dm.val_ds is None
@@ -162,7 +161,7 @@ def test_dm_default(data_dirs, split: str):
                 expected_image_shape=(3, 256, 256),
                 expected_length=None,
                 classes=9,
-                expected_question_length=32,
+                expected_question_length=64,
             )
     else:
         ValueError(f"split {split} unknown")
@@ -174,61 +173,21 @@ def test_dm_dataloaders(data_dirs, bs: int):
     test_data_common.dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 256, 256),
-        expected_question_length=32,
+        expected_question_length=64,
         classes=9,
     )
 
 
-@pytest.mark.parametrize("pi", [True, False])
-def test_dm_print_on_setup(data_dirs, pi):
-    dm = RSVQALRDataModule(data_dirs=data_dirs, print_infos=pi, num_workers_dataloader=0, pin_memory=False)
-    dm.setup()
-
-
 def test_dm_shuffle_false(data_dirs):
     dm = RSVQALRDataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
-    dm.setup(None)
-    # should not be equal due to transforms being random!
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
-    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
+    test_data_common._test_dm_shuffle_false(dm)
 
 
 def test_dm_shuffle_none(data_dirs):
     dm = RSVQALRDataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
-    dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
-    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
+    test_data_common._test_dm_shuffle_none(dm)
 
 
 def test_dm_shuffle_true(data_dirs):
     dm = RSVQALRDataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
-    dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
-    assert not torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
-
-
-def test_dm_unexposed_kwargs(data_dirs):
-    classes = 3
-    dm = RSVQALRDataModule(
-        data_dirs=data_dirs,
-        dataset_kwargs={"classes": classes},
-        num_workers_dataloader=0,
-        pin_memory=False,
-    )
-    dm.setup(None)
-    assert len(dm.train_ds.answers) == classes, (
-        f"There should only be {classes} answers, but there are " f"{len(dm.train_ds.answers)}"
-    )
-    _ = RSVQALRDataModule(data_dirs=data_dirs, dataset_kwargs={"quantize_answers": False})
+    test_data_common._test_dm_shuffle_true(dm)

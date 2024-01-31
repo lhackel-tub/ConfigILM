@@ -207,7 +207,7 @@ class ClassificationVQADataset(Dataset):
         qa_pair = self.qa_data[idx]
 
         # get image
-        img = self.load_image(qa_pair[0])
+        img = self.load_image(qa_pair[0]).to(torch.float32)
         if self.transform is not None:
             img = self.transform(img)
         assert img.shape == self.img_size, f"Image shape is {img.shape}, expected {self.img_size}"

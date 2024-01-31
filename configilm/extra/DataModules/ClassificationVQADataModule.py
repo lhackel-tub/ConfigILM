@@ -108,6 +108,19 @@ class ClassificationVQADataModule(LightningDataModule):
             )
 
     def setup(self, stage=None):
+        """
+        Prepares the data sets for the specific stage.
+
+        - "fit": train and validation data set
+        - "train": train data set
+        - "val": validation data set
+        - "test": test data set
+        - None: all data sets
+
+        :param stage: None, "fit", "train", "val" or "test"
+
+            :default: None
+        """
         raise NotImplementedError("This method must be implemented by subclasses.")
 
     def train_dataloader(self):

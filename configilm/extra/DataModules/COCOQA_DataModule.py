@@ -1,6 +1,5 @@
 import warnings
 from pathlib import Path
-from time import time
 from typing import Callable
 from typing import Mapping
 from typing import Optional
@@ -63,7 +62,6 @@ class COCOQADataModule(ClassificationVQADataModule):
 
     def setup(self, stage: Optional[str] = None):
         sample_info_msg = ""
-        t0 = time()
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:

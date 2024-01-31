@@ -1,5 +1,4 @@
 import os
-from collections import Counter
 from os.path import join
 from pathlib import Path
 from typing import Callable
@@ -14,7 +13,6 @@ from torchvision import transforms
 
 from configilm.extra.data_dir import resolve_data_dir_for_ds
 from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
-from configilm.util import Messages
 
 
 def resolve_data_dir(

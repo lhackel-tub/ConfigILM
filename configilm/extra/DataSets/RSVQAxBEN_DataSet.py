@@ -13,7 +13,6 @@ from os.path import join
 from typing import Optional
 
 import numpy as np
-import psutil
 import torch
 from torch.utils.data import Dataset
 from tqdm import tqdm

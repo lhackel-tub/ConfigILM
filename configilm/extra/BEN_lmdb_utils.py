@@ -9,18 +9,15 @@ __author__ = "Leonard Hackel"
 __email__ = "l.hackel@tu-berlin.de"
 
 import pathlib
-
-import numpy as np
-from bigearthnet_patch_interface.merged_interface import BigEarthNet_S1_S2_Patch
-from bigearthnet_common.base import ben_19_labels_to_multi_hot
-from bigearthnet_common.constants import BAND_STATS_S1, BAND_STATS_S2
 from typing import Iterable, Union, Optional, Sequence
 
+import lmdb
+import numpy as np
 import torch
 import torch.nn.functional as F
-
-import lmdb
-from os.path import isdir
+from bigearthnet_common.base import ben_19_labels_to_multi_hot
+from bigearthnet_common.constants import BAND_STATS_S1, BAND_STATS_S2
+from bigearthnet_patch_interface.merged_interface import BigEarthNet_S1_S2_Patch
 
 from configilm.extra.data_dir import resolve_data_dir_for_ds
 

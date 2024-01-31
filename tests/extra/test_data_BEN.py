@@ -3,9 +3,7 @@ import warnings
 import pytest
 
 with warnings.catch_warnings():
-    warnings.filterwarnings(
-        action="ignore", category=DeprecationWarning, message=".*distutils.*"
-    )
+    warnings.filterwarnings(action="ignore", category=DeprecationWarning, message=".*distutils.*")
     from configilm.extra.DataSets.BEN_DataSet import BENDataSet
     from configilm.extra.DataModules.BEN_DataModule import BENDataModule
 
@@ -72,18 +70,10 @@ def dataloaders_ok(dm: BENDataModule, expected_image_shape: Sequence):
 
 def test_4c_ben_dataset_patchname_getter(data_dir):
     ds = BENDataSet(root_dir=data_dir, split="val", return_patchname=True)
-    assert (
-        ds.get_patchname_from_index(0) == "S2A_MSIL2A_20180413T95032_90_7"
-    ), "Patch name does not match"
-    assert (
-        ds.get_patchname_from_index(1_000_000) is None
-    ), "Patch index OOB should not work"
-    assert (
-        ds.get_index_from_patchname("S2A_MSIL2A_20180413T95032_90_7") == 0
-    ), "Index name does not match"
-    assert (
-        ds.get_index_from_patchname("abc") is None
-    ), "None existing name does not work"
+    assert ds.get_patchname_from_index(0) == "S2A_MSIL2A_20180413T95032_90_7", "Patch name does not match"
+    assert ds.get_patchname_from_index(1_000_000) is None, "Patch index OOB should not work"
+    assert ds.get_index_from_patchname("S2A_MSIL2A_20180413T95032_90_7") == 0, "Index name does not match"
+    assert ds.get_index_from_patchname("abc") is None, "None existing name does not work"
 
 
 def test_4c_ben_dataset_patchname(data_dir):
@@ -144,9 +134,7 @@ def test_ben_val_dataset_sizes_rescale(data_dir, img_size: Sequence):
             transforms.Resize(new_size[1:], antialias=True),
         ]
     )
-    ds = BENDataSet(
-        root_dir=data_dir, split="val", img_size=img_size, transform=transform
-    )
+    ds = BENDataSet(root_dir=data_dir, split="val", img_size=img_size, transform=transform)
 
     dataset_ok(dataset=ds, expected_length=None, expected_image_shape=new_size)
 
@@ -171,11 +159,7 @@ def test_ben_fail_image_retrieve(data_dir):
 def test_ben_max_index(data_dir, max_img_idx: int):
     mocked_datadir = "mock" in data_dir
     max_len = 10 if mocked_datadir else 123_723
-    length = (
-        max_len
-        if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1
-        else max_img_idx
-    )
+    length = max_len if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1 else max_img_idx
     ds = BENDataSet(
         root_dir=data_dir,
         split="val",
@@ -231,77 +215,53 @@ def test_ben_dm_default(data_dir, split: str):
 @pytest.mark.parametrize("img_size", [[1], [1, 2], [1, 2, 3, 4]])
 def test_ben_dm_wrong_imagesize(data_dir, img_size):
     with pytest.raises(ValueError):
-        _ = BENDataModule(
-            data_dir, img_size=img_size, num_workers_dataloader=0, pin_memory=False
-        )
+        _ = BENDataModule(data_dir, img_size=img_size, num_workers_dataloader=0, pin_memory=False)
 
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_ben_dm_dataloaders(data_dir, bs):
-    dm = BENDataModule(
-        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = BENDataModule(data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
     dataloaders_ok(dm, expected_image_shape=(bs, 12, 120, 120))
 
 
 @pytest.mark.parametrize("pi", [True, False])
 def test_dm_print_on_setup(data_dir, pi):
-    dm = BENDataModule(
-        data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = BENDataModule(data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False)
     dm.setup()
 
 
 def test_ben_shuffle_false(data_dir):
-    dm = BENDataModule(
-        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = BENDataModule(data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def test_ben_shuffle_none(data_dir):
-    dm = BENDataModule(
-        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = BENDataModule(data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def test_ben_shuffle_true(data_dir):
-    dm = BENDataModule(
-        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = BENDataModule(data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert not torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert not torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert not torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def test_dm_unexposed_kwargs(data_dir):
@@ -312,6 +272,4 @@ def test_dm_unexposed_kwargs(data_dir):
         pin_memory=False,
     )
     dm.setup(None)
-    assert (
-        len(dm.train_ds[0]) == 3
-    ), f"This change should have returned 3 items but does {len(dm.train_ds[0])}"
+    assert len(dm.train_ds[0]) == 3, f"This change should have returned 3 items but does {len(dm.train_ds[0])}"

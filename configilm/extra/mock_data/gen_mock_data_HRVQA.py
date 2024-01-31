@@ -7,9 +7,7 @@ from os.path import join
 from typing import Sequence
 
 
-def copy_part_of_json(
-    base_path: str, f_name: str, elems: int = 10, random_seed: int = 0
-):
+def copy_part_of_json(base_path: str, f_name: str, elems: int = 10, random_seed: int = 0):
     random.seed(random_seed)
     with open(join(base_path, "jsons", f_name)) as read_file:
         data = json.load(read_file)["questions"]
@@ -77,6 +75,4 @@ if __name__ == "__main__":
     for f in jsons:
         copy_part_of_json(base_path=base_path, f_name=f, elems=5)
 
-    img_subset_from_jsons(
-        base_path=base_path, json_base_path="./HRVQA/jsons/", jsons=jsons
-    )
+    img_subset_from_jsons(base_path=base_path, json_base_path="./HRVQA/jsons/", jsons=jsons)

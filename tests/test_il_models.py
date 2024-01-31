@@ -17,9 +17,7 @@ max_memory_usage = 8  # VRAM usage of largest model during test
 # If the available VRAM is smaller than the largest model, some tests will fail due to
 # CUDA Out-Of-Memory errors. Therefore, only use CUDA if there is enough VRAM available.
 if torch.cuda.is_available():
-    cuda_gb_vram = round(
-        torch.cuda.get_device_properties("cuda:0").total_memory / 1024**3, 2
-    )
+    cuda_gb_vram = round(torch.cuda.get_device_properties("cuda:0").total_memory / 1024**3, 2)
     DEVICE = "cuda:0" if cuda_gb_vram >= max_memory_usage else "cpu"
 
 
@@ -29,9 +27,7 @@ def get_classification_batch(
     classes: int = 1000,
 ):
     assert len(img_shape) == 3
-    v = torch.ones(
-        (batch_size, img_shape[0], img_shape[1], img_shape[2]), device=DEVICE
-    )
+    v = torch.ones((batch_size, img_shape[0], img_shape[1], img_shape[2]), device=DEVICE)
     lbl = torch.ones((batch_size, classes), device=DEVICE)
     return [v, lbl]
 
@@ -42,9 +38,7 @@ def get_vqa_batch(
     batch_size: int = 32,
     classes: int = 1000,
 ):
-    v, a = get_classification_batch(
-        img_shape=img_shape, batch_size=batch_size, classes=classes
-    )
+    v, a = get_classification_batch(img_shape=img_shape, batch_size=batch_size, classes=classes)
     q = torch.ones((batch_size, text_tokens), dtype=torch.int32, device=DEVICE)
     return [v, q, a]
 
@@ -52,15 +46,12 @@ def get_vqa_batch(
 @pytest.mark.parametrize("batch_size", [1, 32, 27, 13])
 def test_bs(batch_size):
     config = ConfigILM.ILMConfiguration(timm_model_name=default_image_test_model)
-    x, y = get_classification_batch(
-        (config.channels, config.image_size, config.image_size), batch_size
-    )
+    x, y = get_classification_batch((config.channels, config.image_size, config.image_size), batch_size)
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
         model = ConfigILM.ConfigILM(config=config)
         model.to(DEVICE)
@@ -176,15 +167,12 @@ def apply_timm(model: str, cls: int, bs: int, image_size: int):
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
         model = ConfigILM.ConfigILM(config=config)
         model.to(DEVICE)
     res = model(x)
-    assert (
-        res.shape == y.shape
-    ), f"Shape is wrong: Should be {y.shape} but is {res.shape}"
+    assert res.shape == y.shape, f"Shape is wrong: Should be {y.shape} but is {res.shape}"
     assert res.shape == (
         bs,
         cls,
@@ -228,8 +216,7 @@ def apply_ilm(config: ConfigILM.ILMConfiguration, bs: int) -> bool:
                 warnings.filterwarnings(
                     action="ignore",
                     category=UserWarning,
-                    message="Keyword 'img_size' unknown. Trying to "
-                    "ignore and restart creation.",
+                    message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
                 )
                 warnings.filterwarnings(
                     action="ignore",
@@ -239,8 +226,7 @@ def apply_ilm(config: ConfigILM.ILMConfiguration, bs: int) -> bool:
                 warnings.filterwarnings(
                     action="ignore",
                     category=UserWarning,
-                    message=r"Text encoder '\S+' has no pooler, "
-                    "changing use_pooler_output to False",
+                    message=r"Text encoder '\S+' has no pooler, " "changing use_pooler_output to False",
                 )
                 warnings.filterwarnings(
                     action="ignore",
@@ -260,9 +246,7 @@ def apply_ilm(config: ConfigILM.ILMConfiguration, bs: int) -> bool:
 
     if model is not None:
         res = model((v, q))
-        assert (
-            res.shape == a.shape
-        ), f"Shape is wrong: Should be {a.shape} but is {res.shape}"
+        assert res.shape == a.shape, f"Shape is wrong: Should be {a.shape} but is {res.shape}"
         assert res.shape == (
             bs,
             cls,
@@ -359,8 +343,7 @@ def test_v_wrong_batchshape(n):
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
 
         model = ConfigILM.ConfigILM(config=config)
@@ -369,9 +352,7 @@ def test_v_wrong_batchshape(n):
         _ = model(x)
 
 
-@pytest.mark.parametrize(
-    "img, txt", [(i, t) for i in range(1, 6, 1) for t in range(1, 6, 1)]
-)
+@pytest.mark.parametrize("img, txt", [(i, t) for i in range(1, 6, 1) for t in range(1, 6, 1)])
 def test_ilm_wrong_batch_parts_shape(img, txt):
     bs, cls = 8, 10
     config = ConfigILM.ILMConfiguration(
@@ -392,8 +373,7 @@ def test_ilm_wrong_batch_parts_shape(img, txt):
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
 
         warnings.filterwarnings(
@@ -408,9 +388,7 @@ def test_ilm_wrong_batch_parts_shape(img, txt):
             _ = model((v, q))
     else:
         res = model((v, q))
-        assert (
-            res.shape == a.shape
-        ), f"Shape is wrong: Should be {a.shape} but is {res.shape}"
+        assert res.shape == a.shape, f"Shape is wrong: Should be {a.shape} but is {res.shape}"
         assert res.shape == (
             bs,
             cls,
@@ -435,8 +413,7 @@ def test_ilm_wrong_different_batch_sizes():
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
 
         warnings.filterwarnings(
@@ -469,8 +446,7 @@ def test_ilm_wrong_seq_length_no_pooler():
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
 
         warnings.filterwarnings(
@@ -484,9 +460,7 @@ def test_ilm_wrong_seq_length_no_pooler():
         # This specific one config (hf_model_name="prajjwal1/bert-tiny")
         # will have a runtime error. This may not happen for other configs
 
-        with pytest.warns(
-            UserWarning, match=r".+ length of \d+ but sequence length is \d+ and .+"
-        ):
+        with pytest.warns(UserWarning, match=r".+ length of \d+ but sequence length is \d+ and .+"):
             _ = model((v, q))
 
 
@@ -508,8 +482,7 @@ def test_ilm_wrong_input_length():
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
 
         warnings.filterwarnings(
@@ -547,8 +520,7 @@ def test_failty_config():
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
 
         warnings.filterwarnings(
@@ -564,9 +536,7 @@ def test_failty_config():
 
 def test_failed_network_connection_in_download(mocker):
     hf_model = "distilbert-base-uncased"
-    path = Path(user_cache_dir(appname="configilm")).joinpath(
-        "pretrained_models", "huggingface_models", hf_model
-    )
+    path = Path(user_cache_dir(appname="configilm")).joinpath("pretrained_models", "huggingface_models", hf_model)
     shutil.rmtree(path)
 
     mocker.patch(
@@ -590,14 +560,9 @@ def test_failed_network_connection_in_download(mocker):
 
 def test_failed_network_connection_cached(mocker):
     hf_model = default_text_test_model
-    path = Path(user_cache_dir(appname="configilm")).joinpath(
-        "pretrained_models", "huggingface_models", hf_model
-    )
+    path = Path(user_cache_dir(appname="configilm")).joinpath("pretrained_models", "huggingface_models", hf_model)
     if not path.exists():
-        pytest.skip(
-            f"HF model '{hf_model}' to test was not downloaded before test. "
-            f"Cannot check cache."
-        )
+        pytest.skip(f"HF model '{hf_model}' to test was not downloaded before test. " f"Cannot check cache.")
 
     mocker.patch(
         "transformers.AutoModelForSequenceClassification.from_pretrained",
@@ -621,13 +586,9 @@ def test_failed_hf_name(mocker):
     from requests import HTTPError  # type: ignore
 
     hf_model = "hf_mock_name/simulated_name"
-    path = Path(user_cache_dir(appname="configilm")).joinpath(
-        "pretrained_models", "huggingface_models", hf_model
-    )
+    path = Path(user_cache_dir(appname="configilm")).joinpath("pretrained_models", "huggingface_models", hf_model)
     if path.exists():
-        pytest.skip(
-            f"HF model '{hf_model}' exists offline already. Cannot check download."
-        )
+        pytest.skip(f"HF model '{hf_model}' exists offline already. Cannot check download.")
 
     mocker.patch(
         "transformers.AutoModelForSequenceClassification.from_pretrained",
@@ -662,8 +623,7 @@ def test_integration():
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
 
         warnings.filterwarnings(
@@ -719,9 +679,7 @@ def test_fusion_same_dim_implicit(dim):
     assert apply_ilm(cfg, bs=4), f"Fusion with {dim}->{dim} failed"
 
 
-@pytest.mark.parametrize(
-    "in_dim, out_dim", [(i, o) for i in tested_dims for o in tested_dims]
-)
+@pytest.mark.parametrize("in_dim, out_dim", [(i, o) for i in tested_dims for o in tested_dims])
 def test_fusion_dif_dim(in_dim, out_dim):
     """
     Tests if fusion functions with the same input and output dimensions work
@@ -765,8 +723,7 @@ def test_tokenizer_exists():
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
 
         warnings.filterwarnings(
@@ -788,8 +745,7 @@ def test_tokenizer_not_exists():
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Keyword 'img_size' unknown. Trying to "
-            "ignore and restart creation.",
+            message="Keyword 'img_size' unknown. Trying to " "ignore and restart creation.",
         )
         model = ConfigILM.ConfigILM(config=cfg)
         model.to(DEVICE)

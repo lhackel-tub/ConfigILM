@@ -2,23 +2,23 @@ import os
 from collections import Counter
 from os.path import join
 from pathlib import Path
-from typing import Optional
-from typing import Union
 from typing import Callable
 from typing import Mapping
+from typing import Optional
+from typing import Union
 
 import torch
 import torch.nn.functional as F
 from PIL import Image
 from torchvision import transforms
 
-from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
 from configilm.extra.data_dir import resolve_data_dir_for_ds
+from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
 from configilm.util import Messages
 
 
 def resolve_data_dir(
-        data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
+    data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
 ) -> Mapping[str, Union[str, Path]]:
     """
     Helper function that tries to resolve the correct directory
@@ -63,31 +63,32 @@ def _txts_to_dict(base_dir: str):
 
 class COCOQADataSet(ClassificationVQADataset):
     def __init__(
-            self,
-            data_dirs: Mapping[str, Union[str, Path]],
-            split: Optional[str] = None,
-            transform: Optional[Callable] = None,
-            max_len: Optional[int] = None,
-            img_size: Optional[tuple] = (3, 120, 120),
-            selected_answers: Optional[list] = None,
-            num_classes: Optional[int] = 430,
-            tokenizer: Optional[Callable] = None,
-            seq_length: int = 64,
-            return_extras: bool = False,
+        self,
+        data_dirs: Mapping[str, Union[str, Path]],
+        split: Optional[str] = None,
+        transform: Optional[Callable] = None,
+        max_len: Optional[int] = None,
+        img_size: Optional[tuple] = (3, 120, 120),
+        selected_answers: Optional[list] = None,
+        num_classes: Optional[int] = 430,
+        tokenizer: Optional[Callable] = None,
+        seq_length: int = 64,
+        return_extras: bool = False,
     ):
         """
-        This class implements the COCOQA dataset. It is a subclass of
+        This class implements the COCO-QA dataset. It is a subclass of
         ClassificationVQADataset and provides some dataset specific functionality.
 
         :param data_dirs: A mapping from file key to file path. The file key is
             used to identify the function of the file. For example, the key
             "questions.txt" is used to identify the file that contains the
             questions. The file path can be either a string or a Path object.
-            Required keys are "images", "train_data" and "test_data".
+            Required keys are "images", "train_data" and "test_data". The "_data"
+            keys each point to a directory that contains the data files which are
+            named "questions.txt", "answers.txt", "img_ids.txt" and "types.txt".
 
         :param split: The name of the split to use. Can be either "train" or
-            "test". If None is provided, all splits will be used (default).
-            "train" will use the training split, "test" will use the test split.
+            "test". If None is provided, all splits will be used.
 
             :default: None
 

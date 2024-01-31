@@ -8,10 +8,7 @@ from configilm import util
 def test_indent_simple():
     test_string = "test 123 test"
     for n in range(5):
-        assert (
-            util.indent(test_string, num_spaces=n, indent_first=True)
-            == " " * n + test_string
-        )
+        assert util.indent(test_string, num_spaces=n, indent_first=True) == " " * n + test_string
 
 
 def test_indent_multiline():
@@ -49,9 +46,7 @@ def test_round_to():
 
 
 def test_convert():
-    lbl_tensor = Tensor(
-        [[0, 1, 0, 0, 1], [0, 1, 1, 0, 1], [0, 0, 1, 0, 0], [1, 0, 0, 1, 0]]
-    )
+    lbl_tensor = Tensor([[0, 1, 0, 0, 1], [0, 1, 1, 0, 1], [0, 0, 1, 0, 0], [1, 0, 0, 1, 0]])
     logits_tensor = Tensor(
         [
             [0.7012, 0.9606, 0.2721, 0.2611, 0.0460],

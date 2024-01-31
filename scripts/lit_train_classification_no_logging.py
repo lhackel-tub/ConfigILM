@@ -89,14 +89,12 @@ class LitVisionEncoder(pl.LightningModule):
     def get_metrics(self, outputs):
         avg_loss = torch.stack([x["loss"] for x in outputs]).mean()
         logits = torch.cat([x["outputs"].cpu() for x in outputs], 0)
-        labels = torch.cat(
-            [x["labels"].cpu() for x in outputs], 0
-        )  # Tensor of size (#samples x classes)
+        labels = torch.cat([x["labels"].cpu() for x in outputs], 0)  # Tensor of size (#samples x classes)
 
         # calculate AP
-        ap_macro = AveragePrecision(
-            num_labels=self.config.classes, average="macro", task="multilabel"
-        ).to(logits.device)(logits, labels.int())
+        ap_macro = AveragePrecision(num_labels=self.config.classes, average="macro", task="multilabel").to(
+            logits.device
+        )(logits, labels.int())
 
         return {
             "avg_loss": avg_loss,

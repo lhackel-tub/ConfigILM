@@ -73,9 +73,7 @@ def dataloaders_ok(
             assert a.shape == (expected_image_shape[0], classes)
 
 
-@pytest.mark.parametrize(
-    "split, classes", [(s, c) for s in dataset_params for c in class_number]
-)
+@pytest.mark.parametrize("split, classes", [(s, c) for s in dataset_params for c in class_number])
 def test_basic_dataset_splits(data_dir, split: str, classes: int):
     img_size = (3, 256, 256)
     seq_length = 32
@@ -99,9 +97,7 @@ def test_basic_dataset_splits(data_dir, split: str, classes: int):
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
 def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
-    ds = RSVQALRDataSet(
-        root_dir=data_dir, split="val", img_size=img_size, classes=9, seq_length=32
-    )
+    ds = RSVQALRDataSet(root_dir=data_dir, split="val", img_size=img_size, classes=9, seq_length=32)
 
     dataset_ok(
         dataset=ds,
@@ -128,11 +124,7 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
 def test_ds_max_img_idx(data_dir, max_img_index: int):
     ds = RSVQALRDataSet(root_dir=data_dir, max_img_idx=max_img_index)
     max_len = 1_200
-    len_ds = (
-        max_len
-        if max_img_index is None or max_img_index > max_len or max_img_index == -1
-        else max_img_index
-    )
+    len_ds = max_len if max_img_index is None or max_img_index > max_len or max_img_index == -1 else max_img_index
     dataset_ok(
         dataset=ds,
         expected_image_shape=(3, 256, 256),
@@ -150,9 +142,7 @@ def test_ds_max_img_idx_too_large(data_dir, max_img_index: int):
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
 def test_ds_classes(data_dir, classes: int):
-    ds = RSVQALRDataSet(
-        root_dir=data_dir, classes=classes, split="train", quantize_answers=True
-    )
+    ds = RSVQALRDataSet(root_dir=data_dir, classes=classes, split="train", quantize_answers=True)
     assert ds.classes == classes
     assert len(ds.selected_answers) == classes
     max_classes_mock_set = 7  # number of classes in the mock data
@@ -168,9 +158,7 @@ def test_ds_classes(data_dir, classes: int):
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
 def test_ds_classes_unbucketed(data_dir, classes: int):
-    ds = RSVQALRDataSet(
-        root_dir=data_dir, classes=classes, split="train", quantize_answers=False
-    )
+    ds = RSVQALRDataSet(root_dir=data_dir, classes=classes, split="train", quantize_answers=False)
     assert ds.classes == classes
     assert len(ds.selected_answers) == classes
     max_classes_mock_set = 36  # number of classes in the mock data
@@ -231,9 +219,7 @@ def test_dm_default(data_dir, split: str):
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_dm_dataloaders(data_dir, bs: int):
-    dm = RSVQALRDataModule(
-        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQALRDataModule(data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
     dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 256, 256),
@@ -244,62 +230,42 @@ def test_dm_dataloaders(data_dir, bs: int):
 
 @pytest.mark.parametrize("pi", [True, False])
 def test_dm_print_on_setup(data_dir, pi):
-    dm = RSVQALRDataModule(
-        data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQALRDataModule(data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False)
     dm.setup()
 
 
 def test_dm_shuffle_false(data_dir):
-    dm = RSVQALRDataModule(
-        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQALRDataModule(data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def test_dm_shuffle_none(data_dir):
-    dm = RSVQALRDataModule(
-        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQALRDataModule(data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def test_dm_shuffle_true(data_dir):
-    dm = RSVQALRDataModule(
-        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQALRDataModule(data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert not torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert not torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert not torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def test_dm_unexposed_kwargs(data_dir):
@@ -312,8 +278,7 @@ def test_dm_unexposed_kwargs(data_dir):
     )
     dm.setup(None)
     assert len(dm.train_ds.selected_answers) == classes, (
-        f"There should only be {classes} answers, but there are "
-        f"{len(dm.train_ds.selected_answers)}"
+        f"There should only be {classes} answers, but there are " f"{len(dm.train_ds.selected_answers)}"
     )
     assert (
         dm.train_ds.classes == classes

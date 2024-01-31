@@ -21,16 +21,16 @@ class ClassificationVQADataModule(LightningDataModule):
     selected_answers: Union[None, list[str]] = None
 
     def __init__(
-            self,
-            data_dirs: Mapping[str, Union[str, Path]],
-            batch_size: int = 16,
-            img_size: tuple = (3, 120, 120),
-            num_workers_dataloader: int = 4,
-            shuffle: Optional[bool] = None,
-            max_len: Optional[int] = None,
-            tokenizer: Optional[Callable] = None,
-            seq_length: int = 64,
-            pin_memory: Optional[bool] = None,
+        self,
+        data_dirs: Mapping[str, Union[str, Path]],
+        batch_size: int = 16,
+        img_size: tuple = (3, 120, 120),
+        num_workers_dataloader: int = 4,
+        shuffle: Optional[bool] = None,
+        max_len: Optional[int] = None,
+        tokenizer: Optional[Callable] = None,
+        seq_length: int = 64,
+        pin_memory: Optional[bool] = None,
     ):
         """
         This class is a base class for datamodules that are used for classification
@@ -113,6 +113,9 @@ class ClassificationVQADataModule(LightningDataModule):
     def train_dataloader(self):
         """
         Returns the dataloader for the training data.
+
+        :raises: AssertionError if the training dataset is not set up. This can happen if the setup()
+            method is not called before this method or the dataset has no training data.
         """
         assert self.train_ds is not None, "setup() for training must be called before train_dataloader()"
         return DataLoader(

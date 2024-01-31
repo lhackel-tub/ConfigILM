@@ -103,9 +103,7 @@ class Block(AbstractFusion):
         x1_chunks = get_chunks(x1, self.sizes_list)
         zs = []
 
-        for chunk_id, m0, m1 in zip(
-            range(len(self.sizes_list)), self.merge_linears0, self.merge_linears1
-        ):
+        for chunk_id, m0, m1 in zip(range(len(self.sizes_list)), self.merge_linears0, self.merge_linears1):
             x0_c = x0_chunks[chunk_id]
             x1_c = x1_chunks[chunk_id]
             m = m0(x0_c) * m1(x1_c)  # bsize x split_size*rank

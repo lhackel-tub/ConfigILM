@@ -9,22 +9,24 @@ from typing import Union
 from torchvision import transforms
 
 from configilm.extra.CustomTorchClasses import MyGaussianNoise
-from configilm.extra.DataModules.ClassificationVQADataModule import ClassificationVQADataModule
+from configilm.extra.DataModules.ClassificationVQADataModule import (
+    ClassificationVQADataModule,
+)
 from configilm.extra.DataSets.COCOQA_DataSet import COCOQADataSet
 
 
 class COCOQADataModule(ClassificationVQADataModule):
     def __init__(
-            self,
-            data_dirs: Mapping[str, Union[str, Path]],
-            batch_size: int = 16,
-            img_size: tuple = (3, 120, 120),
-            num_workers_dataloader: int = 4,
-            shuffle: Optional[bool] = None,
-            max_len: Optional[int] = None,
-            tokenizer: Optional[Callable] = None,
-            seq_length: int = 64,
-            pin_memory: Optional[bool] = None,
+        self,
+        data_dirs: Mapping[str, Union[str, Path]],
+        batch_size: int = 16,
+        img_size: tuple = (3, 120, 120),
+        num_workers_dataloader: int = 4,
+        shuffle: Optional[bool] = None,
+        max_len: Optional[int] = None,
+        tokenizer: Optional[Callable] = None,
+        seq_length: int = 64,
+        pin_memory: Optional[bool] = None,
     ):
         super().__init__(
             data_dirs=data_dirs,
@@ -76,10 +78,7 @@ class COCOQADataModule(ClassificationVQADataModule):
             )
             if self.selected_answers is None:
                 self.selected_answers = self.train_ds.answers
-                self.selected_answers.extend(
-                    ["INVALID"]
-                    * (self.train_ds.num_classes - len(self.train_ds.answers))
-                )
+                self.selected_answers.extend(["INVALID"] * (self.train_ds.num_classes - len(self.train_ds.answers)))
 
             self.val_ds = COCOQADataSet(
                 self.data_dirs,
@@ -114,3 +113,12 @@ class COCOQADataModule(ClassificationVQADataModule):
             raise NotImplementedError("Predict stage not implemented")
 
         print(sample_info_msg)
+
+    def train_dataloader(self):
+        return super().train_dataloader()
+
+    def val_dataloader(self):
+        return super().val_dataloader()
+
+    def test_dataloader(self):
+        return super().test_dataloader()

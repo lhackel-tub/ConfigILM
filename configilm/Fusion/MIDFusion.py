@@ -38,24 +38,16 @@ class MIDF(AbstractFusion):
         """
         super().__init__()
         # local trans
-        self.l2l_SA = SelfAttention(
-            embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention
-        )
+        self.l2l_SA = SelfAttention(embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention)
 
         # global trans
-        self.g2g_SA = SelfAttention(
-            embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention
-        )
+        self.g2g_SA = SelfAttention(embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention)
 
         # local correction
-        self.g2l_GSA = GuidedSelfAttention(
-            embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention
-        )
+        self.g2l_GSA = GuidedSelfAttention(embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention)
 
         # global supplement
-        self.l2g_GSA = GuidedSelfAttention(
-            embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention
-        )
+        self.l2g_GSA = GuidedSelfAttention(embed_dim=input_dim, num_heads=heads, drop_out=dropout_attention)
 
         self.linear1 = nn.Linear(input_dim, mm_dim)
         self.activ_fusion = getattr(F, activ_fusion)
@@ -94,17 +86,9 @@ class MIDF(AbstractFusion):
         dynamic_weight = self.activ_fusion(dynamic_weight)
         dynamic_weight = self.dynamic_weight(dynamic_weight)
 
-        weight_global = (
-            dynamic_weight[:, 0]
-            .reshape(feature_gl.shape[0], -1)
-            .expand_as(global_feature)
-        )
+        weight_global = dynamic_weight[:, 0].reshape(feature_gl.shape[0], -1).expand_as(global_feature)
 
-        weight_local = (
-            dynamic_weight[:, 0]
-            .reshape(feature_gl.shape[0], -1)
-            .expand_as(global_feature)
-        )
+        weight_local = dynamic_weight[:, 0].reshape(feature_gl.shape[0], -1).expand_as(global_feature)
 
         final_feature = weight_global * global_feature + weight_local * local_feature
 

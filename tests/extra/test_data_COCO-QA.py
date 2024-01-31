@@ -2,10 +2,10 @@ import warnings
 
 import pytest
 
+from . import test_data_common
 from configilm.extra.DataModules.COCOQA_DataModule import COCOQADataModule
 from configilm.extra.DataSets.COCOQA_DataSet import COCOQADataSet
 from configilm.extra.DataSets.COCOQA_DataSet import resolve_data_dir
-from . import test_data_common
 
 
 @pytest.fixture
@@ -104,9 +104,7 @@ def test_dm_default(data_dirs, split: str):
 
 @pytest.mark.parametrize("bs", [1, 2, 3, 4, 16, 32])
 def test_dm_dataloader(data_dirs, bs: int):
-    dm = COCOQADataModule(
-        data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = COCOQADataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
     test_data_common.dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 120, 120),
@@ -116,21 +114,15 @@ def test_dm_dataloader(data_dirs, bs: int):
 
 
 def test_dm_shuffle_false(data_dirs):
-    dm = COCOQADataModule(
-        data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = COCOQADataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     test_data_common._test_dm_shuffle_false(dm)
 
 
 def test_dm_shuffle_none(data_dirs):
-    dm = COCOQADataModule(
-        data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = COCOQADataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     test_data_common._test_dm_shuffle_none(dm)
 
 
 def test_dm_shuffle_true(data_dirs):
-    dm = COCOQADataModule(
-        data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = COCOQADataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     test_data_common._test_dm_shuffle_true(dm)

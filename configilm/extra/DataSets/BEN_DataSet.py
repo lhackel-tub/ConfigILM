@@ -137,8 +137,7 @@ class BENDataSet(Dataset):
         else:
             if split is not None:
                 Messages.warn(
-                    "You specified a split and a csv file - this may be a "
-                    "potential conflict and cannot be resolved."
+                    "You specified a split and a csv file - this may be a " "potential conflict and cannot be resolved."
                 )
 
         # get data from this csv file(s)
@@ -152,11 +151,7 @@ class BENDataSet(Dataset):
 
         # sort list for reproducibility
         self.patches.sort()
-        if (
-            max_img_idx is not None
-            and max_img_idx < len(self.patches)
-            and max_img_idx != -1
-        ):
+        if max_img_idx is not None and max_img_idx < len(self.patches) and max_img_idx != -1:
             self.patches = self.patches[:max_img_idx]
 
         print(f"    {len(self.patches)} filtered patches indexed")

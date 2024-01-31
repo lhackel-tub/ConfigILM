@@ -105,9 +105,7 @@ def dataloaders_ok(
             assert a.shape == (expected_image_shape[0], classes)
 
 
-@pytest.mark.parametrize(
-    "split, classes", [(s, c) for s in dataset_params for c in class_number]
-)
+@pytest.mark.parametrize("split, classes", [(s, c) for s in dataset_params for c in class_number])
 def test_4c_ben_dataset_splits(data_dir, split: str, classes: int):
     img_size = (4, 120, 120)
     seq_length = 32
@@ -131,9 +129,7 @@ def test_4c_ben_dataset_splits(data_dir, split: str, classes: int):
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
 def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
-    ds = RSVQAxBENDataSet(
-        root_dir=data_dir, split="val", img_size=img_size, classes=1000, seq_length=32
-    )
+    ds = RSVQAxBENDataSet(root_dir=data_dir, split="val", img_size=img_size, classes=1000, seq_length=32)
 
     dataset_ok(
         dataset=ds,
@@ -160,11 +156,7 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
 def test_ds_max_img_idx(data_dir, max_img_index: int):
     ds = RSVQAxBENDataSet(root_dir=data_dir, max_img_idx=max_img_index)
     max_len = 30
-    len_ds = (
-        max_len
-        if max_img_index is None or max_img_index > max_len or max_img_index == -1
-        else max_img_index
-    )
+    len_ds = max_len if max_img_index is None or max_img_index > max_len or max_img_index == -1 else max_img_index
     dataset_ok(
         dataset=ds,
         expected_image_shape=(12, 120, 120),
@@ -243,9 +235,7 @@ def test_dm_default(data_dir, split: str):
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_dm_dataloaders(data_dir, bs: int):
-    dm = RSVQAxBENDataModule(
-        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQAxBENDataModule(data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
     dataloaders_ok(
         dm,
         expected_image_shape=(bs, 12, 120, 120),
@@ -256,62 +246,42 @@ def test_dm_dataloaders(data_dir, bs: int):
 
 @pytest.mark.parametrize("pi", [True, False])
 def test_dm_print_on_setup(data_dir, pi):
-    dm = RSVQAxBENDataModule(
-        data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQAxBENDataModule(data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False)
     dm.setup()
 
 
 def test_dm_shuffle_false(data_dir):
-    dm = RSVQAxBENDataModule(
-        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQAxBENDataModule(data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def test_dm_shuffle_none(data_dir):
-    dm = RSVQAxBENDataModule(
-        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQAxBENDataModule(data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def test_dm_shuffle_true(data_dir):
-    dm = RSVQAxBENDataModule(
-        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = RSVQAxBENDataModule(data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert not torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert not torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert not torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def test_dm_unexposed_kwargs(data_dir):

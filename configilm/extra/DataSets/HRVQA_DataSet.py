@@ -13,9 +13,9 @@ from torchvision import transforms
 from tqdm import tqdm
 
 from configilm.extra.data_dir import resolve_data_dir_for_ds
-from configilm.util import Messages
 from configilm.util import get_default_tokenizer
 from configilm.util import huggingface_tokenize_and_pad
+from configilm.util import Messages
 
 # values based on train images of original split at 256 x 256
 _means_256 = {"red": 0.4257, "green": 0.4435, "blue": 0.4239, "mono": 0.4310}
@@ -26,9 +26,7 @@ _means_1024 = {"red": 0.4255, "green": 0.4433, "blue": 0.4237, "mono": 0.4309}
 _stds_1024 = {"red": 0.1398, "green": 0.1279, "blue": 0.1203, "mono": 0.1308}
 
 
-def resolve_data_dir(
-        data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
-) -> str:
+def resolve_data_dir(data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False) -> str:
     """
     Helper function that tries to resolve the correct directory
 
@@ -81,9 +79,7 @@ def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = Fal
             f"There are fewer possible answers then requested ({number_of_answers} "
             f"requested, but {len(answers_by_appearence)} found)."
         )
-        answers_by_appearence += [("INVALID", 0)] * (
-                number_of_answers - len(answers_by_appearence)
-        )
+        answers_by_appearence += [("INVALID", 0)] * (number_of_answers - len(answers_by_appearence))
 
     selected_answers = answers_by_appearence[:number_of_answers]
 
@@ -101,19 +97,12 @@ def select_answers(answers, number_of_answers: int = 1_000, use_tqdm: bool = Fal
 
 
 def _subsplit_qa(questions, answers, qa_in_split, sub_split, seed):
-    no_samples_val = (
-        qa_in_split
-        if isinstance(qa_in_split, int)
-        else (int(qa_in_split * len(questions)))
-    )
+    no_samples_val = qa_in_split if isinstance(qa_in_split, int) else (int(qa_in_split * len(questions)))
     assert 0 <= no_samples_val <= len(questions), (
-        f"Samples should be between 0 and {len(questions)}, but is {no_samples_val} "
-        f"(specified as {qa_in_split})."
+        f"Samples should be between 0 and {len(questions)}, but is {no_samples_val} " f"(specified as {qa_in_split})."
     )
     if no_samples_val == 0:
-        Messages.warn(
-            "There are zero (0) samples in your selected split configuration."
-        )
+        Messages.warn("There are zero (0) samples in your selected split configuration.")
 
     # get a random subset based on a seed
     # to make it reproducible in all contexts,
@@ -136,10 +125,10 @@ def _subsplit_qa(questions, answers, qa_in_split, sub_split, seed):
 
 
 def _get_question_answers(
-        split: Optional[str],
-        root_dir: pathlib.Path,
-        split_size: Union[int, float],
-        split_seed,
+    split: Optional[str],
+    root_dir: pathlib.Path,
+    split_size: Union[int, float],
+    split_seed,
 ):
     subsplit = None  # should never be relevant unless overwritten
     if split in ["train", "val", "test", None]:
@@ -208,18 +197,18 @@ def _get_question_answers(
 
 class HRVQADataSet(Dataset):
     def __init__(
-            self,
-            root_dir: Union[Path, str],
-            split: Optional[str] = None,
-            transform=None,
-            max_img_idx=None,
-            img_size=(3, 1024, 1024),
-            selected_answers=None,
-            classes: int = 1_000,
-            tokenizer=None,
-            seq_length: int = 32,
-            div_seed=None,
-            split_size: Union[float, int] = 0.5,
+        self,
+        root_dir: Union[Path, str],
+        split: Optional[str] = None,
+        transform=None,
+        max_img_idx=None,
+        img_size=(3, 1024, 1024),
+        selected_answers=None,
+        classes: int = 1_000,
+        tokenizer=None,
+        seq_length: int = 32,
+        div_seed=None,
+        split_size: Union[float, int] = 0.5,
     ):
         """
         :param root_dir: root directory to images and jsons folder
@@ -301,9 +290,7 @@ class HRVQADataSet(Dataset):
         ], f"Split '{split}' not supported for HRVQA DataSet"
 
         assert img_size[0] in [1, 3], (
-            f"HRVQA only supports 3 channel (RGB) or 1 "
-            f"channel (grayscale). {img_size[0]} channels "
-            f"unsupported."
+            f"HRVQA only supports 3 channel (RGB) or 1 " f"channel (grayscale). {img_size[0]} channels " f"unsupported."
         )
         self.is_rgb = img_size[0] == 3
 
@@ -320,9 +307,7 @@ class HRVQADataSet(Dataset):
 
         self.seq_length = seq_length
         if self.is_rgb:
-            self.pre_transforms = transforms.Compose(
-                [transforms.Resize(img_size[1:]), transforms.ToTensor()]
-            )
+            self.pre_transforms = transforms.Compose([transforms.Resize(img_size[1:]), transforms.ToTensor()])
         else:
             self.pre_transforms = transforms.Compose(
                 [
@@ -352,11 +337,8 @@ class HRVQADataSet(Dataset):
             f" answers ({len(self.answers)})"
         )
 
-        assert {x["question_id"] for x in self.answers} == {
-            x["question_id"] for x in self.questions
-        }, (
-            "Sets of question and answers do not fit (not same question_ids in both "
-            "sets)"
+        assert {x["question_id"] for x in self.answers} == {x["question_id"] for x in self.questions}, (
+            "Sets of question and answers do not fit (not same question_ids in both " "sets)"
         )
 
         # restrict qs and as
@@ -365,9 +347,7 @@ class HRVQADataSet(Dataset):
             self.answers = self.answers[:max_img_idx]
 
         if selected_answers is None:
-            self.selected_answers = select_answers(
-                answers=self.answers, number_of_answers=self.classes
-            )
+            self.selected_answers = select_answers(answers=self.answers, number_of_answers=self.classes)
         else:
             self.selected_answers = selected_answers
 
@@ -389,9 +369,7 @@ class HRVQADataSet(Dataset):
     def __getitem__(self, idx):
         question = self.questions[idx]
         answer = self.answers[idx]
-        assert (
-                question["question_id"] == answer["question_id"]
-        ), f"ID mismatch for question and answer for index {idx}"
+        assert question["question_id"] == answer["question_id"], f"ID mismatch for question and answer for index {idx}"
         img_path = self.root_dir / "images" / f'{question["image_id"]}.png'
         img = Image.open(img_path.resolve()).convert("RGB")
         img = self.pre_transforms(img)

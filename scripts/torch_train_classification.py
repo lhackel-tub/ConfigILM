@@ -27,14 +27,12 @@ __author__ = "Leonard Hackel - BIFOLD/RSiM TU Berlin"
 def get_metrics(outputs, classes: int):
     avg_loss = torch.stack([x["loss"] for x in outputs]).mean()
     logits = torch.cat([x["outputs"].cpu() for x in outputs], 0)
-    labels = torch.cat(
-        [x["labels"].cpu() for x in outputs], 0
-    )  # Tensor of size (#samples x classes)
+    labels = torch.cat([x["labels"].cpu() for x in outputs], 0)  # Tensor of size (#samples x classes)
 
     # calculate AP
-    ap_macro = AveragePrecision(
-        num_labels=classes, average="macro", task="multilabel"
-    ).to(logits.device)(logits, labels.int())
+    ap_macro = AveragePrecision(num_labels=classes, average="macro", task="multilabel").to(logits.device)(
+        logits, labels.int()
+    )
 
     return {
         "avg_loss": avg_loss,
@@ -101,12 +99,8 @@ def main(
     img_size = (number_of_channels, image_size, image_size)
 
     ben_mean, ben_std = BEN_lmdb_utils.band_combi_to_mean_std(img_size[0])
-    train_transform = default_train_transform(
-        img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std
-    )
-    transform = default_transform(
-        img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std
-    )
+    train_transform = default_train_transform(img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std)
+    transform = default_transform(img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std)
 
     train_ds = BENDataSet(
         BEN_lmdb_utils.resolve_data_dir(data_dir, allow_mock=True),
@@ -178,9 +172,7 @@ def main(
         # print metrics
         metrics = eval_model(model, val_dl, loss_fn, device, model_config.classes)
         print(f"Epoch {epoch + 1:3d} validation loss: {metrics['avg_loss']:.4f}")
-        print(
-            f"Epoch {epoch + 1:3d} validation mAP (Macro): {metrics['map_macro']:.4f}"
-        )
+        print(f"Epoch {epoch + 1:3d} validation mAP (Macro): {metrics['map_macro']:.4f}")
 
     # test
     # print metrics

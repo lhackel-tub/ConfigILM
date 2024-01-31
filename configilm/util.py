@@ -5,9 +5,7 @@ from transformers import BertTokenizer
 
 def get_default_tokenizer():
     default_tokenizer = (
-        Path(__file__)
-        .parent.joinpath("extra", "huggingface_tokenizers", "bert-base-uncased.tok")
-        .resolve(True)
+        Path(__file__).parent.joinpath("extra", "huggingface_tokenizers", "bert-base-uncased.tok").resolve(True)
     )
     return BertTokenizer.from_pretrained(default_tokenizer.resolve())
 
@@ -234,7 +232,7 @@ def huggingface_tokenize_and_pad(tokenizer, string: str, seq_length: int):
     ids = tokenizer.convert_tokens_to_ids(tokens)
 
     # get sublist if length of sequence is longer than max length
-    ids = ids[0: seq_length - 2] if len(ids) >= seq_length - 2 else ids
+    ids = ids[0 : seq_length - 2] if len(ids) >= seq_length - 2 else ids
     # prepend start token
     ids.insert(0, token_start)
     # append end token

@@ -7,9 +7,7 @@ from os.path import join
 from typing import Sequence
 
 
-def copy_part_of_json(
-        base_path: str, f_name: str, elems: int = 25, random_seed: int = 0
-):
+def copy_part_of_json(base_path: str, f_name: str, elems: int = 25, random_seed: int = 0):
     random.seed(random_seed)
     with open(join(base_path, f_name)) as read_file:
         data = json.load(read_file)
@@ -29,9 +27,9 @@ def copy_part_of_json(
 
 
 def img_subset_from_jsons(
-        base_path: str,
-        json_base_path: str,
-        jsons: Sequence[str],
+    base_path: str,
+    json_base_path: str,
+    jsons: Sequence[str],
 ):
     # collect names of all images
     subset_elems = []
@@ -40,9 +38,7 @@ def img_subset_from_jsons(
             data = json.load(read_file)
             subset_elems += [data[x]["img_id"] for x in data]
 
-    image_name_mapping = {
-        int(x[-14:-4]): x for x in os.listdir(join(base_path, "images"))
-    }
+    image_name_mapping = {int(x[-14:-4]): x for x in os.listdir(join(base_path, "images"))}
 
     path = pathlib.Path(".").joinpath("images")
     path.mkdir(parents=True, exist_ok=True)

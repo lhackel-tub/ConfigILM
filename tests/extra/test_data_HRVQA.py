@@ -44,9 +44,7 @@ def dataset_ok(
 ):
     assert dataset is not None, "No dataset found"
     if expected_length is not None:
-        assert len(dataset) == expected_length, (
-            f"Length is {len(dataset)} but should " f"be {expected_length}"
-        )
+        assert len(dataset) == expected_length, f"Length is {len(dataset)} but should " f"be {expected_length}"
 
     if len(dataset) > 0:
         for i in [0, 100, 2000, 5000, 10000]:
@@ -95,9 +93,7 @@ def test_ds_default(data_dir):
     )
 
 
-@pytest.mark.parametrize(
-    "split, classes", [(s, c) for s in dataset_splits for c in class_number]
-)
+@pytest.mark.parametrize("split, classes", [(s, c) for s in dataset_splits for c in class_number])
 def test_3c_dataset_splits_classes(data_dir, split: str, classes: int):
     img_size = (3, 128, 128)
     seq_length = 32
@@ -136,9 +132,7 @@ def test_3c_dataset_splits_subdiv(data_dir, split: str, seed, div_part):
         seq_length=seq_length,
     )
 
-    div_part_i = (
-        div_part if isinstance(div_part, int) else int(div_part * no_qa_full_val)
-    )
+    div_part_i = div_part if isinstance(div_part, int) else int(div_part * no_qa_full_val)
     if split == "test-div":
         div_part_i = no_qa_full_val - div_part_i
     if "-div" not in split or seed == "repeat":
@@ -186,19 +180,13 @@ def test_3c_dataset_splits_subdiv_overlap(data_dir, split: str, seed: int, div_p
         # both have to be same
         assert q == qi, "Questions sets are not equal but should be"
     else:
-        assert (
-            q.intersection(qi) == set()
-        ), "There is an intersection between the val and test set"
-        assert (
-            len(q.union(qi)) == no_qa_full_val
-        ), "Val and test set combined do not cover the full set"
+        assert q.intersection(qi) == set(), "There is an intersection between the val and test set"
+        assert len(q.union(qi)) == no_qa_full_val, "Val and test set combined do not cover the full set"
 
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
 def test_ds_imgsize_pass(data_dir, img_size: Tuple[int, int, int]):
-    ds = HRVQADataSet(
-        root_dir=data_dir, split="val", img_size=img_size, classes=1000, seq_length=32
-    )
+    ds = HRVQADataSet(root_dir=data_dir, split="val", img_size=img_size, classes=1000, seq_length=32)
 
     dataset_ok(
         dataset=ds,
@@ -225,11 +213,7 @@ def test_ds_imgsize_fail(data_dir, img_size: Tuple[int, int, int]):
 def test_ds_max_img_idx(data_dir, max_img_index: int):
     ds = HRVQADataSet(root_dir=data_dir, max_img_idx=max_img_index)
     max_len = 10
-    len_ds = (
-        max_len
-        if max_img_index is None or max_img_index > max_len or max_img_index == -1
-        else max_img_index
-    )
+    len_ds = max_len if max_img_index is None or max_img_index > max_len or max_img_index == -1 else max_img_index
     dataset_ok(
         dataset=ds,
         expected_image_shape=(3, 1024, 1024),
@@ -281,9 +265,7 @@ def test_dm_default(data_dir, split: str):
         with pytest.raises(NotImplementedError):
             dm.setup(stage=split2stage[split])
         # overwrite default
-        dm = HRVQADataModule(
-            data_dir=data_dir, test_splitting_seed=0, test_splitting_division=0.5
-        )
+        dm = HRVQADataModule(data_dir=data_dir, test_splitting_seed=0, test_splitting_division=0.5)
         dm.setup(stage=split2stage[split])
     else:
         dm.setup(stage=split2stage[split])
@@ -323,18 +305,14 @@ def test_dm_default(data_dir, split: str):
                 classes=1000,
                 expected_question_length=32,
             )
-        assert dm.test_ds is None, (
-            "Dataset for test should be None as we are not " "splitting"
-        )
+        assert dm.test_ds is None, "Dataset for test should be None as we are not " "splitting"
     else:
         ValueError(f"split {split} unknown")
 
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_dm_dataloaders_bs(data_dir, bs: int):
-    dm = HRVQADataModule(
-        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = HRVQADataModule(data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
     dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 1024, 1024),
@@ -383,59 +361,43 @@ def test_dm_dataloaders_with_splitting(data_dir, stage, seed, div):
         if seed is None:
             assert dm.test_dataloader() is None, "Test Dataloader should be None"
         else:
-            assert dm.test_dataloader() is not None, (
-                "Test Dataloader should not be " "None"
-            )
+            assert dm.test_dataloader() is not None, "Test Dataloader should not be " "None"
 
 
 def test_dm_shuffle_false(data_dir):
-    dm = HRVQADataModule(
-        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = HRVQADataModule(data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
 
 
 def test_dm_shuffle_none(data_dir):
-    dm = HRVQADataModule(
-        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = HRVQADataModule(data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
 
 
 def test_dm_shuffle_true(data_dir):
-    dm = HRVQADataModule(
-        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = HRVQADataModule(data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert not torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
+    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
 
 
 @pytest.mark.parametrize("pi", [True, False])
 def test_dm_print_on_setup(data_dir, pi):
-    dm = HRVQADataModule(
-        data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False
-    )
+    dm = HRVQADataModule(data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False)
     dm.setup()
 
 

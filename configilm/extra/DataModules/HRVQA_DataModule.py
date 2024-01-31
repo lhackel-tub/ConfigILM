@@ -130,8 +130,7 @@ class HRVQADataModule(pl.LightningDataModule):
         """
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
-                f"Expected image_size with 3 dimensions (HxWxC) or None but got "
-                f"{len(img_size)} dimensions instead"
+                f"Expected image_size with 3 dimensions (HxWxC) or None but got " f"{len(img_size)} dimensions instead"
             )
         super().__init__()
         self.print_infos = print_infos
@@ -148,9 +147,7 @@ class HRVQADataModule(pl.LightningDataModule):
 
         self.data_dir = data_dir
         self.batch_size = batch_size
-        self.max_img_idx = (
-            max_img_idx if max_img_idx is None or max_img_idx > 0 else None
-        )
+        self.max_img_idx = max_img_idx if max_img_idx is None or max_img_idx > 0 else None
         self.img_size = (3, 1024, 1024) if img_size is None else img_size
         self.shuffle = shuffle
         if self.shuffle is not None:
@@ -175,25 +172,17 @@ class HRVQADataModule(pl.LightningDataModule):
         self.train_transform = default_train_transform(
             img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std
         )
-        self.transform = default_transform(
-            img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std
-        )
+        self.transform = default_transform(img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std)
         # self.transform = None
         self.pin_memory = torch.cuda.device_count() > 0
         self.pin_memory = self.pin_memory if pin_memory is None else pin_memory
-        Messages.hint(
-            f"pin_memory set to {pin_memory}"
-            f"{' ' if pin_memory is None else ' via overwrite'}"
-        )
+        Messages.hint(f"pin_memory set to {pin_memory}" f"{' ' if pin_memory is None else ' via overwrite'}")
 
         self.tokenizer = tokenizer
         self.seq_length = seq_length
         self.ds_kwargs = dataset_kwargs if dataset_kwargs is not None else dict()
 
-        assert isinstance(test_splitting_seed, int) or test_splitting_seed in [
-            "repeat",
-            None,
-        ], (
+        assert isinstance(test_splitting_seed, int) or test_splitting_seed in ["repeat", None,], (
             "test_splitting parameter has to be 'repeat' to use the val split for "
             "testing again, None for no test split or an integer for random splitting "
             "of the val split"
@@ -224,9 +213,7 @@ class HRVQADataModule(pl.LightningDataModule):
 
         :param stage: None, "fit" or "test"
         """
-        self._print_info(
-            f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called"
-        )
+        self._print_info(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
         sample_info_msg = ""
         t0 = time()
 

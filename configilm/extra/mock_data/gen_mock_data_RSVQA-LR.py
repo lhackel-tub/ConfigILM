@@ -7,9 +7,7 @@ from os.path import join
 from typing import Sequence
 
 
-def copy_part_of_json(
-    base_path: str, f_name: str, elems: int = 100, random_seed: int = 0
-):
+def copy_part_of_json(base_path: str, f_name: str, elems: int = 100, random_seed: int = 0):
     random.seed(random_seed)
     with open(join(base_path, f_name)) as read_file:
         data = json.load(read_file)["images"]
@@ -23,10 +21,7 @@ def copy_part_of_json(
         f" seed or change number of elements"
     )
 
-    print(
-        f"Selected {len(data_new)} elements of which "
-        f"{len([x for x in data_new if x['active']])} are active"
-    )
+    print(f"Selected {len(data_new)} elements of which " f"{len([x for x in data_new if x['active']])} are active")
 
     path = pathlib.Path(".") / "RSVQA-LR" / f_name
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -75,10 +70,7 @@ def img_subset_from_jsons(
             data = json.load(read_file)["images"]
             subset_elems += [x["id"] for x in data if x["active"]]
 
-    print(
-        f"There are {len(subset_elems)} images ({len(set(subset_elems))} unique) "
-        f"selected."
-    )
+    print(f"There are {len(subset_elems)} images ({len(set(subset_elems))} unique) " f"selected.")
 
     path = pathlib.Path(".") / "RSVQA-LR" / "Images_LR"
     path.mkdir(parents=True, exist_ok=True)

@@ -87,8 +87,7 @@ class BENDataModule(pl.LightningDataModule):
         """
         if img_size is not None and len(img_size) != 3:
             raise ValueError(
-                f"Expected image_size with 3 dimensions (HxWxC) or None but got "
-                f"{len(img_size)} dimensions instead"
+                f"Expected image_size with 3 dimensions (HxWxC) or None but got " f"{len(img_size)} dimensions instead"
             )
         super().__init__()
         self.print_infos = print_infos
@@ -122,9 +121,7 @@ class BENDataModule(pl.LightningDataModule):
         self.train_transform = default_train_transform(
             img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
         )
-        self.transform = default_transform(
-            img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
-        )
+        self.transform = default_transform(img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std)
         self.pin_memory = torch.cuda.device_count() > 0
         self.pin_memory = self.pin_memory if pin_memory is None else pin_memory
 

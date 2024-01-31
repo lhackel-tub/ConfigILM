@@ -1,5 +1,6 @@
 import warnings
-from typing import Sequence, Union
+from typing import Sequence
+from typing import Union
 
 import torch
 from pytorch_lightning import LightningDataModule
@@ -7,11 +8,11 @@ from torch.utils.data import Dataset
 
 
 def dataset_ok(
-        dataset: Union[Dataset, None],
-        expected_image_shape: Sequence,
-        expected_question_length: int,
-        expected_length: Union[int, None],
-        classes: int,
+    dataset: Union[Dataset, None],
+    expected_image_shape: Sequence,
+    expected_question_length: int,
+    expected_length: Union[int, None],
+    classes: int,
 ):
     assert dataset is not None
     if expected_length is not None:
@@ -29,10 +30,10 @@ def dataset_ok(
 
 
 def dataloaders_ok(
-        dm: LightningDataModule,
-        expected_image_shape: Sequence,
-        expected_question_length: int,
-        classes: int,
+    dm: LightningDataModule,
+    expected_image_shape: Sequence,
+    expected_question_length: int,
+    classes: int,
 ):
     with warnings.catch_warnings():
         warnings.filterwarnings(
@@ -74,12 +75,8 @@ def _test_dm_shuffle_false(dm: LightningDataModule):
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def _test_dm_shuffle_true(dm: LightningDataModule):
@@ -94,12 +91,8 @@ def _test_dm_shuffle_true(dm: LightningDataModule):
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert not torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert not torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert not torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
 def _test_dm_shuffle_none(dm: LightningDataModule):
@@ -114,9 +107,5 @@ def _test_dm_shuffle_none(dm: LightningDataModule):
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])

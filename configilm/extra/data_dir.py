@@ -1,9 +1,8 @@
-from pathlib import Path
 from os.path import isdir
+from pathlib import Path
+from typing import Mapping
 from typing import Optional
 from typing import Union
-from typing import Mapping
-
 
 from configilm.util import Messages
 
@@ -14,8 +13,7 @@ dataset_paths = {
         "/mnt/storagecube/leonard/",  # last resort: storagecube (MARS)
         "/media/storagecube/leonard/",  # (ERDE)
     ],
-    "cocoqa": [
-    ],
+    "cocoqa": [],
     "hrvqa": [
         "/mnt/storagecube/data/datasets/HRVQA-1.0 release",  # MARS Storagecube
         "/media/storagecube/data/datasets/HRVQA-1.0 release",  # ERDE Storagecube
@@ -72,10 +70,10 @@ mock_data_path = {
 
 
 def resolve_data_dir_for_ds(
-        dataset_name: str,
-        data_dir: Optional[Mapping[str, Union[str, Path]]],
-        allow_mock: bool = False,
-        force_mock: bool = False
+    dataset_name: str,
+    data_dir: Optional[Mapping[str, Union[str, Path]]],
+    allow_mock: bool = False,
+    force_mock: bool = False,
 ) -> Mapping[str, Union[str, Path]]:
     """
     Resolves the data directory for the given dataset name.

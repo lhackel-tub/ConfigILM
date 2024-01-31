@@ -1,4 +1,4 @@
-(api-datasets-BEN)=
+(api-datasets-COCOQA)=
 # Toronto COCO-QA DataSet and DataModules
 
 :::{eval-rst}

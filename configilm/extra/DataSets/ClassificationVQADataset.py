@@ -16,17 +16,17 @@ from configilm.util import huggingface_tokenize_and_pad
 
 class ClassificationVQADataset(Dataset):
     def __init__(
-            self,
-            data_dirs: Mapping[str, Union[str, Path]],
-            split: Optional[str] = None,
-            transform: Optional[Callable] = None,
-            max_len: Optional[int] = None,
-            img_size: Optional[tuple] = (3, 120, 120),
-            selected_answers: Optional[list] = None,
-            num_classes: Optional[int] = 1000,
-            tokenizer: Optional[Callable] = None,
-            seq_length: int = 64,
-            return_extras: bool = False,
+        self,
+        data_dirs: Mapping[str, Union[str, Path]],
+        split: Optional[str] = None,
+        transform: Optional[Callable] = None,
+        max_len: Optional[int] = None,
+        img_size: Optional[tuple] = (3, 120, 120),
+        selected_answers: Optional[list] = None,
+        num_classes: Optional[int] = 1000,
+        tokenizer: Optional[Callable] = None,
+        seq_length: int = 64,
+        return_extras: bool = False,
     ):
         """
         This class is a base class for datasets that are used for classification
@@ -114,11 +114,7 @@ class ClassificationVQADataset(Dataset):
         print(f"    {len(self.qa_data):8,d} QA-pairs indexed")
 
         # limit the number of qa-pairs if requested
-        if (
-                max_len is not None
-                and max_len < len(self.qa_data)
-                and max_len != -1
-        ):
+        if max_len is not None and max_len < len(self.qa_data) and max_len != -1:
             self.qa_data = self.qa_data[:max_len]
         print(f"    {len(self.qa_data):8,d} QA-pairs used")
 
@@ -134,8 +130,9 @@ class ClassificationVQADataset(Dataset):
             selected_answers = set(selected_answers)
         self.answers = sorted(selected_answers)
         self.num_classes = num_classes
-        assert len(self.answers) <= self.num_classes, \
-            f"Number of answers ({len(self.answers)}) is larger than num_classes ({self.num_classes})"
+        assert (
+            len(self.answers) <= self.num_classes
+        ), f"Number of answers ({len(self.answers)}) is larger than num_classes ({self.num_classes})"
 
         if tokenizer is None:
             warn(
@@ -217,8 +214,9 @@ class ClassificationVQADataset(Dataset):
             string=qa_pair[1],
             seq_length=self.seq_length,
         )
-        assert len(question_ids) == self.seq_length, \
-            f"Question length is {len(question_ids)}, expected {self.seq_length}"
+        assert (
+            len(question_ids) == self.seq_length
+        ), f"Question length is {len(question_ids)}, expected {self.seq_length}"
 
         # convert answer to tensor
         # note: this assumes that the qa_pair is a tuple of length 3, where the

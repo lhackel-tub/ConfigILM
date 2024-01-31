@@ -91,8 +91,7 @@ valid_labels_classification = [
     "Industrial or commercial units",
     "Inland waters",
     "Inland wetlands",
-    "Land principally occupied by agriculture, with significant areas "
-    "of natural vegetation",  # 10
+    "Land principally occupied by agriculture, with significant areas " "of natural vegetation",  # 10
     "Marine waters",
     "Mixed forest",
     "Moors, heathland and sclerophyllous vegetation",
@@ -134,9 +133,7 @@ def _resolve_band_combi(bands: Union[Iterable, str, int]) -> list:
         )
         bands = BAND_COMBINATION_PREDEFINTIONS[bands]
     for band in bands:
-        assert (
-            band in _BANDNAME_TO_BEN_INTERFACE_PROPERTY.keys()
-        ), f"Band '{band}' unknown"
+        assert band in _BANDNAME_TO_BEN_INTERFACE_PROPERTY.keys(), f"Band '{band}' unknown"
     return list(bands)
 
 
@@ -151,20 +148,12 @@ def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
     """
     bands = _resolve_band_combi(bands)
     S1_bands = ["VH", "VV", "VV/VH"]
-    ben_channel_mean = [
-        BAND_STATS_S1["mean"][x] if x in S1_bands else BAND_STATS_S2["mean"][x]
-        for x in bands
-    ]
-    ben_channel_std = [
-        BAND_STATS_S1["std"][x] if x in S1_bands else BAND_STATS_S2["std"][x]
-        for x in bands
-    ]
+    ben_channel_mean = [BAND_STATS_S1["mean"][x] if x in S1_bands else BAND_STATS_S2["mean"][x] for x in bands]
+    ben_channel_std = [BAND_STATS_S1["std"][x] if x in S1_bands else BAND_STATS_S2["std"][x] for x in bands]
     return ben_channel_mean, ben_channel_std
 
 
-def resolve_data_dir(
-    data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
-) -> str:
+def resolve_data_dir(data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False) -> str:
     """
     Helper function that tries to resolve the correct directory.
 
@@ -174,9 +163,7 @@ def resolve_data_dir(
         small data
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
-    return resolve_data_dir_for_ds(
-        "benv1", data_dir, allow_mock=allow_mock, force_mock=force_mock
-    )
+    return resolve_data_dir_for_ds("benv1", data_dir, allow_mock=allow_mock, force_mock=force_mock)
 
 
 def read_ben_from_lmdb(env, key):
@@ -214,9 +201,7 @@ class BENLMDBReader:
         :param label_type: "new" or "old" depending on if the old labels (43) or new
             ones (19) should be returned
         """
-        assert (
-            len(image_size) == 3
-        ), f"image_size has to have 3 dimensions (CxHxW) but is {image_size}"
+        assert len(image_size) == 3, f"image_size has to have 3 dimensions (CxHxW) but is {image_size}"
         self.image_size = image_size
         self.bands = _resolve_band_combi(bands)
         assert len(self.bands) == self.image_size[0], (
@@ -250,9 +235,9 @@ class BENLMDBReader:
 
         # get only selected bands
         img_data = [
-            ben_patch.__getattribute__(
-                _BANDNAME_TO_BEN_INTERFACE_PROPERTY[x][0]
-            ).__getattribute__(_BANDNAME_TO_BEN_INTERFACE_PROPERTY[x][1])
+            ben_patch.__getattribute__(_BANDNAME_TO_BEN_INTERFACE_PROPERTY[x][0]).__getattribute__(
+                _BANDNAME_TO_BEN_INTERFACE_PROPERTY[x][1]
+            )
             for x in self.bands
         ]
         # Interpolate each band by itself to correct size, as we cannot stack different

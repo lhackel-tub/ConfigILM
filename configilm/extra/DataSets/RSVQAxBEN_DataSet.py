@@ -24,9 +24,7 @@ from configilm.util import huggingface_tokenize_and_pad
 from configilm.util import Messages
 
 
-def select_answers_from_qa_pairs(
-    qa_pairs, number_of_answers: int = 1_000, use_tqdm: bool = False
-):
+def select_answers_from_qa_pairs(qa_pairs, number_of_answers: int = 1_000, use_tqdm: bool = False):
     """
     Selects the most frequently present answers and returns them in order of frequency.
 
@@ -66,9 +64,7 @@ def select_answers_from_qa_pairs(
             f"There are fewer possible answers then requested ({number_of_answers} "
             f"requested, but {len(answers_by_appearence)} found)."
         )
-        answers_by_appearence += [("INVALID", 0)] * (
-            number_of_answers - len(answers_by_appearence)
-        )
+        answers_by_appearence += [("INVALID", 0)] * (number_of_answers - len(answers_by_appearence))
 
     selected_answers = answers_by_appearence[:number_of_answers]
 
@@ -194,11 +190,7 @@ class RSVQAxBENDataSet(Dataset):
         self.qa_values = [self.qa_pairs[key] for key in sorted(self.qa_pairs)]
         del self.qa_pairs
         print(f"    {len(self.qa_values):12,d} QA-pairs indexed")
-        if (
-            max_img_idx is not None
-            and max_img_idx < len(self.qa_values)
-            and max_img_idx != -1
-        ):
+        if max_img_idx is not None and max_img_idx < len(self.qa_values) and max_img_idx != -1:
             self.qa_values = self.qa_values[:max_img_idx]
 
         print(f"    {len(self.qa_values):12,d} QA-pairs in reduced data set")

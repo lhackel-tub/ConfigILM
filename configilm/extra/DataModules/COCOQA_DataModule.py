@@ -76,6 +76,7 @@ class COCOQADataModule(ClassificationVQADataModule):
             )
             if self.selected_answers is None:
                 self.selected_answers = self.train_ds.answers
+                assert self.train_ds.num_classes is not None, "num_classes must be set if selected_answers is None"
                 self.selected_answers.extend(["INVALID"] * (self.train_ds.num_classes - len(self.train_ds.answers)))
 
             self.val_ds = COCOQADataSet(

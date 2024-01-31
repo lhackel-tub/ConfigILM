@@ -21,7 +21,7 @@ class ClassificationVQADataset(Dataset):
         split: Optional[str] = None,
         transform: Optional[Callable] = None,
         max_len: Optional[int] = None,
-        img_size: Optional[tuple] = (3, 120, 120),
+        img_size: tuple = (3, 120, 120),
         selected_answers: Optional[list] = None,
         num_classes: Optional[int] = 1000,
         tokenizer: Optional[Callable] = None,
@@ -96,6 +96,7 @@ class ClassificationVQADataset(Dataset):
         self.data_dirs = data_dirs
         self.data_dirs = {k: Path(v) for k, v in self.data_dirs.items()}
         self.transform = transform
+        assert len(img_size) == 3, f"Invalid img_size: {img_size}, expected (channels, height, width)"
         self.img_size = img_size
         self.seq_length = seq_length
         self.return_extras = return_extras
@@ -125,11 +126,12 @@ class ClassificationVQADataset(Dataset):
             answer_stats = Counter([x[2] for x in self.qa_data])
             if num_classes is None:
                 num_classes = len(answer_stats)
-            selected_answers = set(sorted(answer_stats.keys(), key=lambda x: answer_stats[x])[:num_classes])
+            selected_answers = sorted(answer_stats.keys(), key=lambda x: answer_stats[x])[:num_classes]
         else:
-            selected_answers = set(selected_answers)
-        self.answers = sorted(selected_answers)
+            selected_answers = sorted(set(selected_answers))
+        self.answers = selected_answers
         self.num_classes = num_classes
+        assert self.num_classes is not None, "num_classes should have been set at this point, manually or automatically"
         assert (
             len(self.answers) <= self.num_classes
         ), f"Number of answers ({len(self.answers)}) is larger than num_classes ({self.num_classes})"

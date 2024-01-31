@@ -6,25 +6,110 @@ from typing import Union
 
 from configilm.util import Messages
 
+mars_storagecube = Path("/mnt/storagecube")
+erde_storagecube = Path("/media/storagecube")
+mars_storagecube_datasets = mars_storagecube / "data" / "datasets"
+erde_storagecube_datasets = erde_storagecube / "data" / "datasets"
+mars_data_dir = Path("/data/leonard")
+erde_data_dir = Path("/faststorage/leonard")
+
 dataset_paths = {
     "benv1": [
-        "/data/leonard/BEN_VQA/",  # MARS
-        "/faststorage/leonard/",  # ERDE
-        "/mnt/storagecube/leonard/",  # last resort: storagecube (MARS)
-        "/media/storagecube/leonard/",  # (ERDE)
+        # MARS
+        {
+            "images_lmdb": mars_data_dir / "BEN_VQA" / "BigEarthNetEncoded.lmdb",
+            "train.csv": mars_data_dir / "BEN_VQA" / "train.csv",
+            "val.csv": mars_data_dir / "BEN_VQA" / "val.csv",
+            "test.csv": mars_data_dir / "BEN_VQA" / "test.csv",
+        },
+        # ERDE
+        {
+            "images_lmdb": erde_data_dir / "BigEarthNetEncoded.lmdb",
+            "train.csv": erde_data_dir / "train.csv",
+            "val.csv": erde_data_dir / "val.csv",
+            "test.csv": erde_data_dir / "test.csv",
+        },
+        # MARS Storagecube
+        {
+            "images_lmdb": mars_storagecube / "leonard" / "BigEarthNetEncoded.lmdb",
+            "train.csv": mars_storagecube / "leonard" / "train.csv",
+            "val.csv": mars_storagecube / "leonard" / "val.csv",
+            "test.csv": mars_storagecube / "leonard" / "test.csv",
+        },
+        # ERDE Storagecube
+        {
+            "images_lmdb": erde_storagecube / "leonard" / "BigEarthNetEncoded.lmdb",
+            "train.csv": erde_storagecube / "leonard" / "train.csv",
+            "val.csv": erde_storagecube / "leonard" / "val.csv",
+            "test.csv": erde_storagecube / "leonard" / "test.csv",
+        },
     ],
     "cocoqa": [],
     "hrvqa": [
-        "/mnt/storagecube/data/datasets/HRVQA-1.0 release",  # MARS Storagecube
-        "/media/storagecube/data/datasets/HRVQA-1.0 release",  # ERDE Storagecube
+        # MARS Storagecube
+        {
+            "images": mars_storagecube_datasets / "HRVQA-1.0 release" / "images",
+            "train_data": mars_storagecube_datasets / "HRVQA-1.0 release" / "jsons",
+            "val_data": mars_storagecube_datasets / "HRVQA-1.0 release" / "jsons",
+            "test_data": mars_storagecube_datasets / "HRVQA-1.0 release" / "jsons",
+        },
+        # ERDE Storagecube
+        {
+            "images": erde_storagecube_datasets / "HRVQA-1.0 release" / "images",
+            "train_data": erde_storagecube_datasets / "HRVQA-1.0 release" / "jsons",
+            "val_data": erde_storagecube_datasets / "HRVQA-1.0 release" / "jsons",
+            "test_data": erde_storagecube_datasets / "HRVQA-1.0 release" / "jsons",
+        },
     ],
     "rsvqa-hr": [
-        "/mnt/storagecube/data/datasets/RSVQA/RSVQA-HR",  # MARS Storagecube
-        "/media/storagecube/data/datasets/RSVQA/RSVQA-HR",  # ERDE Storagecube
+        # MARS Storagecube
+        {
+            "images": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR" / "Images" / "Data",
+            "train_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+            "val_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+            "test_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+            "test_data_phili": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+        },
+        # ERDE Storagecube
+        {
+            "images": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR" / "Images" / "Data",
+            "train_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+            "val_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+            "test_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+            "test_data_phili": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+        },
     ],
     "rsvqa-lr": [
-        "/mnt/storagecube/data/datasets/RSVQA/RSVQA-LR",  # MARS Storagecube
-        "/media/storagecube/data/datasets/RSVQA/RSVQA-LR",  # ERDE Storagecube
+        # MARS Storagecube
+        {
+            "images": mars_storagecube_datasets / "RSVQA" / "RSVQA-LR" / "Images_LR",
+            "train_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-LR",
+            "val_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-LR",
+            "test_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-LR",
+        },
+        # ERDE Storagecube
+        {
+            "images": erde_storagecube_datasets / "RSVQA" / "RSVQA-LR" / "Images_LR",
+            "train_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-LR",
+            "val_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-LR",
+            "test_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-LR",
+        },
+    ],
+    "rsvqaxben": [
+        # MARS Storagecube
+        {
+            "images_lmdb": mars_storagecube / "leonard" / "BigEarthNetEncoded.lmdb",
+            "train_data": mars_storagecube_datasets / "RSVQAxBEN",
+            "val_data": mars_storagecube_datasets / "RSVQAxBEN",
+            "test_data": mars_storagecube_datasets / "RSVQAxBEN",
+        },
+        # ERDE Storagecube
+        {
+            "images_lmdb": erde_storagecube / "leonard" / "BigEarthNetEncoded.lmdb",
+            "train_data": erde_storagecube_datasets / "RSVQAxBEN",
+            "val_data": erde_storagecube_datasets / "RSVQAxBEN",
+            "test_data": erde_storagecube_datasets / "RSVQAxBEN",
+        },
     ],
 }
 
@@ -71,7 +156,7 @@ mock_data_path = {
 
 def resolve_data_dir_for_ds(
     dataset_name: str,
-    data_dir: Optional[Mapping[str, Union[str, Path]]],
+    data_dir_mapping: Optional[Mapping[str, Union[str, Path]]],
     allow_mock: bool = False,
     force_mock: bool = False,
 ) -> Mapping[str, Union[str, Path]]:
@@ -79,7 +164,7 @@ def resolve_data_dir_for_ds(
     Resolves the data directory for the given dataset name.
 
     :param dataset_name: Name of the dataset to resolve the data directory for.
-    :param data_dir: Optional path to the data directory. If None, the default data
+    :param data_dir_mapping: Optional path to the data directory. If None, the default data
         directory will be used.
     :param allow_mock: allows mock data path to be returned
     :param force_mock: only mock data path will be returned. Useful for debugging with
@@ -87,9 +172,10 @@ def resolve_data_dir_for_ds(
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
     dataset_name = dataset_name.lower()
-    if data_dir in [None, "none", "None"]:
+    if data_dir_mapping is None:
         Messages.warn("No data directory provided, trying to resolve")
         path_dicts = dataset_paths.get(dataset_name, {})
+        assert type(path_dicts) == list, f"Invalid path_dicts for {dataset_name}"
         for pd in path_dicts:
             # check that all paths are valid
             valid = True
@@ -98,19 +184,19 @@ def resolve_data_dir_for_ds(
                     valid = False
                     break
             if valid:
-                data_dir = {k: Path(v).resolve() for k, v in pd.items()}
-                Messages.warn(f"Changing path to {data_dir}")
+                data_dir_mapping = {k: Path(v).resolve() for k, v in pd.items()}
+                Messages.warn(f"Changing path to {data_dir_mapping}")
                 break
 
     # using mock data if allowed and no other found or forced
-    if data_dir in [None, "none", "None"] and allow_mock:
+    if data_dir_mapping is None and allow_mock:
         Messages.warn("Mock data being used, no alternative available.")
-        data_dir = mock_data_path[dataset_name]
+        data_dir_mapping = mock_data_path[dataset_name]
     if force_mock:
         Messages.warn("Forcing Mock data")
-        data_dir = mock_data_path[dataset_name]
+        data_dir_mapping = mock_data_path[dataset_name]
 
-    if data_dir in [None, "none", "None"]:
+    if data_dir_mapping is None:
         raise AssertionError("Could not resolve data directory")
     else:
-        return data_dir
+        return data_dir_mapping

@@ -34,7 +34,7 @@ def resolve_data_dir(
     """
     return resolve_data_dir_for_ds(
         dataset_name="rsvqa-lr",
-        data_dir=data_dir,
+        data_dir_mapping=data_dir,
         allow_mock=allow_mock,
         force_mock=force_mock,
     )

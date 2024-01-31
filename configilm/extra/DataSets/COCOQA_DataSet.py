@@ -2,6 +2,7 @@ import os
 from os.path import join
 from pathlib import Path
 from typing import Callable
+from typing import Dict
 from typing import Mapping
 from typing import Optional
 from typing import Union
@@ -16,7 +17,7 @@ from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQAD
 
 
 def resolve_data_dir(
-    data_dir: Union[str, None], allow_mock: bool = False, force_mock: bool = False
+    data_dir: Optional[Mapping[str, Union[str, Path]]], allow_mock: bool = False, force_mock: bool = False
 ) -> Mapping[str, Union[str, Path]]:
     """
     Helper function that tries to resolve the correct directory
@@ -37,7 +38,7 @@ def resolve_data_dir(
 def _txts_to_dict(base_dir: str):
     # collect all .txt files in dir
     txt_files = [join(base_dir, x) for x in os.listdir(base_dir) if x.endswith(".txt")]
-    data = {
+    data: Dict = {
         "answers": [],
         "img_ids": [],
         "questions": [],
@@ -55,8 +56,7 @@ def _txts_to_dict(base_dir: str):
     split = "train" if "train" in Path(base_dir).stem else "val"
     data["img_ids"] = [f"COCO_{split}2014_{x:>012}.jpg" for x in data["img_ids"]]
     # zip all lists together to one list of 4 item tuples
-    data = list(zip(data["img_ids"], data["questions"], data["answers"], data["types"]))
-    return data
+    return list(zip(data["img_ids"], data["questions"], data["answers"], data["types"]))
 
 
 class COCOQADataSet(ClassificationVQADataset):
@@ -66,7 +66,7 @@ class COCOQADataSet(ClassificationVQADataset):
         split: Optional[str] = None,
         transform: Optional[Callable] = None,
         max_len: Optional[int] = None,
-        img_size: Optional[tuple] = (3, 120, 120),
+        img_size: tuple = (3, 120, 120),
         selected_answers: Optional[list] = None,
         num_classes: Optional[int] = 430,
         tokenizer: Optional[Callable] = None,
@@ -146,9 +146,11 @@ class COCOQADataSet(ClassificationVQADataset):
 
     def prepare_split(self, split: str):
         if split == "train":
-            return _txts_to_dict(self.data_dirs["train_data"])
+            path = Path(self.data_dirs["train_data"]).resolve()
+            return _txts_to_dict(str(path))
         else:
-            return _txts_to_dict(self.data_dirs["test_data"])
+            path = Path(self.data_dirs["test_data"]).resolve()
+            return _txts_to_dict(str(path))
 
     def load_image(self, key: str) -> torch.Tensor:
         img_split = "train2014" if "train" in key else "val2014"

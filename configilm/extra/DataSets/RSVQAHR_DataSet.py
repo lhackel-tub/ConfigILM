@@ -32,7 +32,7 @@ def resolve_data_dir(data_dir: Optional[str], allow_mock: bool = False, force_mo
     """
     return resolve_data_dir_for_ds(
         dataset_name="rsvqa-hr",
-        data_dir=data_dir,
+        data_dir_mapping=data_dir,
         allow_mock=allow_mock,
         force_mock=force_mock,
     )

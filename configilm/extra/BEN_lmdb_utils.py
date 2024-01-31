@@ -8,8 +8,8 @@ properties.
 __author__ = "Leonard Hackel"
 __email__ = "l.hackel@tu-berlin.de"
 
-import pathlib
-from typing import Iterable, Union, Optional, Sequence
+from pathlib import Path
+from typing import Iterable, Union, Optional, Sequence, Mapping
 
 import lmdb
 import numpy as np
@@ -150,7 +150,9 @@ def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
     return ben_channel_mean, ben_channel_std
 
 
-def resolve_data_dir(data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False) -> str:
+def resolve_data_dir(
+    data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
+) -> Mapping[str, Union[str, Path]]:
     """
     Helper function that tries to resolve the correct directory.
 
@@ -183,7 +185,7 @@ def read_ben_from_lmdb(env, key):
 class BENLMDBReader:
     def __init__(
         self,
-        lmdb_dir: Union[str, pathlib.Path],
+        lmdb_dir: Union[str, Path],
         image_size: Sequence[int],
         bands: Union[Iterable, str, int],
         label_type: str,

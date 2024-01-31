@@ -11,6 +11,7 @@ import pathlib
 from pathlib import Path
 from typing import Callable
 from typing import Iterable
+from typing import Mapping
 from typing import Optional
 from typing import Union
 
@@ -18,7 +19,6 @@ from torch.utils.data import Dataset
 
 from configilm.extra.BEN_lmdb_utils import ben19_list_to_onehot
 from configilm.extra.BEN_lmdb_utils import BENLMDBReader
-from configilm.util import Messages
 
 
 def _csv_files_to_patch_list(csv_files: Union[Path, Iterable[Path]]):
@@ -54,91 +54,77 @@ class BENDataSet(Dataset):
 
     def __init__(
         self,
-        root_dir: Union[str, Path] = Path("../"),
-        csv_files: Optional[Union[Path, Iterable[Path]]] = None,
+        data_dirs: Mapping[str, Union[str, Path]],
         split: Optional[str] = None,
-        transform=None,
-        max_img_idx=None,
-        img_size=(12, 120, 120),
-        return_patchname: bool = False,
+        transform: Optional[Callable] = None,
+        max_len: Optional[int] = None,
+        img_size: Optional[tuple] = (3, 120, 120),
+        return_extras: bool = False,
         patch_prefilter: Optional[Callable[[str], bool]] = None,
     ):
         """
-        Creates a torch Dataset for the BigEarthNet dataset.
-        Assumes that the cvs files named after the requested split are located next to
-        the lmdb file (folder), which was created using BigEarthNetEncoder.
+        Dataset for BigEarthNet dataset. Files can be requested by contacting
+        the author.
 
-        Image lmdb file is expected to be named "BigEarthNetEncoded.lmdb"
+        Original Paper of Image Data:
+        https://arxiv.org/abs/2105.07921
 
-        :param root_dir: root directory to lmdb file and optional train/val/test.csv
+        :param data_dirs: A mapping from file key to file path. The file key is
+            used to identify the function of the file. For example, the key
+            "train.csv" contains the names of all images in the training set.
+            The file path can be either a string or a Path object. Required
+            keys are "images_lmdb", "train_data", "train_data" and "train_data".
+            The "_data" keys are used to identify the csv file that contains the
+            names of the images that are part of the split.
 
-            :Default: ../
+        :param split: The name of the split to use. Can be either "train", "val" or
+            "test". If None is provided, all splits are used.
 
-        :param csv_files: None (uses split-specific csv files) or csv file specifying
-            patch names
+            :default: None
 
-            :Default: None
+        :param transform: A callable that is used to transform the images after
+            loading them. If None is provided, no transformation is applied.
 
-        :param split: "train", "val" or "test" or None for all
+            :default: None
 
-            :Default: None (loads all splits)
+        :param max_len: The maximum number of images to use. If None or -1 is
+            provided, all images are used.
 
-        :param transform: transformations to be applied to loaded images aside from
-            scaling all bands to img_size.
+            :default: None
 
-            :Default: None
+        :param img_size: The size of the images.
 
-        :param max_img_idx: maximum number of images to load. If this number is higher
-            than the images found in the csv, None or -1, all images will be loaded.
+            :default: (3, 120, 120)
 
-            :Default: None
+        :param return_extras: If True, the dataset will return the patch name
+            as a third return value.
 
-        :param img_size: Size to which all channels will be scaled. Interpolation is
-            applied bicubic before any transformation.
+            :default: False
 
-            Also specifies which channels to load.
-            See `BENDataSet.get_available_channel_configurations()` for details.
+        :param patch_prefilter: A callable that is used to filter the patches
+            before they are loaded. If None is provided, no filtering is
+            applied. The callable must take a patch name as input and return
+            True if the patch should be included and False if it should be
+            excluded from the dataset.
 
-            :Default: (12, 120, 120)
-
-        :param return_patchname: If set to True, __getitem__ will return
-            (img, lbl, patch_name) instead of (img, lbl)
-
-            :Default: False
-
-        :param patch_prefilter: Callable to filter patches after reading csv files
-
-            :Default: None
+            :default: None
         """
         super().__init__()
-        self.return_patchname = return_patchname
-        self.root_dir = Path(root_dir)
-        self.lmdb_dir = self.root_dir / "BigEarthNetEncoded.lmdb"
+        self.return_extras = return_extras
+        self.lmdb_dir = data_dirs["images_lmdb"]
         self.transform = transform
         self.image_size = img_size
         if img_size[0] not in self.avail_chan_configs.keys():
             BENDataSet.get_available_channel_configurations()
             raise AssertionError(f"{img_size[0]} is not a valid channel configuration.")
 
-        self.read_channels = img_size[0]
+        self.channels = img_size[0]
 
         print(f"Loading BEN data for {split}...")
-        # if csv files are not specified, assume they are located in the root dir and
-        # collect from there
-        if csv_files is None:
-            # get csv files from root dir
-            if split is None:
-                # collect all splits and get data from there
-                splits = ["train", "val", "test"]
-                csv_files = [self.root_dir / f"{s}.csv" for s in splits]
-            else:
-                # get data for this split
-                csv_files = self.root_dir / f"{split}.csv"
+        if split is None:
+            csv_files = [data_dirs["train_data"], data_dirs["val_data"], data_dirs["test_data"]]
         else:
-            if split is not None:
-                Messages.warn(
-                    "You specified a split and a csv file - this may be a " "potential conflict and cannot be resolved."
-                )
+            csv_files = [data_dirs[f"{split}_data"]]
 
         # get data from this csv file(s)
         self.patches = _csv_files_to_patch_list(csv_files)
@@ -151,8 +137,8 @@ class BENDataSet(Dataset):
 
         # sort list for reproducibility
         self.patches.sort()
-        if max_img_idx is not None and max_img_idx < len(self.patches) and max_img_idx != -1:
-            self.patches = self.patches[:max_img_idx]
+        if max_len is not None and max_len < len(self.patches) and max_len != -1:
+            self.patches = self.patches[:max_len]
 
         print(f"    {len(self.patches)} filtered patches indexed")
         self.BENLoader = BENLMDBReader(
@@ -209,6 +195,6 @@ class BENDataSet(Dataset):
         labels = ben19_list_to_onehot(labels)
 
         assert sum(labels) == len(set(label_list)), f"Label creation failed for {key}"
-        if self.return_patchname:
+        if self.return_extras:
             return img, labels, key
         return img, labels

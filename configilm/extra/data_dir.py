@@ -18,30 +18,30 @@ dataset_paths = {
         # MARS
         {
             "images_lmdb": mars_data_dir / "BEN_VQA" / "BigEarthNetEncoded.lmdb",
-            "train.csv": mars_data_dir / "BEN_VQA" / "train.csv",
-            "val.csv": mars_data_dir / "BEN_VQA" / "val.csv",
-            "test.csv": mars_data_dir / "BEN_VQA" / "test.csv",
+            "train_data": mars_data_dir / "BEN_VQA" / "train.csv",
+            "val_data": mars_data_dir / "BEN_VQA" / "val.csv",
+            "test_data": mars_data_dir / "BEN_VQA" / "test.csv",
         },
         # ERDE
         {
             "images_lmdb": erde_data_dir / "BigEarthNetEncoded.lmdb",
-            "train.csv": erde_data_dir / "train.csv",
-            "val.csv": erde_data_dir / "val.csv",
-            "test.csv": erde_data_dir / "test.csv",
+            "train_data": erde_data_dir / "train.csv",
+            "val_data": erde_data_dir / "val.csv",
+            "test_data": erde_data_dir / "test.csv",
         },
         # MARS Storagecube
         {
             "images_lmdb": mars_storagecube / "leonard" / "BigEarthNetEncoded.lmdb",
-            "train.csv": mars_storagecube / "leonard" / "train.csv",
-            "val.csv": mars_storagecube / "leonard" / "val.csv",
-            "test.csv": mars_storagecube / "leonard" / "test.csv",
+            "train_data": mars_storagecube / "leonard" / "train.csv",
+            "val_data": mars_storagecube / "leonard" / "val.csv",
+            "test_data": mars_storagecube / "leonard" / "test.csv",
         },
         # ERDE Storagecube
         {
             "images_lmdb": erde_storagecube / "leonard" / "BigEarthNetEncoded.lmdb",
-            "train.csv": erde_storagecube / "leonard" / "train.csv",
-            "val.csv": erde_storagecube / "leonard" / "val.csv",
-            "test.csv": erde_storagecube / "leonard" / "test.csv",
+            "train_data": erde_storagecube / "leonard" / "train.csv",
+            "val_data": erde_storagecube / "leonard" / "val.csv",
+            "test_data": erde_storagecube / "leonard" / "test.csv",
         },
     ],
     "cocoqa": [],
@@ -117,9 +117,9 @@ mock_data_dir = Path(__file__).parent / "mock_data"
 mock_data_path = {
     "benv1": {
         "images_lmdb": mock_data_dir / "BENv1" / "BigEarthNetEncoded.lmdb",
-        "train.csv": mock_data_dir / "BENv1" / "train.csv",
-        "val.csv": mock_data_dir / "BENv1" / "val.csv",
-        "test.csv": mock_data_dir / "BENv1" / "test.csv",
+        "train_data": mock_data_dir / "BENv1" / "train.csv",
+        "val_data": mock_data_dir / "BENv1" / "val.csv",
+        "test_data": mock_data_dir / "BENv1" / "test.csv",
     },
     "cocoqa": {
         "images": mock_data_dir / "COCO-QA" / "images",

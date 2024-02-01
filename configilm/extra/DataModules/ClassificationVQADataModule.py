@@ -107,17 +107,15 @@ class ClassificationVQADataModule(LightningDataModule):
                 f"configuration."
             )
 
-    def setup(self, stage=None):
+    def setup(self, stage: Optional[str] = None):
         """
         Prepares the data sets for the specific stage.
 
         - "fit": train and validation data set
-        - "train": train data set
-        - "val": validation data set
         - "test": test data set
         - None: all data sets
 
-        :param stage: None, "fit", "train", "val" or "test"
+        :param stage: None, "fit", or "test"
 
             :default: None
         """

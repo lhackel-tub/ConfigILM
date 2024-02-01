@@ -95,31 +95,15 @@ def test_ds_max_img_idx_too_large(data_dirs, max_len: int):
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
 def test_ds_classes(data_dirs, classes: int):
     ds = RSVQALRDataSet(data_dirs=data_dirs, num_classes=classes, split="train", quantize_answers=True)
-    assert len(ds.answers) == classes
     max_classes_mock_set = 7  # number of classes in the mock data
-    if classes <= max_classes_mock_set:
-        for i in range(classes):
-            assert ds.answers[i] != "INVALID"
-    else:
-        for i in range(max_classes_mock_set):
-            assert ds.answers[i] != "INVALID"
-        for i in range(max_classes_mock_set, classes):
-            assert ds.answers[i] == "INVALID"
+    test_data_common._assert_classes_beyond_border_invalid(ds, classes, max_classes_mock_set)
 
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
 def test_ds_classes_unbucketed(data_dirs, classes: int):
     ds = RSVQALRDataSet(data_dirs=data_dirs, num_classes=classes, split="train", quantize_answers=False)
-    assert len(ds.answers) == classes
     max_classes_mock_set = 36  # number of classes in the mock data
-    if classes <= max_classes_mock_set:
-        for i in range(classes):
-            assert ds.answers[i] != "INVALID"
-    else:
-        for i in range(max_classes_mock_set):
-            assert ds.answers[i] != "INVALID"
-        for i in range(max_classes_mock_set, classes):
-            assert ds.answers[i] == "INVALID"
+    test_data_common._assert_classes_beyond_border_invalid(ds, classes, max_classes_mock_set)
 
 
 @pytest.mark.parametrize("split", dataset_params)
@@ -128,43 +112,7 @@ def test_dm_default(data_dirs, split: str):
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
     dm.setup(stage=split2stage[split])
     dm.prepare_data()
-    if split in ["train", "val"]:
-        test_data_common.dataset_ok(
-            dm.train_ds,
-            expected_image_shape=(3, 256, 256),
-            expected_length=None,
-            classes=9,
-            expected_question_length=64,
-        )
-        test_data_common.dataset_ok(
-            dm.val_ds,
-            expected_image_shape=(3, 256, 256),
-            expected_length=None,
-            classes=9,
-            expected_question_length=64,
-        )
-        assert dm.test_ds is None
-    elif split == "test":
-        test_data_common.dataset_ok(
-            dm.test_ds,
-            expected_image_shape=(3, 256, 256),
-            expected_length=None,
-            classes=9,
-            expected_question_length=64,
-        )
-        assert dm.train_ds is None
-        assert dm.val_ds is None
-    elif split is None:
-        for ds in [dm.train_ds, dm.val_ds, dm.test_ds]:
-            test_data_common.dataset_ok(
-                ds,
-                expected_image_shape=(3, 256, 256),
-                expected_length=None,
-                classes=9,
-                expected_question_length=64,
-            )
-    else:
-        ValueError(f"split {split} unknown")
+    test_data_common._assert_datasets_set_correctly_for_split(dm, split, (3, 256, 256), None, 64, 9)
 
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])

@@ -1,17 +1,18 @@
 import warnings
+from typing import Optional
 from typing import Sequence
-from typing import Union
 
 import torch
-from pytorch_lightning import LightningDataModule
-from torch.utils.data import Dataset
+
+from configilm.extra.DataModules.ClassificationVQADataModule import ClassificationVQADataModule
+from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
 
 
 def dataset_ok(
-    dataset: Union[Dataset, None],
+    dataset: Optional[ClassificationVQADataset],
     expected_image_shape: Sequence,
     expected_question_length: int,
-    expected_length: Union[int, None],
+    expected_length: Optional[int],
     classes: int,
 ):
     assert dataset is not None
@@ -30,7 +31,7 @@ def dataset_ok(
 
 
 def dataloaders_ok(
-    dm: LightningDataModule,
+    dm: ClassificationVQADataModule,
     expected_image_shape: Sequence,
     expected_question_length: int,
     classes: int,
@@ -62,7 +63,7 @@ def dataloaders_ok(
             assert a.shape == (expected_image_shape[0], classes)
 
 
-def _test_dm_shuffle_false(dm: LightningDataModule):
+def _test_dm_shuffle_false(dm: ClassificationVQADataModule):
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",
@@ -79,7 +80,7 @@ def _test_dm_shuffle_false(dm: LightningDataModule):
     assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
-def _test_dm_shuffle_true(dm: LightningDataModule):
+def _test_dm_shuffle_true(dm: ClassificationVQADataModule):
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",
@@ -95,7 +96,7 @@ def _test_dm_shuffle_true(dm: LightningDataModule):
     assert not torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
-def _test_dm_shuffle_none(dm: LightningDataModule):
+def _test_dm_shuffle_none(dm: ClassificationVQADataModule):
     with warnings.catch_warnings():
         warnings.filterwarnings(
             action="ignore",
@@ -109,3 +110,73 @@ def _test_dm_shuffle_none(dm: LightningDataModule):
     )
     assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
     assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
+
+
+def _assert_datasets_set_correctly_for_split(
+    dm: ClassificationVQADataModule,
+    split: str,
+    expected_image_shape: Sequence,
+    expected_length: Optional[int],
+    expected_question_length: int,
+    classes: int,
+):
+    # check that the datamodule has the correct attributes
+    assert hasattr(dm, "train_ds"), "DataModule has no train_ds attribute"
+    assert hasattr(dm, "val_ds"), "DataModule has no train_ds attribute"
+    assert hasattr(dm, "test_ds"), "DataModule has no train_ds attribute"
+
+    if split == "train":
+        dataset_ok(
+            dm.train_ds,
+            expected_image_shape=expected_image_shape,
+            expected_length=expected_length,
+            classes=classes,
+            expected_question_length=expected_question_length,
+        )
+        # val may be None if no validation set is available or set if it is available
+        assert dm.test_ds is None
+    elif split == "val":
+        # train may be None if no validation set is available or set if it is available
+        dataset_ok(
+            dm.val_ds,
+            expected_image_shape=expected_image_shape,
+            expected_length=expected_length,
+            classes=classes,
+            expected_question_length=expected_question_length,
+        )
+
+        assert dm.test_ds is None
+    elif split == "test":
+        dataset_ok(
+            dm.test_ds,
+            expected_image_shape=expected_image_shape,
+            expected_length=expected_length,
+            classes=classes,
+            expected_question_length=expected_question_length,
+        )
+        assert dm.train_ds is None
+        assert dm.val_ds is None
+    elif split is None:
+        for ds in [dm.train_ds, dm.val_ds, dm.test_ds]:
+            dataset_ok(
+                ds,
+                expected_image_shape=expected_image_shape,
+                expected_length=expected_length,
+                classes=classes,
+                expected_question_length=expected_question_length,
+            )
+    else:
+        ValueError(f"split {split} unknown")
+
+
+def _assert_classes_beyond_border_invalid(ds: ClassificationVQADataset, classes: int, max_classes_mock_set: int):
+    assert hasattr(ds, "answers"), "Dataset has no answers attribute"
+    assert len(ds.answers) == classes
+    if classes <= max_classes_mock_set:
+        for i in range(classes):
+            assert ds.answers[i] != "INVALID"
+    else:
+        for i in range(max_classes_mock_set):
+            assert ds.answers[i] != "INVALID"
+        for i in range(max_classes_mock_set, classes):
+            assert ds.answers[i] == "INVALID"

@@ -2,10 +2,10 @@ from typing import Tuple
 
 import pytest
 
-from configilm.extra.DataModules.RSVQAxBEN_DataModule import RSVQAxBENDataModule
-from configilm.extra.DataSets.RSVQAxBEN_DataSet import RSVQAxBENDataSet
-from configilm.extra.DataSets.RSVQAxBEN_DataSet import resolve_data_dir
 from . import test_data_common
+from configilm.extra.DataModules.RSVQAxBEN_DataModule import RSVQAxBENDataModule
+from configilm.extra.DataSets.RSVQAxBEN_DataSet import resolve_data_dir
+from configilm.extra.DataSets.RSVQAxBEN_DataSet import RSVQAxBENDataSet
 
 
 @pytest.fixture

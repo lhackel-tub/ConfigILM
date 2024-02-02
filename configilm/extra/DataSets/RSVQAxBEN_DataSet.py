@@ -16,8 +16,8 @@ from typing import Optional
 import torch
 
 from configilm.extra.BEN_lmdb_utils import BENLMDBReader
-from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
 from configilm.extra.data_dir import resolve_data_dir_for_ds
+from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
 
 
 def resolve_data_dir(
@@ -39,28 +39,27 @@ class RSVQAxBENDataSet(ClassificationVQADataset):
     max_cache_size = 0
 
     def __init__(
-            self,
-            data_dirs: Mapping[str, Path],
-            split: Optional[str] = None,
-            transform: Optional[Callable] = None,
-            max_len: Optional[int] = None,
-            img_size: tuple = (12, 120, 120),
-            selected_answers: Optional[list] = None,
-            num_classes: Optional[int] = 1000,
-            tokenizer: Optional[Callable] = None,
-            seq_length: int = 64,
-            return_extras: bool = False,
+        self,
+        data_dirs: Mapping[str, Path],
+        split: Optional[str] = None,
+        transform: Optional[Callable] = None,
+        max_len: Optional[int] = None,
+        img_size: tuple = (12, 120, 120),
+        selected_answers: Optional[list] = None,
+        num_classes: Optional[int] = 1000,
+        tokenizer: Optional[Callable] = None,
+        seq_length: int = 64,
+        return_extras: bool = False,
     ):
-        """
-        """
+        """ """
         assert img_size[0] in [2, 3, 4, 10, 12], (
-                "Image Channels have to be "
-                "2 (Sentinel-1), "
-                "3 (RGB), "
-                "4 (10m Sentinel-2), "
-                "10 (10m + 20m Sentinel-2) or "
-                "12 (10m + 20m Sentinel-2 + 10m Sentinel-1) "
-                "but was " + f"{img_size[0]}"
+            "Image Channels have to be "
+            "2 (Sentinel-1), "
+            "3 (RGB), "
+            "4 (10m Sentinel-2), "
+            "10 (10m + 20m Sentinel-2) or "
+            "12 (10m + 20m Sentinel-2 + 10m Sentinel-1) "
+            "but was " + f"{img_size[0]}"
         )
         print(f"Loading split RSVQAxBEN data for {split}...")
 

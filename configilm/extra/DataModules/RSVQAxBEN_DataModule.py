@@ -7,34 +7,30 @@ Based on Image Data from:
 https://arxiv.org/abs/2105.07921
 https://bigearth.net/
 """
-from datetime import datetime
 from pathlib import Path
-from time import time
 from typing import Callable
 from typing import Mapping
 from typing import Optional
 
-from torch.utils.data import DataLoader
-
+from configilm.extra._defaults import default_train_transform
+from configilm.extra._defaults import default_transform
 from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
 from configilm.extra.DataModules.ClassificationVQADataModule import ClassificationVQADataModule
 from configilm.extra.DataSets.RSVQAxBEN_DataSet import RSVQAxBENDataSet
-from configilm.extra._defaults import default_train_transform
-from configilm.extra._defaults import default_transform
 
 
 class RSVQAxBENDataModule(ClassificationVQADataModule):
     def __init__(
-            self,
-            data_dirs: Mapping[str, Path],
-            batch_size: int = 16,
-            img_size: tuple = (12, 120, 120),
-            num_workers_dataloader: int = 4,
-            shuffle: Optional[bool] = None,
-            max_len: Optional[int] = None,
-            tokenizer: Optional[Callable] = None,
-            seq_length: int = 64,
-            pin_memory: Optional[bool] = None,
+        self,
+        data_dirs: Mapping[str, Path],
+        batch_size: int = 16,
+        img_size: tuple = (12, 120, 120),
+        num_workers_dataloader: int = 4,
+        shuffle: Optional[bool] = None,
+        max_len: Optional[int] = None,
+        tokenizer: Optional[Callable] = None,
+        seq_length: int = 64,
+        pin_memory: Optional[bool] = None,
     ):
         super().__init__(
             data_dirs=data_dirs,
@@ -53,8 +49,9 @@ class RSVQAxBENDataModule(ClassificationVQADataModule):
         self.train_transforms = default_train_transform(
             img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
         )
-        self.eval_transforms = default_transform(img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean,
-                                                 std=ben_std)
+        self.eval_transforms = default_transform(
+            img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
+        )
 
     def setup(self, stage: Optional[str] = None):
         sample_info_msg = ""

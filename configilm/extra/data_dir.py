@@ -67,7 +67,7 @@ dataset_paths = {
             "train_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR",
             "val_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR",
             "test_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR",
-            "test_data_phili": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+            "test_phili_data": mars_storagecube_datasets / "RSVQA" / "RSVQA-HR",
         },
         # ERDE Storagecube
         {
@@ -75,7 +75,7 @@ dataset_paths = {
             "train_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR",
             "val_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR",
             "test_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR",
-            "test_data_phili": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR",
+            "test_phili_data": erde_storagecube_datasets / "RSVQA" / "RSVQA-HR",
         },
     ],
     "rsvqa-lr": [
@@ -136,7 +136,7 @@ mock_data_path = {
         "train_data": mock_data_dir / "RSVQA-HR",
         "val_data": mock_data_dir / "RSVQA-HR",
         "test_data": mock_data_dir / "RSVQA-HR",
-        "test_data_phili": mock_data_dir / "RSVQA-HR",
+        "test_phili_data": mock_data_dir / "RSVQA-HR",
     },
     "rsvqa-lr": {
         "images": mock_data_dir / "RSVQA-LR" / "Images_LR",

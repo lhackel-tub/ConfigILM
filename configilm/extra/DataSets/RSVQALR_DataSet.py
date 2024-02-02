@@ -46,11 +46,6 @@ def resolve_data_dir(
 def _get_question_answers(
     data_dirs: Mapping[str, Path], split: str, quantize_answers: bool = True
 ) -> list[tuple[str, str, str, str]]:
-    def _remove_key_from_dict(d: dict, k: str):
-        n = d.copy()
-        n.pop(k)
-        return n
-
     split_data_dir = data_dirs[f"{split}_data"]
 
     # get all question ids
@@ -185,7 +180,6 @@ class RSVQALRDataSet(ClassificationVQADataset):
             :default: False
         """
         self.quantize_answers = quantize_answers
-        assert split in {"train", "val", "test", None}, f"Invalid split: {split}"
         assert img_size[0] == 3, "RSVQA-LR only supports RGB images."
         super().__init__(
             data_dirs=data_dirs,

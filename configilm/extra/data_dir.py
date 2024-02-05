@@ -126,10 +126,10 @@ mock_data_path = {
         "test_data": mock_data_dir / "COCO-QA" / "cocoqa-2015-05-17" / "test",
     },
     "hrvqa": {
-        "images": mock_data_dir / "HR-VQA" / "images",
-        "train_data": mock_data_dir / "HR-VQA" / "jsons",
-        "val_data": mock_data_dir / "HR-VQA" / "jsons",
-        "test_data": mock_data_dir / "HR-VQA" / "jsons",
+        "images": mock_data_dir / "HRVQA" / "images",
+        "train_data": mock_data_dir / "HRVQA" / "jsons",
+        "val_data": mock_data_dir / "HRVQA" / "jsons",
+        "test_data": mock_data_dir / "HRVQA" / "jsons",
     },
     "rsvqa-hr": {
         "images": mock_data_dir / "RSVQA-HR" / "Images" / "Data",

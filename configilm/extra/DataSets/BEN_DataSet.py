@@ -50,6 +50,7 @@ class BENDataSet(Dataset):
         - 10 -> 10m + 20m Sentinel-2
         - 12 -> 10m + 20m Sentinel-2 + 10m Sentinel-1
     """
+
     avail_chan_configs = {
         2: "Sentinel-1",
         3: "RGB",

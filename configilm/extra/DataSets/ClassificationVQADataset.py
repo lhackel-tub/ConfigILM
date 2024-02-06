@@ -92,6 +92,9 @@ class ClassificationVQADataset(Dataset):
             :default: False
         """
         super().__init__()
+        if selected_answers is not None:
+            # ignore num_classes
+            num_classes = None
         self.data_dirs = data_dirs
         self.data_dirs = {k: Path(v) for k, v in self.data_dirs.items()}
         self.transform = transform
@@ -123,11 +126,10 @@ class ClassificationVQADataset(Dataset):
             # this assumes that the qa_data is a list of tuples, where the answer
             # is at index 2
             answer_stats = Counter([x[2] for x in self.qa_data])
-            if num_classes is None:
-                num_classes = len(answer_stats)
             selected_answers = sorted(answer_stats.keys(), key=lambda x: answer_stats[x])[:num_classes]
         else:
-            selected_answers = sorted(set(selected_answers))
+            # override num_classes if selected_answers is provided
+            num_classes = len(selected_answers)
         self.answers = selected_answers
         # "INVALID" is used to indicate that the answer is not in the self.answers list
         # add this string to the end of the list until the list has the correct length
@@ -135,8 +137,8 @@ class ClassificationVQADataset(Dataset):
         self.answers.extend(["INVALID"] * (num_classes - len(self.answers)))
         self.num_classes = num_classes
         assert (
-            len(self.answers) <= self.num_classes
-        ), f"Number of answers ({len(self.answers)}) is larger than num_classes ({self.num_classes})"
+            len(self.answers) == self.num_classes
+        ), f"Number of answers ({len(self.answers)}) is not equal to num_classes ({self.num_classes})"
 
         if tokenizer is None:
             warn(

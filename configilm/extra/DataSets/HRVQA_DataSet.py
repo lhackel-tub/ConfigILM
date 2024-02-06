@@ -255,6 +255,8 @@ class HRVQADataSet(ClassificationVQADataset):
                 return val_data[:samples_in_val_split]
             else:
                 return val_data[samples_in_val_split:]
+        else:
+            raise ValueError(f"Split {split} unknown.")
 
     def load_image(self, key: str) -> torch.Tensor:
         img_path = self.data_dirs["images"] / f"{key}.png"

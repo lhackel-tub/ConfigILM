@@ -149,7 +149,7 @@ class HRVQADataModule(ClassificationVQADataModule):
                 if self.test_splitting_seed is None:
                     # don't split the val set if test_splitting_seed is None
                     val_split = "val"
-                    division_seed = "Should Not Matter"
+                    division_seed: Union[str, int] = "Should Not Matter"
                 else:
                     # split the val set into val and test
                     val_split = "val-div"

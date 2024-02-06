@@ -30,6 +30,67 @@ class RSVQAHRDataModule(ClassificationVQADataModule):
         use_file_format: str = "tif",
         quantize_answers: bool = True,
     ):
+        """
+        This class implements the DataModule for the RSVQA HR dataset.
+
+        :param data_dirs: A dictionary containing the paths to the different data directories.
+            It should contain the following keys:
+            - images: Path to the directory containing the images.
+            - train_data: Path to the directory containing the training data.
+            - val_data: Path to the directory containing the validation data.
+            - test_data: Path to the directory containing the test data.
+            - test_phili_data: Path to the directory containing the test data for the Philadelphia test split.
+
+        :param batch_size: The batch size to use for the dataloaders.
+
+            :default: 16
+
+        :param img_size: The size of the images.
+
+            :default: (3, 256, 256)
+
+        :param num_workers_dataloader: The number of workers to use for the dataloaders.
+
+            :default: 4
+
+        :param shuffle: Whether to shuffle the data in the dataloaders. If None is provided, the data is shuffled
+            for training and not shuffled for validation and test.
+
+            :default: None
+
+        :param max_len: The maximum number of qa-pairs to use. If None or -1 is
+            provided, all qa-pairs are used.
+
+            :default: None
+
+        :param tokenizer: A callable that is used to tokenize the questions. If set to None, the default tokenizer
+            (from configilm.util) is used.
+
+            :default: None
+
+        :param seq_length: The maximum length of the tokenized questions. If the tokenized question is longer than
+            this, it will be truncated. If it is shorter, it will be padded.
+
+            :default: 64
+
+        :param pin_memory: Whether to use pinned memory for the dataloaders. If None is
+            provided, it is set to True if a GPU is available and False otherwise.
+
+            :default: None
+
+        :param use_phili_test: If True, the Philadelphia test split will be used instead of the regular test split.
+
+            :default: False
+
+        :param use_file_format: The file format of the images. Can be either "tif" or "png".
+
+            :default: "tif"
+
+        :param quantize_answers: If True, the answers for area questions will be quantized into 5 buckets:
+            0m2, between 1m2 and 10m2, between 11m2 and 100m2, between 101m2 and 1000m2 and more than 1000m2.
+
+            :default: True
+        """
         super().__init__(
             data_dirs=data_dirs,
             batch_size=batch_size,

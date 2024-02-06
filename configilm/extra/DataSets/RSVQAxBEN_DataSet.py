@@ -74,7 +74,9 @@ class RSVQAxBENDataSet(ClassificationVQADataset):
 
             :default: None
 
-        :param img_size: The size of the images.
+        :param img_size: The size of the images. Note that this includes the number of
+            channels. For example, if the images are RGB images, the size should be
+            (3, h, w). See BEN_DataSet for available channel configurations.
 
             :default: (12, 120, 120)
 

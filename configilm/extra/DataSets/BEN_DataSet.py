@@ -35,6 +35,21 @@ def _csv_files_to_patch_list(csv_files: Union[Path, Iterable[Path]]):
 
 
 class BENDataSet(Dataset):
+    """
+    Dataset for BigEarthNet dataset. LMDB-Files can be requested by contacting
+    the author or by downloading the dataset from the official website and encoding
+    it using the BigEarthNet Encoder.
+
+    The dataset can be loaded with different channel configurations. The channel configuration
+    is defined by the first element of the img_size tuple (c, h, w).
+    The available configurations are:
+
+        - 2 -> Sentinel-1
+        - 3 -> RGB
+        - 4 -> 10m Sentinel-2
+        - 10 -> 10m + 20m Sentinel-2
+        - 12 -> 10m + 20m Sentinel-2 + 10m Sentinel-1
+    """
     avail_chan_configs = {
         2: "Sentinel-1",
         3: "RGB",
@@ -92,7 +107,9 @@ class BENDataSet(Dataset):
 
             :default: None
 
-        :param img_size: The size of the images.
+        :param img_size: The size of the images. Note that this includes the number of
+            channels. For example, if the images are RGB images, the size should be
+            (3, h, w).
 
             :default: (3, 120, 120)
 

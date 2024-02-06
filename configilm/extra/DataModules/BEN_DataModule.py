@@ -42,6 +42,55 @@ class BENDataModule(pl.LightningDataModule):
         pin_memory: Optional[bool] = None,
         patch_prefilter: Optional[Callable[[str], bool]] = None,
     ):
+        """
+        This datamodule is designed to work with the BigEarthNet dataset. It is a
+        multi-label classification dataset. The dataset is split into train, validation
+        and test sets. The datamodule provides dataloaders for each of these sets.
+
+        :param data_dirs: A mapping from file key to file path. Required keys are
+            "images_lmdb", "train_data", "val_data" and "test_data". The "images_lmdb"
+            key is used to identify the lmdb file that contains the images. The "_data"
+            keys are used to identify paths to the respective split csv files.
+            Note, that the lmdb file is encoded using the BigEarthNet Encoder and contains
+            images and labels.
+
+        :param batch_size: The batch size to use for the dataloaders.
+
+            :default: 16
+
+        :param img_size: The size of the images. Note that this includes the number of
+            channels. For example, if the images are RGB images, the size should be
+            (3, h, w). See BEN_DataSet.avail_chan_configs for available channel
+            configurations.
+
+            :default: (3, 120, 120)
+
+        :param num_workers_dataloader: The number of workers to use for the dataloaders.
+
+            :default: 4
+
+        :param shuffle: Whether to shuffle the data. If None is provided, the data is shuffled
+            for training and not shuffled for validation and test.
+
+            :default: None
+
+        :param max_len: The maximum number of images to use. If None or -1 is provided,
+            all images are used. Applies per split.
+
+            :default: None
+
+        :param pin_memory: Whether to use pinned memory for the dataloaders. If None is
+            provided, it is set to True if a GPU is available and False otherwise.
+
+            :default: None
+
+        :param patch_prefilter: A callable that is used to filter out images. If None is
+            provided, no filtering is applied. The callable should take a string as input
+            and return a boolean. If the callable returns True, the image is included in
+            the dataset, otherwise it is excluded.
+
+            :default: None
+        """
         super().__init__()
 
         self.data_dirs = data_dirs

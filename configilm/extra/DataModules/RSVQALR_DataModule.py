@@ -27,6 +27,55 @@ class RSVQALRDataModule(ClassificationVQADataModule):
         seq_length: int = 64,
         pin_memory: Optional[bool] = None,
     ):
+        """
+        This class implements the DataModule for the RSVQA LR dataset.
+
+        :param data_dirs: A mapping from file key to file path. The file key is
+            used to identify the function of the file. For example, the key
+            "questions.txt" is used to identify the file that contains the
+            questions. The file path can be either a string or a Path object.
+            Required keys are "images", "train_data", "val_data" and "test_data".
+            The "_data" keys are used to identify the directory that contains the
+            data files which are named "LR_split_{split}_questions.json",
+            "LR_split_{split}_answers.json" and "LR_split_{split}_images.json".
+
+        :param batch_size: The batch size to use for the dataloaders.
+
+            :default: 16
+
+        :param img_size: The size of the images.
+
+            :default: (3, 256, 256)
+
+        :param num_workers_dataloader: The number of workers to use for the dataloaders.
+
+            :default: 4
+
+        :param shuffle: Whether to shuffle the data in the dataloaders. If None is provided, the data is shuffled
+            for training and not shuffled for validation and test.
+
+            :default: None
+
+        :param max_len: The maximum number of qa-pairs to use. If None or -1 is
+            provided, all qa-pairs are used.
+
+            :default: None
+
+        :param tokenizer: A callable that is used to tokenize the questions. If set to None, the default tokenizer
+            (from configilm.util) is used.
+
+            :default: None
+
+        :param seq_length: The maximum length of the tokenized questions. If the tokenized question is longer than
+            this, it will be truncated. If it is shorter, it will be padded.
+
+            :default: 64
+
+        :param pin_memory: Whether to use pinned memory for the dataloaders. If None is
+            provided, it is set to True if a GPU is available and False otherwise.
+
+            :default: None
+        """
         super().__init__(
             data_dirs=data_dirs,
             batch_size=batch_size,

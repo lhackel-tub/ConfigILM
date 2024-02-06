@@ -1,6 +1,6 @@
 import itertools
-from typing import Tuple
 from typing import Sequence
+from typing import Tuple
 
 import pytest
 import torch
@@ -134,10 +134,10 @@ def test_3c_dataset_splits_subdiv_overlap(data_dirs, split: str, seed: int, div_
         # both have to be same
         assert q == qi, "Questions sets are not equal but should be"
     else:
-        q = set(q)
-        qi = set(qi)
-        assert q.intersection(qi) == set(), "There is an intersection between the val and test set"
-        assert len(q.union(qi)) == no_qa_full_val, "Val and test set combined do not cover the full set"
+        q_set = set(q)
+        qi_set = set(qi)
+        assert q_set.intersection(qi_set) == set(), "There is an intersection between the val and test set"
+        assert len(q_set.union(qi_set)) == no_qa_full_val, "Val and test set combined do not cover the full set"
 
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
@@ -261,10 +261,10 @@ def test_dm_dataloaders_bs(data_dirs, bs: int):
     dm = HRVQADataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
 
     def _dataloaders_ok(
-            dm: HRVQADataModule,
-            expected_image_shape: Sequence,
-            expected_question_length: int,
-            classes: int,
+        dm: HRVQADataModule,
+        expected_image_shape: Sequence,
+        expected_question_length: int,
+        classes: int,
     ):
         dm.setup(stage=None)
         dataloaders = [
@@ -363,6 +363,8 @@ def test_dm_shuffle_true(data_dirs):
         next(iter(dm.train_dataloader()))[0],
     )
     assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+
+
 def test_dm_test_stage_setup(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs, num_workers_dataloader=0, pin_memory=False)
     with pytest.raises(NotImplementedError):

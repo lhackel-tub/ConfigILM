@@ -36,8 +36,6 @@ def resolve_data_dir(
 
 
 class RSVQAxBENDataSet(ClassificationVQADataset):
-    max_cache_size = 0
-
     def __init__(
         self,
         data_dirs: Mapping[str, Path],
@@ -51,7 +49,60 @@ class RSVQAxBENDataSet(ClassificationVQADataset):
         seq_length: int = 64,
         return_extras: bool = False,
     ):
-        """ """
+        """
+        This class implements the RSVQAxBEN dataset. It is a subclass of
+        ClassificationVQADataset and provides some dataset specific functionality.
+
+        :param data_dirs: A dictionary containing the paths to the different data directories.
+            Required keys are "images_lmdb", "train_data", "val_data" and "test_data".
+            The "_data" keys are used to identify the directory that contains the
+            data files which are named "RSVQAxBEN_QA_{split}.json" that contains
+            the qa-pairs for the split.
+
+        :param split: The name of the split to use. Can be either "train", "val" or
+            "test". If None is provided, all splits will be used.
+
+            :default: None
+
+        :param transform: A callable that is used to transform the images after
+            loading them. If None is provided, no transformation is applied.
+
+            :default: None
+
+        :param max_len: The maximum number of qa-pairs to use. If None or -1 is
+            provided, all qa-pairs are used.
+
+            :default: None
+
+        :param img_size: The size of the images.
+
+            :default: (12, 120, 120)
+
+        :param selected_answers: A list of answers that should be used. If None
+            is provided, the num_classes most common answers are used. If
+            selected_answers is not None, num_classes is ignored.
+
+            :default: None
+
+        :param num_classes: The number of classes to use. Only used if
+            selected_answers is None. If set to None, all answers are used.
+
+            :default: 1000
+
+        :param tokenizer: A callable that is used to tokenize the questions. If
+            set to None, the default tokenizer (from configilm.util) is used.
+
+            :default: None
+
+        :param seq_length: The maximum length of the tokenized questions.
+
+            :default: 64
+
+        :param return_extras: If True, the dataset will return the type of the
+            question in addition to the image, question and answer.
+
+            :default: False
+        """
         assert img_size[0] in [2, 3, 4, 10, 12], (
             "Image Channels have to be "
             "2 (Sentinel-1), "

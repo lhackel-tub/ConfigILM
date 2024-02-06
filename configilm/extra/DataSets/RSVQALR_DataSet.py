@@ -172,12 +172,18 @@ class RSVQALRDataSet(ClassificationVQADataset):
 
         :param seq_length: The maximum length of the tokenized questions.
 
-                :default: 64
+            :default: 64
 
         :param return_extras: If True, the dataset will return the type of the
             question in addition to the image, question and answer.
 
             :default: False
+
+        :param quantize_answers: If True, the answers for counting questions will be
+            quantized into 5 buckets: 0, between 1 and 10, between 11 and 100,
+            between 101 and 1000, and more than 1000.
+
+            :default: True
         """
         self.quantize_answers = quantize_answers
         assert img_size[0] == 3, "RSVQA-LR only supports RGB images."

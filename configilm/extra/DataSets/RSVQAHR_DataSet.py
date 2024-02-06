@@ -130,6 +130,69 @@ class RSVQAHRDataSet(ClassificationVQADataset):
         use_file_format: str = "tif",
         quantize_answers: bool = True,
     ):
+        """
+        This class implements the RSVQA-HR dataset. It is a subclass of
+        ClassificationVQADataset and provides some dataset specific functionality.
+
+        :param data_dirs: A dictionary containing the paths to the different data directories.
+            It should contain the following keys:
+            - images: Path to the directory containing the images.
+            - train_data: Path to the directory containing the training data.
+            - val_data: Path to the directory containing the validation data.
+            - test_data: Path to the directory containing the test data.
+            - test_phili_data: Path to the directory containing the test data for the Philadelphia test split.
+
+        :param split: The name of the split to use. Can be either "train", "val", "test" or "test_phili".
+            If None is provided, all splits will be used.
+
+            :default: None
+
+        :param transform: A callable that is used to transform the images after loading them.
+            If None is provided, no transformation is applied.
+
+            :default: None
+
+        :param max_len: The maximum number of qa-pairs to use. If None or -1 is provided, all qa-pairs will be used.
+
+            :default: None
+
+        :param img_size: The size of the images.
+
+            :default: (3, 256, 256)
+
+        :param selected_answers: A list of answers that should be used. If None is provided, the num_classes most common
+             answers are used.
+
+            :default: None
+
+        :param num_classes: The number of classes to use. Only used if selected_answers is None. If set to None, all
+            answers are used.
+
+            :default: 94
+
+        :param tokenizer: A callable that is used to tokenize the questions. If
+            set to None, the default tokenizer (from configilm.util) is used.
+
+            :default: None
+
+        :param seq_length: The maximum length of the tokenized questions.
+
+            :default: 64
+
+        :param return_extras: If True, the dataset will return the type of the
+            question in addition to the image, question and answer.
+
+            :default: False
+
+        :param use_file_format: The file format of the images. Can be either "tif" or "png".
+
+            :default: "tif"
+
+        :param quantize_answers: If True, the answers for area questions will be quantized into 5 buckets:
+            0m2, between 1m2 and 10m2, between 11m2 and 100m2, between 101m2 and 1000m2 and more than 1000m2.
+
+            :default: True
+        """
         self.use_file_format = use_file_format
         self.quantize_answers = quantize_answers
         assert img_size[0] == 3, "RSVQA-HR only supports RGB images."

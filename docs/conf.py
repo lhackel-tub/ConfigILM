@@ -14,7 +14,7 @@
 # -- Project information -----------------------------------------------------
 
 project = "ConfigILM"
-copyright = "2023, Leonard Wayne Hackel"
+copyright = "2024, Leonard Wayne Hackel"
 author = "Leonard Wayne Hackel"
 html_title = project
 

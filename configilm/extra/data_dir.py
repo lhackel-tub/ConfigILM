@@ -110,6 +110,13 @@ dataset_paths = {
             "test_data": erde_storagecube_datasets / "RSVQAxBEN",
         },
     ],
+    "throughput_test": [
+        {
+            # just use this file as a placeholder, as the result is not used anyway but needed for compatibility with
+            # other datasets
+            "current_path": Path(__file__).parent,
+        }
+    ],
 }
 
 mock_data_dir = Path(__file__).parent / "mock_data"
@@ -149,6 +156,9 @@ mock_data_path = {
         "train_data": mock_data_dir / "VQA_RSVQAxBEN",
         "val_data": mock_data_dir / "VQA_RSVQAxBEN",
         "test_data": mock_data_dir / "VQA_RSVQAxBEN",
+    },
+    "throughput_test": {
+        # empty dict, as the result is not used anyway but needed for compatibility with other datasets
     },
 }
 

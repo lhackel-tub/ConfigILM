@@ -23,6 +23,7 @@ lmdb = { version = "^1.4.0", optional = true }
 pyarrow = { version = "^12.0.1", optional = true }
 bigearthnet-encoder = { version = "^0.3.0", optional = true }
 pytorch-lightning = { version = "^2.0.0", optional = true }
+lightning = { version = "^2.0.0", optional = true }
 
 
 [tool.poetry.extras]
@@ -32,10 +33,27 @@ bigearthnet = [
     "pydantic",
     "pyarrow"  # for parquet files
 ]
-full = [
+# for use with pytorch-lightning
+full-pytorch_lightning = [
     "lmdb",
     "bigearthnet-encoder",
     "pytorch-lightning",
+    "pydantic",
+    "pyarrow"
+]
+# for use with lightning (without pytorch-lightning)
+full-lightning = [
+    "lmdb",
+    "bigearthnet-encoder",
+    "lightning",
+    "pydantic",
+    "pyarrow"
+]
+# same as full-lightning
+full = [
+    "lmdb",
+    "bigearthnet-encoder",
+    "lightning",
     "pydantic",
     "pyarrow"
 ]

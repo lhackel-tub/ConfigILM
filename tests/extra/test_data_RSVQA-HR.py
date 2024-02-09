@@ -107,6 +107,11 @@ def test_ds_classes_no_buckets(data_dirs, classes: int):
     test_data_common._assert_classes_beyond_border_invalid(ds, classes, max_classes_mock_set)
 
 
+def test_ben_dm_lightning(data_dirs):
+    dm = RSVQAHRDataModule(data_dirs=data_dirs)
+    test_data_common._assert_dm_correct_lightning_version(dm)
+
+
 @pytest.mark.parametrize("split", dataset_params)
 def test_dm_default(data_dirs, split: str):
     dm = RSVQAHRDataModule(data_dirs=data_dirs)

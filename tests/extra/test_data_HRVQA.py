@@ -203,6 +203,11 @@ def test_ds_classes(data_dirs, classes: int):
     test_data_common._assert_classes_beyond_border_invalid(ds, classes, 4)
 
 
+def test_ben_dm_lightning(data_dirs):
+    dm = HRVQADataModule(data_dirs=data_dirs)
+    test_data_common._assert_dm_correct_lightning_version(dm)
+
+
 @pytest.mark.parametrize("split", ["train", "val", "test", None])
 def test_dm_default(data_dirs, split: str):
     dm = HRVQADataModule(data_dirs=data_dirs)

@@ -12,7 +12,10 @@ from typing import Optional
 from typing import Union
 from warnings import warn
 
-import pytorch_lightning as pl
+try:
+    import lightning.pytorch as pl
+except ImportError:
+    import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader
 

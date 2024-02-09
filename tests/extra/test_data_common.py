@@ -180,3 +180,14 @@ def _assert_classes_beyond_border_invalid(ds: ClassificationVQADataset, classes:
             assert ds.answers[i] != "INVALID"
         for i in range(max_classes_mock_set, classes):
             assert ds.answers[i] == "INVALID"
+
+
+def _assert_dm_correct_lightning_version(dm):
+    try:
+        import lightning.pytorch
+
+        assert isinstance(dm, lightning.pytorch.LightningDataModule), "DM should be a lightning DataModule"
+    except ImportError:
+        import pytorch_lightning
+
+        assert isinstance(dm, pytorch_lightning.LightningDataModule), "DM should be a pytorch lightning DataModule"

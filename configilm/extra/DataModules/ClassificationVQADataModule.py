@@ -6,11 +6,15 @@ from typing import Union
 from warnings import warn
 
 import torch
-from pytorch_lightning import LightningDataModule
+
+try:
+    import lightning.pytorch as pl
+except ImportError:
+    import pytorch_lightning as pl
 from torch.utils.data import DataLoader
 
 
-class ClassificationVQADataModule(LightningDataModule):
+class ClassificationVQADataModule(pl.LightningDataModule):
     train_ds: Union[None, torch.utils.data.Dataset] = None
     val_ds: Union[None, torch.utils.data.Dataset] = None
     test_ds: Union[None, torch.utils.data.Dataset] = None

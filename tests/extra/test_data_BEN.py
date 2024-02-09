@@ -7,6 +7,7 @@ with warnings.catch_warnings():
     from configilm.extra.DataSets.BEN_DataSet import BENDataSet
     from configilm.extra.DataModules.BEN_DataModule import BENDataModule
 
+from . import test_data_common
 from configilm.extra.BEN_lmdb_utils import resolve_data_dir
 from typing import Sequence, Union
 import torch
@@ -172,6 +173,11 @@ def test_ben_max_index_too_large(data_dirs, max_len: int):
         max_len=max_len,
     )
     assert len(ds) < max_len
+
+
+def test_ben_dm_lightning(data_dirs):
+    dm = BENDataModule(data_dirs=data_dirs)
+    test_data_common._assert_dm_correct_lightning_version(dm)
 
 
 @pytest.mark.parametrize("split", dataset_params)

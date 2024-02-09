@@ -50,6 +50,11 @@ def test_ds_max_img_idx(data_dirs, max_len):
 dataset_params = ["train", "val", "test", None]
 
 
+def test_ben_dm_lightning(data_dirs):
+    dm = COCOQADataModule(data_dirs=data_dirs)
+    test_data_common._assert_dm_correct_lightning_version(dm)
+
+
 @pytest.mark.parametrize("split", dataset_params)
 def test_dm_default(data_dirs, split: str):
     dm = COCOQADataModule(data_dirs=data_dirs)

@@ -18,6 +18,7 @@ class ClassificationVQADataModule(pl.LightningDataModule):
     train_ds: Union[None, torch.utils.data.Dataset] = None
     val_ds: Union[None, torch.utils.data.Dataset] = None
     test_ds: Union[None, torch.utils.data.Dataset] = None
+    predict_ds: Union[None, torch.utils.data.Dataset] = None
 
     train_transforms: Optional[Callable] = None
     eval_transforms: Optional[Callable] = None
@@ -167,6 +168,16 @@ class ClassificationVQADataModule(pl.LightningDataModule):
         assert self.test_ds is not None, "setup() for testing must be called before test_dataloader()"
         return DataLoader(
             self.test_ds,
+            batch_size=self.batch_size,
+            shuffle=False if self.shuffle is None else self.shuffle,
+            num_workers=self.num_workers_dataloader,
+            pin_memory=self.pin_memory,
+        )
+
+    def predict_dataloader(self):
+        assert self.predict_ds is not None, "setup() for prediction must be called before predict_dataloader()"
+        return DataLoader(
+            self.predict_ds,
             batch_size=self.batch_size,
             shuffle=False if self.shuffle is None else self.shuffle,
             num_workers=self.num_workers_dataloader,

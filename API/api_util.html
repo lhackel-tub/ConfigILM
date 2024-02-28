@@ -165,6 +165,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -175,6 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extra/DataSets%20and%20DataModules/cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -332,7 +334,7 @@ without defining an object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.util.Messages.error">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.error" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints a red error message with aligned indent and “ERROR:”.
+<dd><p>Prints a red error message with aligned indent and “[ERROR]”.
 If the message has multiple lines, it is aligned to the right of the colon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -347,7 +349,7 @@ If the message has multiple lines, it is aligned to the right of the colon.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.util.Messages.hint">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.hint" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints a blue hint message with aligned indent and “HINT:”.
+<dd><p>Prints a blue hint message with aligned indent and “[HINT]”.
 If the message has multiple lines, it is aligned to the right of the colon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -362,7 +364,7 @@ If the message has multiple lines, it is aligned to the right of the colon.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.util.Messages.success">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.success" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints a green success message with aligned indent and “SUCCESS:”
+<dd><p>Prints a green success message with aligned indent and “[SUCCESS]”
 If the message has multiple lines, it is aligned to the right of the colon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -377,7 +379,7 @@ If the message has multiple lines, it is aligned to the right of the colon.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.util.Messages.warn">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">warn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.warn" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints a yellow warning message with aligned indent and “WARNING:”.
+<dd><p>Prints a yellow warning message with aligned indent and “[WARNING]”.
 If the message has multiple lines, it is aligned to the right of the colon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -512,7 +514,7 @@ added to first line</p></li>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

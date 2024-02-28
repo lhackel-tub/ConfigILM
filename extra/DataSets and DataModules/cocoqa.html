@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="ILMConfiguration" href="../../API/api_configilm.html" /><link rel="prev" title="HRVQA" href="hrvqa.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>COCO-QA - ConfigILM</title>
@@ -165,16 +165,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../DataSets%20and%20DataModules.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../DataSets%20and%20DataModules.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="bigearthnet.html">BigEarthNet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -257,10 +259,10 @@ The full folder structure expected at this path is</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">COCOQA_DataSet</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">COCOQA_DataSet</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataSet</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 
 <span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -268,10 +270,13 @@ The full folder structure expected at this path is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: No tokenizer was provided, using BertTokenizer (uncased). This may result in very bad performance if the used network expected other tokens
-Loading COCOQA data for None...
-        50 QA-pairs indexed
-        50 QA-pairs in reduced data set
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading COCOQA data for None...
+          20 QA-pairs indexed
+          20 QA-pairs used
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/extra/DataSets/ClassificationVQADataset.py:144: UserWarning: No tokenizer was provided, using BertTokenizer (uncased). This may result in very bad performance if the used network expected other tokens
+  warn(
 </pre></div>
 </div>
 </div>
@@ -279,22 +284,22 @@ Loading COCOQA data for None...
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 120, 120])
-Question (start): [101, 2054, 2003, 1996, 3609, 1997, 1996, 3933, 102, 0, 0, 0, 0, 0, 0]
-Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
+Question (start): [101, 1996, 2158, 4755, 2054, 3216, 2046, 1996, 4153, 102, 0, 0, 0, 0, 0]
+Answer (start): tensor([1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../../_images/008e6e0dd2208c56a69d1e068fdc78079f306e9ad484f22fffecd7a30d805e27.png" src="../../_images/008e6e0dd2208c56a69d1e068fdc78079f306e9ad484f22fffecd7a30d805e27.png" />
+<img alt="../../_images/1ba4207ebc401d4b81a86634c824418e3f9241cb7a36ad807184ac8e9d67c433.png" src="../../_images/1ba4207ebc401d4b81a86634c824418e3f9241cb7a36ad807184ac8e9d67c433.png" />
 </div>
 </div>
 <p>As we can see, this Dataset uses a tokenizer to generate the Question out of a natural language text. If no tokenizer is provided, a default one will be used, however this may lead to bad performance if not accounted for. The tokenizer can be configured as input parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.ConfigILM</span> <span class="kn">import</span> <span class="n">_get_hf_model</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.ConfigILM</span> <span class="kn">import</span> <span class="n">_get_hf_model</span>
 
 <span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataSet</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
 <span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -302,9 +307,50 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/ConfigILM.py:80: UserWarning: Model &#39;prajjwal1/bert-tiny&#39; not available. Trying to download...
+
+  warnings.warn(f&quot;Model &#39;{model_name}&#39; not available. Trying to download...\n&quot;)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>config.json:   0%|          | 0.00/285 [00:00&lt;?, ?B/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>config.json: 100%|██████████| 285/285 [00:00&lt;00:00, 1.50MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pytorch_model.bin:   0%|          | 0.00/17.8M [00:00&lt;?, ?B/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pytorch_model.bin: 100%|██████████| 17.8M/17.8M [00:00&lt;00:00, 104MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pytorch_model.bin: 100%|██████████| 17.8M/17.8M [00:00&lt;00:00, 99.3MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/.venv/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+Some weights of BertForSequenceClassification were not initialized from the model checkpoint at prajjwal1/bert-tiny and are newly initialized: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>vocab.txt:   0%|          | 0.00/232k [00:00&lt;?, ?B/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>vocab.txt: 100%|██████████| 232k/232k [00:00&lt;00:00, 1.99MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>vocab.txt: 100%|██████████| 232k/232k [00:00&lt;00:00, 1.97MB/s]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading COCOQA data for None...
-        50 QA-pairs indexed
-        50 QA-pairs in reduced data set
+          20 QA-pairs indexed
+          20 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -312,13 +358,13 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <p>Other parameters are <code class="docutils literal notranslate"><span class="pre">split</span></code> (“train” or “test”), <code class="docutils literal notranslate"><span class="pre">transform</span></code> for image transformations, <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> to limit the number of used images, <code class="docutils literal notranslate"><span class="pre">img_size</span></code>  (channels should be 3, high, width) and <code class="docutils literal notranslate"><span class="pre">seq_length</span></code> of the tokenized question.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython2 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">COCOQA_DataSet</span><span class="o">.</span><span class="n">COCOQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
-    <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">max_len</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
     <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span>
@@ -329,8 +375,8 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading COCOQA data for train...
-        25 QA-pairs indexed
-         5 QA-pairs in reduced data set
+          10 QA-pairs indexed
+           5 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -338,11 +384,11 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 200, 100])
-Question (start): [101, 3157, 2417, 1012, 2054, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
+Question (start): [101, 2054, 2003, 1996, 3609, 1997, 1996, 2839, 102, 0, 0, 0, 0, 0, 0]
+Answer (start): tensor([1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../../_images/6cd29ea0f4d92ab52d1fd82a1ef1c52d4877a98412412ab4f63eb269099ab730.png" src="../../_images/6cd29ea0f4d92ab52d1fd82a1ef1c52d4877a98412412ab4f63eb269099ab730.png" />
+<img alt="../../_images/3d1d1ccbb37679d4e635ee50cb061eb8123897cd4bea602663688dc239b9f6f1.png" src="../../_images/3d1d1ccbb37679d4e635ee50cb061eb8123897cd4bea602663688dc239b9f6f1.png" />
 </div>
 </div>
 </section>
@@ -353,13 +399,31 @@ Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="../../API/api_configilm.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">ILMConfiguration</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="hrvqa.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">HRVQA</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

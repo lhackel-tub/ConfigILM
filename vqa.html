@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Using the BigEarthNet LMDB Reader" href="extra/BEN_LMDB_Reader.html" /><link rel="prev" title="Supervised Image Classification" href="sup_pretraining.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Throughput testing" href="throughput_testing.html" /><link rel="prev" title="Supervised Image Classification" href="sup_pretraining.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>Visual Question Answering (VQA) - ConfigILM</title>
@@ -165,6 +165,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -175,6 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -238,12 +240,12 @@
           <section class="tex2jax_ignore mathjax_ignore" id="visual-question-answering-vqa">
 <h1>Visual Question Answering (VQA)<a class="headerlink" href="#visual-question-answering-vqa" title="Permalink to this heading">#</a></h1>
 <p>The Framework is set up in way, that it is easy to combine an image model from the <a class="reference external" href="https://github.com/huggingface/pytorch-image-models/tree/main/timm/models">timm</a> library with a language model from <a class="reference external" href="https://huggingface.co/">huggingface</a>. For both models, either pre-trained weights can be used or the models can be trained as a composite in an end-to-end fashion.
-For this example usage we will be using the [<code class="docutils literal notranslate"><span class="pre">RSVQAxBEN</span> <span class="pre">DataModule</span></code>](extra/DataSets and DataModules/rsvqaxben.ipynb) which loads the <em>RSVQAxBEN</em> dataset published by <span id="id1">Lobry <em>et al.</em> [<a class="reference internal" href="references.html#id7" title="Sylvain Lobry, Begüm Demir, and Devis Tuia. Rsvqa meets bigearthnet: a new, large-scale, visual question answering dataset for remote sensing. In 2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS, 1218–1221. IEEE, 2021.">2</a>]</span> inside a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/"><code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">lightning</span></code></a> trainer. The network will be integrated into a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html"><code class="docutils literal notranslate"><span class="pre">LightningModule</span></code></a>.</p>
-<p>First we start by importing the needed packages from <code class="docutils literal notranslate"><span class="pre">torch</span></code> and <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> so that we can set up the <code class="docutils literal notranslate"><span class="pre">LightningModule</span></code>.</p>
+For this example usage we will be using the <code class="docutils literal notranslate"><span class="pre">RSVQAxBEN</span> <span class="pre">DataModule</span></code> which loads the <em>RSVQAxBEN</em> dataset published by <span id="id1">Lobry <em>et al.</em> [<a class="reference internal" href="references.html#id7" title="Sylvain Lobry, Begüm Demir, and Devis Tuia. Rsvqa meets bigearthnet: a new, large-scale, visual question answering dataset for remote sensing. In 2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS, 1218–1221. IEEE, 2021.">2</a>]</span> inside a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/">Pytorch Lightning</a> trainer. The network will be integrated into a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html"><code class="docutils literal notranslate"><span class="pre">LightningModule</span></code></a>.</p>
+<p>First we start by importing the needed packages from <code class="docutils literal notranslate"><span class="pre">torch</span></code> and Pytorch Lightning so that we can set up the <code class="docutils literal notranslate"><span class="pre">LightningModule</span></code>.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import packages</span>
-<span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">lightning.pytorch</span> <span class="k">as</span> <span class="nn">pl</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">optim</span>
@@ -255,19 +257,19 @@ For this example usage we will be using the [<code class="docutils literal notra
 </div>
 <section id="pytorch-lightning-module">
 <h2>Pytorch Lightning Module<a class="headerlink" href="#pytorch-lightning-module" title="Permalink to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">Module</span></code> we use to encapsulate the model divides the usual loop into functions that are called internally by <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code>. The necessary functions are just</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Module</span></code> we use to encapsulate the model divides the usual loop into functions that are called internally by Pytorch Lightning. The necessary functions are just</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">training_step</span></code> and</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">configure_optimizer</span></code>,</p></li>
 </ol>
-<p>but to have a fully functional script, we add the validation and test steps as well as evaluation of the validation and test results. All <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions are working on a single batch while <code class="docutils literal notranslate"><span class="pre">*_epoch_end</span></code> functions are called after all batches are evaluated. During <code class="docutils literal notranslate"><span class="pre">*_step</span></code> calls the module collects the outputs in the respective <code class="docutils literal notranslate"><span class="pre">self.*_output_list</span></code> so that the results can be evaluated at the end of the epoch (this is new for pytorch lightning 2.0).
+<p>but to have a fully functional script, we add the validation and test steps as well as evaluation of the validation and test results. All <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions are working on a single batch while <code class="docutils literal notranslate"><span class="pre">*_epoch_end</span></code> functions are called after all batches are evaluated. During <code class="docutils literal notranslate"><span class="pre">*_step</span></code> calls the module collects the outputs in the respective <code class="docutils literal notranslate"><span class="pre">self.*_output_list</span></code> so that the results can be evaluated at the end of the epoch (this is new for Pytorch Lightning 2.0).
 For Visual Question Answering (VQA) we have to add one additional function, as the network works with 3 values (image + language input, output) instead of the usual 2 (input, output). Therefore we add a function (here called <code class="docutils literal notranslate"><span class="pre">_disassemble_batch</span></code>), which disassembles the batch into input and output where the <em>input contains both modalities</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LitVQAEncoder</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper around a pytorch module, allowing this module to be used in automatic</span>
-<span class="sd">    training with pytorch lightning.</span>
+<span class="sd">    training with Pytorch Lightning.</span>
 <span class="sd">    Among other things, the wrapper allows us to do automatic training and removes the</span>
 <span class="sd">    need to manage data on different devices (e.g. GPU and CPU).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -342,7 +344,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 </section>
 <section id="configuring">
 <h2>Configuring<a class="headerlink" href="#configuring" title="Permalink to this heading">#</a></h2>
-<p>Now that we have our model, we will use the <code class="docutils literal notranslate"><span class="pre">pytorch_lightning.Trainer</span></code> to run our loops. Results are logged to <code class="docutils literal notranslate"><span class="pre">tensorboard</span></code>.</p>
+<p>Now that we have our model, we will use the Pytorch Lightning <code class="docutils literal notranslate"><span class="pre">Trainer</span></code> to run our loops. Results are logged to <code class="docutils literal notranslate"><span class="pre">tensorboard</span></code>.</p>
 <p>We start by importing some callbacks used during training</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -383,7 +385,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 </div>
 </div>
 </div>
-<p>We log the hyperparameters and create a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/trainer.html">Trainer</a>.</p>
+<p>We log the hyperparameters and create a Pytorch Lightning <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/trainer.html">Trainer</a>.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span>
@@ -409,7 +411,7 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataModules.RSVQAxBEN_DataModule</span> <span class="kn">import</span> <span class="n">RSVQAxBENDataModule</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">LitVQAEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 <span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="n">number_of_channels</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">),</span>
     <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_tokenizer</span><span class="p">()</span>
@@ -418,14 +420,11 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/ConfigILM.py:143: UserWarning: Keyword &#39;img_size&#39; unknown. Trying to ignore and restart creation.
-  warnings.warn(
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/ConfigILM.py:133: UserWarning: Keyword &#39;img_size&#39; unknown. Trying to ignore and restart creation.
+  warnings.warn(f&quot;Keyword &#39;{failed_kw}&#39; unknown. Trying to ignore and restart creation.&quot;)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: pin_memory set to None 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/ConfigILM.py:117: UserWarning: Tokenizer was initialized pretrained
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/ConfigILM.py:107: UserWarning: Tokenizer was initialized pretrained
   warnings.warn(&quot;Tokenizer was initialized pretrained&quot;)
 </pre></div>
 </div>
@@ -454,16 +453,16 @@ For Visual Question Answering (VQA) we have to add one additional function, as t
 </div>
 </div>
 <p>Here is an example forward call for the model. Since the input is normalized, the colors are slightly distorted. To display the image anyway, we select only the RGB channels and normalize this image to the range 0 to 1.
-The input question is already returned by the dataset in the form of tokens, so we decode here again using the tokenizer. To make the input always the same size it may be padded.
+The input question is already returned by the dataset in the form of tokens, so we decode here again using the tokenizer. To make the input always the same size it may be padded. For readability, one the first few tokens are shown here.
 Additionally only the first 10 elements of output + expected answer are shown, as the full lists have 1000 elements.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<img alt="_images/6332bc64c8ebd5279f189ccf8e284caabe11ce3a83ce13f0fdf94bfbd4dbeb11.png" src="_images/6332bc64c8ebd5279f189ccf8e284caabe11ce3a83ce13f0fdf94bfbd4dbeb11.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Text: [CLS] are there some land principally occupied by agriculture, with significant areas of natural vegetation? [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]
-Question: [101, 2024, 2045, 2070, 2455, 16552, 4548, 2011, 5237, 1010, 2007, 3278, 2752, 1997, 3019, 10072, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Expected: [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+<img alt="_images/5f22ec4c6cfb2b12810ed4a20a7d233b21ed6a8d445b8dd0ef53af3faafab993.png" src="_images/5f22ec4c6cfb2b12810ed4a20a7d233b21ed6a8d445b8dd0ef53af3faafab993.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Text: [CLS] are there some water bodies? [SEP] [PAD] [PAD] [PAD] ...
+Question: [101, 2024, 2045, 2070, 2300, 4230, 1029, 102, 0, 0, 0] ...
+Expected: [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
           no
-    Real: [-0.09032875299453735, 0.02149232104420662, -0.259451687335968, -0.20737037062644958, 0.06657297909259796, -0.2807054817676544, -0.02578229270875454, -0.2964695394039154, -0.22755715250968933, -0.06716479361057281]
+    Real: [-0.08006551861763, 0.2862776815891266, -0.2918686866760254, -0.22664284706115723, 0.13240663707256317, -0.1492581069469452, -0.13891535997390747, -0.24200816452503204, -0.12199157476425171, 0.13610395789146423]
           no
 </pre></div>
 </div>
@@ -477,12 +476,12 @@ Expected: [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="extra/BEN_LMDB_Reader.html">
+          <a class="next-page" href="throughput_testing.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Using the BigEarthNet LMDB Reader</div>
+                <div class="title">Throughput testing</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -501,7 +500,7 @@ Expected: [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

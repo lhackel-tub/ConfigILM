@@ -165,6 +165,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -175,6 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api_datasets.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -249,85 +251,149 @@ Based on Image Data from:
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAxBEN_DataSet.</span></span><span class="sig-name descname"><span class="pre">RSVQAxBENDataSet</span></span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet" title="Permalink to this definition">#</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.__init__" title="Permalink to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>This class implements the RSVQAxBEN dataset. It is a subclass of
+ClassificationVQADataset and provides some dataset specific functionality.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>root_dir</strong> – <p>root directory to images and jsons folder</p>
+<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – A dictionary containing the paths to the different data directories.
+Required keys are “images_lmdb”, “train_data”, “val_data” and “test_data”.
+The “_data” keys are used to identify the directory that contains the
+data files which are named “RSVQAxBEN_QA_{split}.json” that contains
+the qa-pairs for the split.</p></li>
+<li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>The name of the split to use. Can be either “train”, “val” or
+“test”. If None is provided, all splits will be used.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>./</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>“train”, “val” or “test” or None for all</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None (loads all splits)</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>transform</strong> – <p>transformations to be applied to loaded images aside from
-scaling all bands to img_size.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
-than the images found in the csv, None or -1, all images will be loaded.</p>
+<li><p><strong>transform</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to transform the images after
+loading them. If None is provided, no transformation is applied.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>img_size</strong> – <p>Size to which all channels will be scaled. Interpolation is
-applied bicubic before any transformation.</p>
-<p>Also specifies which channels to load.
-See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.</p>
+<li><p><strong>max_len</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The maximum number of qa-pairs to use. If None or -1 is
+provided, all qa-pairs are used.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>img_size</strong> (<em>tuple</em>) – <p>The size of the images. Note that this includes the number of
+channels. For example, if the images are RGB images, the size should be
+(3, h, w). See BEN_DataSet for available channel configurations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(12, 120, 120)</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>selected_answers</strong> – <p>List of selected answers or None. If set to None,
-answers will be selected based on <cite>classes</cite> in order of frequency of the
-set.</p>
+<li><p><strong>selected_answers</strong> (<em>Optional</em><em>[</em><em>list</em><em>]</em>) – <p>A list of answers that should be used. If None
+is provided, the num_classes most common answers are used. If
+selected_answers is not None, num_classes is ignored.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>classes</strong> – <p>Number of classes (possible answers)</p>
+<li><p><strong>num_classes</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The number of classes to use. Only used if
+selected_answers is None. If set to None, all answers are used.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>1_000</p>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1000</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>tokenizer</strong> – <p>Tokenizer to use for tokenization of input questions. Expects
-standard huggingface tokenizer. If not set, a default tokenizer will be
-used and a warning shown.</p>
+<li><p><strong>tokenizer</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to tokenize the questions. If
+set to None, the default tokenizer (from configilm.util) is used.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>seq_length</strong> – <p>Length of tokenized question. Will be caped to this as
-maximum and expanded to this if the question is too short. Includes start
-and end token.</p>
+<li><p><strong>seq_length</strong> (<em>int</em>) – <p>The maximum length of the tokenized questions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>32</p>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>64</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>return_extras</strong> (<em>bool</em>) – <p>If True, the dataset will return the type of the
+question in addition to the image, question and answer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False</p>
 </dd>
 </dl>
 </p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.load_image">
+<span class="sig-name descname"><span class="pre">load_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.load_image" title="Permalink to this definition">#</a></dt>
+<dd><p>This method should load the image with the given name and return it as
+a tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – The name of the image to load</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The image as a tensor</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.prepare_split">
+<span class="sig-name descname"><span class="pre">prepare_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.prepare_split" title="Permalink to this definition">#</a></dt>
+<dd><p>This method should return a list of tuples, where each tuple contains
+the following elements:</p>
+<ul class="simple">
+<li><p>The key of the image at index 0</p></li>
+<li><p>The question at index 1</p></li>
+<li><p>The answer at index 2</p></li>
+<li><p>additional information at index 3 and higher</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – The name of the split to prepare</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of tuples, each tuple containing the elements described</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.split_names">
+<span class="sig-name descname"><span class="pre">split_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.split_names" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the names of the splits that are available for this dataset. The
+default implementation returns {“train”, “val”, “test”}. If you want to
+use different names, you should override this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A set of strings, each string being the name of a split</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>set[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -335,32 +401,23 @@ and end token.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.select_answers_from_qa_pairs">
-<span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAxBEN_DataSet.</span></span><span class="sig-name descname"><span class="pre">select_answers_from_qa_pairs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qa_pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_tqdm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.select_answers_from_qa_pairs" title="Permalink to this definition">#</a></dt>
-<dd><p>Selects the most frequently present answers and returns them in order of frequency.</p>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAxBEN_DataSet.resolve_data_dir">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAxBEN_DataSet.</span></span><span class="sig-name descname"><span class="pre">resolve_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.resolve_data_dir" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper function that tries to resolve the correct directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>qa_pairs</strong> – list of dicts with an “answer” field for each dict</p></li>
-<li><p><strong>number_of_answers</strong> (<em>int</em>) – <p>how many answers should be selected</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>1_000</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>use_tqdm</strong> (<em>bool</em>) – <p>Flag to use tqdm as progress bar</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>False</p>
-</dd>
-</dl>
-</p></li>
+<li><p><strong>data_dir</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – current path that is suggested</p></li>
+<li><p><strong>allow_mock</strong> (<em>bool</em>) – allows mock data path to be returned</p></li>
+<li><p><strong>force_mock</strong> (<em>bool</em>) – only mock data path will be returned. Useful for debugging with
+small data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>most frequent answers (list of length number_of_answers), ordered by
-frequency</p>
+<dd class="field-even"><p>a valid dir to the dataset if data_dir was none, otherwise data_dir</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Mapping</em>[str, <em>Path</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -377,103 +434,79 @@ Based on Image Data from:
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataModules.RSVQAxBEN_DataModule.</span></span><span class="sig-name descname"><span class="pre">RSVQAxBENDataModule</span></span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule" title="Permalink to this definition">#</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_infos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initializes a pytorch lightning data module.</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>This class implements the DataModule for the RSVQAxBEN dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>batch_size</strong> – <p>batch size for data loaders</p>
+<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – A dictionary containing the paths to the different data directories.
+Required keys are “images_lmdb”, “train_data”, “val_data” and “test_data”.
+The “_data” keys are used to identify the directory that contains the
+data files which are named “RSVQAxBEN_QA_{split}.json” that contains
+the qa-pairs for the split.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – <p>The batch size to use for the dataloaders.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>16</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>data_dir</strong> (<em>str</em>) – <p>root directory to images and jsons folder</p>
+<li><p><strong>img_size</strong> (<em>tuple</em>) – <p>The size of the images. Note that this includes the number of
+channels. For example, if the images are RGB images, the size should be
+(3, h, w). See BEN_DataSet for available channel configurations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>./</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
-than the images found in the csv, None or -1, all images will be loaded.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>img_size</strong> – <p>Size to which all channels will be scaled. Interpolation is
-applied bicubic before any transformation.</p>
-<p>Also specifies which channels to load.
-See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(12, 120, 120)</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>shuffle</strong> – <p>Flag if dataset should be shuffled. If set to None, only train
-will be shuffled and validation and test won’t.</p>
+<li><p><strong>num_workers_dataloader</strong> (<em>int</em>) – <p>The number of workers to use for the dataloaders.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>4</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>shuffle</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Whether to shuffle the data in the dataloaders. If None is provided, the data is shuffled
+for training and not shuffled for validation and test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>num_workers_dataloader</strong> – <p>number of workers used for data loading</p>
+<li><p><strong>max_len</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The maximum number of qa-pairs to use. If None or -1 is
+provided, all qa-pairs are used.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>#CPU_cores/2</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>selected_answers</strong> – <p>List of selected answers or None. If set to None,
-answers will be selected based on <cite>classes</cite> for the data set in order of
-frequency of the training set.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>tokenizer</strong> – <p>Tokenizer to use for tokenization of input questions. Expects
-standard huggingface tokenizer. If not set, a default tokenizer will be
-used and a warning shown.</p>
+<li><p><strong>tokenizer</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to tokenize the questions. If set to None, the default tokenizer
+(from configilm.util) is used.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>seq_length</strong> – <p>Length of tokenized question. Will be caped to this as
-maximum and expanded to this if the question is too short. Includes start
-and end token.</p>
+<li><p><strong>seq_length</strong> (<em>int</em>) – <p>The maximum length of the tokenized questions. If the tokenized question is longer than
+this, it will be truncated. If it is shorter, it will be padded.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>32</p>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>64</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>print_infos</strong> (<em>bool</em>) – <p>Flag, if additional information during setup() and reading
-should be printed (e.g. number of workers detected, number of images loaded)</p>
+<li><p><strong>pin_memory</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Whether to use pinned memory for the dataloaders. If None is
+provided, it is set to True if a GPU is available and False otherwise.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>False</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>pin_memory</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Flag if memory should be pinned for data loading. If not
-specified set to True if cuda devices are used, else false.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>dataset_kwargs</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>]</em>) – Other keyword arguments to pass to the dataset during
-creation.</p></li>
 </ul>
 </dd>
 </dl>
@@ -488,11 +521,15 @@ creation.</p></li>
 <li><p>“test”: test data set</p></li>
 <li><p>None: all data sets</p></li>
 </ul>
-<p>Prints the time it needed for this operation and other statistics if print_infos
-is set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stage</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – None, “fit” or “test”</p>
+<dd class="field-odd"><p><strong>stage</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>None, “fit”, or “test”</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -500,11 +537,11 @@ is set.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.test_dataloader">
 <span class="sig-name descname"><span class="pre">test_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.test_dataloader" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
-Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
+<dd><p>Returns the dataloader for the test data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>torch DataLoader for the test set</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AssertionError if the test dataset is not set up. This can happen if the setup()
+method is not called before this method or the dataset has no test data.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -512,11 +549,11 @@ Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)<
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.train_dataloader">
 <span class="sig-name descname"><span class="pre">train_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.train_dataloader" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
-Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
+<dd><p>Returns the dataloader for the training data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>torch DataLoader for the train set</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AssertionError if the training dataset is not set up. This can happen if the setup()
+method is not called before this method or the dataset has no training data.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -524,11 +561,11 @@ Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.val_dataloader">
 <span class="sig-name descname"><span class="pre">val_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.val_dataloader" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
-Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
+<dd><p>Returns the dataloader for the validation data.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>torch DataLoader for the validation set</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AssertionError if the validation dataset is not set up. This can happen if the setup()
+method is not called before this method or the dataset has no validation data.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -566,7 +603,7 @@ Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> 
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -739,9 +776,12 @@ Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> 
 <li><a class="reference internal" href="#">RSVQAxBEN DataSets and DataModules</a><ul>
 <li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataSet</span></code></a><ul>
 <li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.__init__"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataSet.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.load_image"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataSet.load_image()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.prepare_split"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataSet.prepare_split()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.split_names"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataSet.split_names()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.select_answers_from_qa_pairs"><code class="docutils literal notranslate"><span class="pre">select_answers_from_qa_pairs()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAxBEN_DataSet.resolve_data_dir"><code class="docutils literal notranslate"><span class="pre">resolve_data_dir()</span></code></a></li>
 <li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataModule</span></code></a><ul>
 <li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.__init__"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataModule.__init__()</span></code></a></li>
 <li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.setup"><code class="docutils literal notranslate"><span class="pre">RSVQAxBENDataModule.setup()</span></code></a></li>

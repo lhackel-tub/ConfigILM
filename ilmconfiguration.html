@@ -165,6 +165,7 @@
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -175,6 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -258,29 +260,29 @@
 <p>All parameters as well as their respective default values can be seen below.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter name            | Type                                                         | Default value
--------------------------------------------------------------------------------------------------------------------------
-timm_model_name           | &lt;class &#39;str&#39;&gt;                                                |               &lt;REQUIRED PARAM&gt;
-hf_model_name             | typing.Optional[str]                                         |                           None
-image_size                | &lt;class &#39;int&#39;&gt;                                                |                            120
-channels                  | &lt;class &#39;int&#39;&gt;                                                |                              3
-classes                   | &lt;class &#39;int&#39;&gt;                                                |                             10
-class_names               | typing.Optional[typing.Sequence[str]]                        |                           None
-network_type              | &lt;enum &#39;ILMType&#39;&gt;                                             | IMAGE_CLASSIFICATION (value: 0)
-visual_features_out       | &lt;class &#39;int&#39;&gt;                                                |                            512
-fusion_in                 | &lt;class &#39;int&#39;&gt;                                                |                            512
-fusion_out                | typing.Optional[int]                                         |                           None
-fusion_hidden             | &lt;class &#39;int&#39;&gt;                                                |                            256
-v_dropout_rate            | &lt;class &#39;float&#39;&gt;                                              |                           0.25
-t_dropout_rate            | &lt;class &#39;float&#39;&gt;                                              |                           0.25
-fusion_dropout_rate       | &lt;class &#39;float&#39;&gt;                                              |                           0.25
-fusion_method             | typing.Callable[[torch.Tensor, torch.Tensor], torch.Tensor]  |                      torch.mul
-fusion_activation         | typing.Callable[[torch.Tensor], torch.Tensor]                |                         Tanh()
-drop_rate                 | typing.Optional[float]                                       |                            0.2
-use_pooler_output         | &lt;class &#39;bool&#39;&gt;                                               |                           True
-max_sequence_length       | &lt;class &#39;int&#39;&gt;                                                |                             32
-load_pretrained_timm_if_available | &lt;class &#39;bool&#39;&gt;                                               |                          False
-load_pretrained_hf_if_available | &lt;class &#39;bool&#39;&gt;                                               |                           True
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter name                      | Type                                                         | Default value
+----------------------------------------------------------------------------------------------------------------------------------------
+timm_model_name                     | &lt;class &#39;str&#39;&gt;                                                |                    &lt;REQUIRED PARAM&gt;
+hf_model_name                       | typing.Optional[str]                                         |                                None
+image_size                          | &lt;class &#39;int&#39;&gt;                                                |                                 120
+channels                            | &lt;class &#39;int&#39;&gt;                                                |                                   3
+classes                             | &lt;class &#39;int&#39;&gt;                                                |                                  10
+class_names                         | typing.Optional[typing.Sequence[str]]                        |                                None
+network_type                        | &lt;enum &#39;ILMType&#39;&gt;                                             |     IMAGE_CLASSIFICATION (value: 0)
+visual_features_out                 | &lt;class &#39;int&#39;&gt;                                                |                                 512
+fusion_in                           | &lt;class &#39;int&#39;&gt;                                                |                                 512
+fusion_out                          | typing.Optional[int]                                         |                                None
+fusion_hidden                       | &lt;class &#39;int&#39;&gt;                                                |                                 256
+v_dropout_rate                      | &lt;class &#39;float&#39;&gt;                                              |                                0.25
+t_dropout_rate                      | &lt;class &#39;float&#39;&gt;                                              |                                0.25
+fusion_dropout_rate                 | &lt;class &#39;float&#39;&gt;                                              |                                0.25
+fusion_method                       | typing.Callable[[torch.Tensor, torch.Tensor], torch.Tensor]  |                           torch.mul
+fusion_activation                   | typing.Callable[[torch.Tensor], torch.Tensor]                |                              Tanh()
+drop_rate                           | typing.Optional[float]                                       |                                 0.2
+use_pooler_output                   | &lt;class &#39;bool&#39;&gt;                                               |                                True
+max_sequence_length                 | &lt;class &#39;int&#39;&gt;                                                |                                  32
+load_pretrained_timm_if_available   | &lt;class &#39;bool&#39;&gt;                                               |                               False
+load_pretrained_hf_if_available     | &lt;class &#39;bool&#39;&gt;                                               |                                True
 </pre></div>
 </div>
 </div>
@@ -325,7 +327,7 @@ Currently, the configuration supports the following network types:</p>
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="ILMConfiguration" href="../../API/api_configilm.html" /><link rel="prev" title="RSVQA high resolution" href="rsvqa-hr.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="COCO-QA" href="cocoqa.html" /><link rel="prev" title="RSVQA high resolution" href="rsvqa-hr.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>HRVQA - ConfigILM</title>
@@ -165,6 +165,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul class="current">
@@ -175,6 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -265,7 +267,7 @@ A small example of the data used is distributed with this package.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">HRVQA_DataSet</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 
 <span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
@@ -276,11 +278,11 @@ A small example of the data used is distributed with this package.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 1024, 1024])
-Question (start): [101, 2054, 2946, 2003, 1996, 10516, 2492, 1999, 2023, 3746, 1029, 102, 0, 0, 0]
-Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
+Question (start): [101, 2054, 2003, 1996, 2364, 5193, 1997, 2023, 3746, 1029, 102, 0, 0, 0, 0]
+Answer (start): tensor([0., 0., 0., 0., 0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../../_images/83f9028cdbf60ddd6b38580c341fc6c33553bccd690a9d0429e773bdaf0adbf3.png" src="../../_images/83f9028cdbf60ddd6b38580c341fc6c33553bccd690a9d0429e773bdaf0adbf3.png" />
+<img alt="../../_images/a677d09e4d8550c8f9b8b0fecbaac16793b38a9695de636f5966547de5ee766f.png" src="../../_images/a677d09e4d8550c8f9b8b0fecbaac16793b38a9695de636f5966547de5ee766f.png" />
 </div>
 </div>
 <section id="tokenizer-and-tokenization">
@@ -293,7 +295,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
 <span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -313,7 +315,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">16</span>
 <span class="p">)</span>
@@ -325,7 +327,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2054, 2785, 1997, 3496, 2064, 2017, 2156, 1999, 2023, 3746, 1029, 102, 0, 0, 0]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2515, 2311, 4839, 1999, 2023, 3746, 1029, 102, 0, 0, 0, 0, 0, 0, 0]
 </pre></div>
 </div>
 </div>
@@ -333,7 +335,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">8</span>
 <span class="p">)</span>
@@ -345,7 +347,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2054, 2785, 1997, 3496, 2064, 2017, 102]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2515, 2311, 4839, 1999, 2023, 3746, 102]
 </pre></div>
 </div>
 </div>
@@ -359,8 +361,8 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;[CLS] what kind of scene can you see in this image? [SEP] [PAD] [PAD] [PAD]&#39;
-Question 2: &#39;[CLS] what kind of scene can you [SEP]&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;[CLS] does building exist in this image? [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]&#39;
+Question 2: &#39;[CLS] does building exist in this image [SEP]&#39;
 </pre></div>
 </div>
 </div>
@@ -374,8 +376,8 @@ Question 2: &#39;[CLS] what kind of scene can you [SEP]&#39;
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;what kind of scene can you see in this image?&#39;
-Question 2: &#39;what kind of scene can you&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;does building exist in this image?&#39;
+Question 2: &#39;does building exist in this image&#39;
 </pre></div>
 </div>
 </div>
@@ -387,7 +389,7 @@ Question 2: &#39;what kind of scene can you&#39;
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
@@ -401,30 +403,32 @@ To split the dataset, use <code class="docutils literal notranslate"><span class
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_v</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">div_seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
     <span class="n">split_size</span><span class="o">=</span><span class="mf">0.66</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt;&gt; val split length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ds_v</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
 <span class="n">ds_vd</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val-div&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">div_seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
     <span class="n">split_size</span><span class="o">=</span><span class="mf">0.66</span>
 <span class="p">)</span>
-<span class="n">qv</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;question_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ds_vd</span><span class="o">.</span><span class="n">questions</span><span class="p">}</span>
+<span class="n">qv</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ds_vd</span><span class="o">.</span><span class="n">qa_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt;&gt; val-div split length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ds_vd</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
 <span class="n">ds_td</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;test-div&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">div_seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
     <span class="n">split_size</span><span class="o">=</span><span class="mf">0.66</span>
 <span class="p">)</span>
-<span class="n">qt</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;question_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ds_td</span><span class="o">.</span><span class="n">questions</span><span class="p">}</span>
+<span class="n">qt</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ds_td</span><span class="o">.</span><span class="n">qa_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt;&gt; test-div split length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ds_td</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&gt;&gt; intersection length </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">qv</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">qt</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -433,16 +437,14 @@ To split the dataset, use <code class="docutils literal notranslate"><span class
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: There are fewer possible answers then requested (1000 requested, but 3 found).
-The 1000 most frequent answers cover about 100.00 % of the total answers.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           5 QA-pairs indexed
+           5 QA-pairs used
 &gt;&gt; val split length 5
-
-WARNING: There are fewer possible answers then requested (1000 requested, but 2 found).
-The 1000 most frequent answers cover about 100.00 % of the total answers.
+           3 QA-pairs indexed
+           3 QA-pairs used
 &gt;&gt; val-div split length 3
-
-WARNING: There are fewer possible answers then requested (1000 requested, but 2 found).
-The 1000 most frequent answers cover about 100.00 % of the total answers.
+           2 QA-pairs indexed
+           2 QA-pairs used
 &gt;&gt; test-div split length 2
 
 &gt;&gt; intersection length 0
@@ -459,8 +461,8 @@ The 1000 most frequent answers cover about 100.00 % of the total answers.
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
-    <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">max_len</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
 </pre></div>
@@ -472,8 +474,8 @@ The 1000 most frequent answers cover about 100.00 % of the total answers.
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: There are fewer possible answers then requested (1000 requested, but 4 found).
-The 1000 most frequent answers cover about 100.00 % of the total answers.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          10 QA-pairs indexed
+           5 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -482,14 +484,14 @@ The 1000 most frequent answers cover about 100.00 % of the total answers.
 </section>
 <section id="select-number-of-classes-or-specific-answers">
 <h3>Select Number of Classes or specific Answers<a class="headerlink" href="#select-number-of-classes-or-specific-answers" title="Permalink to this heading">#</a></h3>
-<p>For some applications, it is relevant to have only a certain number of classes as valid output. For example, the <code class="docutils literal notranslate"><span class="pre">RSVQAxBEN</span></code> DataSet could contain up to 2^19 &gt; 0.5 million different classes. To prevent this dimension explosion, the number of classes can be limited. For the ‘train’ split, it is then automatically determined which combination of classes results in the highest reduction of the dataset.</p>
+<p>For some applications, it is relevant to have only a certain number of classes as valid output. To prevent a dimension explosion, the number of classes can be limited. For the ‘train’ split, it is then automatically determined which combination of classes results in the highest reduction of the dataset.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_ds</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">classes</span><span class="o">=</span><span class="mi">3</span>
+    <span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -500,7 +502,8 @@ The 1000 most frequent answers cover about 100.00 % of the total answers.
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The 3 most frequent answers cover about 80.00 % of the total answers.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>           5 QA-pairs indexed
+           5 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -513,32 +516,32 @@ The 1000 most frequent answers cover about 100.00 % of the total answers.
 </div>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train DS: </span><span class="si">{</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train DS: </span><span class="si">{</span><span class="n">train_ds</span><span class="o">.</span><span class="n">answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span>
+    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">answers</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 1: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 1: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">answers</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 2: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 2: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train DS: [&#39;nonexistent&#39;, &#39;highdensity&#39;, &#39;0.0m2&#39;]
-Val DS 1: [&#39;nonexistent&#39;, &#39;highdensity&#39;]
-Val DS 2: [&#39;nonexistent&#39;, &#39;highdensity&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train DS: [&#39;0.0m2&#39;, &#39;highdensity&#39;, &#39;topleft&#39;]
+Val DS 1: [&#39;0.0m2&#39;, &#39;highdensity&#39;]
+Val DS 2: [&#39;0.0m2&#39;, &#39;highdensity&#39;]
 </pre></div>
 </div>
 </div>
@@ -553,7 +556,7 @@ To use a DataModule, the setup() function has to be called. This populates the D
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataModules</span> <span class="kn">import</span> <span class="n">HRVQA_DataModule</span>
 <span class="n">dm</span> <span class="o">=</span> <span class="n">HRVQA_DataModule</span><span class="o">.</span><span class="n">HRVQADataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -595,8 +598,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7fa79ea61270&gt;
-&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7fa79fc54b80&gt;
+&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7f1b56806d70&gt;
+&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7f1b56805540&gt;
 None
 </pre></div>
 </div>
@@ -625,7 +628,7 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">HRVQA_DataModule</span><span class="o">.</span><span class="n">HRVQADataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
@@ -649,7 +652,7 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">HRVQA_DataModule</span><span class="o">.</span><span class="n">HRVQADataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
@@ -661,55 +664,32 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: Shuffle was set to False. This is not recommended for most configuration. Use shuffle=None (default) for recommended configuration.
-
-HINT: pin_memory set to None 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/extra/DataModules/ClassificationVQADataModule.py:109: UserWarning: Shuffle was set to False. This is not recommended for most configuration. Use shuffle=None (default) for recommended configuration.
+  warn(
 </pre></div>
 </div>
 </div>
 </details>
 </div>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">HRVQA_DataModule</span><span class="o">.</span><span class="n">HRVQADataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">2</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: pin_memory set to None 
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">HRVQA_DataModule</span><span class="o">.</span><span class="n">HRVQADataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">pin_memory</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: pin_memory set to False via overwrite
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 </section>
 </section>
@@ -720,12 +700,12 @@ HINT: pin_memory set to None
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../../API/api_configilm.html">
+          <a class="next-page" href="cocoqa.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">ILMConfiguration</div>
+                <div class="title">COCO-QA</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -744,7 +724,7 @@ HINT: pin_memory set to None
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

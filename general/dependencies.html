@@ -165,6 +165,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -175,6 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extra/DataSets%20and%20DataModules/cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -243,7 +245,7 @@
 <span class="n">python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^3.9, &lt;3.12&quot;</span>
 <span class="c1"># pytorch dependencies for cuda are not set correctly in pypi right now</span>
 <span class="c1"># therefore we cannot use the newest versions</span>
-<span class="n">torch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^2.0.0, != 2.0.1, != 2.1.0&quot;</span>
+<span class="n">torch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;2.0.0&quot;</span>
 <span class="n">timm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^0.9.2&quot;</span>
 <span class="n">transformers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^4.26.0&quot;</span>
 <span class="n">appdirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;^1.4.4&quot;</span>
@@ -253,6 +255,7 @@
 <span class="n">pyarrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^12.0.1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
 <span class="n">bigearthnet-encoder</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^0.3.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
 <span class="n">pytorch-lightning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^2.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+<span class="n">lightning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;^2.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">optional</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
 
 
 <span class="k">[tool.poetry.extras]</span>
@@ -262,10 +265,27 @@
 <span class="w">    </span><span class="s2">&quot;pydantic&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;pyarrow&quot;</span><span class="w">  </span><span class="c1"># for parquet files</span>
 <span class="p">]</span>
-<span class="n">full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="c1"># for use with pytorch-lightning</span>
+<span class="n">full-pytorch_lightning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="s2">&quot;lmdb&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;bigearthnet-encoder&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;pytorch-lightning&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pydantic&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pyarrow&quot;</span>
+<span class="p">]</span>
+<span class="c1"># for use with lightning (without pytorch-lightning)</span>
+<span class="n">full-lightning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;lmdb&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;bigearthnet-encoder&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;lightning&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pydantic&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pyarrow&quot;</span>
+<span class="p">]</span>
+<span class="c1"># same as full-lightning</span>
+<span class="n">full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;lmdb&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;bigearthnet-encoder&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;lightning&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;pydantic&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;pyarrow&quot;</span>
 <span class="p">]</span>
@@ -319,7 +339,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

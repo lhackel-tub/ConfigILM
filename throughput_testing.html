@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Visual Question Answering (VQA)" href="vqa.html" /><link rel="prev" title="Model Configuration" href="ilmconfiguration.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Using the BigEarthNet LMDB Reader" href="extra/BEN_LMDB_Reader.html" /><link rel="prev" title="Visual Question Answering (VQA)" href="vqa.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Supervised Image Classification - ConfigILM</title>
+        <title>Throughput testing - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -163,9 +163,9 @@
 <p class="caption" role="heading"><span class="caption-text">Features</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="ilmconfiguration.html">Model Configuration</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Supervised Image Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vqa.html">Visual Question Answering (VQA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="throughput_testing.html">Throughput testing</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -237,34 +237,26 @@
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="supervised-image-classification">
-<h1>Supervised Image Classification<a class="headerlink" href="#supervised-image-classification" title="Permalink to this heading">#</a></h1>
-<p>The framework allows to pre-train image models in supervised fashion using classification datasets.
-For this example usage we will be using the [<code class="docutils literal notranslate"><span class="pre">BigEarthNet</span> <span class="pre">DataModule</span></code>](extra/DataSets and DataModules/bigearthnet.ipynb) inside a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/">Pytorch Lightning</a> trainer. The network will be integrated into a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/lightning_module.html"><code class="docutils literal notranslate"><span class="pre">LightningModule</span></code></a>.</p>
-<p>First we start by importing the basics we need from <code class="docutils literal notranslate"><span class="pre">torch</span></code> and Pytorch Lightning that are needed to set up the <code class="docutils literal notranslate"><span class="pre">LightningModule</span></code>.</p>
+          <section class="tex2jax_ignore mathjax_ignore" id="throughput-testing">
+<h1>Throughput testing<a class="headerlink" href="#throughput-testing" title="Permalink to this heading">#</a></h1>
+<p>During development of new models it is often useful to test the throughput of the data pipeline. To enable this, ConfigILM provides a ThroughputTest_DataModule and a corresponding ThroughputTestDataset. These datasets don’t load any actual data, but instead generate a single dummy sample during initialization and return it for each call to <code class="docutils literal notranslate"><span class="pre">__getitem__()</span></code>. The fake length of the dataset can be set with the num_samples parameter.</p>
+<section id="preparing-the-model">
+<h2>Preparing the model<a class="headerlink" href="#preparing-the-model" title="Permalink to this heading">#</a></h2>
+<p>To run the throughput test we first create the model and then pass the respective DataModule to the trainer. For more details on creating the model see <a class="reference internal" href="vqa.html"><span class="doc std std-doc">the page on VQA model creation</span></a>. The code here is almost identical with some reduced parts.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import packages</span>
 <span class="kn">import</span> <span class="nn">lightning.pytorch</span> <span class="k">as</span> <span class="nn">pl</span>
-    
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">optim</span>
 
 <span class="kn">from</span> <span class="nn">configilm</span> <span class="kn">import</span> <span class="n">ConfigILM</span>
-</pre></div>
-</div>
-</div>
-</div>
-<section id="pytorch-lightning-module">
-<h2>Pytorch Lightning Module<a class="headerlink" href="#pytorch-lightning-module" title="Permalink to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">Module</span></code> we use to encapsulate the model divides the usual loop into functions that are called internally by Pytorch Lightning. The necessary functions are just <code class="docutils literal notranslate"><span class="pre">training_step</span></code> and <code class="docutils literal notranslate"><span class="pre">configure_optimizer</span></code>, but to have a fully functional script, we add the validation and test steps as well as evaluation of the validation and test results. All <code class="docutils literal notranslate"><span class="pre">*_step</span></code> functions are working on a single batch while <code class="docutils literal notranslate"><span class="pre">*_epoch_end</span></code> functions are called after all batches are evaluated. During <code class="docutils literal notranslate"><span class="pre">*_step</span></code> calls the module collects the outputs in the respective <code class="docutils literal notranslate"><span class="pre">self.*_output_list</span></code> so that the results can be evaluated at the end of the epoch (this is new for Pytorch Lightning 2.0).</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LitImageEncoder</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
+
+<span class="k">class</span> <span class="nc">LitVQAEncoder</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper around a pytorch module, allowing this module to be used in automatic</span>
-<span class="sd">    training with Pytorch Lightning.</span>
+<span class="sd">    training with pytorch lightning.</span>
 <span class="sd">    Among other things, the wrapper allows us to do automatic training and removes the</span>
 <span class="sd">    need to manage data on different devices (e.g. GPU and CPU).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -280,9 +272,16 @@ For this example usage we will be using the [<code class="docutils literal notra
         <span class="bp">self</span><span class="o">.</span><span class="n">val_output_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_output_list</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="k">def</span> <span class="nf">_disassemble_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+        <span class="n">images</span><span class="p">,</span> <span class="n">questions</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="c1"># transposing tensor, needed for Huggingface-Dataloader combination</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">questions</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">int</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">questions</span><span class="p">),</span> <span class="n">labels</span>
 
     <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disassemble_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
         <span class="n">x_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">x_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;train/loss&quot;</span><span class="p">,</span> <span class="n">loss</span><span class="p">)</span>
@@ -295,7 +294,7 @@ For this example usage we will be using the [<code class="docutils literal notra
     <span class="c1"># ============== NON-MANDATORY-FUNCTION ===============</span>
 
     <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disassemble_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
         <span class="n">x_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">x_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val_output_list</span> <span class="o">+=</span> <span class="p">[{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="n">x_hat</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}]</span>
@@ -309,7 +308,7 @@ For this example usage we will be using the [<code class="docutils literal notra
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s2">&quot;val/loss&quot;</span><span class="p">,</span> <span class="n">avg_loss</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disassemble_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
         <span class="n">x_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">x_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_output_list</span> <span class="o">+=</span> <span class="p">[{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="n">x_hat</span><span class="p">,</span> <span class="s2">&quot;labels&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">}]</span>
@@ -325,58 +324,9 @@ For this example usage we will be using the [<code class="docutils literal notra
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
         <span class="c1"># because we are a wrapper, we call the inner function manually</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="configuring">
-<h2>Configuring<a class="headerlink" href="#configuring" title="Permalink to this heading">#</a></h2>
-<p>Now that we have our model, we will use the Pytorch Lightning <code class="docutils literal notranslate"><span class="pre">Trainer</span></code> to run our loops. Results are logged to <code class="docutils literal notranslate"><span class="pre">tensorboard</span></code>.</p>
-<p>We start by importing some callbacks used during training</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.ConfigILM</span> <span class="kn">import</span> <span class="n">ILMConfiguration</span><span class="p">,</span> <span class="n">ILMType</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>as well as defining our hyperparameters.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;resnet18&quot;</span>
-<span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="n">number_of_channels</span> <span class="o">=</span> <span class="mi">12</span>
-<span class="n">image_size</span> <span class="o">=</span> <span class="mi">120</span>
-<span class="n">epochs</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">lr</span> <span class="o">=</span> <span class="mf">5e-4</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Then we create the configuration for usage in model creation later.</p>
-<div class="cell tag_remove-output docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># seed for pytorch, numpy, python.random, Dataloader workers, spawned subprocesses</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">seed_everything</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">model_config</span> <span class="o">=</span> <span class="n">ILMConfiguration</span><span class="p">(</span>
-    <span class="n">timm_model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">,</span>
-    <span class="n">hf_model_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">classes</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span>
-    <span class="n">image_size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span>
-    <span class="n">channels</span><span class="o">=</span><span class="n">number_of_channels</span><span class="p">,</span>
-    <span class="n">network_type</span><span class="o">=</span><span class="n">ILMType</span><span class="o">.</span><span class="n">IMAGE_CLASSIFICATION</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We log the hyperparameters and create a Pytorch Lightning <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/common/trainer.html">Trainer</a>.</p>
-<div class="cell tag_remove-output docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span>
-    <span class="n">max_epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">max_epochs</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="n">accelerator</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
     <span class="n">log_every_n_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">logger</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -385,54 +335,117 @@ For this example usage we will be using the [<code class="docutils literal notra
 </div>
 </div>
 </div>
-</section>
-<section id="creating-model-dataset">
-<h2>Creating Model + Dataset<a class="headerlink" href="#creating-model-dataset" title="Permalink to this heading">#</a></h2>
-<p>Finally, we create the model defined above and our datamodule. We will be using a datamodule from this framework described in the Extra section.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataModules.BEN_DataModule</span> <span class="kn">import</span> <span class="n">BENDataModule</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">LitImageEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
-<span class="n">dm</span> <span class="o">=</span> <span class="n">BENDataModule</span><span class="p">(</span>
-    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.ConfigILM</span> <span class="kn">import</span> <span class="n">ILMConfiguration</span><span class="p">,</span> <span class="n">ILMType</span>
+<span class="n">image_model_name</span> <span class="o">=</span> <span class="s2">&quot;resnet18&quot;</span>
+<span class="n">text_model_name</span> <span class="o">=</span> <span class="s2">&quot;prajjwal1/bert-tiny&quot;</span>
+<span class="n">number_of_channels</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">image_size</span> <span class="o">=</span> <span class="mi">120</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">5e-4</span>
+<span class="n">seq_len</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">classes</span> <span class="o">=</span> <span class="mi">25</span>
+
+<span class="n">model_config</span> <span class="o">=</span> <span class="n">ILMConfiguration</span><span class="p">(</span>
+    <span class="n">timm_model_name</span><span class="o">=</span><span class="n">image_model_name</span><span class="p">,</span>
+    <span class="n">hf_model_name</span><span class="o">=</span><span class="n">text_model_name</span><span class="p">,</span>
+    <span class="n">classes</span><span class="o">=</span><span class="n">classes</span><span class="p">,</span>
+    <span class="n">image_size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span>
+    <span class="n">channels</span><span class="o">=</span><span class="n">number_of_channels</span><span class="p">,</span>
+    <span class="n">network_type</span><span class="o">=</span><span class="n">ILMType</span><span class="o">.</span><span class="n">VQA_CLASSIFICATION</span><span class="p">,</span>
+    <span class="n">max_sequence_length</span><span class="o">=</span><span class="n">seq_len</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LitVQAEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="running-the-throughput-test">
+<h2>Running the Throughput Test<a class="headerlink" href="#running-the-throughput-test" title="Permalink to this heading">#</a></h2>
+<p>Now the model is evaluated using the <code class="docutils literal notranslate"><span class="pre">ThroughputTestDataModule</span></code> instead of any real data. First we create the DataModule with the desired parameters</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataModules</span> <span class="kn">import</span> <span class="n">ThroughputTest_DataModule</span>
+<span class="n">dm</span> <span class="o">=</span> <span class="n">ThroughputTest_DataModule</span><span class="o">.</span><span class="n">ThroughputTestDataModule</span><span class="p">(</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="p">{},</span>  <span class="c1"># parameter is ignored but required for compatibility with other DataModules in ConfigILM</span>
     <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="n">number_of_channels</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">),</span>
-    <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">seq_length</span><span class="o">=</span><span class="n">seq_len</span><span class="p">,</span>
+    <span class="n">num_samples</span><span class="o">=</span><span class="mi">32</span><span class="o">*</span><span class="mi">16</span><span class="p">,</span>  <span class="c1"># number of &quot;samples&quot; in this dataset -&gt; each sample is the same one</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
+    <span class="n">num_classes</span><span class="o">=</span><span class="n">classes</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="running">
-<h2>Running<a class="headerlink" href="#running" title="Permalink to this heading">#</a></h2>
-<p>Now we just have to call the <code class="docutils literal notranslate"><span class="pre">fit()</span></code> and optionally the <code class="docutils literal notranslate"><span class="pre">test()</span></code> functions.</p>
+<p>and then run the model using this fake DataModule and measure the throughput by iterating over the test set of the DataModule.
+We measure the throughput by measuring the time it takes to run the test set and then calculate the number of samples processed per second and related metrics.</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">dm</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Throughput: </span><span class="si">{</span><span class="n">dm</span><span class="o">.</span><span class="n">num_samples</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> samples per second&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time per sample: </span><span class="si">{</span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">dm</span><span class="o">.</span><span class="n">num_samples</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> milli-seconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Throughput: 93.153 samples per second
+Time per sample: 10.7 milli-seconds
+Total time: 5.496 seconds
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can compare this now with a different model configuration. For example, we can change the image model to a larger one and see how the throughput changes.</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_config</span> <span class="o">=</span> <span class="n">ILMConfiguration</span><span class="p">(</span>
+    <span class="n">timm_model_name</span><span class="o">=</span><span class="s2">&quot;resnet34&quot;</span><span class="p">,</span>
+    <span class="n">hf_model_name</span><span class="o">=</span><span class="n">text_model_name</span><span class="p">,</span>
+    <span class="n">classes</span><span class="o">=</span><span class="n">classes</span><span class="p">,</span>
+    <span class="n">image_size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span>
+    <span class="n">channels</span><span class="o">=</span><span class="n">number_of_channels</span><span class="p">,</span>
+    <span class="n">network_type</span><span class="o">=</span><span class="n">ILMType</span><span class="o">.</span><span class="n">VQA_CLASSIFICATION</span><span class="p">,</span>
+    <span class="n">max_sequence_length</span><span class="o">=</span><span class="n">seq_len</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LitVQAEncoder</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">dm</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Throughput: </span><span class="si">{</span><span class="n">dm</span><span class="o">.</span><span class="n">num_samples</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> samples per second&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time per sample: </span><span class="si">{</span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">dm</span><span class="o">.</span><span class="n">num_samples</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> milli-seconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Throughput: 57.356 samples per second
+Time per sample: 17.4 milli-seconds
+Total time: 8.927 seconds
+</pre></div>
+</div>
+</div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>These calls generate quite a bit of output depending on the number of batches and epochs. The output is removed for readability.</p>
-</div>
-<div class="cell tag_remove-output docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">dm</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell tag_remove-output docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">dm</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here is an example forward call for the model. Since the input is normalized, the colors are slightly distorted. To display the image anyway, we select only the RGB channels and normalize this image to the range 0 to 1.</p>
-<div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<img alt="_images/76d8ab2b628dbac3edc1b27b1b53c7006bc7be001cabc8f9b37dbd16754f847b.png" src="_images/76d8ab2b628dbac3edc1b27b1b53c7006bc7be001cabc8f9b37dbd16754f847b.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Expected: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0]
-    Real: [-0.7660458087921143, 0.4329705536365509, -0.08695140480995178, -0.27555665373802185, -0.28120118379592896, -0.1079884022474289, -0.6889724135398865, -0.3255797326564789, -0.34399864077568054, -0.5323010683059692, 0.10589395463466644, -0.5034818053245544, -0.31894299387931824, -0.47904062271118164, -0.4806309938430786, -0.4735742211341858, -0.15847229957580566, -0.559396505355835, -0.5740835666656494]
-</pre></div>
-</div>
-</div>
+<p>For reliable results, it is important to run the throughput test on a machine with no other significant load. The results can vary significantly depending on the hardware and the number of workers used in the DataLoader. The tests should also be run multiple times and the results averaged to get a reliable estimate of the throughput even on a quiet machine.</p>
 </div>
 </section>
 </section>
@@ -442,23 +455,23 @@ For this example usage we will be using the [<code class="docutils literal notra
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="vqa.html">
+          <a class="next-page" href="extra/BEN_LMDB_Reader.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Visual Question Answering (VQA)</div>
+                <div class="title">Using the BigEarthNet LMDB Reader</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="ilmconfiguration.html">
+          <a class="prev-page" href="vqa.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Model Configuration</div>
+                <div class="title">Visual Question Answering (VQA)</div>
                 
               </div>
             </a>
@@ -636,11 +649,9 @@ For this example usage we will be using the [<code class="docutils literal notra
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Supervised Image Classification</a><ul>
-<li><a class="reference internal" href="#pytorch-lightning-module">Pytorch Lightning Module</a></li>
-<li><a class="reference internal" href="#configuring">Configuring</a></li>
-<li><a class="reference internal" href="#creating-model-dataset">Creating Model + Dataset</a></li>
-<li><a class="reference internal" href="#running">Running</a></li>
+<li><a class="reference internal" href="#">Throughput testing</a><ul>
+<li><a class="reference internal" href="#preparing-the-model">Preparing the model</a></li>
+<li><a class="reference internal" href="#running-the-throughput-test">Running the Throughput Test</a></li>
 </ul>
 </li>
 </ul>

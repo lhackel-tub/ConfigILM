@@ -28,14 +28,14 @@
   {
    "cell_type": "markdown",
    "source": [
-    "Alternatively, the source can be directly downloaded from [github](https://github.com/lhackel-tub/ConfigILM). If you want to use the extras (e.g. Datasets), installation is `pip install configilm[extra]`.\n",
+    "Alternatively, the source can be directly downloaded from [github](https://github.com/lhackel-tub/ConfigILM). If you want to use the extras (e.g. Datasets), installation is dependent on which extras you want to use. `pip install configilm[bigearthnet]` installs all additional dependencies for the BigEarthNet dataset loading using LMDB and the BigEarthNet-Encoder. For the DataModules and use with PyTorch Lightning, use `pip install configilm[full-lightning]` (same as `pip install configilm[full]`) for use with `lightning.pytorch` and `pip install configilm[full-pytorch_lightning]` for use with `pytorch_lightning`. Both versions also include the dependencies of BigEarthNet. As both versions are equal in their features, the choice is up to the user or the use case. For example, [`TorchGeo`](https://github.com/microsoft/torchgeo) uses lightning.pytorch, so it would be better to use `pip install configilm[full-lightning]` in combination with `TorchGeo`. For simplicity, the `full` version is used in the examples in this documentation.\n",
     "\n",
     ":::{note}\n",
     "Using the extras means installing some additional dependencies.\n",
     ":::\n",
     "\n",
     ":::{note}\n",
-    "If you use the wheel, installation would equate to `pip install configilm-0.1.0-py3-none-any.whl` and `pip install configilm-0.1.0-py3-none-any.whl[extra]`\n",
+    "If you use the wheel, installation would equate to `pip install configilm-0.4.10-py3-none-any.whl` and `pip install configilm-0.4.10-py3-none-any.whl[extra]`\n",
     ":::\n",
     "\n",
     "`ConfigILM` allows you to easily combine and use predefined image and language models and use them for tasks such as [Supervised Pretraining](sup_pretraining.ipynb) or [VQA](vqa.ipynb).\n",

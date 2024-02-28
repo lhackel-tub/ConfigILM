@@ -165,6 +165,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul class="current">
@@ -175,6 +176,7 @@
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -264,7 +266,7 @@ A small example of the data used is distributed with this package.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">RSVQALR_DataSet</span>
  
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 
 <span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
@@ -276,8 +278,8 @@ A small example of the data used is distributed with this package.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 256, 256])
-Question (start): [101, 2003, 1037, 2311, 2556, 1029, 102, 0, 0, 0, 0, 0, 0, 0, 0]
-Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0.])
+Question (start): [101, 2024, 2045, 2625, 3121, 2084, 5568, 2752, 1029, 102, 0, 0, 0, 0, 0]
+Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 1.])
 </pre></div>
 </div>
 <img alt="../../_images/3192de55dce049e7eea81bb705d755461a06cf291a722c20e3d756929fdc8f39.png" src="../../_images/3192de55dce049e7eea81bb705d755461a06cf291a722c20e3d756929fdc8f39.png" />
@@ -293,7 +295,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0.])
 <span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
 <span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -313,7 +315,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0.])
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">16</span>
 <span class="p">)</span>
@@ -325,7 +327,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0.])
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2003, 2009, 1037, 3541, 2030, 2019, 3923, 2181, 102, 0, 0, 0, 0, 0, 0]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2024, 2045, 2625, 3121, 2084, 8206, 5568, 2752, 1029, 102, 0, 0, 0, 0, 0]
 </pre></div>
 </div>
 </div>
@@ -333,7 +335,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0.])
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">8</span>
 <span class="p">)</span>
@@ -345,7 +347,7 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0.])
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2003, 2009, 1037, 3541, 2030, 2019, 102]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[101, 2024, 2045, 2625, 3121, 2084, 8206, 102]
 </pre></div>
 </div>
 </div>
@@ -359,8 +361,8 @@ Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0.])
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;[CLS] is it a rural or an urban area [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]&#39;
-Question 2: &#39;[CLS] is it a rural or an [SEP]&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;[CLS] are there less buildings than circular grass areas? [SEP] [PAD] [PAD] [PAD] [PAD] [PAD]&#39;
+Question 2: &#39;[CLS] are there less buildings than circular [SEP]&#39;
 </pre></div>
 </div>
 </div>
@@ -374,8 +376,8 @@ Question 2: &#39;[CLS] is it a rural or an [SEP]&#39;
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;is it a rural or an urban area&#39;
-Question 2: &#39;is it a rural or an&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Question 1: &#39;are there less buildings than circular grass areas?&#39;
+Question 2: &#39;are there less buildings than circular&#39;
 </pre></div>
 </div>
 </div>
@@ -388,7 +390,7 @@ Question 2: &#39;is it a rural or an&#39;
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-        <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+        <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
@@ -402,7 +404,7 @@ Question 2: &#39;is it a rural or an&#39;
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RSVQA-LR only supports 3 channel (RGB) or 1 channel (grayscale). -1 channels unsupported.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RSVQA-LR only supports RGB images.
 </pre></div>
 </div>
 </div>
@@ -415,7 +417,7 @@ Question 2: &#39;is it a rural or an&#39;
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
@@ -426,12 +428,12 @@ Question 2: &#39;is it a rural or an&#39;
 </section>
 <section id="restricting-the-number-of-loaded-images">
 <h3>Restricting the number of loaded images<a class="headerlink" href="#restricting-the-number-of-loaded-images" title="Permalink to this heading">#</a></h3>
-<p>It is also possible to restrict the number of images indexed. By setting <code class="docutils literal notranslate"><span class="pre">max_img_idx</span> <span class="pre">=</span> <span class="pre">n</span></code> only the first <code class="docutils literal notranslate"><span class="pre">n</span></code> images (in alphabetical order based on their filename) will be loaded. A <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> of  <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> or larger than the number of images in the json file(s) equals to load-all-images behaviour. The number of images loaded will also change the answer space generated during <code class="docutils literal notranslate"><span class="pre">training</span></code> splits.</p>
+<p>It is also possible to restrict the number of images indexed. By setting <code class="docutils literal notranslate"><span class="pre">max_len</span> <span class="pre">=</span> <span class="pre">n</span></code> only the first <code class="docutils literal notranslate"><span class="pre">n</span></code> images (in alphabetical order based on their filename) will be loaded. A <code class="docutils literal notranslate"><span class="pre">max_len</span></code> of  <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> or larger than the number of images in the json file(s) equals to load-all-images behaviour. The number of images loaded will also change the answer space generated during <code class="docutils literal notranslate"><span class="pre">training</span></code> splits.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
-    <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">max_len</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
 </pre></div>
@@ -443,8 +445,8 @@ Question 2: &#39;is it a rural or an&#39;
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: There are fewer possible answers then requested (9 requested, but 5 found).
-The 9 most frequent answers cover about 100.00 % of the total answers.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       1,200 QA-pairs indexed
+          10 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -453,8 +455,8 @@ The 9 most frequent answers cover about 100.00 % of the total answers.
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
-    <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">max_len</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
 </pre></div>
@@ -466,8 +468,8 @@ The 9 most frequent answers cover about 100.00 % of the total answers.
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: There are fewer possible answers then requested (9 requested, but 7 found).
-The 9 most frequent answers cover about 100.00 % of the total answers.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       1,200 QA-pairs indexed
+         100 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -480,10 +482,10 @@ The 9 most frequent answers cover about 100.00 % of the total answers.
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_ds</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">classes</span><span class="o">=</span><span class="mi">3</span>
+    <span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -494,7 +496,8 @@ The 9 most frequent answers cover about 100.00 % of the total answers.
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The 3 most frequent answers cover about 83.33 % of the total answers.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         300 QA-pairs indexed
+         300 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -507,32 +510,32 @@ The 9 most frequent answers cover about 100.00 % of the total answers.
 </div>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train DS: </span><span class="si">{</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train DS: </span><span class="si">{</span><span class="n">train_ds</span><span class="o">.</span><span class="n">answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span>
+    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">answers</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 1: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 1: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">answers</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 2: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 2: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train DS: [&#39;no&#39;, &#39;yes&#39;, &#39;between 1 and 10&#39;]
-Val DS 1: [&#39;no&#39;, &#39;yes&#39;]
-Val DS 2: [&#39;no&#39;, &#39;yes&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train DS: [&#39;rural&#39;, &#39;between 101 and 1000&#39;, &#39;between 11 and 100&#39;]
+Val DS 1: [&#39;rural&#39;, &#39;between 101 and 1000&#39;]
+Val DS 2: [&#39;rural&#39;, &#39;between 101 and 1000&#39;]
 </pre></div>
 </div>
 </div>
@@ -548,7 +551,7 @@ To use a DataModule, the setup() function has to be called. This populates the D
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataModules</span> <span class="kn">import</span> <span class="n">RSVQALR_DataModule</span>
 
 <span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQALR_DataModule</span><span class="o">.</span><span class="n">RSVQALRDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -590,8 +593,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7f88c1bc5f00&gt;
-&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7f88c8d1e080&gt;
+&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7fa4ac6c6c20&gt;
+&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7fa4bdf0ffa0&gt;
 None
 </pre></div>
 </div>
@@ -611,7 +614,7 @@ None
 </div>
 </div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">DataModule</span></code> has in addition to the <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> settings a parameter each for <code class="docutils literal notranslate"><span class="pre">data_dir</span></code>, <code class="docutils literal notranslate"><span class="pre">image_size</span></code> and <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> which are passed through to the <code class="docutils literal notranslate"><span class="pre">DataSet</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">DataModule</span></code> has in addition to the <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> settings a parameter each for <code class="docutils literal notranslate"><span class="pre">data_dir</span></code>, <code class="docutils literal notranslate"><span class="pre">image_size</span></code> and <code class="docutils literal notranslate"><span class="pre">max_len</span></code> which are passed through to the <code class="docutils literal notranslate"><span class="pre">DataSet</span></code>.</p>
 <section id="dataloader-settings">
 <h3>DataLoader settings<a class="headerlink" href="#dataloader-settings" title="Permalink to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> have four settable parameters: <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>, <code class="docutils literal notranslate"><span class="pre">num_workers_dataloader</span></code>, <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> and <code class="docutils literal notranslate"><span class="pre">pin_memory</span></code> with 16, <code class="docutils literal notranslate"><span class="pre">os.cpu_count()</span></code> / 2, <code class="docutils literal notranslate"><span class="pre">None</span></code> and <code class="docutils literal notranslate"><span class="pre">None</span></code> as their default values.</p>
@@ -620,7 +623,7 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQALR_DataModule</span><span class="o">.</span><span class="n">RSVQALRDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
@@ -644,7 +647,7 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQALR_DataModule</span><span class="o">.</span><span class="n">RSVQALRDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
@@ -656,55 +659,32 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: Shuffle was set to False. This is not recommended for most configuration. Use shuffle=None (default) for recommended configuration.
-
-HINT: pin_memory set to None 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/extra/DataModules/ClassificationVQADataModule.py:109: UserWarning: Shuffle was set to False. This is not recommended for most configuration. Use shuffle=None (default) for recommended configuration.
+  warn(
 </pre></div>
 </div>
 </div>
 </details>
 </div>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQALR_DataModule</span><span class="o">.</span><span class="n">RSVQALRDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">2</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: pin_memory set to None 
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQALR_DataModule</span><span class="o">.</span><span class="n">RSVQALRDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">pin_memory</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: pin_memory set to False via overwrite
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 </section>
 </section>
@@ -739,7 +719,7 @@ HINT: pin_memory set to None
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

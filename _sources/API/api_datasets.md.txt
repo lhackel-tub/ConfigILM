@@ -7,7 +7,7 @@ See the following modules for details on DataSets and DataModules:
 
 ds/api_BEN_reader
 ds/api_ds_BEN
-ds/api_ds_BEN2
+ds/api_ds_COCOQA
 ds/api_ds_HRVQA
 ds/api_ds_RSVQALR
 ds/api_ds_RSVQAHR

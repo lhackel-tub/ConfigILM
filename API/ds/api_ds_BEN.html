@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Updated BigEarthNet DataSets and DataModules" href="api_ds_BEN2.html" /><link rel="prev" title="BigEarthNet Utils" href="api_BEN_reader.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Toronto COCO-QA DataSet and DataModules" href="api_ds_COCOQA.html" /><link rel="prev" title="BigEarthNet Utils" href="api_BEN_reader.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>BigEarthNet DataSets and DataModules - ConfigILM</title>
@@ -165,6 +165,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -175,6 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api_datasets.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -245,75 +247,86 @@ Original Paper of Image Data:
 <dl class="py class">
 <dt class="sig sig-object py" id="configilm.extra.DataSets.BEN_DataSet.BENDataSet">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.BEN_DataSet.</span></span><span class="sig-name descname"><span class="pre">BENDataSet</span></span><a class="headerlink" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet" title="Permalink to this definition">#</a></dt>
-<dd><dl class="py method">
+<dd><p>Dataset for BigEarthNet dataset. LMDB-Files can be requested by contacting
+the author or by downloading the dataset from the official website and encoding
+it using the BigEarthNet Encoder.</p>
+<p>The dataset can be loaded with different channel configurations. The channel configuration
+is defined by the first element of the img_size tuple (c, h, w).
+The available configurations are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>2 -&gt; Sentinel-1</p></li>
+<li><p>3 -&gt; RGB</p></li>
+<li><p>4 -&gt; 10m Sentinel-2</p></li>
+<li><p>10 -&gt; 10m + 20m Sentinel-2</p></li>
+<li><p>12 -&gt; 10m + 20m Sentinel-2 + 10m Sentinel-1</p></li>
+</ul>
+</div></blockquote>
+<dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataSets.BEN_DataSet.BENDataSet.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Path('..')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(12,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_patchname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Creates a torch Dataset for the BigEarthNet dataset.
-Assumes that the cvs files named after the requested split are located next to
-the lmdb file (folder), which was created using BigEarthNetEncoder.</p>
-<p>Image lmdb file is expected to be named “BigEarthNetEncoded.lmdb”</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Dataset for BigEarthNet dataset. Files can be requested by contacting
+the author.</p>
+<p>Original Paper of Image Data:
+<a class="reference external" href="https://arxiv.org/abs/2105.07921">https://arxiv.org/abs/2105.07921</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>root_dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – <p>root directory to lmdb file and optional train/val/test.csv</p>
+<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – A mapping from file key to file path. The file key is
+used to identify the function of the file. For example, the key
+“train.csv” contains the names of all images in the training set.
+The file path can be either a string or a Path object. Required
+keys are “images_lmdb”, “train_data”, “train_data” and “train_data”.
+The “_data” keys are used to identify the csv file that contains the
+names of the images that are part of the split.</p></li>
+<li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>The name of the split to use. Can be either “train”, “val” or
+“test”. If None is provided, all splits are used.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>../</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>csv_files</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Path</em><em>, </em><em>Iterable</em><em>[</em><em>Path</em><em>]</em><em>]</em><em>]</em>) – <p>None (uses split-specific csv files) or csv file specifying
-patch names</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>“train”, “val” or “test” or None for all</p>
+<li><p><strong>transform</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to transform the images after
+loading them. If None is provided, no transformation is applied.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None (loads all splits)</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>transform</strong> – <p>transformations to be applied to loaded images aside from
-scaling all bands to img_size.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>max_img_idx</strong> – <p>maximum number of images to load. If this number is higher
-than the images found in the csv, None or -1, all images will be loaded.</p>
+<li><p><strong>max_len</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The maximum number of images to use. If None or -1 is
+provided, all images are used.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>img_size</strong> – <p>Size to which all channels will be scaled. Interpolation is
-applied bicubic before any transformation.</p>
-<p>Also specifies which channels to load.
-See <cite>BENDataSet.get_available_channel_configurations()</cite> for details.</p>
+<li><p><strong>img_size</strong> (<em>tuple</em>) – <p>The size of the images. Note that this includes the number of
+channels. For example, if the images are RGB images, the size should be
+(3, h, w).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(12, 120, 120)</p>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(3, 120, 120)</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>return_patchname</strong> (<em>bool</em>) – <p>If set to True, __getitem__ will return
-(img, lbl, patch_name) instead of (img, lbl)</p>
+<li><p><strong>return_extras</strong> (<em>bool</em>) – <p>If True, the dataset will return the patch name
+as a third return value.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>patch_prefilter</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>str</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>]</em>) – <p>Callable to filter patches after reading csv files</p>
+<li><p><strong>patch_prefilter</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>str</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>]</em>) – <p>A callable that is used to filter the patches
+before they are loaded. If None is provided, no filtering is
+applied. The callable must take a patch name as input and return
+True if the patch should be included and False if it should be
+excluded from the dataset.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
@@ -378,74 +391,77 @@ Original Paper of Image Data:
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataModules.BEN_DataModule.</span></span><span class="sig-name descname"><span class="pre">BENDataModule</span></span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule" title="Permalink to this definition">#</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataModules.BEN_DataModule.BENDataModule.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_img_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_infos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initializes a pytorch lightning data module.</p>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>This datamodule is designed to work with the BigEarthNet dataset. It is a
+multi-label classification dataset. The dataset is split into train, validation
+and test sets. The datamodule provides dataloaders for each of these sets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>batch_size</strong> – <p>batch size for data loaders</p>
+<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – A mapping from file key to file path. Required keys are
+“images_lmdb”, “train_data”, “val_data” and “test_data”. The “images_lmdb”
+key is used to identify the lmdb file that contains the images. The “_data”
+keys are used to identify paths to the respective split csv files.
+Note, that the lmdb file is encoded using the BigEarthNet Encoder and contains
+images and labels.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – <p>The batch size to use for the dataloaders.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>16</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>data_dir</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – <p>base data directory for lmdb and csv files</p>
+<li><p><strong>img_size</strong> (<em>tuple</em>) – <p>The size of the images. Note that this includes the number of
+channels. For example, if the images are RGB images, the size should be
+(3, h, w). See BEN_DataSet.avail_chan_configs for available channel
+configurations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>./</p>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(3, 120, 120)</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>img_size</strong> – <p>image size <cite>(c, h, w)</cite> in accordance with <cite>BENDataSet</cite></p>
+<li><p><strong>num_workers_dataloader</strong> (<em>int</em>) – <p>The number of workers to use for the dataloaders.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None uses default of dataset</p>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>4</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>num_workers_dataloader</strong> – <p>number of workers used for data loading</p>
+<li><p><strong>shuffle</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Whether to shuffle the data. If None is provided, the data is shuffled
+for training and not shuffled for validation and test.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>#CPU_cores/2</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>max_img_idx</strong> – <p>maximum number of images to load per split. If this number
-is higher than the images found in the csv, None or -1, all images will be
-loaded.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>shuffle</strong> – <p>Flag if dataset should be shuffled. If set to None, only train
-will be shuffled and validation and test won’t.</p>
+<li><p><strong>max_len</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The maximum number of images to use. If None or -1 is provided,
+all images are used. Applies per split.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>print_infos</strong> (<em>bool</em>) – <p>Flag, if additional information during setup() and reading
-should be printed (e.g. number of workers detected, number of images loaded)</p>
+<li><p><strong>pin_memory</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Whether to use pinned memory for the dataloaders. If None is
+provided, it is set to True if a GPU is available and False otherwise.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>False</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>pin_memory</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Flag if memory should be pinned for data loading. If not
-specified set to True if cuda devices are used, else false.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>dataset_kwargs</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>]</em>) – Other keyword arguments to pass to the dataset during
-creation.</p></li>
+<li><p><strong>patch_prefilter</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>str</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>]</em>) – <p>A callable that is used to filter out images. If None is
+provided, no filtering is applied. The callable should take a string as input
+and return a boolean. If the callable returns True, the image is included in
+the dataset, otherwise it is excluded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
 </ul>
 </dd>
 </dl>
@@ -517,12 +533,12 @@ Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> 
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="api_ds_BEN2.html">
+          <a class="next-page" href="api_ds_COCOQA.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Updated BigEarthNet DataSets and DataModules</div>
+                <div class="title">Toronto COCO-QA DataSet and DataModules</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -541,7 +557,7 @@ Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> 
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

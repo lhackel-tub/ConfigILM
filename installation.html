@@ -165,6 +165,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -175,6 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -246,14 +248,14 @@
 </div>
 </div>
 </div>
-<p>Alternatively, the source can be directly downloaded from <a class="reference external" href="https://github.com/lhackel-tub/ConfigILM">github</a>. If you want to use the extras (e.g. Datasets), installation is <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm[extra]</span></code>.</p>
+<p>Alternatively, the source can be directly downloaded from <a class="reference external" href="https://github.com/lhackel-tub/ConfigILM">github</a>. If you want to use the extras (e.g. Datasets), installation is dependent on which extras you want to use. <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm[bigearthnet]</span></code> installs all additional dependencies for the BigEarthNet dataset loading using LMDB and the BigEarthNet-Encoder. For the DataModules and use with PyTorch Lightning, use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm[full-lightning]</span></code> (same as <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm[full]</span></code>) for use with <code class="docutils literal notranslate"><span class="pre">lightning.pytorch</span></code> and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm[full-pytorch_lightning]</span></code> for use with <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code>. Both versions also include the dependencies of BigEarthNet. As both versions are equal in their features, the choice is up to the user or the use case. For example, <a class="reference external" href="https://github.com/microsoft/torchgeo"><code class="docutils literal notranslate"><span class="pre">TorchGeo</span></code></a> uses lightning.pytorch, so it would be better to use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm[full-lightning]</span></code> in combination with <code class="docutils literal notranslate"><span class="pre">TorchGeo</span></code>. For simplicity, the <code class="docutils literal notranslate"><span class="pre">full</span></code> version is used in the examples in this documentation.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Using the extras means installing some additional dependencies.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you use the wheel, installation would equate to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm-0.1.0-py3-none-any.whl</span></code> and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm-0.1.0-py3-none-any.whl[extra]</span></code></p>
+<p>If you use the wheel, installation would equate to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm-0.4.10-py3-none-any.whl</span></code> and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">configilm-0.4.10-py3-none-any.whl[extra]</span></code></p>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">ConfigILM</span></code> allows you to easily combine and use predefined image and language models and use them for tasks such as <a class="reference internal" href="sup_pretraining.html"><span class="doc std std-doc">Supervised Pretraining</span></a> or <a class="reference internal" href="vqa.html"><span class="doc std std-doc">VQA</span></a>.
 For this, models can be trained in an <strong>end-to-end</strong> fashion or <strong>pre-trained checkpoints</strong> can be used. How the configuration is set up is explained on the next page. Alternatively, use cases for this framework are presented on the following pages.</p>
@@ -290,7 +292,7 @@ For this, models can be trained in an <strong>end-to-end</strong> fashion or <st
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

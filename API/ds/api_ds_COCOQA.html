@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="RSVQAxBEN DataSets and DataModules" href="api_ds_RSVQAxBEN.html" /><link rel="prev" title="RSVQA-LR DataSets and DataModules" href="api_ds_RSVQALR.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="HRVQA DataSets and DataModules" href="api_ds_HRVQA.html" /><link rel="prev" title="BigEarthNet DataSets and DataModules" href="api_ds_BEN.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>RSVQA-HR DataSets and DataModules - ConfigILM</title>
+        <title>Toronto COCO-QA DataSet and DataModules - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -186,10 +186,10 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api_datasets.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">RSVQA-HR DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQAxBEN.html">RSVQAxBEN DataSets and DataModules</a></li>
 </ul>
 </li>
@@ -237,43 +237,44 @@
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.extra.DataSets.RSVQAHR_DataSet">
-<span id="rsvqa-hr-datasets-and-datamodules"></span><span id="api-datasets-rsvqahr"></span><h1>RSVQA-HR DataSets and DataModules<a class="headerlink" href="#module-configilm.extra.DataSets.RSVQAHR_DataSet" title="Permalink to this heading">#</a></h1>
+          <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.extra.DataSets.COCOQA_DataSet">
+<span id="toronto-coco-qa-dataset-and-datamodules"></span><span id="api-datasets-cocoqa"></span><h1>Toronto COCO-QA DataSet and DataModules<a class="headerlink" href="#module-configilm.extra.DataSets.COCOQA_DataSet" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAHR_DataSet.</span></span><span class="sig-name descname"><span class="pre">RSVQAHRDataSet</span></span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.COCOQA_DataSet.</span></span><span class="sig-name descname"><span class="pre">COCOQADataSet</span></span><a class="headerlink" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet" title="Permalink to this definition">#</a></dt>
 <dd><dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">256,</span> <span class="pre">256)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">94</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tif'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantize_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>This class implements the RSVQA-HR dataset. It is a subclass of
+<dt class="sig sig-object py" id="configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">430</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>This class implements the COCO-QA dataset. It is a subclass of
 ClassificationVQADataset and provides some dataset specific functionality.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – A dictionary containing the paths to the different data directories.
-It should contain the following keys:
-- images: Path to the directory containing the images.
-- train_data: Path to the directory containing the training data.
-- val_data: Path to the directory containing the validation data.
-- test_data: Path to the directory containing the test data.
-- test_phili_data: Path to the directory containing the test data for the Philadelphia test split.</p></li>
-<li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>The name of the split to use. Can be either “train”, “val”, “test” or “test_phili”.
-If None is provided, all splits will be used.</p>
+<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – A mapping from file key to file path. The file key is
+used to identify the function of the file. For example, the key
+“questions.txt” is used to identify the file that contains the
+questions. The file path can be either a string or a Path object.
+Required keys are “images”, “train_data” and “test_data”. The “_data”
+keys each point to a directory that contains the data files which are
+named “questions.txt”, “answers.txt”, “img_ids.txt” and “types.txt”.</p></li>
+<li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>The name of the split to use. Can be either “train” or
+“test”. If None is provided, all splits will be used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>transform</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to transform the images after loading them.
-If None is provided, no transformation is applied.</p>
+<li><p><strong>transform</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to transform the images after
+loading them. If None is provided, no transformation is applied.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>max_len</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The maximum number of qa-pairs to use. If None or -1 is provided, all qa-pairs will be used.</p>
+<li><p><strong>max_len</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The maximum number of qa-pairs to use. If None or -1 is
+provided, all qa-pairs are used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
@@ -283,25 +284,24 @@ If None is provided, no transformation is applied.</p>
 <li><p><strong>img_size</strong> (<em>tuple</em>) – <p>The size of the images.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(3, 256, 256)</p>
+<dd class="field-odd"><p>(3, 120, 120)</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>selected_answers</strong> (<em>Optional</em><em>[</em><em>list</em><em>]</em>) – <dl class="simple">
-<dt>A list of answers that should be used. If None is provided, the num_classes most common</dt><dd><p>answers are used.</p>
-</dd>
-</dl>
+<li><p><strong>selected_answers</strong> (<em>Optional</em><em>[</em><em>list</em><em>]</em>) – <p>A list of answers that should be used. If None
+is provided, the num_classes most common answers are used. If
+selected_answers is not None, num_classes is ignored.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>num_classes</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The number of classes to use. Only used if selected_answers is None. If set to None, all
-answers are used.</p>
+<li><p><strong>num_classes</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The number of classes to use. Only used if
+selected_answers is None. If set to None, all answers are used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>94</p>
+<dd class="field-odd"><p>430</p>
 </dd>
 </dl>
 </p></li>
@@ -328,29 +328,14 @@ question in addition to the image, question and answer.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>use_file_format</strong> (<em>str</em>) – <p>The file format of the images. Can be either “tif” or “png”.</p>
-<dl class="field-list simple">
-<dt class="field-odd">default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>”tif”</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>quantize_answers</strong> (<em>bool</em>) – <p>If True, the answers for area questions will be quantized into 5 buckets:
-0m2, between 1m2 and 10m2, between 11m2 and 100m2, between 101m2 and 1000m2 and more than 1000m2.</p>
-<dl class="field-list simple">
-<dt class="field-odd">default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True</p>
-</dd>
-</dl>
-</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.load_image">
-<span class="sig-name descname"><span class="pre">load_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.load_image" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.load_image">
+<span class="sig-name descname"><span class="pre">load_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.load_image" title="Permalink to this definition">#</a></dt>
 <dd><p>This method should load the image with the given name and return it as
 a tensor.</p>
 <dl class="field-list simple">
@@ -367,8 +352,8 @@ a tensor.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.prepare_split">
-<span class="sig-name descname"><span class="pre">prepare_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.prepare_split" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.prepare_split">
+<span class="sig-name descname"><span class="pre">prepare_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.prepare_split" title="Permalink to this definition">#</a></dt>
 <dd><p>This method should return a list of tuples, where each tuple contains
 the following elements:</p>
 <ul class="simple">
@@ -384,15 +369,12 @@ the following elements:</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A list of tuples, each tuple containing the elements described</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[tuple[str, str, str, str]]</p>
-</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.split_names">
-<span class="sig-name descname"><span class="pre">split_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.split_names" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.split_names">
+<span class="sig-name descname"><span class="pre">split_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.split_names" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the names of the splits that are available for this dataset. The
 default implementation returns {“train”, “val”, “test”}. If you want to
 use different names, you should override this method.</p>
@@ -409,24 +391,21 @@ use different names, you should override this method.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.RSVQAHR_DataSet.resolve_data_dir">
-<span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.RSVQAHR_DataSet.</span></span><span class="sig-name descname"><span class="pre">resolve_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.RSVQAHR_DataSet.resolve_data_dir" title="Permalink to this definition">#</a></dt>
-<dd><p>Helper function that tries to resolve the correct directory
-for the RSVQA-HR dataset.</p>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.COCOQA_DataSet.resolve_data_dir">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.COCOQA_DataSet.</span></span><span class="sig-name descname"><span class="pre">resolve_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.COCOQA_DataSet.resolve_data_dir" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper function that tries to resolve the correct directory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data_dir</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – Optional path to the data directory. If None, the default data
-directory will be used.</p></li>
-<li><p><strong>allow_mock</strong> (<em>bool</em>) – <p>allows mock data path to be returned</p>
+<li><p><strong>data_dir</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – current path that is suggested</p></li>
+<li><p><strong>allow_mock</strong> (<em>bool</em>) – <p>if True, mock data will be used if no real data is found</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>force_mock</strong> (<em>bool</em>) – <p>only mock data path will be returned. Useful for debugging with
-small data or if the data is not downloaded yet.</p>
+<li><p><strong>force_mock</strong> (<em>bool</em>) – <p>if True, only mock data will be used</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>False</p>
@@ -435,30 +414,31 @@ small data or if the data is not downloaded yet.</p>
 </p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Mapping</em>[str, <em>Path</em>]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a dict with all paths to the data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Mapping</em>[str, <em>Union</em>[str, <em>Path</em>]]</p>
 </dd>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-configilm.extra.DataModules.RSVQAHR_DataModule"></span><p>Dataloader and Datamodule for RSVQA HR dataset.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataModules.RSVQAHR_DataModule.</span></span><span class="sig-name descname"><span class="pre">RSVQAHRDataModule</span></span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule" title="Permalink to this definition">#</a></dt>
+<span class="target" id="module-configilm.extra.DataModules.COCOQA_DataModule"></span><dl class="py class">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataModules.COCOQA_DataModule.</span></span><span class="sig-name descname"><span class="pre">COCOQADataModule</span></span><a class="headerlink" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule" title="Permalink to this definition">#</a></dt>
 <dd><dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">256,</span> <span class="pre">256)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_phili_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tif'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantize_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>This class implements the DataModule for the RSVQA HR dataset.</p>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>This class implements the DataModule for the COCO-QA dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – A dictionary containing the paths to the different data directories.
-It should contain the following keys:
-- images: Path to the directory containing the images.
-- train_data: Path to the directory containing the training data.
-- val_data: Path to the directory containing the validation data.
-- test_data: Path to the directory containing the test data.
-- test_phili_data: Path to the directory containing the test data for the Philadelphia test split.</p></li>
+<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – A dictionary containing the paths to the data directories.
+Should contain the keys “images”, “train_data”, and “test_data”. The “images” directory
+should contain two subdirectories “train2014” and “val2014” with the images for the training
+and validation set, respectively. The “train_data” and “test_data” directories should contain
+for txt files “questions.txt”, “answers.txt”, “img_ids.txt”, and “types.txt” each, following the
+COCO-QA dataset format.</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em>) – <p>The batch size to use for the dataloaders.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
@@ -469,7 +449,7 @@ It should contain the following keys:
 <li><p><strong>img_size</strong> (<em>tuple</em>) – <p>The size of the images.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(3, 256, 256)</p>
+<dd class="field-odd"><p>(3, 120, 120)</p>
 </dd>
 </dl>
 </p></li>
@@ -520,54 +500,93 @@ provided, it is set to True if a GPU is available and False otherwise.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>use_phili_test</strong> (<em>bool</em>) – <p>If True, the Philadelphia test split will be used instead of the regular test split.</p>
-<dl class="field-list simple">
-<dt class="field-odd">default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>False</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>use_file_format</strong> (<em>str</em>) – <p>The file format of the images. Can be either “tif” or “png”.</p>
-<dl class="field-list simple">
-<dt class="field-odd">default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>”tif”</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>quantize_answers</strong> (<em>bool</em>) – <p>If True, the answers for area questions will be quantized into 5 buckets:
-0m2, between 1m2 and 10m2, between 11m2 and 100m2, between 101m2 and 1000m2 and more than 1000m2.</p>
-<dl class="field-list simple">
-<dt class="field-odd">default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True</p>
-</dd>
-</dl>
-</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.setup" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.prepare_data">
+<span class="sig-name descname"><span class="pre">prepare_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.prepare_data" title="Permalink to this definition">#</a></dt>
+<dd><p>Use this to download and prepare data. Downloading and saving data with multiple processes (distributed
+settings) will result in corrupted data. Lightning ensures this method is called only within a single process,
+so you can safely add your downloading logic within.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>DO NOT set state to the model (use <code class="docutils literal notranslate"><span class="pre">setup</span></code> instead)
+since this is NOT called on every device</p>
+</div>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># good</span>
+    <span class="n">download_data</span><span class="p">()</span>
+    <span class="n">tokenize</span><span class="p">()</span>
+    <span class="n">etc</span><span class="p">()</span>
+
+    <span class="c1"># bad</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="n">data_split</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">some_state</span> <span class="o">=</span> <span class="n">some_other_state</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In a distributed environment, <code class="docutils literal notranslate"><span class="pre">prepare_data</span></code> can be called in two ways
+(using <span class="xref std std-ref">prepare_data_per_node</span>)</p>
+<ol class="arabic simple">
+<li><p>Once per node. This is the default and is only called on LOCAL_RANK=0.</p></li>
+<li><p>Once in total. Only called on GLOBAL_RANK=0.</p></li>
+</ol>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="c1"># called once per node on LOCAL_RANK=0 of that node</span>
+<span class="k">class</span> <span class="nc">LitDataModule</span><span class="p">(</span><span class="n">LightningDataModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prepare_data_per_node</span> <span class="o">=</span> <span class="kc">True</span>
+
+
+<span class="c1"># call on GLOBAL_RANK=0 (great for shared file systems)</span>
+<span class="k">class</span> <span class="nc">LitDataModule</span><span class="p">(</span><span class="n">LightningDataModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prepare_data_per_node</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>This is called before requesting the dataloaders:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">prepare_data</span><span class="p">()</span>
+<span class="n">initialize_distributed</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">stage</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train_dataloader</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">val_dataloader</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">test_dataloader</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">predict_dataloader</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.setup" title="Permalink to this definition">#</a></dt>
 <dd><p>Prepares the data sets for the specific stage.</p>
 <ul class="simple">
 <li><p>“fit”: train and validation data set</p></li>
 <li><p>“test”: test data set</p></li>
 <li><p>None: all data sets</p></li>
 </ul>
-<p>Prints the time it needed for this operation and other statistics if print_infos
-is set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stage</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – None, “fit” or “test”</p>
+<dd class="field-odd"><p><strong>stage</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>None, “fit”, or “test”</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.test_dataloader">
-<span class="sig-name descname"><span class="pre">test_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.test_dataloader" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.test_dataloader">
+<span class="sig-name descname"><span class="pre">test_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.test_dataloader" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the dataloader for the test data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
@@ -578,8 +597,8 @@ method is not called before this method or the dataset has no test data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.train_dataloader">
-<span class="sig-name descname"><span class="pre">train_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.train_dataloader" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.train_dataloader">
+<span class="sig-name descname"><span class="pre">train_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.train_dataloader" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the dataloader for the training data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
@@ -590,8 +609,8 @@ method is not called before this method or the dataset has no training data.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.val_dataloader">
-<span class="sig-name descname"><span class="pre">val_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.val_dataloader" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.val_dataloader">
+<span class="sig-name descname"><span class="pre">val_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.val_dataloader" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the dataloader for the validation data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
@@ -610,23 +629,23 @@ method is not called before this method or the dataset has no validation data.</
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="api_ds_RSVQAxBEN.html">
+          <a class="next-page" href="api_ds_HRVQA.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">RSVQAxBEN DataSets and DataModules</div>
+                <div class="title">HRVQA DataSets and DataModules</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="api_ds_RSVQALR.html">
+          <a class="prev-page" href="api_ds_BEN.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">RSVQA-LR DataSets and DataModules</div>
+                <div class="title">BigEarthNet DataSets and DataModules</div>
                 
               </div>
             </a>
@@ -804,21 +823,22 @@ method is not called before this method or the dataset has no validation data.</
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">RSVQA-HR DataSets and DataModules</a><ul>
-<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataSet</span></code></a><ul>
-<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.__init__"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataSet.__init__()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.load_image"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataSet.load_image()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.prepare_split"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataSet.prepare_split()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.split_names"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataSet.split_names()</span></code></a></li>
+<li><a class="reference internal" href="#">Toronto COCO-QA DataSet and DataModules</a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet"><code class="docutils literal notranslate"><span class="pre">COCOQADataSet</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.__init__"><code class="docutils literal notranslate"><span class="pre">COCOQADataSet.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.load_image"><code class="docutils literal notranslate"><span class="pre">COCOQADataSet.load_image()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.prepare_split"><code class="docutils literal notranslate"><span class="pre">COCOQADataSet.prepare_split()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.split_names"><code class="docutils literal notranslate"><span class="pre">COCOQADataSet.split_names()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configilm.extra.DataSets.RSVQAHR_DataSet.resolve_data_dir"><code class="docutils literal notranslate"><span class="pre">resolve_data_dir()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataModule</span></code></a><ul>
-<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.__init__"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataModule.__init__()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.setup"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataModule.setup()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.test_dataloader"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataModule.test_dataloader()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.train_dataloader"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataModule.train_dataloader()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.val_dataloader"><code class="docutils literal notranslate"><span class="pre">RSVQAHRDataModule.val_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.COCOQA_DataSet.resolve_data_dir"><code class="docutils literal notranslate"><span class="pre">resolve_data_dir()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule"><code class="docutils literal notranslate"><span class="pre">COCOQADataModule</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.__init__"><code class="docutils literal notranslate"><span class="pre">COCOQADataModule.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.prepare_data"><code class="docutils literal notranslate"><span class="pre">COCOQADataModule.prepare_data()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.setup"><code class="docutils literal notranslate"><span class="pre">COCOQADataModule.setup()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.test_dataloader"><code class="docutils literal notranslate"><span class="pre">COCOQADataModule.test_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.train_dataloader"><code class="docutils literal notranslate"><span class="pre">COCOQADataModule.train_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.val_dataloader"><code class="docutils literal notranslate"><span class="pre">COCOQADataModule.val_dataloader()</span></code></a></li>
 </ul>
 </li>
 </ul>

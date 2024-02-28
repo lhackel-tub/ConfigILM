@@ -165,6 +165,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul class="current">
@@ -175,6 +176,7 @@
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +186,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -260,7 +262,7 @@ For the usage in this context, the dataset was extended from its RGB form to inc
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">RSVQAxBEN_DataSet</span>
  
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 
 <span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
@@ -272,11 +274,11 @@ For the usage in this context, the dataset was extended from its RGB form to inc
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 120, 120])
-Question (start): [101, 2024, 3884, 5380, 1998, 6138, 2556, 1029, 102, 0, 0, 0, 0, 0, 0]
-Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
+Question (start): [101, 2024, 6138, 1998, 4568, 8765, 2030, 5424, 2571, 2455, 2556, 1999, 1996, 3746, 1029]
+Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../../_images/2ad6fea5cb850e1a872a7a4b17ca22c3efe9e05fc4e6483479526ae12a476109.png" src="../../_images/2ad6fea5cb850e1a872a7a4b17ca22c3efe9e05fc4e6483479526ae12a476109.png" />
+<img alt="../../_images/f0466864eec1c4a8143e58c6f0509223e537388a2ebc6e36662636cbef7362bc.png" src="../../_images/f0466864eec1c4a8143e58c6f0509223e537388a2ebc6e36662636cbef7362bc.png" />
 </div>
 </div>
 <section id="tokenizer-and-tokenization">
@@ -289,7 +291,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <span class="n">tokenizer</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_hf_model</span><span class="p">(</span><span class="s2">&quot;prajjwal1/bert-tiny&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
 <span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -309,7 +311,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">16</span>
 <span class="p">)</span>
@@ -329,7 +331,7 @@ Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="mi">8</span>
 <span class="p">)</span>
@@ -384,7 +386,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-        <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+        <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">a</span><span class="p">:</span>
@@ -411,7 +413,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
@@ -426,8 +428,8 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
-    <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">max_len</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
 </pre></div>
@@ -440,17 +442,8 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for None...
-              30 QA-pairs indexed
-              10 QA-pairs in reduced data set
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/10 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 10/10 [00:00&lt;00:00, 166440.63it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+          30 QA-pairs indexed
+          10 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -459,8 +452,8 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
-    <span class="n">max_img_idx</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">max_len</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
 </pre></div>
@@ -473,17 +466,8 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for None...
-              30 QA-pairs indexed
-              30 QA-pairs in reduced data set
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/30 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 30/30 [00:00&lt;00:00, 411206.27it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+          30 QA-pairs indexed
+          30 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -496,10 +480,10 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">classes</span><span class="o">=</span><span class="mi">3</span>
+    <span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -511,20 +495,8 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading split RSVQAxBEN data for train...
-              10 QA-pairs indexed
-              10 QA-pairs in reduced data set
-
-WARNING: There are fewer possible answers then requested (3 requested, but 2 found).
-The 3 most frequent answers cover about 100.00 % of the total answers.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays:   0%|          | 0/10 [00:00&lt;?, ?it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting to NP arrays: 100%|██████████| 10/10 [00:00&lt;00:00, 154202.35it/s]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+          10 QA-pairs indexed
+          10 QA-pairs used
 </pre></div>
 </div>
 </div>
@@ -537,32 +509,32 @@ The 3 most frequent answers cover about 100.00 % of the total answers.
 </div>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train DS: </span><span class="si">{</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train DS: </span><span class="si">{</span><span class="n">train_ds</span><span class="o">.</span><span class="n">answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span>
+    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">answers</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 1: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 1: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataSet</span><span class="o">.</span><span class="n">RSVQAxBENDataSet</span><span class="p">(</span>
-    <span class="n">root_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span>
-    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">selected_answers</span><span class="o">=</span><span class="n">train_ds</span><span class="o">.</span><span class="n">answers</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 2: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">selected_answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Val DS 2: </span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">answers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train DS: [&#39;yes&#39;, &#39;no&#39;, &#39;INVALID&#39;]
-Val DS 1: [&#39;yes&#39;, &#39;no&#39;]
-Val DS 2: [&#39;yes&#39;, &#39;no&#39;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Train DS: [&#39;no&#39;, &#39;yes&#39;, &#39;INVALID&#39;]
+Val DS 1: [&#39;no&#39;, &#39;yes&#39;]
+Val DS 2: [&#39;no&#39;, &#39;yes&#39;]
 </pre></div>
 </div>
 </div>
@@ -578,7 +550,7 @@ To use a DataModule, the setup() function has to be called. This populates the D
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataModules</span> <span class="kn">import</span> <span class="n">RSVQAxBEN_DataModule</span>
 
 <span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -620,8 +592,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f14d4f6de10&gt;
-&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f14d568bd00&gt;
+&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7fb1d0386e00&gt;
+&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7fb1cfd376d0&gt;
 None
 </pre></div>
 </div>
@@ -650,7 +622,7 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span>
 <span class="p">)</span>
@@ -674,7 +646,7 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
@@ -686,55 +658,32 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: Shuffle was set to False. This is not recommended for most configuration. Use shuffle=None (default) for recommended configuration.
-
-HINT: pin_memory set to None 
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/extra/DataModules/ClassificationVQADataModule.py:109: UserWarning: Shuffle was set to False. This is not recommended for most configuration. Use shuffle=None (default) for recommended configuration.
+  warn(
 </pre></div>
 </div>
 </div>
 </details>
 </div>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">2</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: pin_memory set to None 
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">RSVQAxBEN_DataModule</span><span class="o">.</span><span class="n">RSVQAxBENDataModule</span><span class="p">(</span>
-    <span class="n">data_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
+    <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
     <span class="n">pin_memory</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HINT: pin_memory set to False via overwrite
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 </section>
 </section>
@@ -769,7 +718,7 @@ HINT: pin_memory set to None
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

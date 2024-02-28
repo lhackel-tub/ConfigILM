@@ -163,6 +163,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ilmconfiguration.html">Model Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vqa.html">Visual Question Answering (VQA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="throughput_testing.html">Throughput testing</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -173,6 +174,7 @@
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/hrvqa.html">HRVQA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/cocoqa.html">COCO-QA</a></li>
 </ul>
 </li>
 </ul>
@@ -182,7 +184,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_BEN2.html">Updated BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="API/ds/api_ds_RSVQAHR.html">RSVQA-HR DataSets and DataModules</a></li>
@@ -235,7 +237,7 @@
           
 <section class="genindex-section">
   <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#_"><strong>_</strong></a> | <a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a></div>
+  <div class="genindex-jumpbox"><a href="#_"><strong>_</strong></a> | <a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a></div>
 </section>
 <section id="_" class="genindex-section">
   <h2>_</h2>
@@ -248,9 +250,9 @@
 </li>
           <li><a href="API/ds/api_BEN_reader.html#configilm.extra.BEN_lmdb_utils.BENLMDBReader.__init__">(configilm.extra.BEN_lmdb_utils.BENLMDBReader method)</a>
 </li>
-          <li><a href="API/ds/api_ds_BEN2.html#configilm.extra.DataModules.BEN2_DataModule.BEN2DataModule.__init__">(configilm.extra.DataModules.BEN2_DataModule.BEN2DataModule method)</a>
-</li>
           <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataModules.BEN_DataModule.BENDataModule.__init__">(configilm.extra.DataModules.BEN_DataModule.BENDataModule method)</a>
+</li>
+          <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.__init__">(configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule method)</a>
 </li>
           <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule.__init__">(configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule method)</a>
 </li>
@@ -260,9 +262,9 @@
 </li>
           <li><a href="API/ds/api_ds_RSVQAxBEN.html#configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule.__init__">(configilm.extra.DataModules.RSVQAxBEN_DataModule.RSVQAxBENDataModule method)</a>
 </li>
-          <li><a href="API/ds/api_ds_BEN2.html#configilm.extra.DataSets.BEN2_DataSet.BEN2DataSet.__init__">(configilm.extra.DataSets.BEN2_DataSet.BEN2DataSet method)</a>
-</li>
           <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataSets.BEN_DataSet.BENDataSet.__init__">(configilm.extra.DataSets.BEN_DataSet.BENDataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.__init__">(configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet method)</a>
 </li>
           <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet.__init__">(configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet method)</a>
 </li>
@@ -315,14 +317,10 @@
 </li>
         <li><a href="API/ds/api_BEN_reader.html#configilm.extra.BEN_lmdb_utils.ben19_list_to_onehot">ben19_list_to_onehot() (in module configilm.extra.BEN_lmdb_utils)</a>
 </li>
-        <li><a href="API/ds/api_ds_BEN2.html#configilm.extra.DataModules.BEN2_DataModule.BEN2DataModule">BEN2DataModule (class in configilm.extra.DataModules.BEN2_DataModule)</a>
-</li>
-        <li><a href="API/ds/api_ds_BEN2.html#configilm.extra.DataSets.BEN2_DataSet.BEN2DataSet">BEN2DataSet (class in configilm.extra.DataSets.BEN2_DataSet)</a>
+        <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataModules.BEN_DataModule.BENDataModule">BENDataModule (class in configilm.extra.DataModules.BEN_DataModule)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataModules.BEN_DataModule.BENDataModule">BENDataModule (class in configilm.extra.DataModules.BEN_DataModule)</a>
-</li>
         <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataSets.BEN_DataSet.BENDataSet">BENDataSet (class in configilm.extra.DataSets.BEN_DataSet)</a>
 </li>
         <li><a href="API/ds/api_BEN_reader.html#configilm.extra.BEN_lmdb_utils.BENLMDBReader">BENLMDBReader (class in configilm.extra.BEN_lmdb_utils)</a>
@@ -339,6 +337,10 @@
   <h2>C</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule">COCOQADataModule (class in configilm.extra.DataModules.COCOQA_DataModule)</a>
+</li>
+        <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet">COCOQADataSet (class in configilm.extra.DataSets.COCOQA_DataSet)</a>
+</li>
         <li><a href="API/api_fusion.html#configilm.Fusion.ConcatMLPFusion.ConcatMLP">ConcatMLP (class in configilm.Fusion.ConcatMLPFusion)</a>
 </li>
         <li><a href="API/api_configilm.html#configilm.ConfigILM.ConfigILM">ConfigILM (class in configilm.ConfigILM)</a>
@@ -358,17 +360,17 @@
 </li>
         </ul></li>
         <li>
-    configilm.extra.DataModules.BEN2_DataModule
-
-        <ul>
-          <li><a href="API/ds/api_ds_BEN2.html#module-configilm.extra.DataModules.BEN2_DataModule">module</a>
-</li>
-        </ul></li>
-        <li>
     configilm.extra.DataModules.BEN_DataModule
 
         <ul>
           <li><a href="API/ds/api_ds_BEN.html#module-configilm.extra.DataModules.BEN_DataModule">module</a>
+</li>
+        </ul></li>
+        <li>
+    configilm.extra.DataModules.COCOQA_DataModule
+
+        <ul>
+          <li><a href="API/ds/api_ds_COCOQA.html#module-configilm.extra.DataModules.COCOQA_DataModule">module</a>
 </li>
         </ul></li>
         <li>
@@ -400,17 +402,17 @@
 </li>
         </ul></li>
         <li>
-    configilm.extra.DataSets.BEN2_DataSet
-
-        <ul>
-          <li><a href="API/ds/api_ds_BEN2.html#module-configilm.extra.DataSets.BEN2_DataSet">module</a>
-</li>
-        </ul></li>
-        <li>
     configilm.extra.DataSets.BEN_DataSet
 
         <ul>
           <li><a href="API/ds/api_ds_BEN.html#module-configilm.extra.DataSets.BEN_DataSet">module</a>
+</li>
+        </ul></li>
+        <li>
+    configilm.extra.DataSets.COCOQA_DataSet
+
+        <ul>
+          <li><a href="API/ds/api_ds_COCOQA.html#module-configilm.extra.DataSets.COCOQA_DataSet">module</a>
 </li>
         </ul></li>
         <li>
@@ -420,6 +422,8 @@
           <li><a href="API/ds/api_ds_HRVQA.html#module-configilm.extra.DataSets.HRVQA_DataSet">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     configilm.extra.DataSets.RSVQAHR_DataSet
 
@@ -427,8 +431,6 @@
           <li><a href="API/ds/api_ds_RSVQAHR.html#module-configilm.extra.DataSets.RSVQAHR_DataSet">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     configilm.extra.DataSets.RSVQALR_DataSet
 
@@ -619,6 +621,18 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="API/api_fusion.html#configilm.Fusion.LinearSumFusion.LinearSum">LinearSum (class in configilm.Fusion.LinearSumFusion)</a>
 </li>
+        <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.load_image">load_image() (configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet method)</a>
+
+        <ul>
+          <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet.load_image">(configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQAHR.html#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.load_image">(configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQALR.html#configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet.load_image">(configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQAxBEN.html#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.load_image">(configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet method)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -643,9 +657,9 @@
 </li>
           <li><a href="API/ds/api_BEN_reader.html#module-configilm.extra.BEN_lmdb_utils">configilm.extra.BEN_lmdb_utils</a>
 </li>
-          <li><a href="API/ds/api_ds_BEN2.html#module-configilm.extra.DataModules.BEN2_DataModule">configilm.extra.DataModules.BEN2_DataModule</a>
-</li>
           <li><a href="API/ds/api_ds_BEN.html#module-configilm.extra.DataModules.BEN_DataModule">configilm.extra.DataModules.BEN_DataModule</a>
+</li>
+          <li><a href="API/ds/api_ds_COCOQA.html#module-configilm.extra.DataModules.COCOQA_DataModule">configilm.extra.DataModules.COCOQA_DataModule</a>
 </li>
           <li><a href="API/ds/api_ds_HRVQA.html#module-configilm.extra.DataModules.HRVQA_DataModule">configilm.extra.DataModules.HRVQA_DataModule</a>
 </li>
@@ -655,9 +669,9 @@
 </li>
           <li><a href="API/ds/api_ds_RSVQAxBEN.html#module-configilm.extra.DataModules.RSVQAxBEN_DataModule">configilm.extra.DataModules.RSVQAxBEN_DataModule</a>
 </li>
-          <li><a href="API/ds/api_ds_BEN2.html#module-configilm.extra.DataSets.BEN2_DataSet">configilm.extra.DataSets.BEN2_DataSet</a>
-</li>
           <li><a href="API/ds/api_ds_BEN.html#module-configilm.extra.DataSets.BEN_DataSet">configilm.extra.DataSets.BEN_DataSet</a>
+</li>
+          <li><a href="API/ds/api_ds_COCOQA.html#module-configilm.extra.DataSets.COCOQA_DataSet">configilm.extra.DataSets.COCOQA_DataSet</a>
 </li>
           <li><a href="API/ds/api_ds_HRVQA.html#module-configilm.extra.DataSets.HRVQA_DataSet">configilm.extra.DataSets.HRVQA_DataSet</a>
 </li>
@@ -696,6 +710,28 @@
   </tr></table>
 </section>
 
+<section id="P" class="genindex-section">
+  <h2>P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.prepare_data">prepare_data() (configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule method)</a>
+</li>
+        <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.prepare_split">prepare_split() (configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet method)</a>
+
+        <ul>
+          <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet.prepare_split">(configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQAHR.html#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.prepare_split">(configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQALR.html#configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet.prepare_split">(configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQAxBEN.html#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.prepare_split">(configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
 <section id="R" class="genindex-section">
   <h2>R</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
@@ -707,11 +743,15 @@
         <li><a href="API/ds/api_BEN_reader.html#configilm.extra.BEN_lmdb_utils.resolve_data_dir">resolve_data_dir() (in module configilm.extra.BEN_lmdb_utils)</a>
 
         <ul>
+          <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataSets.COCOQA_DataSet.resolve_data_dir">(in module configilm.extra.DataSets.COCOQA_DataSet)</a>
+</li>
           <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataSets.HRVQA_DataSet.resolve_data_dir">(in module configilm.extra.DataSets.HRVQA_DataSet)</a>
 </li>
           <li><a href="API/ds/api_ds_RSVQAHR.html#configilm.extra.DataSets.RSVQAHR_DataSet.resolve_data_dir">(in module configilm.extra.DataSets.RSVQAHR_DataSet)</a>
 </li>
           <li><a href="API/ds/api_ds_RSVQALR.html#configilm.extra.DataSets.RSVQALR_DataSet.resolve_data_dir">(in module configilm.extra.DataSets.RSVQALR_DataSet)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQAxBEN.html#configilm.extra.DataSets.RSVQAxBEN_DataSet.resolve_data_dir">(in module configilm.extra.DataSets.RSVQAxBEN_DataSet)</a>
 </li>
         </ul></li>
     </ul></td>
@@ -738,20 +778,10 @@
   <h2>S</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataSets.HRVQA_DataSet.select_answers">select_answers() (in module configilm.extra.DataSets.HRVQA_DataSet)</a>
+        <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataModules.BEN_DataModule.BENDataModule.setup">setup() (configilm.extra.DataModules.BEN_DataModule.BENDataModule method)</a>
 
         <ul>
-          <li><a href="API/ds/api_ds_RSVQAHR.html#configilm.extra.DataSets.RSVQAHR_DataSet.select_answers">(in module configilm.extra.DataSets.RSVQAHR_DataSet)</a>
-</li>
-          <li><a href="API/ds/api_ds_RSVQALR.html#configilm.extra.DataSets.RSVQALR_DataSet.select_answers">(in module configilm.extra.DataSets.RSVQALR_DataSet)</a>
-</li>
-        </ul></li>
-        <li><a href="API/ds/api_ds_RSVQAxBEN.html#configilm.extra.DataSets.RSVQAxBEN_DataSet.select_answers_from_qa_pairs">select_answers_from_qa_pairs() (in module configilm.extra.DataSets.RSVQAxBEN_DataSet)</a>
-</li>
-        <li><a href="API/ds/api_ds_BEN2.html#configilm.extra.DataModules.BEN2_DataModule.BEN2DataModule.setup">setup() (configilm.extra.DataModules.BEN2_DataModule.BEN2DataModule method)</a>
-
-        <ul>
-          <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataModules.BEN_DataModule.BENDataModule.setup">(configilm.extra.DataModules.BEN_DataModule.BENDataModule method)</a>
+          <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.setup">(configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule method)</a>
 </li>
           <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule.setup">(configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule method)</a>
 </li>
@@ -764,6 +794,18 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet.split_names">split_names() (configilm.extra.DataSets.COCOQA_DataSet.COCOQADataSet method)</a>
+
+        <ul>
+          <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet.split_names">(configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQAHR.html#configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet.split_names">(configilm.extra.DataSets.RSVQAHR_DataSet.RSVQAHRDataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQALR.html#configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet.split_names">(configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet method)</a>
+</li>
+          <li><a href="API/ds/api_ds_RSVQAxBEN.html#configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet.split_names">(configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet method)</a>
+</li>
+        </ul></li>
         <li><a href="API/api_util.html#configilm.util.Messages.success">success() (configilm.util.Messages class method)</a>
 </li>
     </ul></td>
@@ -777,6 +819,8 @@
         <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataModules.BEN_DataModule.BENDataModule.test_dataloader">test_dataloader() (configilm.extra.DataModules.BEN_DataModule.BENDataModule method)</a>
 
         <ul>
+          <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.test_dataloader">(configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule method)</a>
+</li>
           <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule.test_dataloader">(configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule method)</a>
 </li>
           <li><a href="API/ds/api_ds_RSVQAHR.html#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.test_dataloader">(configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule method)</a>
@@ -793,6 +837,8 @@
         <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataModules.BEN_DataModule.BENDataModule.train_dataloader">train_dataloader() (configilm.extra.DataModules.BEN_DataModule.BENDataModule method)</a>
 
         <ul>
+          <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.train_dataloader">(configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule method)</a>
+</li>
           <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule.train_dataloader">(configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule method)</a>
 </li>
           <li><a href="API/ds/api_ds_RSVQAHR.html#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.train_dataloader">(configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule method)</a>
@@ -825,6 +871,8 @@
         <li><a href="API/ds/api_ds_BEN.html#configilm.extra.DataModules.BEN_DataModule.BENDataModule.val_dataloader">val_dataloader() (configilm.extra.DataModules.BEN_DataModule.BENDataModule method)</a>
 
         <ul>
+          <li><a href="API/ds/api_ds_COCOQA.html#configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule.val_dataloader">(configilm.extra.DataModules.COCOQA_DataModule.COCOQADataModule method)</a>
+</li>
           <li><a href="API/ds/api_ds_HRVQA.html#configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule.val_dataloader">(configilm.extra.DataModules.HRVQA_DataModule.HRVQADataModule method)</a>
 </li>
           <li><a href="API/ds/api_ds_RSVQAHR.html#configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule.val_dataloader">(configilm.extra.DataModules.RSVQAHR_DataModule.RSVQAHRDataModule method)</a>
@@ -864,7 +912,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2023, Leonard Wayne Hackel
+                Copyright &#169; 2024, Leonard Wayne Hackel
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             

@@ -73,9 +73,7 @@ def _get_hf_model(
     :raises: HTTP error if no name matches the one given (locally or on
         huggingface hub)
     """
-    save_directory = Path(user_cache_dir(appname="configilm")).joinpath(
-        "pretrained_models", "huggingface_models"
-    )
+    save_directory = Path(user_cache_dir(appname="configilm")).joinpath("pretrained_models", "huggingface_models")
 
     if model_name not in _available_hf_models(save_directory):
         # warn that it is not available
@@ -89,19 +87,13 @@ def _get_hf_model(
             model.save_pretrained(join(save_directory, model_name))
             tokenizer.save_pretrained(join(save_directory, model_name))
         except HTTPError:
-            raise HTTPError(
-                f"Model '{model_name}' could not be fetched. Please check spelling."
-            )
+            raise HTTPError(f"Model '{model_name}' could not be fetched. Please check spelling.")
         except FileNotFoundError:
             raise FileNotFoundError(
-                f"Model '{model_name}' could not be fetched. "
-                f"Network is down and file not cached."
+                f"Model '{model_name}' could not be fetched. " f"Network is down and file not cached."
             )
         except ReadTimeout:
-            raise ReadTimeout(
-                f"Model '{model_name}' could not be fetched. "
-                f"Timeout and file not cached."
-            )
+            raise ReadTimeout(f"Model '{model_name}' could not be fetched. " f"Timeout and file not cached.")
 
     # Model is available or was made available
     model_path = join(save_directory, model_name)
@@ -111,9 +103,7 @@ def _get_hf_model(
     tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, config=config)
 
     if load_pretrained_if_available:
-        model = transformers.AutoModel.from_pretrained(
-            model_path, config=config, local_files_only=True
-        )
+        model = transformers.AutoModel.from_pretrained(model_path, config=config, local_files_only=True)
         warnings.warn("Tokenizer was initialized pretrained")
     else:
         model = transformers.AutoModel.from_config(config=config)
@@ -140,9 +130,7 @@ def _get_timm_model(model_name: str, kwargs: dict):
             # get keyword that failed and drop it
             failed_kw = t.args[0].split("'")[1]
             del kwargs[failed_kw]
-            warnings.warn(
-                f"Keyword '{failed_kw}' unknown. Trying to ignore and restart creation."
-            )
+            warnings.warn(f"Keyword '{failed_kw}' unknown. Trying to ignore and restart creation.")
     return encoder
 
 
@@ -358,9 +346,7 @@ class ConfigILM(nn.Module):
 
         if config.network_type in [ILMType.VQA_CLASSIFICATION]:
             # create huggingface model
-            assert (
-                config.hf_model_name is not None
-            ), "Requesting huggingface model but not specifying which"
+            assert config.hf_model_name is not None, "Requesting huggingface model but not specifying which"
             self.tokenizer, self.text_encoder = _get_hf_model(
                 config.hf_model_name,
                 load_pretrained_if_available=config.load_pretrained_hf_if_available,
@@ -376,8 +362,7 @@ class ConfigILM(nn.Module):
                 # check if text encoder has a pooler
                 if not hasattr(self.text_encoder, "pooler"):
                     warnings.warn(
-                        f"Text encoder '{config.hf_model_name}' has no pooler, "
-                        f"changing use_pooler_output to False"
+                        f"Text encoder '{config.hf_model_name}' has no pooler, " f"changing use_pooler_output to False"
                     )
                     text_features_out *= self.config.max_sequence_length
                     self.config.use_pooler_output = False
@@ -385,9 +370,7 @@ class ConfigILM(nn.Module):
             # map text encoder -> fusion_in
             self.text_linear = nn.Linear(text_features_out, self.config.fusion_in)
             # map vision encoder -> fusion_in
-            self.visual_linear = nn.Linear(
-                self.config.visual_features_out, self.config.fusion_in
-            )
+            self.visual_linear = nn.Linear(self.config.visual_features_out, self.config.fusion_in)
 
             self.dropout_v = torch.nn.Dropout(self.config.v_dropout_rate)
             self.dropout_q = torch.nn.Dropout(self.config.t_dropout_rate)
@@ -408,9 +391,7 @@ class ConfigILM(nn.Module):
                         ),
                         (
                             "classifier_linear_1",
-                            nn.Linear(
-                                self.config.fusion_out, self.config.fusion_hidden
-                            ),
+                            nn.Linear(self.config.fusion_out, self.config.fusion_hidden),
                         ),
                         (
                             "classifier_activation_2",
@@ -474,8 +455,7 @@ class ConfigILM(nn.Module):
             )
         elif self.config.network_type == ILMType.VQA_CLASSIFICATION:
             assert len(batch) == 2, (
-                f"For VQA classification, input should be (v, q) (2 dims) but is "
-                f"{len(batch)} dims."
+                f"For VQA classification, input should be (v, q) (2 dims) but is " f"{len(batch)} dims."
             )
             shape_img = list(batch[0].shape)
             shape_text = list(batch[1].shape)
@@ -491,10 +471,7 @@ class ConfigILM(nn.Module):
                 f"For VQA classification, inputs 0 and 1 should be of "
                 f"same batch size but are {shape_img[0]} and {shape_text[0]}"
             )
-            if (
-                shape_text[1] != self.config.max_sequence_length
-                and not self.config.use_pooler_output
-            ):
+            if shape_text[1] != self.config.max_sequence_length and not self.config.use_pooler_output:
                 warnings.warn(
                     f"Text input has a length of {shape_text[1]} but sequence length is"
                     f" {self.config.max_sequence_length} and no pooler is used. This "

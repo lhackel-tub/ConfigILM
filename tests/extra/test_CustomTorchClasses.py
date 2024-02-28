@@ -45,9 +45,7 @@ def test_rotate_multiple():
     res_arr = []
     for v in valid_results:
         res_arr.append(torch.equal(t, v))
-    assert sum(res_arr), (
-        f"Only exactly 1 rotation should be equal " f"but was {sum(res_arr)}"
-    )
+    assert sum(res_arr), f"Only exactly 1 rotation should be equal " f"but was {sum(res_arr)}"
 
 
 def test_empty_sequence():
@@ -88,8 +86,7 @@ def test_gaussian_dtype(dtype):
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message=r"ComplexHalf support is experimental and many "
-            r"operators don't support it yet.+",
+            message=r"ComplexHalf support is experimental and many " r"operators don't support it yet.+",
         )
         warnings.filterwarnings(
             action="ignore",

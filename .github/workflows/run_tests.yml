@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ '3.9', '3.10', '3.11']
+        python-version: [ '3.9', '3.10', '3.11' ]
+        lightning-version: [ 'full-pytorch_lightning', 'full-lightning' ]
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
@@ -57,7 +58,7 @@ jobs:
       #----------------------------------------------
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --with dev --all-extras
+        run: poetry install --no-interaction --with dev -E ${{ matrix.lightning-version }}
       #----------------------------------------------
       #  Run test suite + coverage + generate badge
       #----------------------------------------------
@@ -91,9 +92,9 @@ jobs:
           git commit -m "Updated coverage.svg"
 
       - name: Push changes
-        # only push if something changed and only for one python version
+        # only push if something changed and only for one python version and one lightning version
         # this helps to remove conflicts
-        if: (steps.verify-changed-files.outputs.files_changed == 'true') && (matrix.python-version == '3.9')
+        if: (steps.verify-changed-files.outputs.files_changed == 'true') && (matrix.python-version == '3.9') && (matrix.lightning-version == 'full-lightning')
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.github_token }}

@@ -80,9 +80,7 @@ class LitVisionEncoder(pl.LightningModule):
     def _disassemble_batch(self, batch):
         images, questions, labels = batch
         # transposing tensor, needed for Huggingface-Dataloader combination
-        questions = torch.tensor(
-            [x.tolist() for x in questions], device=self.device
-        ).T.int()
+        questions = torch.tensor([x.tolist() for x in questions], device=self.device).T.int()
         return (images, questions), labels
 
     def training_step(self, batch, batch_idx):
@@ -97,9 +95,7 @@ class LitVisionEncoder(pl.LightningModule):
 
         # these are steps if interval is set to step
         max_intervals = int(
-            self.trainer.max_epochs
-            * len(self.trainer.datamodule.train_ds)
-            / self.trainer.datamodule.batch_size
+            self.trainer.max_epochs * len(self.trainer.datamodule.train_ds) / self.trainer.datamodule.batch_size
         )
         warmup = 10000 if max_intervals > 10000 else 100 if max_intervals > 100 else 0
 
@@ -162,9 +158,7 @@ class LitVisionEncoder(pl.LightningModule):
     def get_metrics(self, outputs):
         avg_loss = torch.stack([x["loss"] for x in outputs]).mean()
         logits = torch.cat([x["outputs"].cpu() for x in outputs], 0)
-        labels = torch.cat(
-            [x["labels"].cpu() for x in outputs], 0
-        )  # Tensor of size (#samples x classes)
+        labels = torch.cat([x["labels"].cpu() for x in outputs], 0)  # Tensor of size (#samples x classes)
 
         selected_answers = self.trainer.datamodule.selected_answers
 
@@ -197,19 +191,13 @@ class LitVisionEncoder(pl.LightningModule):
         accuracy_dict = {
             "Yes/No": acc_yn,
             "LULC": acc_lulc,
-            "Overall": accuracy_score(
-                argmax_lbl, argmax_out
-            ),  # micro average on classes
+            "Overall": accuracy_score(argmax_lbl, argmax_out),  # micro average on classes
             "Average": (acc_yn + acc_lulc) / 2,  # macro average on types
         }
 
-        f1_score = MultilabelF1Score(num_labels=self.config.classes, average=None).to(
-            logits.device
-        )(logits, labels)
+        f1_score = MultilabelF1Score(num_labels=self.config.classes, average=None).to(logits.device)(logits, labels)
 
-        avg_f1_score = float(
-            torch.sum(f1_score) / self.config.classes
-        )  # macro average f1 score
+        avg_f1_score = float(torch.sum(f1_score) / self.config.classes)  # macro average f1 score
 
         return {
             "avg_loss": avg_loss,
@@ -229,27 +217,19 @@ def overwrite_vision_weights(model, vision_checkpoint):
     if torch.cuda.is_available():
         pretrained_dict = torch.load(vision_checkpoint)
     else:
-        pretrained_dict = torch.load(
-            vision_checkpoint, map_location=torch.device("cpu")
-        )
+        pretrained_dict = torch.load(vision_checkpoint, map_location=torch.device("cpu"))
     model_dict = model.state_dict()
 
     # filter out unnecessary keys
     # this allows to load lightning or pytorch model loading
     if "pytorch-lightning_version" in pretrained_dict.keys():
         # checkpoint is a Pytorch-Lightning Checkpoint
-        pretrained_dict = {
-            k: v for k, v in pretrained_dict["state_dict"].items() if k in model_dict
-        }
+        pretrained_dict = {k: v for k, v in pretrained_dict["state_dict"].items() if k in model_dict}
     else:
         pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
 
     # filter keys that have a size mismatch
-    mismatch_keys = [
-        x
-        for x in pretrained_dict.keys()
-        if pretrained_dict[x].shape != model_dict[x].shape
-    ]
+    mismatch_keys = [x for x in pretrained_dict.keys() if pretrained_dict[x].shape != model_dict[x].shape]
     for key in mismatch_keys:
         del pretrained_dict[key]
         print(f"Key '{key}' size mismatch, removing from loading")
@@ -341,9 +321,7 @@ def main(
         f"              Flops: {model.get_stats()['flops']:15,d}"
     )
 
-    hf_tokenizer, _ = get_huggingface_model(
-        model_name=text_model, load_pretrained_if_available=False
-    )
+    hf_tokenizer, _ = get_huggingface_model(model_name=text_model, load_pretrained_if_available=False)
     dm = RSVQAxBENDataModule(
         data_dir=resolve_data_dir(data_dir=data_dir, allow_mock=True),
         img_size=(channels, img_size, img_size),

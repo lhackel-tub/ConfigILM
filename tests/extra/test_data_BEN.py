@@ -3,20 +3,18 @@ import warnings
 import pytest
 
 with warnings.catch_warnings():
-    warnings.filterwarnings(
-        action="ignore", category=DeprecationWarning, message=".*distutils.*"
-    )
+    warnings.filterwarnings(action="ignore", category=DeprecationWarning, message=".*distutils.*")
     from configilm.extra.DataSets.BEN_DataSet import BENDataSet
     from configilm.extra.DataModules.BEN_DataModule import BENDataModule
 
+from . import test_data_common
 from configilm.extra.BEN_lmdb_utils import resolve_data_dir
 from typing import Sequence, Union
 import torch
-from pathlib import Path
 
 
 @pytest.fixture
-def data_dir():
+def data_dirs():
     return resolve_data_dir(None, force_mock=True)
 
 
@@ -27,8 +25,8 @@ channels_pass = [2, 3, 4, 10, 12]  # accepted channel configs
 channels_fail = [5, 1, 0, -1, 13]  # not accepted configs
 img_shapes_pass = [(c, hw, hw) for c in channels_pass for hw in img_sizes]
 img_shapes_fail = [(c, hw, hw) for c in channels_fail for hw in img_sizes]
-max_img_idxs = [0, 1, 10, 20, None, -1]
-max_img_idxs_too_large = [600_000, 1_000_000]
+max_lens = [0, 1, 10, 20, None, -1]
+max_lens_too_large = [600_000, 1_000_000]
 
 
 def dataset_ok(
@@ -70,72 +68,52 @@ def dataloaders_ok(dm: BENDataModule, expected_image_shape: Sequence):
             assert lbl.shape == (expected_image_shape[0], 19)
 
 
-def test_4c_ben_dataset_patchname_getter(data_dir):
-    ds = BENDataSet(root_dir=data_dir, split="val", return_patchname=True)
-    assert (
-        ds.get_patchname_from_index(0) == "S2A_MSIL2A_20180413T95032_90_7"
-    ), "Patch name does not match"
-    assert (
-        ds.get_patchname_from_index(1_000_000) is None
-    ), "Patch index OOB should not work"
-    assert (
-        ds.get_index_from_patchname("S2A_MSIL2A_20180413T95032_90_7") == 0
-    ), "Index name does not match"
-    assert (
-        ds.get_index_from_patchname("abc") is None
-    ), "None existing name does not work"
+def test_ben_4c_dataset_patchname_getter(data_dirs):
+    ds = BENDataSet(data_dirs=data_dirs, split="val", return_extras=True)
+    assert ds.get_patchname_from_index(0) == "S2A_MSIL2A_20180413T95032_90_7", "Patch name does not match"
+    assert ds.get_patchname_from_index(1_000_000) is None, "Patch index OOB should not work"
+    assert ds.get_index_from_patchname("S2A_MSIL2A_20180413T95032_90_7") == 0, "Index name does not match"
+    assert ds.get_index_from_patchname("abc") is None, "None existing name does not work"
 
 
-def test_4c_ben_dataset_patchname(data_dir):
-    ds = BENDataSet(root_dir=data_dir, split="val")
+def test_ben_4c_dataset_patchname(data_dirs):
+    ds = BENDataSet(data_dirs=data_dirs, split="val")
     assert len(ds[0]) == 2, "Only two items should have been returned"
-    ds = BENDataSet(root_dir=data_dir, split="val", return_patchname=True)
+    ds = BENDataSet(data_dirs=data_dirs, split="val", return_extras=True)
     assert len(ds[0]) == 3, "Three items should have been returned"
     assert type(ds[0][2]) == str, "Third item should be a string"
     assert ds[0][2] == "S2A_MSIL2A_20180413T95032_90_7", "Patch name does not match"
 
 
-def test_4c_ben_dataset_from_csv(data_dir):
-    img_size = (4, 120, 120)
-    ds = BENDataSet(
-        root_dir=data_dir,
-        split=None,
-        img_size=img_size,
-        csv_files=Path(data_dir) / "val.csv",
-    )
-
-    dataset_ok(dataset=ds, expected_image_shape=img_size, expected_length=10)
-
-
-def test_4c_ben_dataset_from_csv_with_split(data_dir, capsys):
-    img_size = (4, 120, 120)
-    _ = BENDataSet(
-        root_dir=data_dir,
-        split="val",
-        img_size=img_size,
-        csv_files=Path(data_dir) / "val.csv",
-    )
-    out, _ = capsys.readouterr()
-    assert "potential conflict" in out, "Expected a message to be printed but was not"
+# def test_4c_ben_dataset_from_csv_with_split(data_dirs, capsys):
+#     img_size = (4, 120, 120)
+#     _ = BENDataSet(
+#         data_dirs=data_dirs,
+#         split="val",
+#         img_size=img_size,
+#         csv_files=Path(data_dirs) / "val.csv",
+#     )
+#     out, _ = capsys.readouterr()
+#     assert "potential conflict" in out, "Expected a message to be printed but was not"
 
 
 @pytest.mark.parametrize("split", dataset_params)
-def test_4c_ben_dataset_splits(data_dir, split: str):
+def test_ben_4c_dataset_splits(data_dirs, split: str):
     img_size = (4, 120, 120)
-    ds = BENDataSet(root_dir=data_dir, split=split, img_size=img_size)
+    ds = BENDataSet(data_dirs=data_dirs, split=split, img_size=img_size)
 
     dataset_ok(dataset=ds, expected_image_shape=img_size, expected_length=None)
 
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
-def test_ben_val_dataset_sizes(data_dir, img_size: Sequence):
-    ds = BENDataSet(root_dir=data_dir, split="val", img_size=img_size)
+def test_ben_val_dataset_sizes(data_dirs, img_size: tuple):
+    ds = BENDataSet(data_dirs=data_dirs, split="val", img_size=img_size)
 
     dataset_ok(dataset=ds, expected_image_shape=img_size, expected_length=None)
 
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
-def test_ben_val_dataset_sizes_rescale(data_dir, img_size: Sequence):
+def test_ben_val_dataset_sizes_rescale(data_dirs, img_size: tuple):
     new_size = (img_size[0], 100, 100)
     from torchvision import transforms
 
@@ -144,21 +122,19 @@ def test_ben_val_dataset_sizes_rescale(data_dir, img_size: Sequence):
             transforms.Resize(new_size[1:], antialias=True),
         ]
     )
-    ds = BENDataSet(
-        root_dir=data_dir, split="val", img_size=img_size, transform=transform
-    )
+    ds = BENDataSet(data_dirs=data_dirs, split="val", img_size=img_size, transform=transform)
 
     dataset_ok(dataset=ds, expected_length=None, expected_image_shape=new_size)
 
 
 @pytest.mark.parametrize("img_size", img_shapes_fail)
-def test_ben_val_dataset_sizes_fail(data_dir, img_size: int):
+def test_ben_val_dataset_sizes_fail(data_dirs, img_size: tuple):
     with pytest.raises(AssertionError):
-        _ = BENDataSet(root_dir=data_dir, split="val", img_size=img_size)
+        _ = BENDataSet(data_dirs=data_dirs, split="val", img_size=img_size)
 
 
-def test_ben_fail_image_retrieve(data_dir):
-    ds = BENDataSet(root_dir=data_dir, split="val", img_size=(3, 120, 120))
+def test_ben_fail_image_retrieve(data_dirs):
+    ds = BENDataSet(data_dirs=data_dirs, split="val", img_size=(3, 120, 120))
     assert ds[0][0].shape == (3, 120, 120)
     # overwrite this lookup
     # would have been a subscribable lookup
@@ -167,151 +143,123 @@ def test_ben_fail_image_retrieve(data_dir):
         _ = ds[0]
 
 
-@pytest.mark.parametrize("max_img_idx", max_img_idxs)
-def test_ben_max_index(data_dir, max_img_idx: int):
-    mocked_datadir = "mock" in data_dir
-    max_len = 10 if mocked_datadir else 123_723
-    length = (
-        max_len
-        if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1
-        else max_img_idx
-    )
+@pytest.mark.parametrize("max_len", max_lens)
+def test_ben_max_index(data_dirs, max_len: int):
+    is_mocked = "mock" in str(data_dirs["val_data"])
+    expected_len = 10 if is_mocked else 123_723
+    if max_len is not None and expected_len > max_len and max_len != -1:
+        expected_len = max_len
+
     ds = BENDataSet(
-        root_dir=data_dir,
+        data_dirs=data_dirs,
         split="val",
         img_size=(3, 120, 120),
-        max_img_idx=max_img_idx,
+        max_len=max_len,
     )
 
     dataset_ok(
         dataset=ds,
         expected_image_shape=(3, 120, 120),
-        expected_length=length,
+        expected_length=expected_len,
     )
 
 
-@pytest.mark.parametrize("max_img_idx", max_img_idxs_too_large)
-def test_ben_max_index_too_large(data_dir, max_img_idx: int):
+@pytest.mark.parametrize("max_len", max_lens_too_large)
+def test_ben_max_index_too_large(data_dirs, max_len: int):
     ds = BENDataSet(
-        root_dir=data_dir,
+        data_dirs=data_dirs,
         split="val",
         img_size=(3, 120, 120),
-        max_img_idx=max_img_idx,
+        max_len=max_len,
     )
-    assert len(ds) < max_img_idx
+    assert len(ds) < max_len
+
+
+def test_ben_dm_lightning(data_dirs):
+    dm = BENDataModule(data_dirs=data_dirs)
+    test_data_common._assert_dm_correct_lightning_version(dm)
 
 
 @pytest.mark.parametrize("split", dataset_params)
-def test_ben_dm_default(data_dir, split: str):
-    dm = BENDataModule(data_dir=data_dir)
+def test_ben_dm_default(data_dirs, split: str):
+    dm = BENDataModule(data_dirs=data_dirs)
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
     dm.setup(stage=split2stage[split])
     dm.prepare_data()
     if split in ["train", "val"]:
         dataset_ok(
             dm.train_ds,
-            expected_image_shape=(12, 120, 120),
+            expected_image_shape=(3, 120, 120),
             expected_length=None,
         )
-        dataset_ok(dm.val_ds, expected_image_shape=(12, 120, 120), expected_length=None)
+        dataset_ok(dm.val_ds, expected_image_shape=(3, 120, 120), expected_length=None)
         assert dm.test_ds is None
     elif split == "test":
         dataset_ok(
             dm.test_ds,
-            expected_image_shape=(12, 120, 120),
+            expected_image_shape=(3, 120, 120),
             expected_length=None,
         )
         assert dm.train_ds is None
         assert dm.val_ds is None
     elif split is None:
         for ds in [dm.train_ds, dm.val_ds, dm.test_ds]:
-            dataset_ok(ds, expected_image_shape=(12, 120, 120), expected_length=None)
+            dataset_ok(ds, expected_image_shape=(3, 120, 120), expected_length=None)
 
 
 @pytest.mark.parametrize("img_size", [[1], [1, 2], [1, 2, 3, 4]])
-def test_ben_dm_wrong_imagesize(data_dir, img_size):
-    with pytest.raises(ValueError):
-        _ = BENDataModule(
-            data_dir, img_size=img_size, num_workers_dataloader=0, pin_memory=False
-        )
+def test_ben_dm_wrong_imagesize(data_dirs, img_size):
+    with pytest.raises(AssertionError):
+        _ = BENDataModule(data_dirs, img_size=img_size, num_workers_dataloader=0, pin_memory=False)
 
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
-def test_ben_dm_dataloaders(data_dir, bs):
-    dm = BENDataModule(
-        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
-    )
-    dataloaders_ok(dm, expected_image_shape=(bs, 12, 120, 120))
+def test_ben_dm_dataloaders(data_dirs, bs):
+    dm = BENDataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
+    dataloaders_ok(dm, expected_image_shape=(bs, 3, 120, 120))
 
 
-@pytest.mark.parametrize("pi", [True, False])
-def test_dm_print_on_setup(data_dir, pi):
-    dm = BENDataModule(
-        data_dir=data_dir, print_infos=pi, num_workers_dataloader=0, pin_memory=False
-    )
-    dm.setup()
-
-
-def test_ben_shuffle_false(data_dir):
-    dm = BENDataModule(
-        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
-    )
+def test_ben_shuffle_false(data_dirs):
+    dm = BENDataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     # should not be equal due to transforms being random!
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
-def test_ben_shuffle_none(data_dir):
-    dm = BENDataModule(
-        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
-    )
+def test_ben_shuffle_none(data_dirs):
+    dm = BENDataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
-def test_ben_shuffle_true(data_dir):
-    dm = BENDataModule(
-        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
-    )
+def test_ben_shuffle_true(data_dirs):
+    dm = BENDataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     assert not torch.equal(
         next(iter(dm.train_dataloader()))[0],
         next(iter(dm.train_dataloader()))[0],
     )
-    assert not torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert not torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    assert not torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
-def test_dm_unexposed_kwargs(data_dir):
+def test_dm_unexposed_kwargs(data_dirs):
     dm = BENDataModule(
-        data_dir=data_dir,
-        dataset_kwargs={"return_patchname": True},
+        data_dirs=data_dirs,
         num_workers_dataloader=0,
         pin_memory=False,
     )
     dm.setup(None)
-    assert (
-        len(dm.train_ds[0]) == 3
-    ), f"This change should have returned 3 items but does {len(dm.train_ds[0])}"
+    # changing the param here
+    dm.train_ds.return_extras = True
+    assert len(dm.train_ds[0]) == 3, f"This change should have returned 3 items but does {len(dm.train_ds[0])}"

@@ -5,15 +5,17 @@ Original Paper of Image Data:
 https://arxiv.org/abs/2105.07921
 https://bigearth.net/
 """
-import os
-from datetime import datetime
 from pathlib import Path
-from time import time
+from typing import Callable
 from typing import Mapping
 from typing import Optional
 from typing import Union
+from warnings import warn
 
-import pytorch_lightning as pl
+try:
+    import lightning.pytorch as pl
+except ImportError:
+    import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader
 
@@ -21,7 +23,6 @@ from configilm.extra._defaults import default_train_transform
 from configilm.extra._defaults import default_transform
 from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
 from configilm.extra.DataSets.BEN_DataSet import BENDataSet
-from configilm.util import Messages
 
 
 class BENDataModule(pl.LightningDataModule):
@@ -30,87 +31,85 @@ class BENDataModule(pl.LightningDataModule):
     val_ds: Union[None, BENDataSet] = None
     test_ds: Union[None, BENDataSet] = None
 
+    train_transforms: Optional[Callable] = None
+    eval_transforms: Optional[Callable] = None
+
     def __init__(
         self,
-        batch_size=16,
-        data_dir: Union[str, Path] = "./",
-        img_size=None,
-        num_workers_dataloader=None,
-        max_img_idx=None,
-        shuffle=None,
-        print_infos: bool = False,
+        data_dirs: Mapping[str, Union[str, Path]],
+        batch_size: int = 16,
+        img_size: tuple = (3, 120, 120),
+        num_workers_dataloader: int = 4,
+        shuffle: Optional[bool] = None,
+        max_len: Optional[int] = None,
         pin_memory: Optional[bool] = None,
-        dataset_kwargs: Optional[Mapping] = None,
+        patch_prefilter: Optional[Callable[[str], bool]] = None,
     ):
         """
-        Initializes a pytorch lightning data module.
+        This datamodule is designed to work with the BigEarthNet dataset. It is a
+        multi-label classification dataset. The dataset is split into train, validation
+        and test sets. The datamodule provides dataloaders for each of these sets.
 
-        :param batch_size: batch size for data loaders
+        :param data_dirs: A mapping from file key to file path. Required keys are
+            "images_lmdb", "train_data", "val_data" and "test_data". The "images_lmdb"
+            key is used to identify the lmdb file that contains the images. The "_data"
+            keys are used to identify paths to the respective split csv files.
+            Note, that the lmdb file is encoded using the BigEarthNet Encoder and contains
+            images and labels.
 
-            :Default: 16
+        :param batch_size: The batch size to use for the dataloaders.
 
-        :param data_dir: base data directory for lmdb and csv files
+            :default: 16
 
-            :Default: ./
+        :param img_size: The size of the images. Note that this includes the number of
+            channels. For example, if the images are RGB images, the size should be
+            (3, h, w). See BEN_DataSet.avail_chan_configs for available channel
+            configurations.
 
-        :param img_size: image size `(c, h, w)` in accordance with `BENDataSet`
+            :default: (3, 120, 120)
 
-            :Default: None uses default of dataset
+        :param num_workers_dataloader: The number of workers to use for the dataloaders.
 
-        :param num_workers_dataloader: number of workers used for data loading
+            :default: 4
 
-            :Default: #CPU_cores/2
+        :param shuffle: Whether to shuffle the data. If None is provided, the data is shuffled
+            for training and not shuffled for validation and test.
 
-        :param max_img_idx: maximum number of images to load per split. If this number
-            is higher than the images found in the csv, None or -1, all images will be
-            loaded.
+            :default: None
 
-            :Default: None
+        :param max_len: The maximum number of images to use. If None or -1 is provided,
+            all images are used. Applies per split.
 
-        :param shuffle: Flag if dataset should be shuffled. If set to None, only train
-            will be shuffled and validation and test won't.
+            :default: None
 
-            :Default: None
+        :param pin_memory: Whether to use pinned memory for the dataloaders. If None is
+            provided, it is set to True if a GPU is available and False otherwise.
 
-        :param print_infos: Flag, if additional information during setup() and reading
-            should be printed (e.g. number of workers detected, number of images loaded)
+            :default: None
 
-            :Default: False
+        :param patch_prefilter: A callable that is used to filter out images. If None is
+            provided, no filtering is applied. The callable should take a string as input
+            and return a boolean. If the callable returns True, the image is included in
+            the dataset, otherwise it is excluded.
 
-        :param pin_memory: Flag if memory should be pinned for data loading. If not
-            specified set to True if cuda devices are used, else false.
-
-            :Default: None
-
-        :param dataset_kwargs: Other keyword arguments to pass to the dataset during
-            creation.
+            :default: None
         """
-        if img_size is not None and len(img_size) != 3:
-            raise ValueError(
-                f"Expected image_size with 3 dimensions (HxWxC) or None but got "
-                f"{len(img_size)} dimensions instead"
-            )
         super().__init__()
-        self.print_infos = print_infos
-        if num_workers_dataloader is None:
-            cpu_count = os.cpu_count()
-            if type(cpu_count) is int:
-                self.num_workers_dataloader = cpu_count // 2
-            else:
-                self.num_workers_dataloader = 0
-        else:
-            self.num_workers_dataloader = num_workers_dataloader
-        if self.print_infos:
-            print(f"Dataloader using {self.num_workers_dataloader} workers")
 
-        self.data_dir = data_dir
+        self.data_dirs = data_dirs
         self.batch_size = batch_size
-        self.max_img_idx = max_img_idx
-        self.img_size = (12, 120, 120) if img_size is None else img_size
+        self.img_size = img_size
+        self.num_workers_dataloader = num_workers_dataloader
+        self.max_len = max_len
+        self.patch_prefilter = patch_prefilter
+
+        self.pin_memory = pin_memory
+        if self.pin_memory is None:
+            self.pin_memory = True if torch.cuda.is_available() else False
+
         self.shuffle = shuffle
-        self.ds_kwargs = dataset_kwargs if dataset_kwargs is not None else dict()
         if self.shuffle is not None:
-            Messages.hint(
+            warn(
                 f"Shuffle was set to {self.shuffle}. This is not recommended for most "
                 f"configuration. Use shuffle=None (default) for recommended "
                 f"configuration."
@@ -122,11 +121,7 @@ class BENDataModule(pl.LightningDataModule):
         self.train_transform = default_train_transform(
             img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
         )
-        self.transform = default_transform(
-            img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
-        )
-        self.pin_memory = torch.cuda.device_count() > 0
-        self.pin_memory = self.pin_memory if pin_memory is None else pin_memory
+        self.transform = default_transform(img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std)
 
     def setup(self, stage: Optional[str] = None) -> None:
         """
@@ -141,29 +136,24 @@ class BENDataModule(pl.LightningDataModule):
 
         :param stage: None, "fit" or "test"
         """
-        if self.print_infos:
-            print(f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called")
         sample_info_msg = ""
-        t0 = time()
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
             self.train_ds = BENDataSet(
-                self.data_dir,
+                self.data_dirs,
                 split="train",
                 transform=self.train_transform,
-                max_img_idx=self.max_img_idx,
+                max_len=self.max_len,
                 img_size=self.img_size,
-                **self.ds_kwargs,
             )
 
             self.val_ds = BENDataSet(
-                self.data_dir,
+                self.data_dirs,
                 split="val",
                 transform=self.transform,
-                max_img_idx=self.max_img_idx,
+                max_len=self.max_len,
                 img_size=self.img_size,
-                **self.ds_kwargs,
             )
             sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
@@ -171,21 +161,18 @@ class BENDataModule(pl.LightningDataModule):
         # Assign test dataset for use in dataloader(s)
         if stage == "test" or stage is None:
             self.test_ds = BENDataSet(
-                self.data_dir,
+                self.data_dirs,
                 split="test",
                 transform=self.transform,
-                max_img_idx=self.max_img_idx,
+                max_len=self.max_len,
                 img_size=self.img_size,
-                **self.ds_kwargs,
             )
             sample_info_msg += f"  Total test samples: {len(self.test_ds):8,d}"
 
         if stage == "predict":
             raise NotImplementedError("Predict stage not implemented")
 
-        if self.print_infos:
-            print(f"setup took {time() - t0:.2f} seconds")
-            print(sample_info_msg)
+        print(sample_info_msg)
 
     def train_dataloader(self):
         """

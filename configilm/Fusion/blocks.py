@@ -79,9 +79,7 @@ class SelfAttention(nn.Module):
         super().__init__()
 
         self.mhatt = nn.MultiheadAttention(embed_dim=embed_dim, num_heads=num_heads)
-        self.ffn = FeedForwardNetwork(
-            in_size=embed_dim, hidden_size=embed_dim * 4, drop_out=drop_out
-        )
+        self.ffn = FeedForwardNetwork(in_size=embed_dim, hidden_size=embed_dim * 4, drop_out=drop_out)
 
         self.dropout1 = nn.Dropout(drop_out)
         self.norm1 = LayerNorm(embed_dim)
@@ -90,12 +88,7 @@ class SelfAttention(nn.Module):
         self.norm2 = LayerNorm(embed_dim)
 
     def forward(self, x, x_mask=None):
-        x = self.norm1(
-            x
-            + self.dropout1(
-                self.mhatt(x, x, x, attn_mask=x_mask, need_weights=False)[0]
-            )
-        )
+        x = self.norm1(x + self.dropout1(self.mhatt(x, x, x, attn_mask=x_mask, need_weights=False)[0]))
 
         x = self.norm2(x + self.dropout2(self.ffn(x)))
 
@@ -113,9 +106,7 @@ class GuidedSelfAttention(nn.Module):
 
         self.mhatt1 = nn.MultiheadAttention(embed_dim=embed_dim, num_heads=num_heads)
         self.mhatt2 = nn.MultiheadAttention(embed_dim=embed_dim, num_heads=num_heads)
-        self.ffn = FeedForwardNetwork(
-            in_size=embed_dim, hidden_size=embed_dim * 4, drop_out=drop_out
-        )
+        self.ffn = FeedForwardNetwork(in_size=embed_dim, hidden_size=embed_dim * 4, drop_out=drop_out)
 
         self.dropout1 = nn.Dropout(drop_out)
         self.norm1 = LayerNorm(embed_dim)
@@ -127,19 +118,9 @@ class GuidedSelfAttention(nn.Module):
         self.norm3 = LayerNorm(embed_dim)
 
     def forward(self, x, y, x_mask=None, y_mask=None):
-        x = self.norm1(
-            x
-            + self.dropout1(
-                self.mhatt1(x, x, x, attn_mask=x_mask, need_weights=False)[0]
-            )
-        )
+        x = self.norm1(x + self.dropout1(self.mhatt1(x, x, x, attn_mask=x_mask, need_weights=False)[0]))
 
-        x = self.norm2(
-            x
-            + self.dropout2(
-                self.mhatt2(y, y, x, attn_mask=y_mask, need_weights=False)[0]
-            )
-        )
+        x = self.norm2(x + self.dropout2(self.mhatt2(y, y, x, attn_mask=y_mask, need_weights=False)[0]))
 
         x = self.norm3(x + self.dropout3(self.ffn(x)))
 

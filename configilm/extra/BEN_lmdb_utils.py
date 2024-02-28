@@ -8,21 +8,18 @@ properties.
 __author__ = "Leonard Hackel"
 __email__ = "l.hackel@tu-berlin.de"
 
-import pathlib
-
-import numpy as np
-from bigearthnet_patch_interface.merged_interface import BigEarthNet_S1_S2_Patch
-from bigearthnet_common.base import ben_19_labels_to_multi_hot
-from bigearthnet_common.constants import BAND_STATS_S1, BAND_STATS_S2
-from typing import Iterable, Union, Optional, Sequence
-
-import torch
-import torch.nn.functional as F
+from pathlib import Path
+from typing import Iterable, Union, Optional, Sequence, Mapping
 
 import lmdb
-from os.path import isdir
+import numpy as np
+import torch
+import torch.nn.functional as F
+from bigearthnet_common.base import ben_19_labels_to_multi_hot
+from bigearthnet_common.constants import BAND_STATS_S1, BAND_STATS_S2
+from bigearthnet_patch_interface.merged_interface import BigEarthNet_S1_S2_Patch
 
-from configilm.util import Messages
+from configilm.extra.data_dir import resolve_data_dir_for_ds
 
 BAND_COMBINATION_PREDEFINTIONS = {
     "S1": ["VH", "VV"],
@@ -91,8 +88,7 @@ valid_labels_classification = [
     "Industrial or commercial units",
     "Inland waters",
     "Inland wetlands",
-    "Land principally occupied by agriculture, with significant areas "
-    "of natural vegetation",  # 10
+    "Land principally occupied by agriculture, with significant areas " "of natural vegetation",  # 10
     "Marine waters",
     "Mixed forest",
     "Moors, heathland and sclerophyllous vegetation",
@@ -134,9 +130,7 @@ def _resolve_band_combi(bands: Union[Iterable, str, int]) -> list:
         )
         bands = BAND_COMBINATION_PREDEFINTIONS[bands]
     for band in bands:
-        assert (
-            band in _BANDNAME_TO_BEN_INTERFACE_PROPERTY.keys()
-        ), f"Band '{band}' unknown"
+        assert band in _BANDNAME_TO_BEN_INTERFACE_PROPERTY.keys(), f"Band '{band}' unknown"
     return list(bands)
 
 
@@ -151,20 +145,14 @@ def band_combi_to_mean_std(bands: Union[Iterable, str, int]):
     """
     bands = _resolve_band_combi(bands)
     S1_bands = ["VH", "VV", "VV/VH"]
-    ben_channel_mean = [
-        BAND_STATS_S1["mean"][x] if x in S1_bands else BAND_STATS_S2["mean"][x]
-        for x in bands
-    ]
-    ben_channel_std = [
-        BAND_STATS_S1["std"][x] if x in S1_bands else BAND_STATS_S2["std"][x]
-        for x in bands
-    ]
+    ben_channel_mean = [BAND_STATS_S1["mean"][x] if x in S1_bands else BAND_STATS_S2["mean"][x] for x in bands]
+    ben_channel_std = [BAND_STATS_S1["std"][x] if x in S1_bands else BAND_STATS_S2["std"][x] for x in bands]
     return ben_channel_mean, ben_channel_std
 
 
 def resolve_data_dir(
-    data_dir: Optional[str], allow_mock: bool = False, force_mock: bool = False
-) -> str:
+    data_dir: Optional[Mapping[str, Path]], allow_mock: bool = False, force_mock: bool = False
+) -> Mapping[str, Path]:
     """
     Helper function that tries to resolve the correct directory.
 
@@ -174,41 +162,7 @@ def resolve_data_dir(
         small data
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
-    if data_dir in [None, "none", "None"]:
-        Messages.warn("No data directory provided, trying to resolve")
-        paths = [
-            "/dev/shm/BEN/",  # shared memory
-            "/home/lhackel/Documents/datasets/BEN/",  # laptop
-            "/data/leonard/BEN_VQA/",  # MARS
-            "/faststorage/leonard/",  # ERDE
-            "/mnt/storagecube/leonard/",  # last resort: storagecube (MARS)
-            "/media/storagecube/leonard/",  # (ERDE)
-            "/faststorage/BENVQA-DS",  # eolab legacy
-        ]
-        for p in paths:
-            if isdir(p):
-                data_dir = p
-                Messages.warn(f"Changing path to {data_dir}")
-                break
-
-    # using mock data if allowed and no other found or forced
-    if data_dir in [None, "none", "None"] and allow_mock:
-        Messages.warn("Mock data being used, no alternative available.")
-        data_dir = str(
-            pathlib.Path(__file__).parent.joinpath("mock_data").resolve(True)
-        )
-    if force_mock:
-        Messages.warn("Forcing Mock data")
-        data_dir = str(
-            pathlib.Path(__file__).parent.joinpath("mock_data").resolve(True)
-        )
-
-    if data_dir is None:
-        raise AssertionError("Could not resolve data directory")
-    elif data_dir in ["none", "None"]:
-        raise AssertionError("Could not resolve data directory")
-    else:
-        return data_dir
+    return resolve_data_dir_for_ds("benv1", data_dir, allow_mock=allow_mock, force_mock=force_mock)
 
 
 def read_ben_from_lmdb(env, key):
@@ -231,7 +185,7 @@ def read_ben_from_lmdb(env, key):
 class BENLMDBReader:
     def __init__(
         self,
-        lmdb_dir: Union[str, pathlib.Path],
+        lmdb_dir: Union[str, Path],
         image_size: Sequence[int],
         bands: Union[Iterable, str, int],
         label_type: str,
@@ -246,9 +200,7 @@ class BENLMDBReader:
         :param label_type: "new" or "old" depending on if the old labels (43) or new
             ones (19) should be returned
         """
-        assert (
-            len(image_size) == 3
-        ), f"image_size has to have 3 dimensions (CxHxW) but is {image_size}"
+        assert len(image_size) == 3, f"image_size has to have 3 dimensions (CxHxW) but is {image_size}"
         self.image_size = image_size
         self.bands = _resolve_band_combi(bands)
         assert len(self.bands) == self.image_size[0], (
@@ -282,9 +234,9 @@ class BENLMDBReader:
 
         # get only selected bands
         img_data = [
-            ben_patch.__getattribute__(
-                _BANDNAME_TO_BEN_INTERFACE_PROPERTY[x][0]
-            ).__getattribute__(_BANDNAME_TO_BEN_INTERFACE_PROPERTY[x][1])
+            ben_patch.__getattribute__(_BANDNAME_TO_BEN_INTERFACE_PROPERTY[x][0]).__getattribute__(
+                _BANDNAME_TO_BEN_INTERFACE_PROPERTY[x][1]
+            )
             for x in self.bands
         ]
         # Interpolate each band by itself to correct size, as we cannot stack different

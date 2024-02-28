@@ -20,9 +20,7 @@ def assert_basic_fusion(fusion, dim_1, dim_2, dim_mm):
         out = torch.rand((bs, dim_mm))
 
         y = fusion(in_1, in_2)
-        assert (
-            y.shape == out.shape
-        ), f"Shape missmatch, should be {out.shape} but is {y.shape}"
+        assert y.shape == out.shape, f"Shape missmatch, should be {out.shape} but is {y.shape}"
 
 
 @pytest.mark.parametrize(
@@ -41,9 +39,7 @@ def assert_basic_fusion(fusion, dim_1, dim_2, dim_mm):
         for chunks in [15, 16]
     ],
 )
-def test_block_fusion(
-    dim_1, dim_2, dim_mm, dinter, do_in, do_pl, do_o, rank, pos_norm, chunks
-):
+def test_block_fusion(dim_1, dim_2, dim_mm, dinter, do_in, do_pl, do_o, rank, pos_norm, chunks):
     fusion = Block(
         input_dims=[dim_1, dim_2],
         output_dim=dim_mm,
@@ -60,12 +56,7 @@ def test_block_fusion(
 
 @pytest.mark.parametrize(
     "dim_1, dim_2, shared",
-    [
-        (d1, d2, shared)
-        for d1 in [128, 256]
-        for d2 in [100, 256]
-        for shared in [True, False]
-    ],
+    [(d1, d2, shared) for d1 in [128, 256] for d2 in [100, 256] for shared in [True, False]],
 )
 def test_block_fusion_shared(dim_1, dim_2, shared):
     fusion = Block(
@@ -98,9 +89,7 @@ def test_block_fusion_shared(dim_1, dim_2, shared):
         for pos_norm in ["before_cat", "after_cat"]
     ],
 )
-def test_block_tucker_fusion(
-    dim_1, dim_2, dim_mm, dinter, do_in, do_pl, do_o, pos_norm
-):
+def test_block_tucker_fusion(dim_1, dim_2, dim_mm, dinter, do_in, do_pl, do_o, pos_norm):
     fusion = BlockTucker(
         input_dims=[dim_1, dim_2],
         output_dim=dim_mm,
@@ -116,12 +105,7 @@ def test_block_tucker_fusion(
 
 @pytest.mark.parametrize(
     "dim_1, dim_2, shared",
-    [
-        (d1, d2, shared)
-        for d1 in [128, 256]
-        for d2 in [100, 256]
-        for shared in [True, False]
-    ],
+    [(d1, d2, shared) for d1 in [128, 256] for d2 in [100, 256] for shared in [True, False]],
 )
 def test_block_tucker_fusion_shared(dim_1, dim_2, shared):
     fusion = BlockTucker(
@@ -159,18 +143,14 @@ def test_concat_mlp_fusion_multi_d():
     out = torch.rand((batch_size, 1, dim_mm))
 
     y = fusion(in_1, in_2)
-    assert (
-        y.shape == out.shape
-    ), f"Shape missmatch, should be {out.shape} but is {y.shape}"
+    assert y.shape == out.shape, f"Shape missmatch, should be {out.shape} but is {y.shape}"
 
     in_1 = torch.rand((batch_size, dim_1))
     in_2 = torch.rand((batch_size, 1, dim_2))
     out = torch.rand((batch_size, 1, dim_mm))
 
     y = fusion(in_1, in_2)
-    assert (
-        y.shape == out.shape
-    ), f"Shape missmatch, should be {out.shape} but is {y.shape}"
+    assert y.shape == out.shape, f"Shape missmatch, should be {out.shape} but is {y.shape}"
 
 
 @pytest.mark.parametrize(
@@ -302,12 +282,7 @@ def test_mutan_fusion(dim_1, dim_2, dim_mm, do_in, do_pl, do_o, norm, rank):
 
 @pytest.mark.parametrize(
     "dim_1, dim_2, shared",
-    [
-        (d1, d2, shared)
-        for d1 in [128, 256]
-        for d2 in [100, 256]
-        for shared in [True, False]
-    ],
+    [(d1, d2, shared) for d1 in [128, 256] for d2 in [100, 256] for shared in [True, False]],
 )
 def test_mutan_fusion_shared(dim_1, dim_2, shared):
     fusion = Mutan(
@@ -353,12 +328,7 @@ def test_tucker_fusion(dim_1, dim_2, dim_mm, dim_inter, do_in, do_pl, do_o, norm
 
 @pytest.mark.parametrize(
     "dim_1, dim_2, shared",
-    [
-        (d1, d2, shared)
-        for d1 in [128, 256]
-        for d2 in [100, 256]
-        for shared in [True, False]
-    ],
+    [(d1, d2, shared) for d1 in [128, 256] for d2 in [100, 256] for shared in [True, False]],
 )
 def test_tucker_fusion_shared(dim_1, dim_2, shared):
     fusion = Tucker(

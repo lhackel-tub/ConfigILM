@@ -11,4 +11,5 @@ DataSets and DataModules/rsvqaxben
 DataSets and DataModules/rsvqa-lr
 DataSets and DataModules/rsvqa-hr
 DataSets and DataModules/hrvqa
+DataSets and DataModules/cocoqa
 :::

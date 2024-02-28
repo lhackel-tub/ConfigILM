@@ -8,9 +8,7 @@ from typing import Sequence
 import lmdb
 
 
-def copy_part_of_json(
-    base_path: str, f_name: str, elems: int = 10, random_seed: int = 0
-):
+def copy_part_of_json(base_path: str, f_name: str, elems: int = 10, random_seed: int = 0):
     random.seed(random_seed)
     with open(join(base_path, f_name)) as read_file:
         data = json.load(read_file)
@@ -36,9 +34,7 @@ def lmdb_subset_from_jsons(
     jsons: Sequence[str],
     target_csv_names: Sequence[str],
 ):
-    assert len(jsons) == len(
-        target_csv_names
-    ), "target names have to be as many as jsons"
+    assert len(jsons) == len(target_csv_names), "target names have to be as many as jsons"
     # collect names of all S2 patches
     subset_elems = []
     for i, json_f_name in enumerate(jsons):

@@ -7,9 +7,7 @@ from os.path import join
 from typing import Sequence
 
 
-def copy_part_of_json(
-    base_path: str, f_name: str, elems: int = 100, random_seed: int = 0
-):
+def copy_part_of_json(base_path: str, f_name: str, elems: int = 100, random_seed: int = 0):
     random.seed(random_seed)
     with open(join(base_path, f_name)) as read_file:
         data = json.load(read_file)["images"]
@@ -23,10 +21,7 @@ def copy_part_of_json(
         f" seed or change number of elements"
     )
 
-    print(
-        f"Selected {len(data_new)} elements of which "
-        f"{len([x for x in data_new if x['active']])} are active"
-    )
+    print(f"Selected {len(data_new)} elements of which " f"{len([x for x in data_new if x['active']])} are active")
 
     path = pathlib.Path(".") / "RSVQA-HR" / f_name
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -75,28 +70,19 @@ def img_subset_from_jsons(
             data = json.load(read_file)["images"]
             subset_elems += [x["id"] for x in data if x["active"]]
 
-    print(
-        f"There are {len(subset_elems)} images ({len(set(subset_elems))} unique) "
-        f"selected."
-    )
+    print(f"There are {len(subset_elems)} images ({len(set(subset_elems))} unique) " f"selected.")
 
     path = pathlib.Path(".") / "RSVQA-HR" / "Images" / "Data"
     path.mkdir(parents=True, exist_ok=True)
     for elem in subset_elems:
         img_name = f"{elem}.png"
         shutil.copy(
-            pathlib.Path(base_path)
-            .joinpath("Images")
-            .joinpath("Data")
-            .joinpath(img_name),
+            pathlib.Path(base_path).joinpath("Images").joinpath("Data").joinpath(img_name),
             path.joinpath(img_name).resolve(),
         )
         img_name = f"{elem}.tif"
         shutil.copy(
-            pathlib.Path(base_path)
-            .joinpath("Images")
-            .joinpath("Data")
-            .joinpath(img_name),
+            pathlib.Path(base_path).joinpath("Images").joinpath("Data").joinpath(img_name),
             path.joinpath(img_name).resolve(),
         )
 

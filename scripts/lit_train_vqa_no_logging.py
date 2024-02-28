@@ -54,9 +54,7 @@ class LitVisionEncoder(pl.LightningModule):
     def _disassemble_batch(self, batch):
         images, questions, labels = batch
         # transposing tensor, needed for Huggingface-Dataloader combination
-        questions = torch.tensor(
-            [x.tolist() for x in questions], device=self.device
-        ).T.int()
+        questions = torch.tensor([x.tolist() for x in questions], device=self.device).T.int()
         return (images, questions), labels
 
     def training_step(self, batch, batch_idx):
@@ -113,9 +111,7 @@ class LitVisionEncoder(pl.LightningModule):
     def get_metrics(self, outputs):
         avg_loss = torch.stack([x["loss"] for x in outputs]).mean()
         logits = torch.cat([x["outputs"].cpu() for x in outputs], 0)
-        labels = torch.cat(
-            [x["labels"].cpu() for x in outputs], 0
-        )  # Tensor of size (#samples x classes)
+        labels = torch.cat([x["labels"].cpu() for x in outputs], 0)  # Tensor of size (#samples x classes)
 
         selected_answers = self.trainer.datamodule.selected_answers
 
@@ -148,16 +144,14 @@ class LitVisionEncoder(pl.LightningModule):
         accuracy_dict = {
             "Yes/No": acc_yn,
             "LULC": acc_lulc,
-            "Overall": accuracy_score(
-                argmax_lbl, argmax_out
-            ),  # micro average on classes
+            "Overall": accuracy_score(argmax_lbl, argmax_out),  # micro average on classes
             "Average": (acc_yn + acc_lulc) / 2,  # macro average on types
         }
 
         # calculate AP
-        ap_macro = AveragePrecision(
-            num_labels=self.config.classes, average="macro", task="multilabel"
-        ).to(logits.device)(logits, labels.int())
+        ap_macro = AveragePrecision(num_labels=self.config.classes, average="macro", task="multilabel").to(
+            logits.device
+        )(logits, labels.int())
 
         return {
             "avg_loss": avg_loss,

@@ -1,86 +1,25 @@
 import warnings
-from typing import Sequence
-from typing import Union
 
 import pytest
-import torch
 
+from . import test_data_common
 from configilm.extra.DataModules.COCOQA_DataModule import COCOQADataModule
 from configilm.extra.DataSets.COCOQA_DataSet import COCOQADataSet
 from configilm.extra.DataSets.COCOQA_DataSet import resolve_data_dir
 
 
 @pytest.fixture
-def data_dir():
+def data_dirs():
     return resolve_data_dir(None, allow_mock=True, force_mock=True)
 
 
-def dataset_ok(
-    dataset: Union[COCOQADataSet, None],
-    expected_image_shape: Sequence,
-    expected_question_length: int,
-    expected_length: Union[int, None],
-    classes: int,
-):
-    assert dataset is not None
-    if expected_length is not None:
-        assert len(dataset) == expected_length
-
-    if len(dataset) > 0:
-        for i in [0, 100, 2000, 5000, 10000]:
-            i = i % len(dataset)
-            sample = dataset[i]
-            assert len(sample) == 3
-            v, q, a = sample
-            assert v.shape == expected_image_shape
-            assert len(q) == expected_question_length
-            assert list(a.size()) == [classes]
-
-
-def dataloaders_ok(
-    dm: COCOQADataModule,
-    expected_image_shape: Sequence,
-    expected_question_length: int,
-    classes: int,
-):
-    with warnings.catch_warnings():
-        warnings.filterwarnings(
-            action="ignore",
-            category=UserWarning,
-            message="Validation and Test set are equal in this " "Dataset.",
-        )
-        dm.setup(stage=None)
-    dataloaders = [
-        dm.train_dataloader(),
-        dm.val_dataloader(),
-        dm.test_dataloader(),
-    ]
-    for dl in dataloaders:
-        max_batch = len(dl) // expected_image_shape[0]
-        for i, batch in enumerate(dl):
-            if i == 5 or i >= max_batch:
-                break
-            v, _q, a = batch
-            q = torch.stack(_q).T
-            assert v.shape == expected_image_shape
-            assert q.shape == (
-                expected_image_shape[0],
-                expected_question_length,
-            )
-            assert a.shape == (expected_image_shape[0], classes)
-
-
 @pytest.mark.parametrize("split", ["train", "test", None])
-def test_ds_default(data_dir, split):
+def test_ds_default(data_dirs, split):
     img_size = (3, 120, 120)
-    ds = COCOQADataSet(data_dir, split=split)
-    length = {"train": 78_736, "test": 38_948, None: 78_736 + 38_948}[split]
-    mocked_datadir = "mock" in data_dir
-    length = (
-        25 if mocked_datadir and split is not None else 50 if mocked_datadir else length
-    )
+    ds = COCOQADataSet(data_dirs, split=split)
+    length = {"train": 10, "test": 10, None: 20}[split]
 
-    dataset_ok(
+    test_data_common.dataset_ok(
         dataset=ds,
         expected_image_shape=img_size,
         expected_question_length=64,
@@ -90,21 +29,16 @@ def test_ds_default(data_dir, split):
 
 
 @pytest.mark.parametrize(
-    "max_img_idx",
+    "max_len",
     [None, -1, 1, 5, 20, 50, 200, 2_000, 20_000, 117_683, 117_684, 117_685, 200_000],
 )
-def test_ds_max_img_idx(data_dir, max_img_idx):
+def test_ds_max_img_idx(data_dirs, max_len):
     img_size = (3, 120, 120)
-    ds = COCOQADataSet(data_dir, split=None, max_img_idx=max_img_idx)
-    mocked_datadir = "mock" in data_dir
-    max_len = 50 if mocked_datadir else 78_736 + 38_948
-    length = (
-        max_len
-        if max_img_idx is None or max_img_idx > max_len or max_img_idx == -1
-        else max_img_idx
-    )
+    ds = COCOQADataSet(data_dirs, split=None, max_len=max_len)
 
-    dataset_ok(
+    length = 20 if max_len in [None, -1] else min(max_len, 20)
+
+    test_data_common.dataset_ok(
         dataset=ds,
         expected_image_shape=img_size,
         expected_question_length=64,
@@ -116,9 +50,14 @@ def test_ds_max_img_idx(data_dir, max_img_idx):
 dataset_params = ["train", "val", "test", None]
 
 
+def test_ben_dm_lightning(data_dirs):
+    dm = COCOQADataModule(data_dirs=data_dirs)
+    test_data_common._assert_dm_correct_lightning_version(dm)
+
+
 @pytest.mark.parametrize("split", dataset_params)
-def test_dm_default(data_dir, split: str):
-    dm = COCOQADataModule(data_dir=data_dir)
+def test_dm_default(data_dirs, split: str):
+    dm = COCOQADataModule(data_dirs=data_dirs)
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
 
     with warnings.catch_warnings():
@@ -130,14 +69,14 @@ def test_dm_default(data_dir, split: str):
         dm.setup(stage=split2stage[split])
     dm.prepare_data()
     if split in ["train", "val"]:
-        dataset_ok(
+        test_data_common.dataset_ok(
             dm.train_ds,
             expected_image_shape=(3, 120, 120),
             expected_length=None,
             classes=430,
             expected_question_length=64,
         )
-        dataset_ok(
+        test_data_common.dataset_ok(
             dm.val_ds,
             expected_image_shape=(3, 120, 120),
             expected_length=None,
@@ -146,7 +85,7 @@ def test_dm_default(data_dir, split: str):
         )
         assert dm.test_ds is None
     elif split == "test":
-        dataset_ok(
+        test_data_common.dataset_ok(
             dm.test_ds,
             expected_image_shape=(3, 120, 120),
             expected_length=None,
@@ -157,7 +96,7 @@ def test_dm_default(data_dir, split: str):
         assert dm.val_ds is None
     elif split is None:
         for ds in [dm.train_ds, dm.val_ds, dm.test_ds]:
-            dataset_ok(
+            test_data_common.dataset_ok(
                 ds,
                 expected_image_shape=(3, 120, 120),
                 expected_length=None,
@@ -169,11 +108,9 @@ def test_dm_default(data_dir, split: str):
 
 
 @pytest.mark.parametrize("bs", [1, 2, 3, 4, 16, 32])
-def test_dm_dataloader(data_dir, bs: int):
-    dm = COCOQADataModule(
-        data_dir=data_dir, batch_size=bs, num_workers_dataloader=0, pin_memory=False
-    )
-    dataloaders_ok(
+def test_dm_dataloader(data_dirs, bs: int):
+    dm = COCOQADataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
+    test_data_common.dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 120, 120),
         expected_question_length=64,
@@ -181,74 +118,16 @@ def test_dm_dataloader(data_dir, bs: int):
     )
 
 
-def test_dm_shuffle_false(data_dir):
-    dm = COCOQADataModule(
-        data_dir=data_dir, shuffle=False, num_workers_dataloader=0, pin_memory=False
-    )
-
-    with warnings.catch_warnings():
-        warnings.filterwarnings(
-            action="ignore",
-            category=UserWarning,
-            message="Validation and Test set are equal in this " "Dataset.",
-        )
-        dm.setup(None)
-    # should not be equal due to transforms being random!
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+def test_dm_shuffle_false(data_dirs):
+    dm = COCOQADataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
+    test_data_common._test_dm_shuffle_false(dm)
 
 
-def test_dm_shuffle_none(data_dir):
-    dm = COCOQADataModule(
-        data_dir=data_dir, shuffle=None, num_workers_dataloader=0, pin_memory=False
-    )
-
-    with warnings.catch_warnings():
-        warnings.filterwarnings(
-            action="ignore",
-            category=UserWarning,
-            message="Validation and Test set are equal in this " "Dataset.",
-        )
-        dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+def test_dm_shuffle_none(data_dirs):
+    dm = COCOQADataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
+    test_data_common._test_dm_shuffle_none(dm)
 
 
-def test_dm_shuffle_true(data_dir):
-    dm = COCOQADataModule(
-        data_dir=data_dir, shuffle=True, num_workers_dataloader=0, pin_memory=False
-    )
-
-    with warnings.catch_warnings():
-        warnings.filterwarnings(
-            action="ignore",
-            category=UserWarning,
-            message="Validation and Test set are equal in this " "Dataset.",
-        )
-        dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert not torch.equal(
-        next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0]
-    )
-    assert not torch.equal(
-        next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0]
-    )
+def test_dm_shuffle_true(data_dirs):
+    dm = COCOQADataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
+    test_data_common._test_dm_shuffle_true(dm)

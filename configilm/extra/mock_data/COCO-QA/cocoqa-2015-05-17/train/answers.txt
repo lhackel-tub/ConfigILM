@@ -1,0 +1,10 @@
+sculpture
+elephant
+brown
+sink
+purple
+black
+ball
+door
+red
+tie

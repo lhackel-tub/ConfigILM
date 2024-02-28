@@ -1,270 +1,171 @@
-import os
-from datetime import datetime
-from time import time
-from typing import List
+"""
+Dataloader and Datamodule for RSVQA LR dataset.
+"""
+from pathlib import Path
+from typing import Callable
 from typing import Mapping
 from typing import Optional
 from typing import Union
 
-import pytorch_lightning as pl
-import torch
-from torch.utils.data import DataLoader
-
 from configilm.extra._defaults import default_train_transform
 from configilm.extra._defaults import default_transform
+from configilm.extra.DataModules.ClassificationVQADataModule import ClassificationVQADataModule
 from configilm.extra.DataSets.HRVQA_DataSet import _means_1024
 from configilm.extra.DataSets.HRVQA_DataSet import _stds_1024
 from configilm.extra.DataSets.HRVQA_DataSet import HRVQADataSet
-from configilm.util import Messages
 
 
-class HRVQADataModule(pl.LightningDataModule):
-    train_ds: Union[None, HRVQADataSet] = None
-    val_ds: Union[None, HRVQADataSet] = None
-    test_ds: Union[None, HRVQADataSet] = None
-    selected_answers: Union[None, List[str]] = None
-
+class HRVQADataModule(ClassificationVQADataModule):
     def __init__(
         self,
-        batch_size=16,
-        data_dir: str = "./",
-        img_size=None,
-        num_workers_dataloader=None,
-        max_img_idx=None,
-        shuffle=None,
-        tokenizer=None,
-        seq_length=32,
-        selected_answers=None,
+        data_dirs: Mapping[str, Path],
+        batch_size: int = 16,
+        img_size: tuple = (3, 1024, 1024),
+        num_workers_dataloader: int = 4,
+        shuffle: Optional[bool] = None,
+        max_len: Optional[int] = None,
+        tokenizer: Optional[Callable] = None,
+        seq_length: int = 64,
         pin_memory: Optional[bool] = None,
-        test_splitting_seed=None,
-        test_splitting_division=None,
-        print_infos: bool = False,
-        dataset_kwargs: Optional[Mapping] = None,
+        test_splitting_seed: Optional[Union[str, int]] = None,
+        test_splitting_size: Union[float, int] = 0.5,
     ):
         """
-        Initializes a pytorch lightning data module.
+        This class implements the DataModule for the HR-VQA dataset.
 
-        :param batch_size: batch size for data loaders
+        :param data_dirs: A mapping of strings to Path objects that contains the
+            paths to the data directories. It should contain the following keys:
+            "images", "train_data", "val_data", "test_data". The "_data" keys
+            should point to the directory that contains the question and answer
+            json files. Each directory should contain the following files:
+            "{split}_question.json" and "{split}_answer.json".
 
-            :Default: 16
+        :param batch_size: The batch size to use for the dataloaders.
 
-        :param data_dir: root directory to images and jsons folder
+            :default: 16
 
-            :Default: ./
+        :param img_size: The size of the images.
 
-        :param img_size: Size to which all channels will be scaled. Interpolation is
-            applied bicubic before any transformation. Also selects if the returned
-            images are RGB or grayscale based on the number of channels.
+            :default: (3, 1024, 1024)
 
-            :Default: (3, 1024, 1024)
+        :param num_workers_dataloader: The number of workers to use for the dataloaders.
 
-        :param num_workers_dataloader: number of workers used for data loading
+            :default: 4
 
-            :Default: #CPU_cores/2
+        :param shuffle: Whether to shuffle the data in the dataloaders. If None is provided, the data is shuffled
+            for training and not shuffled for validation and test.
 
-        :param max_img_idx: maximum number of images to load per split. If this number
-            is higher than the images found in the csv, None or -1, all images will be
-            loaded.
+            :default: None
 
-            :Default: None
+        :param max_len: The maximum number of qa-pairs to use. If None or -1 is
+            provided, all qa-pairs are used.
 
-        :param shuffle: Flag if dataset should be shuffled. If set to None, only train
-            will be shuffled and validation and test won't.
+            :default: None
 
-            :Default: None
+        :param tokenizer: A callable that is used to tokenize the questions. If set to None, the default tokenizer
+            (from configilm.util) is used.
 
-        :param tokenizer: Tokenizer to use for tokenization of input questions. Expects
-            standard huggingface tokenizer. If not set, a default tokenizer will be
-            used and a warning shown.
+            :default: None
 
-            :Default: None
+        :param seq_length: The maximum length of the tokenized questions. If the tokenized question is longer than
+            this, it will be truncated. If it is shorter, it will be padded.
 
-        :param seq_length: Length of tokenized question. Will be caped to this as
-            maximum and expanded to this if the question is too short. Includes start
-            and end token.
+            :default: 64
 
-            :Default: 32
+        :param pin_memory: Whether to use pinned memory for the dataloaders. If None is
+            provided, it is set to True if a GPU is available and False otherwise.
 
-        :param selected_answers: List of selected answers or None. If set to None,
-            answers will be selected based on `classes` for the data set in order of
-            frequency of the training set.
+            :default: None
 
-            :Default: None
+        :param test_splitting_seed: The seed to use for the split of the val-div and test-div
+            splits. If set to "repeat", the split will be the same full val split for
+            both val-div and test-div. If set to an integer, the split will be different
+            every time the dataset is loaded and the seed will be used to initialize
+            the random number generator. The state of the random number generator
+            will be saved before the split and restored after the split to ensure
+            reproducibility independent of the global random state and also that the
+            global random state is not affected by the split.
 
-        :param pin_memory: Flag if memory should be pinned for data loading. If not
-            specified set to True if cuda devices are used, else false.
+            :default: 42
 
-            :Default: None
+        :param test_splitting_size: The size of the val-div and test-div splits. If set to a
+            float, it should be a value between 0 and 1 and will be interpreted as the
+            fraction of the val split to use for the val-div. The rest of the val split
+            will be used for the test-div. If set to an integer, it will be interpreted
+            as the number of samples to use for the val-div. The rest of the val split
+            will be used for the test-div. If div_seed is set to "repeat", the split
+            will be the same (full val split) for both val-div and test-div.
 
-        :param test_splitting_seed: Seed for random division of the "val-div" and
-            "test-div" splits. If not set, an AssertionError is raised. If set to
-            "repeat", val and test will be the same data.
-
-            For division, the set defined for validation is split into "val-div" and
-            "test-div" depending on the `div_seed` and `split_size`. All random states
-            are rebuild after a call to the division.
-
-            To get the disjoint sets for validation and test, call the dataset with the
-            same parameters once for "val-div" and once for "test-div".
-
-            :Default: None
-
-        :param test_splitting_division: relative size of the validation div if
-            subdivision of the validation split is applicable.
-
-            :Default: 0.5
-
-        :param print_infos: Flag, if additional information during setup() and reading
-            should be printed (e.g. number of workers detected, number of images loaded)
-
-            :Default: False
-
-        :param dataset_kwargs: Other keyword arguments to pass to the dataset during
-            creation.
-
-        Split example:
-            >>> ds_v = HRVQADataSet(..., div_seed=0, split_size=0.3, split="val-div")
-            >>> ds_t = HRVQADataSet(..., div_seed=0, split_size=0.3, split="test-div")
-            ds_v and ds_t are disjoint with dv containing 30% of all validation samples
-            and dt 70%
+            :default: 0.5
         """
-        if img_size is not None and len(img_size) != 3:
-            raise ValueError(
-                f"Expected image_size with 3 dimensions (HxWxC) or None but got "
-                f"{len(img_size)} dimensions instead"
-            )
-        super().__init__()
-        self.print_infos = print_infos
-        if num_workers_dataloader is None:
-            cpu_count = os.cpu_count()
-            if type(cpu_count) is int:
-                self.num_workers_dataloader = cpu_count // 2
-            else:
-                self.num_workers_dataloader = 0
-        else:
-            self.num_workers_dataloader = num_workers_dataloader
-        if self.print_infos:
-            print(f"Dataloader using {self.num_workers_dataloader} workers")
+        super().__init__(
+            data_dirs=data_dirs,
+            batch_size=batch_size,
+            img_size=img_size,
+            num_workers_dataloader=num_workers_dataloader,
+            shuffle=shuffle,
+            max_len=max_len,
+            tokenizer=tokenizer,
+            seq_length=seq_length,
+            pin_memory=pin_memory,
+        )
+        assert img_size[0] == 3 and len(img_size) == 3, f"Invalid img_size: {img_size}, expected (3, height, width)"
 
-        self.data_dir = data_dir
-        self.batch_size = batch_size
-        self.max_img_idx = (
-            max_img_idx if max_img_idx is None or max_img_idx > 0 else None
-        )
-        self.img_size = (3, 1024, 1024) if img_size is None else img_size
-        self.shuffle = shuffle
-        if self.shuffle is not None:
-            Messages.hint(
-                f"Shuffle was set to {self.shuffle}. This is not recommended for most "
-                f"configuration. Use shuffle=None (default) for recommended "
-                f"configuration."
-            )
-        self.selected_answers = selected_answers
-
-        mean = (
-            [_means_1024["red"], _means_1024["green"], _means_1024["blue"]]
-            if self.img_size[0] == 3
-            else [_means_1024["mono"]]
-        )
-        std = (
-            [_stds_1024["red"], _stds_1024["green"], _stds_1024["blue"]]
-            if self.img_size[0] == 3
-            else [_stds_1024["mono"]]
-        )
+        mean = [_means_1024["red"], _means_1024["green"], _means_1024["blue"]]
+        std = [_stds_1024["red"], _stds_1024["green"], _stds_1024["blue"]]
 
         self.train_transform = default_train_transform(
             img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std
         )
-        self.transform = default_transform(
-            img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std
-        )
-        # self.transform = None
-        self.pin_memory = torch.cuda.device_count() > 0
-        self.pin_memory = self.pin_memory if pin_memory is None else pin_memory
-        Messages.hint(
-            f"pin_memory set to {pin_memory}"
-            f"{' ' if pin_memory is None else ' via overwrite'}"
-        )
+        self.eval_transforms = default_transform(img_size=(self.img_size[1], self.img_size[2]), mean=mean, std=std)
 
-        self.tokenizer = tokenizer
-        self.seq_length = seq_length
-        self.ds_kwargs = dataset_kwargs if dataset_kwargs is not None else dict()
-
-        assert isinstance(test_splitting_seed, int) or test_splitting_seed in [
-            "repeat",
-            None,
-        ], (
+        assert isinstance(test_splitting_seed, int) or test_splitting_seed in ["repeat", None,], (
             "test_splitting parameter has to be 'repeat' to use the val split for "
             "testing again, None for no test split or an integer for random splitting "
-            "of the val split"
+            f"of the val split. Got: {test_splitting_seed}"
         )
         self.test_splitting_seed = test_splitting_seed
-        self.test_splitting_div = test_splitting_division
-
-    def _print_info(self, info):
-        """
-        Helper method that only prints if `print_info` is set. Used to reduce
-        complexity in functions.
-        """
-        if self.print_infos:
-            print(info)
-        else:
-            pass
+        self.test_splitting_size = test_splitting_size
 
     def setup(self, stage: Optional[str] = None):
-        """
-        Prepares the data sets for the specific stage.
-
-        - "fit": train and validation data set
-        - "test": test data set
-        - None: all data sets
-
-        Prints the time it needed for this operation and other statistics if print_infos
-        is set.
-
-        :param stage: None, "fit" or "test"
-        """
-        self._print_info(
-            f"({datetime.now().strftime('%H:%M:%S')}) Datamodule setup called"
-        )
         sample_info_msg = ""
-        t0 = time()
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
             if self.train_ds is None:
                 self.train_ds = HRVQADataSet(
-                    self.data_dir,
+                    self.data_dirs,
                     split="train",
                     transform=self.train_transform,
-                    max_img_idx=self.max_img_idx,
+                    max_len=self.max_len,
                     img_size=self.img_size,
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
-                    **self.ds_kwargs,
                 )
             if self.selected_answers is None:
-                self.selected_answers = self.train_ds.selected_answers
+                self.selected_answers = self.train_ds.answers
 
             if self.val_ds is None:
                 if self.test_splitting_seed is None:
+                    # don't split the val set if test_splitting_seed is None
                     val_split = "val"
-                    division_seed = "Should Not Matter"
+                    division_seed: Union[str, int] = "Should Not Matter"
                 else:
+                    # split the val set into val and test
                     val_split = "val-div"
                     division_seed = self.test_splitting_seed
+
                 self.val_ds = HRVQADataSet(
-                    self.data_dir,
+                    self.data_dirs,
                     split=val_split,
                     div_seed=division_seed,
-                    split_size=self.test_splitting_div,
-                    transform=self.transform,
-                    max_img_idx=self.max_img_idx,
+                    split_size=self.test_splitting_size,
+                    transform=self.eval_transforms,
+                    max_len=self.max_len,
                     img_size=self.img_size,
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
                     selected_answers=self.selected_answers,
-                    **self.ds_kwargs,
                 )
             sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
@@ -275,69 +176,28 @@ class HRVQADataModule(pl.LightningDataModule):
                 raise NotImplementedError("Test stage None not implemented")
             else:
                 self.test_ds = HRVQADataSet(
-                    self.data_dir,
+                    self.data_dirs,
                     split="test-div",
                     div_seed=self.test_splitting_seed,
-                    split_size=self.test_splitting_div,
-                    transform=self.transform,
-                    max_img_idx=self.max_img_idx,
+                    split_size=self.test_splitting_size,
+                    transform=self.eval_transforms,
+                    max_len=self.max_len,
                     img_size=self.img_size,
                     tokenizer=self.tokenizer,
                     seq_length=self.seq_length,
                     selected_answers=self.selected_answers,
-                    **self.ds_kwargs,
                 )
+            sample_info_msg += f"  Total test samples: {len(self.test_ds):8,d}"
 
         if stage == "predict":
             raise NotImplementedError("Predict stage not implemented")
-
-        self._print_info(f"setup took {time() - t0:.2f} seconds")
-        self._print_info(sample_info_msg)
+        print(sample_info_msg)
 
     def train_dataloader(self):
-        """
-        Create a Dataloader according to the specification in the `__init__` call.
-        Uses the train set and expects it to be set (e.g. via `setup()` call)
-
-        :return: torch DataLoader for the train set
-        """
-        return DataLoader(
-            self.train_ds,
-            batch_size=self.batch_size,
-            shuffle=True if self.shuffle is None else self.shuffle,
-            num_workers=self.num_workers_dataloader,
-            pin_memory=self.pin_memory,
-        )
+        return super().train_dataloader()
 
     def val_dataloader(self):
-        """
-        Create a Dataloader according to the specification in the `__init__` call.
-        Uses the validation set and expects it to be set (e.g. via `setup()` call)
-
-        :return: torch DataLoader for the validation set
-        """
-        return DataLoader(
-            self.val_ds,
-            batch_size=self.batch_size,
-            shuffle=False if self.shuffle is None else self.shuffle,
-            num_workers=self.num_workers_dataloader,
-            pin_memory=self.pin_memory,
-        )
+        return super().val_dataloader()
 
     def test_dataloader(self):
-        """
-        Create a Dataloader according to the specification in the `__init__` call.
-        Uses the test set and expects it to be set (e.g. via `setup()` call)
-
-        :return: torch DataLoader for the test set
-        """
-        if self.test_splitting_seed is None:
-            return None
-        else:
-            return DataLoader(
-                self.test_ds,
-                batch_size=self.batch_size,
-                shuffle=False if self.shuffle is None else self.shuffle,
-                num_workers=self.num_workers_dataloader,
-                pin_memory=self.pin_memory,
-            )
+        return super().test_dataloader()

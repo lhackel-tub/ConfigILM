@@ -83,9 +83,7 @@ class MFH(AbstractFusion):
         z_0_skip = x0 * x1
 
         if self.dropout_pre_norm:
-            z_0_skip = F.dropout(
-                z_0_skip, p=self.dropout_pre_norm, training=self.training
-            )
+            z_0_skip = F.dropout(z_0_skip, p=self.dropout_pre_norm, training=self.training)
 
         z_0 = self._view_norm(z_0_skip)
 

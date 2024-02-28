@@ -23,6 +23,7 @@ class ThroughputTestDataModule(ClassificationVQADataModule):
         seq_length: int = 64,
         pin_memory: Optional[bool] = None,
         num_samples: int = 1000,
+        num_classes: int = 1000,
     ):
         """
         This class implements the DataModule for the ThroughputTest dataset.
@@ -71,6 +72,10 @@ class ThroughputTestDataModule(ClassificationVQADataModule):
         :param num_samples: The number of samples to simulate per split.
 
             :default: 1000
+
+        :param num_classes: The number of classes in the dataset.
+
+            :default: 1000
         """
         super().__init__(
             data_dirs=data_dirs,
@@ -84,6 +89,7 @@ class ThroughputTestDataModule(ClassificationVQADataModule):
             pin_memory=pin_memory,
         )
         self.num_samples = num_samples
+        self.num_classes = num_classes
 
     def setup(self, stage: Optional[str] = None):
         sample_info_msg = ""
@@ -100,6 +106,7 @@ class ThroughputTestDataModule(ClassificationVQADataModule):
                     tokenizer=None,
                     seq_length=self.seq_length,
                     num_samples=self.num_samples,
+                    num_classes=self.num_classes,
                 )
             if self.selected_answers is None:
                 self.selected_answers = self.train_ds.answers
@@ -115,6 +122,7 @@ class ThroughputTestDataModule(ClassificationVQADataModule):
                     seq_length=self.seq_length,
                     selected_answers=self.selected_answers,
                     num_samples=self.num_samples,
+                    num_classes=self.num_classes,
                 )
             sample_info_msg += f"  Total training samples: {len(self.train_ds):8,d}"
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
@@ -131,6 +139,7 @@ class ThroughputTestDataModule(ClassificationVQADataModule):
                 seq_length=self.seq_length,
                 selected_answers=self.selected_answers,
                 num_samples=self.num_samples,
+                num_classes=self.num_classes,
             )
             sample_info_msg += f"  Total test samples: {len(self.test_ds):8,d}"
 

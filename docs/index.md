@@ -33,6 +33,7 @@ installation
 ilmconfiguration
 sup_pretraining
 vqa
+throughput_testing
 ```
 
 ```{toctree}

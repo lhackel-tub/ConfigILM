@@ -6,12 +6,12 @@ from typing import Union
 
 import torch
 
-from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
 from configilm.extra.data_dir import resolve_data_dir_for_ds
+from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
 
 
 def resolve_data_dir(
-        data_dir: Optional[Mapping[str, Path]], allow_mock: bool = False, force_mock: bool = False
+    data_dir: Optional[Mapping[str, Path]], allow_mock: bool = False, force_mock: bool = False
 ) -> Mapping[str, Union[str, Path]]:
     """
     Helper function that tries to resolve the correct directory
@@ -52,18 +52,18 @@ class FakeTokenizer:
 
 class ThroughputTestDataset(ClassificationVQADataset):
     def __init__(
-            self,
-            data_dirs: Mapping[str, Path],
-            split: Optional[str] = None,
-            transform: Optional[Callable] = None,
-            max_len: Optional[int] = None,
-            img_size: tuple = (3, 256, 256),
-            selected_answers: Optional[list] = None,
-            num_classes: Optional[int] = 1000,
-            tokenizer: Optional[Callable] = None,
-            seq_length: int = 64,
-            return_extras: bool = False,
-            num_samples: int = 1000,
+        self,
+        data_dirs: Mapping[str, Path],
+        split: Optional[str] = None,
+        transform: Optional[Callable] = None,
+        max_len: Optional[int] = None,
+        img_size: tuple = (3, 256, 256),
+        selected_answers: Optional[list] = None,
+        num_classes: Optional[int] = 1000,
+        tokenizer: Optional[Callable] = None,
+        seq_length: int = 64,
+        return_extras: bool = False,
+        num_samples: int = 1000,
     ):
         """
         This class implements the ThroughputTest dataset. It is a subclass of
@@ -124,8 +124,9 @@ class ThroughputTestDataset(ClassificationVQADataset):
             :default: 1000
         """
         print(f"Loading ThroughputTest data for {split}...")
-        assert num_classes is not None or selected_answers is not None, \
-            "Either num_classes or selected_answers must be provided."
+        assert (
+            num_classes is not None or selected_answers is not None
+        ), "Either num_classes or selected_answers must be provided."
         self.num_samples = num_samples
         assert self.num_samples > 0, "num_samples must be greater than 0"
         assert img_size[2] > 0, "Invalid width, must be > 0"

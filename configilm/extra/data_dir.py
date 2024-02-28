@@ -200,10 +200,14 @@ def resolve_data_dir_for_ds(
     # using mock data if allowed and no other found or forced
     if data_dir_mapping is None and allow_mock:
         Messages.warn("Mock data being used, no alternative available.")
-        data_dir_mapping = mock_data_path[dataset_name]
+        mock_dir = mock_data_path[dataset_name]
+        assert isinstance(mock_dir, Mapping), f"Invalid mock_dir for {dataset_name}"
+        data_dir_mapping = mock_dir
     if force_mock:
         Messages.warn("Forcing Mock data")
-        data_dir_mapping = mock_data_path[dataset_name]
+        mock_dir = mock_data_path[dataset_name]
+        assert isinstance(mock_dir, Mapping), f"Invalid mock_dir for {dataset_name}"
+        data_dir_mapping = mock_dir
 
     if data_dir_mapping is None:
         raise AssertionError("Could not resolve data directory")

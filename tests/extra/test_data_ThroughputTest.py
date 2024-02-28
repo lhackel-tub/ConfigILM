@@ -1,13 +1,12 @@
+from typing import List
 from typing import Tuple
 
 import pytest
 
 from . import test_data_common
-
-
+from configilm.extra.DataModules.ThroughputTest_DataModule import ThroughputTestDataModule
 from configilm.extra.DataSets.ThroughputTest_DataSet import resolve_data_dir
 from configilm.extra.DataSets.ThroughputTest_DataSet import ThroughputTestDataset
-from configilm.extra.DataModules.ThroughputTest_DataModule import ThroughputTestDataModule
 
 
 @pytest.fixture
@@ -24,7 +23,7 @@ channels_fail = [0, -1]  # not accepted configs
 img_shapes_pass = [(c, hw, hw) for c in channels_pass for hw in img_sizes]
 img_shapes_fail = [(c, hw, hw) for c in channels_fail for hw in img_sizes]
 max_img_idxs = [0, 1, 100, 1_000]
-max_img_idxs_too_large = []
+max_img_idxs_too_large: List[int] = []
 
 
 @pytest.mark.parametrize("split, classes", [(s, c) for s in dataset_params for c in class_number])
@@ -77,7 +76,7 @@ def test_ds_imgsize_fail(data_dirs, img_size: Tuple[int, int, int]):
 @pytest.mark.parametrize("max_len", [1, 16, 74, 1_199, 1_200, None, -1])
 def test_ds_max_img_idx(data_dirs, max_len: int):
     total_samples = 1200
-    ds = ThroughputTestDataset(data_dirs=data_dirs, max_len=max_len, num_samples=total_samples//3)
+    ds = ThroughputTestDataset(data_dirs=data_dirs, max_len=max_len, num_samples=total_samples // 3)
     expected_len = total_samples
     len_ds = expected_len if max_len is None or max_len > expected_len or max_len == -1 else max_len
     test_data_common.dataset_ok(
@@ -91,7 +90,7 @@ def test_ds_max_img_idx(data_dirs, max_len: int):
 
 @pytest.mark.parametrize("max_len", [1_201, 20_000, 100_000, 10_000_000])
 def test_ds_max_img_idx_too_large(data_dirs, max_len: int):
-    ds = ThroughputTestDataset(data_dirs=data_dirs, max_len=max_len, num_samples=1200//3)
+    ds = ThroughputTestDataset(data_dirs=data_dirs, max_len=max_len, num_samples=1200 // 3)
     assert len(ds) < max_len
 
 

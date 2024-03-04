@@ -54,7 +54,7 @@ class LitVisionEncoder(pl.LightningModule):
     def _disassemble_batch(self, batch):
         images, questions, labels = batch
         # transposing tensor, needed for Huggingface-Dataloader combination
-        questions = torch.tensor([x.tolist() for x in questions], device=self.device).T.int()
+        questions = torch.stack(questions).T.to(self.device)
         return (images, questions), labels
 
     def training_step(self, batch, batch_idx):

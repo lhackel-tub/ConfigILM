@@ -10,7 +10,7 @@
 
 
 [![Release Notes](https://img.shields.io/github/release/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/releases)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10058457.svg)](https://doi.org/10.5281/zenodo.10058457)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10777487.svg)](https://doi.org/10.5281/zenodo.10777487)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
@@ -68,13 +68,13 @@ If you use this work, please cite
   author       = {Hackel, Leonard and
                   Clasen, Kai Norman and
                   Demir, Begüm},
-  title        = {ConfigILM},
-  month        = oct,
-  year         = 2023,
+  title        = {{ConfigILM}},
+  month        = mar,
+  year         = 2024,
   publisher    = {Zenodo},
-  version      = {v0.4.10},
-  doi          = {10.5281/zenodo.10058457},
-  url          = {https://doi.org/10.5281/zenodo.10058457}
+  version      = {v0.5.0},
+  doi          = {10.5281/zenodo.10777487},
+  url          = {https://doi.org/10.5281/zenodo.10777487}
 }
 ```
 <!-- citation-end -->
@@ -84,4 +84,5 @@ This work is supported by the European Research Council (ERC) through the ERC-20
 BigEarth Project under Grant 759764 and by the European Space Agency through the DA4DTE
 (Demonstrator precursor Digital Assistant interface for Digital Twin Earth) project and
 by the German Ministry for Economic Affairs and Climate Action through the AI-Cube
-Project under Grant 50EE2012B.
+Project under Grant 50EE2012B. Furthermore, we gratefully acknowledge funding from the 
+German Federal Ministry of Education and Research under the grant BIFOLD24B.

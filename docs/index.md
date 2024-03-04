@@ -53,6 +53,7 @@ API/api_configilm
 API/api_datasets
 API/api_fusion
 API/api_util
+API/api_throughput
 ```
 
 ```{toctree}

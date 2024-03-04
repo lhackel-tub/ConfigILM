@@ -14,6 +14,7 @@ def data_dirs():
 
 
 @pytest.mark.parametrize("split", ["train", "test", None])
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_ds_default(data_dirs, split):
     img_size = (3, 120, 120)
     ds = COCOQADataSet(data_dirs, split=split)
@@ -32,6 +33,7 @@ def test_ds_default(data_dirs, split):
     "max_len",
     [None, -1, 1, 5, 20, 50, 200, 2_000, 20_000, 117_683, 117_684, 117_685, 200_000],
 )
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_ds_max_img_idx(data_dirs, max_len):
     img_size = (3, 120, 120)
     ds = COCOQADataSet(data_dirs, split=None, max_len=max_len)
@@ -56,6 +58,7 @@ def test_ben_dm_lightning(data_dirs):
 
 
 @pytest.mark.parametrize("split", dataset_params)
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_default(data_dirs, split: str):
     dm = COCOQADataModule(data_dirs=data_dirs)
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
@@ -108,6 +111,7 @@ def test_dm_default(data_dirs, split: str):
 
 
 @pytest.mark.parametrize("bs", [1, 2, 3, 4, 16, 32])
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_dataloader(data_dirs, bs: int):
     dm = COCOQADataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
     test_data_common.dataloaders_ok(
@@ -118,16 +122,21 @@ def test_dm_dataloader(data_dirs, bs: int):
     )
 
 
+@pytest.mark.filterwarnings('ignore:Shuffle was set to False.')
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_shuffle_false(data_dirs):
     dm = COCOQADataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     test_data_common._test_dm_shuffle_false(dm)
 
 
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_shuffle_none(data_dirs):
     dm = COCOQADataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     test_data_common._test_dm_shuffle_none(dm)
 
 
+@pytest.mark.filterwarnings('ignore:Shuffle was set to True.')
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_shuffle_true(data_dirs):
     dm = COCOQADataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     test_data_common._test_dm_shuffle_true(dm)

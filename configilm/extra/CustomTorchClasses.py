@@ -7,7 +7,7 @@ from typing import Sequence
 import torch
 import torchvision.transforms.functional as TF
 from torch.optim import Optimizer
-from torch.optim.lr_scheduler import _LRScheduler
+from torch.optim.lr_scheduler import LRScheduler
 
 
 class MyRotateTransform:
@@ -54,7 +54,7 @@ class MyGaussianNoise:
 # copied from pl_bolts but modified due to an import error in pl_bolts
 # see from pl_bolts.optimizers.lr_scheduler import LinearWarmupCosineAnnealingLR
 # can be removed once pl_bolts works with pytorch 2.0
-class LinearWarmupCosineAnnealingLR(_LRScheduler):
+class LinearWarmupCosineAnnealingLR(LRScheduler):
     """
     Sets the learning rate of each parameter group to follow a linear warmup schedule
     between warmup_start_lr and base_lr followed by a cosine annealing schedule between

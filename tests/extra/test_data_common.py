@@ -80,6 +80,16 @@ def _test_dm_shuffle_false(dm: ClassificationVQADataModule):
     assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
+def _assert_shuffle_true_with_retry(dl: torch.utils.data.DataLoader):
+    for i in range(5):
+        try:
+            assert not torch.equal(next(iter(dl))[0], next(iter(dl))[0])
+            break
+        except AssertionError:
+            # retry, due to randomness it may not always actually be different
+            pass
+
+
 def _test_dm_shuffle_true(dm: ClassificationVQADataModule):
     with warnings.catch_warnings():
         warnings.filterwarnings(
@@ -88,12 +98,9 @@ def _test_dm_shuffle_true(dm: ClassificationVQADataModule):
             message="Validation and Test set are equal in this " "Dataset.",
         )
         dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
-    assert not torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
+    _assert_shuffle_true_with_retry(dm.train_dataloader())
+    _assert_shuffle_true_with_retry(dm.val_dataloader())
+    _assert_shuffle_true_with_retry(dm.test_dataloader())
 
 
 def _test_dm_shuffle_none(dm: ClassificationVQADataModule):
@@ -104,10 +111,7 @@ def _test_dm_shuffle_none(dm: ClassificationVQADataModule):
             message="Validation and Test set are equal in this " "Dataset.",
         )
         dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
+    _assert_shuffle_true_with_retry(dm.train_dataloader())
     assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
     assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 

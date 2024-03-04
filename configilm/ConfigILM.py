@@ -488,6 +488,8 @@ class ConfigILM(nn.Module):
 
         :param batch: Input batch of single modality of list of batches of multiple
             modalities
+        Note: The text input of the VQA model will be automatically masked based on the
+            padding tokens of the tokenizer.
         :returns: logits of the network
         """
         # check that input is correct before running network
@@ -504,12 +506,13 @@ class ConfigILM(nn.Module):
             v = self.config.fusion_activation(v)
 
             # text path
+            attention_mask = (q != self.tokenizer.pad_token_id).float()
             if self.config.use_pooler_output:
                 # linear input is QFormer.config.hidden_size
-                q = self.text_encoder(q).pooler_output.flatten(start_dim=1)
+                q = self.text_encoder(q, attention_mask).pooler_output.flatten(start_dim=1)
             else:
                 # linear input is QFormer.config.hidden_size * seq_length
-                q = self.text_encoder(q).last_hidden_state.flatten(start_dim=1)
+                q = self.text_encoder(q, attention_mask).last_hidden_state.flatten(start_dim=1)
             q = self.dropout_q(q)
             q = self.text_linear(q)
             q = self.config.fusion_activation(q)

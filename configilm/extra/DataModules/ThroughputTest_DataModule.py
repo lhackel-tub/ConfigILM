@@ -7,10 +7,10 @@ from typing import Mapping
 from typing import Optional
 
 from configilm.extra.DataModules.ClassificationVQADataModule import ClassificationVQADataModule
-from configilm.extra.DataSets.ThroughputTest_DataSet import ThroughputTestDataset
+from configilm.extra.DataSets.ThroughputTest_DataSet import VQAThroughputTestDataset
 
 
-class ThroughputTestDataModule(ClassificationVQADataModule):
+class VQAThroughputTestDataModule(ClassificationVQADataModule):
     def __init__(
         self,
         data_dirs: Mapping[str, Path],
@@ -97,7 +97,7 @@ class ThroughputTestDataModule(ClassificationVQADataModule):
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
             if self.train_ds is None:
-                self.train_ds = ThroughputTestDataset(
+                self.train_ds = VQAThroughputTestDataset(
                     self.data_dirs,
                     split="train",
                     transform=None,
@@ -112,7 +112,7 @@ class ThroughputTestDataModule(ClassificationVQADataModule):
                 self.selected_answers = self.train_ds.answers
 
             if self.val_ds is None:
-                self.val_ds = ThroughputTestDataset(
+                self.val_ds = VQAThroughputTestDataset(
                     self.data_dirs,
                     split="val",
                     transform=None,
@@ -129,7 +129,7 @@ class ThroughputTestDataModule(ClassificationVQADataModule):
 
         # Assign test dataset for use in dataloader(s)
         if stage == "test" or stage is None:
-            self.test_ds = ThroughputTestDataset(
+            self.test_ds = VQAThroughputTestDataset(
                 self.data_dirs,
                 split="test",
                 transform=self.eval_transforms,

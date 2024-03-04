@@ -50,7 +50,7 @@ class FakeTokenizer:
         return self.tokenize(string)
 
 
-class ThroughputTestDataset(ClassificationVQADataset):
+class VQAThroughputTestDataset(ClassificationVQADataset):
     def __init__(
         self,
         data_dirs: Mapping[str, Path],

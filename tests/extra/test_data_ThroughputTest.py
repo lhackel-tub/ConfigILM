@@ -4,9 +4,9 @@ from typing import Tuple
 import pytest
 
 from . import test_data_common
-from configilm.extra.DataModules.ThroughputTest_DataModule import ThroughputTestDataModule
+from configilm.extra.DataModules.ThroughputTest_DataModule import VQAThroughputTestDataModule
 from configilm.extra.DataSets.ThroughputTest_DataSet import resolve_data_dir
-from configilm.extra.DataSets.ThroughputTest_DataSet import ThroughputTestDataset
+from configilm.extra.DataSets.ThroughputTest_DataSet import VQAThroughputTestDataset
 
 
 @pytest.fixture
@@ -31,7 +31,7 @@ def test_basic_dataset_splits(data_dirs, split: str, classes: int):
     img_size = (3, 256, 256)
     seq_length = 32
 
-    ds = ThroughputTestDataset(
+    ds = VQAThroughputTestDataset(
         data_dirs=data_dirs,
         split=split,
         img_size=img_size,
@@ -50,7 +50,7 @@ def test_basic_dataset_splits(data_dirs, split: str, classes: int):
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
 def test_ds_imgsize_pass(data_dirs, img_size: Tuple[int, int, int]):
-    ds = ThroughputTestDataset(data_dirs=data_dirs, split="val", img_size=img_size, num_classes=9, seq_length=32)
+    ds = VQAThroughputTestDataset(data_dirs=data_dirs, split="val", img_size=img_size, num_classes=9, seq_length=32)
 
     test_data_common.dataset_ok(
         dataset=ds,
@@ -64,7 +64,7 @@ def test_ds_imgsize_pass(data_dirs, img_size: Tuple[int, int, int]):
 @pytest.mark.parametrize("img_size", img_shapes_fail)
 def test_ds_imgsize_fail(data_dirs, img_size: Tuple[int, int, int]):
     with pytest.raises(AssertionError):
-        _ = ThroughputTestDataset(
+        _ = VQAThroughputTestDataset(
             data_dirs=data_dirs,
             split="val",
             img_size=img_size,
@@ -76,7 +76,7 @@ def test_ds_imgsize_fail(data_dirs, img_size: Tuple[int, int, int]):
 @pytest.mark.parametrize("max_len", [1, 16, 74, 1_199, 1_200, None, -1])
 def test_ds_max_img_idx(data_dirs, max_len: int):
     total_samples = 1200
-    ds = ThroughputTestDataset(data_dirs=data_dirs, max_len=max_len, num_samples=total_samples // 3)
+    ds = VQAThroughputTestDataset(data_dirs=data_dirs, max_len=max_len, num_samples=total_samples // 3)
     expected_len = total_samples
     len_ds = expected_len if max_len is None or max_len > expected_len or max_len == -1 else max_len
     test_data_common.dataset_ok(
@@ -90,25 +90,25 @@ def test_ds_max_img_idx(data_dirs, max_len: int):
 
 @pytest.mark.parametrize("max_len", [1_201, 20_000, 100_000, 10_000_000])
 def test_ds_max_img_idx_too_large(data_dirs, max_len: int):
-    ds = ThroughputTestDataset(data_dirs=data_dirs, max_len=max_len, num_samples=1200 // 3)
+    ds = VQAThroughputTestDataset(data_dirs=data_dirs, max_len=max_len, num_samples=1200 // 3)
     assert len(ds) < max_len
 
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
 def test_ds_classes(data_dirs, classes: int):
-    ds = ThroughputTestDataset(data_dirs=data_dirs, num_classes=classes, split="train")
+    ds = VQAThroughputTestDataset(data_dirs=data_dirs, num_classes=classes, split="train")
     max_classes_mock_set = 1  # number of classes in the mock data
     test_data_common._assert_classes_beyond_border_invalid(ds, classes, max_classes_mock_set)
 
 
 def test_ben_dm_lightning(data_dirs):
-    dm = ThroughputTestDataModule(data_dirs=data_dirs)
+    dm = VQAThroughputTestDataModule(data_dirs=data_dirs)
     test_data_common._assert_dm_correct_lightning_version(dm)
 
 
 @pytest.mark.parametrize("split", dataset_params)
 def test_dm_default(data_dirs, split: str):
-    dm = ThroughputTestDataModule(data_dirs=data_dirs)
+    dm = VQAThroughputTestDataModule(data_dirs=data_dirs)
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
     dm.setup(stage=split2stage[split])
     dm.prepare_data()
@@ -117,7 +117,7 @@ def test_dm_default(data_dirs, split: str):
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
 def test_dm_dataloaders(data_dirs, bs: int):
-    dm = ThroughputTestDataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
+    dm = VQAThroughputTestDataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
     test_data_common.dataloaders_ok(
         dm,
         expected_image_shape=(bs, 3, 256, 256),

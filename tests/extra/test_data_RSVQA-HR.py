@@ -27,6 +27,7 @@ max_img_idxs_too_large = [600_000, 1_000_000]
 
 
 @pytest.mark.parametrize("split, classes", [(s, c) for s in dataset_params for c in class_number])
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_basic_dataset_splits(data_dirs, split: str, classes: int):
     img_size = (3, 256, 256)
     seq_length = 32
@@ -49,6 +50,7 @@ def test_basic_dataset_splits(data_dirs, split: str, classes: int):
 
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_ds_imgsize_pass(data_dirs, img_size: Tuple[int, int, int]):
     ds = RSVQAHRDataSet(data_dirs=data_dirs, split="val", img_size=img_size, num_classes=94, seq_length=32)
 
@@ -62,6 +64,7 @@ def test_ds_imgsize_pass(data_dirs, img_size: Tuple[int, int, int]):
 
 
 @pytest.mark.parametrize("img_size", img_shapes_fail)
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_ds_imgsize_fail(data_dirs, img_size: Tuple[int, int, int]):
     with pytest.raises(AssertionError):
         _ = RSVQAHRDataSet(
@@ -74,6 +77,7 @@ def test_ds_imgsize_fail(data_dirs, img_size: Tuple[int, int, int]):
 
 
 @pytest.mark.parametrize("max_len", [1, 16, 74, 1200, 1201, None, -1])
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_ds_max_img_idx(data_dirs, max_len):
     ds = RSVQAHRDataSet(data_dirs=data_dirs, max_len=max_len)
     expected_len = 1201
@@ -88,12 +92,14 @@ def test_ds_max_img_idx(data_dirs, max_len):
 
 
 @pytest.mark.parametrize("max_len", [1202, 20_000, 100_000, 10_000_000])
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_ds_max_img_idx_too_large(data_dirs, max_len: int):
     ds = RSVQAHRDataSet(data_dirs=data_dirs, max_len=max_len)
     assert len(ds) < max_len
 
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_ds_classes(data_dirs, classes: int):
     ds = RSVQAHRDataSet(data_dirs=data_dirs, num_classes=classes, split="train")
     max_classes_mock_set = 14  # number of classes in the mock data
@@ -101,18 +107,21 @@ def test_ds_classes(data_dirs, classes: int):
 
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_ds_classes_no_buckets(data_dirs, classes: int):
     ds = RSVQAHRDataSet(data_dirs=data_dirs, num_classes=classes, split="train", quantize_answers=False)
     max_classes_mock_set = 26  # number of classes in the mock data
     test_data_common._assert_classes_beyond_border_invalid(ds, classes, max_classes_mock_set)
 
 
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_ben_dm_lightning(data_dirs):
     dm = RSVQAHRDataModule(data_dirs=data_dirs)
     test_data_common._assert_dm_correct_lightning_version(dm)
 
 
 @pytest.mark.parametrize("split", dataset_params)
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_default(data_dirs, split: str):
     dm = RSVQAHRDataModule(data_dirs=data_dirs)
     split2stage = {
@@ -128,6 +137,7 @@ def test_dm_default(data_dirs, split: str):
 
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_dataloaders(data_dirs, bs: int):
     dm = RSVQAHRDataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
     test_data_common.dataloaders_ok(
@@ -138,21 +148,27 @@ def test_dm_dataloaders(data_dirs, bs: int):
     )
 
 
+@pytest.mark.filterwarnings('ignore:Shuffle was set to False.')
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_shuffle_false(data_dirs):
     dm = RSVQAHRDataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     test_data_common._test_dm_shuffle_false(dm)
 
 
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_shuffle_none(data_dirs):
     dm = RSVQAHRDataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     test_data_common._test_dm_shuffle_none(dm)
 
 
+@pytest.mark.filterwarnings('ignore:Shuffle was set to True.')
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_dm_shuffle_true(data_dirs):
     dm = RSVQAHRDataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     test_data_common._test_dm_shuffle_true(dm)
 
 
+@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
 def test_different_test_splits(data_dirs):
     dm = RSVQAHRDataModule(
         data_dirs=data_dirs,

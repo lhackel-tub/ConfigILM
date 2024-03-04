@@ -95,7 +95,7 @@ def _test_dm_shuffle_true(dm: ClassificationVQADataModule):
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Validation and Test set are equal in this " "Dataset.",
+            message="Validation and Test set are equal in this Dataset.",
         )
         dm.setup(None)
     _assert_shuffle_true_with_retry(dm.train_dataloader())
@@ -108,7 +108,7 @@ def _test_dm_shuffle_none(dm: ClassificationVQADataModule):
         warnings.filterwarnings(
             action="ignore",
             category=UserWarning,
-            message="Validation and Test set are equal in this " "Dataset.",
+            message="Validation and Test set are equal in this Dataset.",
         )
         dm.setup(None)
     _assert_shuffle_true_with_retry(dm.train_dataloader())

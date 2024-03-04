@@ -40,7 +40,10 @@
    "source": [
     "# remove-output\n",
     "# import packages\n",
-    "import lightning.pytorch as pl\n",
+    "try:\n",
+    "    import lightning.pytorch as pl\n",
+    "except ImportError:\n",
+    "    import pytorch_lightning as pl\n",
     "    \n",
     "import torch\n",
     "import torch.nn.functional as F\n",

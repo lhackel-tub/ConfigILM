@@ -367,7 +367,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataModules</span> <span class="kn">import</span> <span class="n">ThroughputTest_DataModule</span>
-<span class="n">dm</span> <span class="o">=</span> <span class="n">ThroughputTest_DataModule</span><span class="o">.</span><span class="n">ThroughputTestDataModule</span><span class="p">(</span>
+<span class="n">dm</span> <span class="o">=</span> <span class="n">ThroughputTest_DataModule</span><span class="o">.</span><span class="n">VQAThroughputTestDataModule</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="p">{},</span>  <span class="c1"># parameter is ignored but required for compatibility with other DataModules in ConfigILM</span>
     <span class="n">img_size</span><span class="o">=</span><span class="p">(</span><span class="n">number_of_channels</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">),</span>
     <span class="n">seq_length</span><span class="o">=</span><span class="n">seq_len</span><span class="p">,</span>
@@ -400,9 +400,9 @@ We measure the throughput by measuring the time it takes to run the test set and
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Throughput: 93.153 samples per second
-Time per sample: 10.7 milli-seconds
-Total time: 5.496 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Throughput: 90.711 samples per second
+Time per sample: 11.0 milli-seconds
+Total time: 5.644 seconds
 </pre></div>
 </div>
 </div>
@@ -436,9 +436,9 @@ Total time: 5.496 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Throughput: 57.356 samples per second
-Time per sample: 17.4 milli-seconds
-Total time: 8.927 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Throughput: 55.997 samples per second
+Time per sample: 17.9 milli-seconds
+Total time: 9.143 seconds
 </pre></div>
 </div>
 </div>

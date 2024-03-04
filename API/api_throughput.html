@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Throughput" href="api_throughput.html" /><link rel="prev" title="Fusion Methods" href="api_fusion.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Contributing" href="../general/contributing.html" /><link rel="prev" title="Utilities" href="api_util.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Utilities - ConfigILM</title>
+        <title>Throughput - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -194,8 +194,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_fusion.html">Fusion Methods</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_throughput.html">Throughput</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_util.html">Utilities</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Throughput</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
@@ -238,250 +238,349 @@
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.util">
-<span id="utilities"></span><span id="api-util"></span><h1>Utilities<a class="headerlink" href="#module-configilm.util" title="Permalink to this heading">#</a></h1>
+          <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.extra.DataSets.ThroughputTest_DataSet">
+<span id="throughput"></span><span id="api-throughput"></span><h1>Throughput<a class="headerlink" href="#module-configilm.extra.DataSets.ThroughputTest_DataSet" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="configilm.util.AverageMeter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.util.</span></span><span class="sig-name descname"><span class="pre">AverageMeter</span></span><a class="headerlink" href="#configilm.util.AverageMeter" title="Permalink to this definition">#</a></dt>
-<dd><p>Computes and stores the average and current value of some kind of sequential calls.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="configilm.util.AverageMeter.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">':f'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.AverageMeter.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initializes the counter.</p>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.ThroughputTest_DataSet.</span></span><span class="sig-name descname"><span class="pre">VQAThroughputTestDataset</span></span><a class="headerlink" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset" title="Permalink to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">256,</span> <span class="pre">256)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selected_answers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>This class implements the ThroughputTest dataset. It is a subclass of
+ClassificationVQADataset and provides some dataset specific functionality.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – Name of the counter during __str__</p></li>
-<li><p><strong>fmt</strong> (<em>str</em>) – format of the numbers during __str__</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="configilm.util.AverageMeter.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.AverageMeter.reset" title="Permalink to this definition">#</a></dt>
-<dd><p>Resets the counter and all properties to the default value 0.</p>
+<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – A mapping from file key to file path. Is ignored, as
+the dataset does not use any real files but included for compatibility.</p></li>
+<li><p><strong>split</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>str</em><em>]</em>) – <p>The name of the split to use. Is ignored, as the dataset
+does not use any real splits but included for compatibility with other</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
+</p></li>
+<li><p><strong>transform</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to transform the images after
+loading them. Is ignored, as the dataset does not use any real images but
+included for compatibility with other datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>max_len</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>int</em><em>]</em>) – <p>The maximum number of qa-pairs to use. If None or -1 is
+provided, all qa-pairs are used. “all” is defined in num_samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>img_size</strong> (<em>tuple</em>) – <p>The size of the images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(3, 120, 120)</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>selected_answers</strong> (<em>Optional</em><em>[</em><em>list</em><em>]</em>) – <p>A list of answers that should be used. If None
+is provided, the num_classes most common answers are used. If
+selected_answers is not None, num_classes is ignored. Only used to infer
+the number of classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>num_classes</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The number of classes to use. Only used if
+selected_answers is None. If set to None, all answers are used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>430</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>tokenizer</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to tokenize the questions. Is
+ignored, as the dataset does not use any real questions but included for
+compatibility with other datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>seq_length</strong> (<em>int</em>) – <p>The exact length of the tokenized questions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>64</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>return_extras</strong> (<em>bool</em>) – <p>Is ignored, as the dataset does not use any real
+data but included for compatibility with other datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>num_samples</strong> (<em>int</em>) – <p>The number of samples to simulate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1000</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.util.AverageMeter.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.AverageMeter.update" title="Permalink to this definition">#</a></dt>
-<dd><p>Update the AverageMeter with a new value or the same value multiple times.</p>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.load_image">
+<span class="sig-name descname"><span class="pre">load_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.load_image" title="Permalink to this definition">#</a></dt>
+<dd><p>This method should load the image with the given name and return it as
+a tensor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>val</strong> – value to update the AverageMeter with</p></li>
-<li><p><strong>n</strong> (<em>int</em>) – how often to update with this value</p></li>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – The name of the image to load</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The image as a tensor</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.prepare_split">
+<span class="sig-name descname"><span class="pre">prepare_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.prepare_split" title="Permalink to this definition">#</a></dt>
+<dd><p>This method should return a list of tuples, where each tuple contains
+the following elements:</p>
+<ul class="simple">
+<li><p>The key of the image at index 0</p></li>
+<li><p>The question at index 1</p></li>
+<li><p>The answer at index 2</p></li>
+<li><p>additional information at index 3 and higher</p></li>
 </ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – The name of the split to prepare</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of tuples, each tuple containing the elements described</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.split_names">
+<span class="sig-name descname"><span class="pre">split_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.split_names" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the names of the splits that are available for this dataset. The
+default implementation returns {“train”, “val”, “test”}. If you want to
+use different names, you should override this method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A set of strings, each string being the name of a split</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dd class="field-even"><p>set[str]</p>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="configilm.extra.DataSets.ThroughputTest_DataSet.resolve_data_dir">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.ThroughputTest_DataSet.</span></span><span class="sig-name descname"><span class="pre">resolve_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.ThroughputTest_DataSet.resolve_data_dir" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper function that tries to resolve the correct directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_dir</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – current path that is suggested</p></li>
+<li><p><strong>allow_mock</strong> (<em>bool</em>) – <p>if True, mock data will be used if no real data is found</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>force_mock</strong> (<em>bool</em>) – <p>if True, only mock data will be used</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a dict with all paths to the data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Mapping</em>[str, <em>Union</em>[str, <em>Path</em>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-configilm.extra.DataModules.ThroughputTest_DataModule"></span><p>Dataloader and Datamodule for ThroughputTest dataset.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="configilm.util.Messages">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.util.</span></span><span class="sig-name descname"><span class="pre">Messages</span></span><a class="headerlink" href="#configilm.util.Messages" title="Permalink to this definition">#</a></dt>
-<dd><p>Class to print messages. Defines colors and formatting for bash shells.
-Class methods are wrapper for specific formatting combinations and can be called
-without defining an object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">FIELDS<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="field-list simple">
-<dt class="field-odd">HEADER<span class="colon">:</span></dt>
-<dd class="field-odd"><p>purple</p>
-</dd>
-<dt class="field-even">OKBLUE<span class="colon">:</span></dt>
-<dd class="field-even"><p>blue</p>
-</dd>
-<dt class="field-odd">OKCYAN<span class="colon">:</span></dt>
-<dd class="field-odd"><p>blue - used in HINT messages</p>
-</dd>
-<dt class="field-even">OKGREEN<span class="colon">:</span></dt>
-<dd class="field-even"><p>green - used in SUCCESS messages</p>
-</dd>
-<dt class="field-odd">WARNING<span class="colon">:</span></dt>
-<dd class="field-odd"><p>yellow - used in WARNING messages</p>
-</dd>
-<dt class="field-even">FAIL<span class="colon">:</span></dt>
-<dd class="field-even"><p>red - used in ERROR messages</p>
-</dd>
-<dt class="field-odd">ENDC<span class="colon">:</span></dt>
-<dd class="field-odd"><p>formatting: reverts to default</p>
-</dd>
-<dt class="field-even">BOLD<span class="colon">:</span></dt>
-<dd class="field-even"><p>formatting: bolt font</p>
-</dd>
-<dt class="field-odd">UNDERLINE<span class="colon">:</span></dt>
-<dd class="field-odd"><p>formatting: underlined font</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p>Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Messages</span><span class="o">.</span><span class="n">WARNING</span><span class="si">}</span><span class="s2">WARNING: This is a Warning.</span><span class="si">{</span><span class="n">Messages</span><span class="o">.</span><span class="n">ENDC</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">Messages</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;This is a Warning.&quot;</span><span class="p">)</span>  <span class="c1"># equal result</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="configilm.util.Messages.error">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.error" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints a red error message with aligned indent and “[ERROR]”.
-If the message has multiple lines, it is aligned to the right of the colon.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Message to print</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="configilm.util.Messages.hint">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.hint" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints a blue hint message with aligned indent and “[HINT]”.
-If the message has multiple lines, it is aligned to the right of the colon.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Message to print</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="configilm.util.Messages.success">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.success" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints a green success message with aligned indent and “[SUCCESS]”
-If the message has multiple lines, it is aligned to the right of the colon.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Message to print</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="configilm.util.Messages.warn">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">warn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.warn" title="Permalink to this definition">#</a></dt>
-<dd><p>Prints a yellow warning message with aligned indent and “[WARNING]”.
-If the message has multiple lines, it is aligned to the right of the colon.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Message to print</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="configilm.util.convert">
-<span class="sig-prename descclassname"><span class="pre">configilm.util.</span></span><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multi_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multi_pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.convert" title="Permalink to this definition">#</a></dt>
-<dd><p>Helper function to convert labels and logits into a format that is accepted by
-wandb.plot. Applicable for multi-class classification (not multi-label).</p>
-<p>Example: tensor(0,0,1,0,0,0,1,…,0) will become array(2,6,…) for ground truth
-input (multi_true)</p>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataModules.ThroughputTest_DataModule.</span></span><span class="sig-name descname"><span class="pre">VQAThroughputTestDataModule</span></span><a class="headerlink" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule" title="Permalink to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">256,</span> <span class="pre">256)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>This class implements the DataModule for the ThroughputTest dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>multi_true</strong> – list of multi hot labels of value 0 or 1, array has dimension n*d</p></li>
-<li><p><strong>multi_pred</strong> – list of logits, array has dimension n*d</p></li>
-</ul>
+<li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – A mapping from file key to file path. Is ignored for this dataset.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – <p>The batch size to use for the dataloaders.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>16</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>(labels, logits) as requested by wandb.plot</p>
+</dl>
+</p></li>
+<li><p><strong>img_size</strong> (<em>tuple</em>) – <p>The size of the images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(3, 256, 256)</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>num_workers_dataloader</strong> (<em>int</em>) – <p>The number of workers to use for the dataloaders.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>4</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>shuffle</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Whether to shuffle the data in the dataloaders. If None is provided, the data is shuffled
+for training and not shuffled for validation and test. However, for this dataset, all the data is
+the same, so this parameter has no effect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>max_len</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The maximum number of qa-pairs to use. If None or -1 is
+provided, all qa-pairs are used. “all” is defines in num_samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>tokenizer</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to tokenize the questions. Is
+ignored, as the dataset does not use any real questions but included for
+compatibility with other datasets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>seq_length</strong> (<em>int</em>) – <p>The maximum length of the tokenized questions. If the tokenized question is longer than
+this, it will be truncated. If it is shorter, it will be padded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>64</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>pin_memory</strong> (<em>Optional</em><em>[</em><em>bool</em><em>]</em>) – <p>Whether to use pinned memory for the dataloaders. If None is
+provided, it is set to True if a GPU is available and False otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>num_samples</strong> (<em>int</em>) – <p>The number of samples to simulate per split.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1000</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>num_classes</strong> (<em>int</em>) – <p>The number of classes in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1000</p>
+</dd>
+</dl>
+</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="configilm.util.huggingface_tokenize_and_pad">
-<span class="sig-prename descclassname"><span class="pre">configilm.util.</span></span><span class="sig-name descname"><span class="pre">huggingface_tokenize_and_pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokenizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_length</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.huggingface_tokenize_and_pad" title="Permalink to this definition">#</a></dt>
-<dd><p>Tokenizes a string given a huggingface tokenizer.
-Assumes, that the tokenizer has a “[CLS]” start token, a “[SEP]” end token and a
-“[PAD]” padding token.
-If the string is too long it will be cut to the specific length.
-It the string is too short, it will be padded with the “[PAD]” token.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.setup" title="Permalink to this definition">#</a></dt>
+<dd><p>Prepares the data sets for the specific stage.</p>
+<ul class="simple">
+<li><p>“fit”: train and validation data set</p></li>
+<li><p>“test”: test data set</p></li>
+<li><p>None: all data sets</p></li>
+</ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>tokenizer</strong> – hugging face tokenizer</p></li>
-<li><p><strong>string</strong> (<em>str</em>) – string to be encoded</p></li>
-<li><p><strong>seq_length</strong> (<em>int</em>) – length of the output</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>list of integers (IDs) of the tokenized string of length seq_length</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="configilm.util.indent">
-<span class="sig-prename descclassname"><span class="pre">configilm.util.</span></span><span class="sig-name descname"><span class="pre">indent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_spaces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_first</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.indent" title="Permalink to this definition">#</a></dt>
-<dd><p>Indents a string by a number of spaces. Indents every line individually except for
-the first line if indent_first is not set.</p>
+<dd class="field-odd"><p><strong>stage</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>None, “fit”, or “test”</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>s</strong> – string to indent</p></li>
-<li><p><strong>num_spaces</strong> – number of spaces to indent</p></li>
-<li><p><strong>indent_first</strong> – if set, first line is indented as well, otherwise no spaces
-added to first line</p></li>
-</ul>
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>s with each line indented</p>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="configilm.util.round_to">
-<span class="sig-prename descclassname"><span class="pre">configilm.util.</span></span><span class="sig-name descname"><span class="pre">round_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.round_to" title="Permalink to this definition">#</a></dt>
-<dd><p>Rounds to an arbitrary base, e.g. 5 or 2 or 0.002.</p>
-<p>Result is not exact.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> – number to be rounded</p></li>
-<li><p><strong>base</strong> – base</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>rounded number</p>
-</dd>
-<dt class="field-odd">Example<span class="colon">:</span></dt>
-<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">round_to</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="go">4</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">round_to</span><span class="p">(</span><span class="mf">5.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
-<span class="go">5.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">round_to</span><span class="p">(</span><span class="mf">5.199</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
-<span class="go">5.2</span>
-</pre></div>
-</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.test_dataloader">
+<span class="sig-name descname"><span class="pre">test_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.test_dataloader" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the dataloader for the test data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AssertionError if the test dataset is not set up. This can happen if the setup()
+method is not called before this method or the dataset has no test data.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.train_dataloader">
+<span class="sig-name descname"><span class="pre">train_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.train_dataloader" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the dataloader for the training data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AssertionError if the training dataset is not set up. This can happen if the setup()
+method is not called before this method or the dataset has no training data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.val_dataloader">
+<span class="sig-name descname"><span class="pre">val_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.val_dataloader" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the dataloader for the validation data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p>AssertionError if the validation dataset is not set up. This can happen if the setup()
+method is not called before this method or the dataset has no validation data.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -491,23 +590,23 @@ added to first line</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="api_throughput.html">
+          <a class="next-page" href="../general/contributing.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Throughput</div>
+                <div class="title">Contributing</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="api_fusion.html">
+          <a class="prev-page" href="api_util.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Fusion Methods</div>
+                <div class="title">Utilities</div>
                 
               </div>
             </a>
@@ -685,24 +784,23 @@ added to first line</p></li>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Utilities</a><ul>
-<li><a class="reference internal" href="#configilm.util.AverageMeter"><code class="docutils literal notranslate"><span class="pre">AverageMeter</span></code></a><ul>
-<li><a class="reference internal" href="#configilm.util.AverageMeter.__init__"><code class="docutils literal notranslate"><span class="pre">AverageMeter.__init__()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.util.AverageMeter.reset"><code class="docutils literal notranslate"><span class="pre">AverageMeter.reset()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.util.AverageMeter.update"><code class="docutils literal notranslate"><span class="pre">AverageMeter.update()</span></code></a></li>
+<li><a class="reference internal" href="#">Throughput</a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataset</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.__init__"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataset.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.load_image"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataset.load_image()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.prepare_split"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataset.prepare_split()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.ThroughputTest_DataSet.VQAThroughputTestDataset.split_names"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataset.split_names()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configilm.util.Messages"><code class="docutils literal notranslate"><span class="pre">Messages</span></code></a><ul>
-<li><a class="reference internal" href="#configilm.util.Messages.error"><code class="docutils literal notranslate"><span class="pre">Messages.error()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.util.Messages.hint"><code class="docutils literal notranslate"><span class="pre">Messages.hint()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.util.Messages.success"><code class="docutils literal notranslate"><span class="pre">Messages.success()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.util.Messages.warn"><code class="docutils literal notranslate"><span class="pre">Messages.warn()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.ThroughputTest_DataSet.resolve_data_dir"><code class="docutils literal notranslate"><span class="pre">resolve_data_dir()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataModule</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.__init__"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataModule.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.setup"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataModule.setup()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.test_dataloader"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataModule.test_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.train_dataloader"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataModule.train_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.ThroughputTest_DataModule.VQAThroughputTestDataModule.val_dataloader"><code class="docutils literal notranslate"><span class="pre">VQAThroughputTestDataModule.val_dataloader()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configilm.util.convert"><code class="docutils literal notranslate"><span class="pre">convert()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.util.huggingface_tokenize_and_pad"><code class="docutils literal notranslate"><span class="pre">huggingface_tokenize_and_pad()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.util.indent"><code class="docutils literal notranslate"><span class="pre">indent()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.util.round_to"><code class="docutils literal notranslate"><span class="pre">round_to()</span></code></a></li>
 </ul>
 </li>
 </ul>

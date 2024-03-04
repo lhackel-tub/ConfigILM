@@ -14,8 +14,8 @@ from configilm.ConfigILM import ILMType
 from configilm.extra import BEN_lmdb_utils
 from configilm.extra._defaults import default_train_transform
 from configilm.extra._defaults import default_transform
-from configilm.extra.DataSets.RSVQAxBEN_DataSet import RSVQAxBENDataSet
 from configilm.extra.DataSets.RSVQAxBEN_DataSet import resolve_data_dir
+from configilm.extra.DataSets.RSVQAxBEN_DataSet import RSVQAxBENDataSet
 
 __author__ = "Leonard Hackel - BIFOLD/RSiM TU Berlin"
 

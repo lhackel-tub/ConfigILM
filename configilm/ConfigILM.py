@@ -488,6 +488,8 @@ class ConfigILM(nn.Module):
 
         :param batch: Input batch of single modality of list of batches of multiple
             modalities
+        Note: The text input of the VQA model will be automatically masked based on the
+            padding tokens of the tokenizer.
         :returns: logits of the network
         """
         # check that input is correct before running network

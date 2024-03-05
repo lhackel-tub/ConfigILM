@@ -1,7 +1,9 @@
 """
-This is a minimal example script for vision classification using the BigEarthNet dataset.
+This is a minimal example script for image classification using the BigEarthNet dataset.
 It demonstrates how to train a model on the BigEarthNet dataset using the ConfigILM library.
-The relevant parts of the codes are lines 26-33 (model setup) and lines (35-58) (dataset setup).
+The relevant parts of the codes that are using ConfigILM are
+ - lines 28-35 (model setup) and
+ - lines 37-60 (dataset setup).
 The rest of the code is boilerplate code for training and evaluation.
 """
 import torch

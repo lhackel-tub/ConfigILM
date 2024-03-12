@@ -1,13 +1,15 @@
 """
-This is an example script for vision classification using the BigEarthNet dataset.
+This is an example script for vqa classification using the RSVQAxBEN dataset.
 It is basically a 1-to-1 application of the process described in the documentation under
-Supervised Vision Classification.
+Visual Question Answering (VQA).
 """
 # import packages
 from typing import List
-from typing import Optional
 
-import pytorch_lightning as pl
+try:
+    import lightning.pytorch as pl
+except ImportError:
+    import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
 import typer
@@ -163,7 +165,6 @@ class LitVisionEncoder(pl.LightningModule):
 def main(
     vision_model: str = "resnet18",
     text_model: str = "prajjwal1/bert-tiny",
-    data_dir: Optional[str] = None,
     number_of_channels: int = 12,
     image_size: int = 120,
     batch_size: int = 32,
@@ -199,9 +200,11 @@ def main(
 
     model = LitVisionEncoder(config=model_config, lr=lr)
     dm = RSVQAxBENDataModule(
-        data_dir=BEN_lmdb_utils.resolve_data_dir(data_dir, allow_mock=True),
+        # just using a mock data dir here - you should replace this with the path to your data
+        # (consider the dict structure needed)
+        data_dirs=BEN_lmdb_utils.resolve_data_dir(None, allow_mock=True),
         img_size=(number_of_channels, image_size, image_size),
-        max_img_idx=max_img_index,
+        max_len=max_img_index,
         num_workers_dataloader=num_workers,
         batch_size=batch_size,
         tokenizer=model.model.get_tokenizer(),

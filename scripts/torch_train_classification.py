@@ -100,6 +100,8 @@ def main(
     train_transform = default_train_transform(img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std)
     transform = default_transform(img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std)
 
+    # just using a mock data dir here - you should replace this with the path to your data
+    # (consider the dict structure needed)
     ben_data_dir = BEN_lmdb_utils.resolve_data_dir(None, allow_mock=True)
     train_ds = BENDataSet(
         ben_data_dir,

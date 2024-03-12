@@ -358,36 +358,20 @@ def test_dm_dataloaders_with_splitting(data_dirs, stage, seed, div):
 @pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_shuffle_false(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
-    dm.setup(None)
-    # should not be equal due to transforms being random!
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    test_data_common._test_dm_shuffle_false(dm)
 
 
 @pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_shuffle_none(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
-    dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    test_data_common._test_dm_shuffle_none(dm)
 
 
 @pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 @pytest.mark.filterwarnings("ignore:Shuffle was set to True.")
 def test_dm_shuffle_true(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
-    dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
+    test_data_common._test_dm_shuffle_true(dm)
 
 
 @pytest.mark.filterwarnings("ignore:No tokenizer was provided,")

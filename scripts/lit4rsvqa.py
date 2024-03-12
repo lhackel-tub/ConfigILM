@@ -1,15 +1,23 @@
 # import packages
+from math import ceil
 from os.path import isfile
+from pathlib import Path
 from typing import List
 from typing import Optional
 
-import pytorch_lightning as pl
+try:
+    import lightning.pytorch as pl
+    from lightning.pytorch.callbacks import LearningRateMonitor
+    from lightning.pytorch.callbacks import ModelCheckpoint
+    from lightning.pytorch.loggers import TensorBoardLogger
+except ImportError:
+    import pytorch_lightning as pl
+    from pytorch_lightning.callbacks import LearningRateMonitor
+    from pytorch_lightning.callbacks import ModelCheckpoint
+    from pytorch_lightning.loggers import TensorBoardLogger
 import torch
 import torch.nn.functional as F
 import typer
-from pytorch_lightning.callbacks import LearningRateMonitor
-from pytorch_lightning.callbacks import ModelCheckpoint
-from pytorch_lightning.loggers import TensorBoardLogger
 from torch import optim
 from torchmetrics.classification import MultilabelF1Score
 from tqdm import tqdm
@@ -18,23 +26,28 @@ from configilm import ConfigILM
 from configilm.ConfigILM import _get_hf_model as get_huggingface_model
 from configilm.ConfigILM import ILMConfiguration
 from configilm.ConfigILM import ILMType
-from configilm.extra.BEN_lmdb_utils import resolve_data_dir
+from configilm.extra.DataSets.RSVQAxBEN_DataSet import resolve_data_dir
 from configilm.extra.CustomTorchClasses import LinearWarmupCosineAnnealingLR
 from configilm.extra.DataModules.RSVQAxBEN_DataModule import RSVQAxBENDataModule
-
 
 try:
     from fvcore.nn import FlopCountAnalysis
     from fvcore.nn import parameter_count
+
+    FVCORE_AVAILABLE = True
 except ImportError:
-    print("Please install fvcore to run this baseline.")
-    exit(1)
+    print("Please install fvcore to run this baseline including flops and parameter count.")
+    print("Continuing without flops and parameter count.")
+    FVCORE_AVAILABLE = False
 
 try:
     from sklearn.metrics import accuracy_score
+
+    SKLEARN_AVAILABLE = True
 except ImportError:
-    print("Please install scikit-learn to run this baseline.")
-    exit(1)
+    print("Please install scikit-learn to run this baseline including accuracy score.")
+    print("Continuing without accuracy score.")
+    SKLEARN_AVAILABLE = False
 
 __author__ = "Leonard Hackel - BIFOLD/RSiM TU Berlin"
 
@@ -73,6 +86,8 @@ class LitVisionEncoder(pl.LightningModule):
             ),
             torch.ones([1, 32], device=self.device, dtype=torch.int),
         ]
+        if not FVCORE_AVAILABLE:
+            return {"flops": -1, "params": -1}
         params = parameter_count(self)
         flops = FlopCountAnalysis(self, dummy_input)
         return {"flops": flops.total(), "params": params[""]}
@@ -94,8 +109,10 @@ class LitVisionEncoder(pl.LightningModule):
         optimizer = optim.AdamW(self.parameters(), lr=self.lr, weight_decay=0.01)
 
         # these are steps if interval is set to step
+        # bugfix: if len(ds)*epochs is smaller than the batch size, the max_intervals is 0
+        # therefore first ceil the batches per epoch and then multiply with the epochs
         max_intervals = int(
-            self.trainer.max_epochs * len(self.trainer.datamodule.train_ds) / self.trainer.datamodule.batch_size
+            self.trainer.max_epochs * ceil(len(self.trainer.datamodule.train_ds) / self.trainer.datamodule.batch_size)
         )
         warmup = 10000 if max_intervals > 10000 else 100 if max_intervals > 100 else 0
 
@@ -184,14 +201,19 @@ class LitVisionEncoder(pl.LightningModule):
                 # stored for global LC
                 lulc_preds.append(argmax_out[i])
                 lulc_gts.append(ans)
-
-        acc_yn = accuracy_score(yn_gts, yn_preds)
-        acc_lulc = accuracy_score(lulc_gts, lulc_preds)
+        if SKLEARN_AVAILABLE:
+            acc_yn = accuracy_score(yn_gts, yn_preds)
+            acc_lulc = accuracy_score(lulc_gts, lulc_preds)
+        else:
+            acc_yn = float("nan")
+            acc_lulc = float("nan")
 
         accuracy_dict = {
             "Yes/No": acc_yn,
             "LULC": acc_lulc,
-            "Overall": accuracy_score(argmax_lbl, argmax_out),  # micro average on classes
+            "Overall": accuracy_score(argmax_lbl, argmax_out)
+            if SKLEARN_AVAILABLE
+            else float("nan"),  # micro average on classes
             "Average": (acc_yn + acc_lulc) / 2,  # macro average on types
         }
 
@@ -322,12 +344,23 @@ def main(
     )
 
     hf_tokenizer, _ = get_huggingface_model(model_name=text_model, load_pretrained_if_available=False)
+    if data_dir is None:
+        data_dir_dict = None
+    else:
+        data_dir_path = Path(data_dir)
+        data_dir_dict = {
+            "images_lmdb": data_dir_path / "BENv1" / "BigEarthNetEncoded.lmdb",
+            "train_data": data_dir_path / "VQA_RSVQAxBEN",
+            "val_data": data_dir_path / "VQA_RSVQAxBEN",
+            "test_data": data_dir_path / "VQA_RSVQAxBEN",
+        }
+
     dm = RSVQAxBENDataModule(
-        data_dir=resolve_data_dir(data_dir=data_dir, allow_mock=True),
+        data_dirs=resolve_data_dir(data_dir=data_dir_dict, allow_mock=True),
         img_size=(channels, img_size, img_size),
         num_workers_dataloader=num_workers_dataloader,
         batch_size=batch_size,
-        max_img_idx=max_img_index,
+        max_len=max_img_index,
         tokenizer=hf_tokenizer,
     )
 
@@ -341,7 +374,7 @@ def main(
             "Seed": seed,
             "# Workers": num_workers_dataloader,
             "Vision Checkpoint": vision_checkpoint,
-            "GPU": torch.cuda.get_device_name(),
+            "GPU": torch.cuda.get_device_name() if torch.cuda.is_available() else "CPU",
             "MatMul Precision": matmul_precision,
         }
     )

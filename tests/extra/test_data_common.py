@@ -80,14 +80,17 @@ def _test_dm_shuffle_false(dm: ClassificationVQADataModule):
     assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
-def _assert_shuffle_true_with_retry(dl: torch.utils.data.DataLoader):
-    for i in range(5):
+def _assert_shuffle_true_with_retry(dl: torch.utils.data.DataLoader, retries: int = 5):
+    for i in range(retries):
         try:
             assert not torch.equal(next(iter(dl))[0], next(iter(dl))[0])
             break
         except AssertionError:
             # retry, due to randomness it may not always actually be different
             pass
+    else:
+        # if we did not break, there was no successful retry
+        raise AssertionError(f"Shuffle does not seem to work correctly after {retries} retries")
 
 
 def _test_dm_shuffle_true(dm: ClassificationVQADataModule):

@@ -99,7 +99,7 @@ def test_gaussian_dtype(dtype):
     assert gt(t).dtype == t.dtype, "Datatype changed"
 
 
-@pytest.mark.filterwarnings('ignore:To get the last learning rate computed by the scheduler,')
+@pytest.mark.filterwarnings("ignore:To get the last learning rate computed by the scheduler,")
 def test_lwcalr_scheduler_basic():
     warmup_epochs = 10
     max_epochs = 1000
@@ -129,7 +129,7 @@ def test_lwcalr_scheduler_basic():
         scheduler.step()
 
 
-@pytest.mark.filterwarnings('ignore:To get the last learning rate computed by the scheduler,')
+@pytest.mark.filterwarnings("ignore:To get the last learning rate computed by the scheduler,")
 def test_lwcalr_scheduler_non_zero_start():
     warmup_epochs = 10
     max_epochs = 1000
@@ -159,7 +159,7 @@ def test_lwcalr_scheduler_non_zero_start():
         scheduler.step()
 
 
-@pytest.mark.filterwarnings('ignore:To get the last learning rate computed by the scheduler,')
+@pytest.mark.filterwarnings("ignore:To get the last learning rate computed by the scheduler,")
 def test_lwcalr_scheduler_non_zero_end():
     warmup_epochs = 10
     max_epochs = 1000
@@ -189,8 +189,8 @@ def test_lwcalr_scheduler_non_zero_end():
         scheduler.step()
 
 
-@pytest.mark.filterwarnings('ignore:To get the last learning rate computed by the scheduler,')
-@pytest.mark.filterwarnings('ignore:The epoch parameter in ')
+@pytest.mark.filterwarnings("ignore:To get the last learning rate computed by the scheduler,")
+@pytest.mark.filterwarnings("ignore:The epoch parameter in ")
 def test_lwcalr_scheduler_closed_form():
     warmup_epochs = 10
     max_epochs = 1000

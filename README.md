@@ -84,5 +84,5 @@ This work is supported by the European Research Council (ERC) through the ERC-20
 BigEarth Project under Grant 759764 and by the European Space Agency through the DA4DTE
 (Demonstrator precursor Digital Assistant interface for Digital Twin Earth) project and
 by the German Ministry for Economic Affairs and Climate Action through the AI-Cube
-Project under Grant 50EE2012B. Furthermore, we gratefully acknowledge funding from the 
+Project under Grant 50EE2012B. Furthermore, we gratefully acknowledge funding from the
 German Federal Ministry of Education and Research under the grant BIFOLD24B.

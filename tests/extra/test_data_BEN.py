@@ -219,7 +219,7 @@ def test_ben_dm_dataloaders(data_dirs, bs):
     dataloaders_ok(dm, expected_image_shape=(bs, 3, 120, 120))
 
 
-@pytest.mark.filterwarnings('ignore:Shuffle was set to False.')
+@pytest.mark.filterwarnings("ignore:Shuffle was set to False.")
 def test_ben_shuffle_false(data_dirs):
     dm = BENDataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
@@ -243,7 +243,7 @@ def test_ben_shuffle_none(data_dirs):
     assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
 
-@pytest.mark.filterwarnings('ignore:Shuffle was set to True.')
+@pytest.mark.filterwarnings("ignore:Shuffle was set to True.")
 def test_ben_shuffle_true(data_dirs):
     dm = BENDataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)

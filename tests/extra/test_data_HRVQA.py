@@ -35,7 +35,7 @@ img_shapes_fail = [(c, hw, hw) for c in channels_fail for hw in img_sizes]
 no_qa_full_val = 5  # number of samples in full val set
 
 
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_ds_default(data_dirs):
     ds = HRVQADataSet(data_dirs=data_dirs)
 
@@ -49,7 +49,7 @@ def test_ds_default(data_dirs):
 
 
 @pytest.mark.parametrize("split, classes", [(s, c) for s in dataset_splits for c in class_number])
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_3c_dataset_splits_classes(data_dirs, split: str, classes: int):
     img_size = (3, 128, 128)
     seq_length = 32
@@ -75,7 +75,7 @@ def test_3c_dataset_splits_classes(data_dirs, split: str, classes: int):
     "split, seed, div_part",
     [(s, se, d) for s in dataset_splits for se in div_seeds for d in div_part],
 )
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_3c_dataset_splits_subdiv(data_dirs, split: str, seed, div_part):
     img_size = (3, 128, 128)
     seq_length = 32
@@ -108,7 +108,7 @@ def test_3c_dataset_splits_subdiv(data_dirs, split: str, seed, div_part):
     "split, seed, div_part",
     [(s, se, d) for s in ["val-div", "test-div"] for se in div_seeds for d in div_part],
 )
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_3c_dataset_splits_subdiv_overlap(data_dirs, split: str, seed: int, div_part):
     img_size = (3, 128, 128)
     seq_length = 32
@@ -145,7 +145,7 @@ def test_3c_dataset_splits_subdiv_overlap(data_dirs, split: str, seed: int, div_
 
 
 @pytest.mark.parametrize("img_size", img_shapes_pass)
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_ds_imgsize_pass(data_dirs, img_size: Tuple[int, int, int]):
     ds = HRVQADataSet(data_dirs=data_dirs, split="val", img_size=img_size, num_classes=1000, seq_length=32)
 
@@ -159,7 +159,7 @@ def test_ds_imgsize_pass(data_dirs, img_size: Tuple[int, int, int]):
 
 
 @pytest.mark.parametrize("img_size", img_shapes_fail)
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_ds_imgsize_fail(data_dirs, img_size: Tuple[int, int, int]):
     with pytest.raises(AssertionError):
         _ = HRVQADataSet(
@@ -172,7 +172,7 @@ def test_ds_imgsize_fail(data_dirs, img_size: Tuple[int, int, int]):
 
 
 @pytest.mark.parametrize("max_len", [1, 16, 74, 75, None, -1])
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_ds_max_img_idx(data_dirs, max_len: int):
     ds = HRVQADataSet(data_dirs=data_dirs, max_len=max_len)
     expected_len = 10
@@ -187,7 +187,7 @@ def test_ds_max_img_idx(data_dirs, max_len: int):
 
 
 @pytest.mark.parametrize("idx", [0, 1, 5, 10, 19, 20, 50, 100, 1_000, 10_000, 100_000])
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_ds_img_access_by_index(data_dirs, idx: int):
     ds = HRVQADataSet(data_dirs=data_dirs)
     expected_len = 10
@@ -200,27 +200,27 @@ def test_ds_img_access_by_index(data_dirs, idx: int):
 
 
 @pytest.mark.parametrize("max_len", [76, 20000, 100_000, 10_000_000])
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_ds_max_img_idx_too_large(data_dirs, max_len: int):
     ds = HRVQADataSet(data_dirs=data_dirs, max_len=max_len)
     assert len(ds) < max_len
 
 
 @pytest.mark.parametrize("classes", [1, 5, 10, 50, 100, 1000, 2345, 5000, 15000, 25000])
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_ds_classes(data_dirs, classes: int):
     ds = HRVQADataSet(data_dirs=data_dirs, num_classes=classes, split="train")
     test_data_common._assert_classes_beyond_border_invalid(ds, classes, 4)
 
 
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_ben_dm_lightning(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs)
     test_data_common._assert_dm_correct_lightning_version(dm)
 
 
 @pytest.mark.parametrize("split", ["train", "val", "test", None])
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_default(data_dirs, split: str):
     dm = HRVQADataModule(data_dirs=data_dirs)
     split2stage = {"train": "fit", "val": "fit", "test": "test", None: None}
@@ -274,7 +274,7 @@ def test_dm_default(data_dirs, split: str):
 
 
 @pytest.mark.parametrize("bs", [1, 2, 4, 8, 16, 32, 13, 27])
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_dataloaders_bs(data_dirs, bs: int):
     dm = HRVQADataModule(data_dirs=data_dirs, batch_size=bs, num_workers_dataloader=0, pin_memory=False)
 
@@ -310,7 +310,7 @@ def test_dm_dataloaders_bs(data_dirs, bs: int):
 
 
 @pytest.mark.parametrize("img_size", [[1], [1, 2], [1, 2, 3, 4]])
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_dataloaders_img_size(data_dirs, img_size):
     with (pytest.raises(AssertionError)):
         _ = HRVQADataModule(
@@ -325,7 +325,7 @@ def test_dm_dataloaders_img_size(data_dirs, img_size):
     "stage, seed, div",
     [(st, se, d) for st in dm_stages for se in div_seeds + [None] for d in div_part],
 )
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_dataloaders_with_splitting(data_dirs, stage, seed, div):
     dm = HRVQADataModule(
         data_dirs=data_dirs,
@@ -354,8 +354,8 @@ def test_dm_dataloaders_with_splitting(data_dirs, stage, seed, div):
             assert dm.test_dataloader() is not None, "Test Dataloader should not be " "None"
 
 
-@pytest.mark.filterwarnings('ignore:Shuffle was set to False.')
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:Shuffle was set to False.")
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_shuffle_false(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
@@ -367,7 +367,7 @@ def test_dm_shuffle_false(data_dirs):
     assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
 
 
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_shuffle_none(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
@@ -378,8 +378,8 @@ def test_dm_shuffle_none(data_dirs):
     assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
 
 
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
-@pytest.mark.filterwarnings('ignore:Shuffle was set to True.')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
+@pytest.mark.filterwarnings("ignore:Shuffle was set to True.")
 def test_dm_shuffle_true(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
@@ -390,14 +390,14 @@ def test_dm_shuffle_true(data_dirs):
     assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
 
 
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_test_stage_setup(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs, num_workers_dataloader=0, pin_memory=False)
     with pytest.raises(NotImplementedError):
         dm.setup("test")
 
 
-@pytest.mark.filterwarnings('ignore:No tokenizer was provided,')
+@pytest.mark.filterwarnings("ignore:No tokenizer was provided,")
 def test_dm_predict_stage_setup(data_dirs):
     dm = HRVQADataModule(data_dirs=data_dirs, num_workers_dataloader=0, pin_memory=False)
     with pytest.raises(NotImplementedError):

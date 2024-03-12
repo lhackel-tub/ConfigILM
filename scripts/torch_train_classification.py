@@ -5,7 +5,6 @@ Supervised Vision Classification.
 """
 # import packages
 from typing import Callable
-from typing import Optional
 
 import torch
 import torch.nn.functional as F
@@ -65,7 +64,6 @@ def eval_model(
 
 def main(
     vision_model: str = "resnet18",
-    data_dir: Optional[str] = None,
     number_of_channels: int = 12,
     image_size: int = 120,
     batch_size: int = 32,
@@ -102,26 +100,27 @@ def main(
     train_transform = default_train_transform(img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std)
     transform = default_transform(img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std)
 
+    ben_data_dir = BEN_lmdb_utils.resolve_data_dir(None, allow_mock=True)
     train_ds = BENDataSet(
-        BEN_lmdb_utils.resolve_data_dir(data_dir, allow_mock=True),
+        ben_data_dir,
         split="train",
         transform=train_transform,
-        max_img_idx=max_img_index,
+        max_len=max_img_index,
         img_size=img_size,
     )
     val_ds = BENDataSet(
-        BEN_lmdb_utils.resolve_data_dir(data_dir, allow_mock=True),
+        ben_data_dir,
         split="val",
         transform=transform,
-        max_img_idx=max_img_index,
+        max_len=max_img_index,
         img_size=img_size,
     )
 
     test_ds = BENDataSet(
-        BEN_lmdb_utils.resolve_data_dir(data_dir, allow_mock=True),
+        ben_data_dir,
         split="test",
         transform=transform,
-        max_img_idx=max_img_index,
+        max_len=max_img_index,
         img_size=img_size,
     )
 

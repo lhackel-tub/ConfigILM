@@ -33,6 +33,7 @@ from configilm.extra.DataModules.RSVQAxBEN_DataModule import RSVQAxBENDataModule
 try:
     from fvcore.nn import FlopCountAnalysis
     from fvcore.nn import parameter_count
+
     FVCORE_AVAILABLE = True
 except ImportError:
     print("Please install fvcore to run this baseline including flops and parameter count.")

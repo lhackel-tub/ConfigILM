@@ -171,7 +171,7 @@ class HRVQADataModule(ClassificationVQADataModule):
             sample_info_msg += f"  Total validation samples: {len(self.val_ds):8,d}"
 
         # Assign test dataset for use in dataloader(s)
-        if stage == "test" or stage is None:
+        if stage == "test":
             if self.test_splitting_seed is None:
                 raise NotImplementedError("Test stage None not implemented")
             else:

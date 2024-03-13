@@ -267,7 +267,7 @@
 <span class="p">)</span>
 
 <span class="n">img</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">26</span><span class="p">]</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">img</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># only choose BGR axis for display and bring into RGB order</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="c1"># only choose RGB channels</span>
 </pre></div>
 </div>
 </div>
@@ -288,7 +288,7 @@ tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
         1.])
 </pre></div>
 </div>
-<img alt="../../_images/82d75cc47e44a87cd4249f6943fab1f5e377288f7d672a6c7a7e0064466d7c3a.png" src="../../_images/82d75cc47e44a87cd4249f6943fab1f5e377288f7d672a6c7a7e0064466d7c3a.png" />
+<img alt="../../_images/9cc4d48fecd0c32da5b07547a2e07f29aada345fb1fb7f6da5e347d7aebd3d0c.png" src="../../_images/9cc4d48fecd0c32da5b07547a2e07f29aada345fb1fb7f6da5e347d7aebd3d0c.png" />
 </div>
 </div>
 <section id="selecting-bands">
@@ -421,8 +421,8 @@ Loading BEN data for val...
 === END SETUP ===
 
 After:
-&lt;configilm.extra.DataSets.BEN_DataSet.BENDataSet object at 0x7f4c337063b0&gt;
-&lt;configilm.extra.DataSets.BEN_DataSet.BENDataSet object at 0x7f4c3360d360&gt;
+&lt;configilm.extra.DataSets.BEN_DataSet.BENDataSet object at 0x7ff510791330&gt;
+&lt;configilm.extra.DataSets.BEN_DataSet.BENDataSet object at 0x7ff5113fab30&gt;
 None
 </pre></div>
 </div>

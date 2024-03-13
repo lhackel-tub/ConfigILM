@@ -271,7 +271,7 @@ A small example of the data used is distributed with this package.</p>
 <span class="p">)</span>
 
 <span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># only choose BGR axis for display and bring into RGB order</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="c1"># only choose RGB channels</span>
 </pre></div>
 </div>
 </div>
@@ -279,11 +279,13 @@ A small example of the data used is distributed with this package.</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 256, 256])
+Question: are there less buildings than grass areas?
 Question (start): [101, 2024, 2045, 2625, 3121, 2084, 5568, 2752, 1029, 102, 0, 0, 0, 0, 0]
+Answer: no
 Answer (start): tensor([0., 0., 0., 0., 0., 0., 0., 0., 1.])
 </pre></div>
 </div>
-<img alt="../../_images/a76963708562ce8d06252df27bb3f959cc10402fc9203e9eb114cfd324cc181a.png" src="../../_images/a76963708562ce8d06252df27bb3f959cc10402fc9203e9eb114cfd324cc181a.png" />
+<img alt="../../_images/5dd53a982658345ef4167b533bd5c8586793025f990b5afdde230fefcb5e05fc.png" src="../../_images/5dd53a982658345ef4167b533bd5c8586793025f990b5afdde230fefcb5e05fc.png" />
 </div>
 </div>
 <section id="tokenizer-and-tokenization">
@@ -594,8 +596,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7f14d6522290&gt;
-&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7f14e88fa530&gt;
+&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7f488c613fd0&gt;
+&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7f489f26e260&gt;
 None
 </pre></div>
 </div>

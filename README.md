@@ -9,16 +9,19 @@
 <a href="https://rsim.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>
 
 
+[![Publication](https://img.shields.io/badge/Publication%20freely%20available%20on-Elsevier/SoftwareX-red.svg)](https://opensource.org/licenses/mit-0)
+
+
 [![Release Notes](https://img.shields.io/github/release/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/releases)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10777487.svg)](https://doi.org/10.5281/zenodo.10777487)
+[![PyPI - Version](https://img.shields.io/pypi/v/configilm)](https://pypi.org/project/configilm/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/configilm)](https://pypi.org/project/configilm/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10777487.svg)](https://doi.org/10.5281/zenodo.10777487)  
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
-[![Code Coverage](./coverage.svg)](./.coverage)
+[![Code Coverage](./coverage.svg)](./.coverage)  
 [![GitHub Star Chart](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)
 [![Open Issues](https://img.shields.io/github/issues-raw/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/issues)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/configilm)](https://pypi.org/project/configilm/)
-[![PyPI - Version](https://img.shields.io/pypi/v/configilm)](https://pypi.org/project/configilm/)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/configilm)](https://pypi.org/project/configilm/)
 
 
@@ -47,7 +50,7 @@ tutorial examples, and a detailed overview of the framework's interface, ensurin
 
 ![Concept of ConfigILM](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM-ILMType.VQA_CLASSIFICATION.png)
 
-For detailed information please visit the [publication](TODO:arXiv-Link) (comming soon) or the [documentation](https://lhackel-tub.github.io/ConfigILM).
+For detailed information please visit the [publication](https://www.sciencedirect.com/science/article/pii/S235271102400102X) or the [documentation](https://lhackel-tub.github.io/ConfigILM).
 
 `ConfigILM` is released under the [MIT Software License](https://opensource.org/licenses/mit-0)
 
@@ -64,10 +67,20 @@ For detailed information on how to contribute, see [here](.github/CONTRIBUTING.m
 If you use this work, please cite
 
 ```bibtex
+@article{hackel2024configilm,
+  title={ConfigILM: A general purpose configurable library for combining image and language models for visual question answering},
+  author={Hackel, Leonard and Clasen, Kai Norman and Demir, Beg{\"u}m},
+  journal={SoftwareX},
+  volume={26},
+  pages={101731},
+  year={2024},
+  publisher={Elsevier}
+}
+```
+and the used version of the software, e.g., the current version with
+```bibtex
 @software{lhackel_tub_2023,
-  author       = {Hackel, Leonard and
-                  Clasen, Kai Norman and
-                  Demir, Begüm},
+  author={Hackel, Leonard and Clasen, Kai Norman and Demir, Beg{\"u}m},
   title        = {{ConfigILM}},
   month        = mar,
   year         = 2024,
@@ -86,3 +99,4 @@ BigEarth Project under Grant 759764 and by the European Space Agency through the
 by the German Ministry for Economic Affairs and Climate Action through the AI-Cube
 Project under Grant 50EE2012B. Furthermore, we gratefully acknowledge funding from the
 German Federal Ministry of Education and Research under the grant BIFOLD24B.
+We also thank [EO-LAB](https://eo-lab.org/en/) for giving us access to their GPUs.

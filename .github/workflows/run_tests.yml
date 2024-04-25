@@ -73,7 +73,9 @@ jobs:
           coverage report
           coverage json
       - name: Generate coverage badge
-        run: python generate_readme.py
+        run: |
+          source .venv/bin/activate
+          python generate_readme.py
 
       #----------------------------------------------
       #  Add Coverage Badge

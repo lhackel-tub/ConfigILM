@@ -9,7 +9,7 @@
 <a href="https://rsim.berlin/"><img src="https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/RSiM_Logo_1.png" style="font-size: 1rem; height: 2em; width: auto" alt="RSiM Logo"/>
 
 
-[![Publication](https://img.shields.io/badge/Publication%20freely%20available%20on-Elsevier/SoftwareX-red.svg)](https://opensource.org/licenses/mit-0)
+[![Publication](https://img.shields.io/badge/Publication%20freely%20available%20on-Elsevier/SoftwareX-red.svg)](https://doi.org/10.1016/j.softx.2024.101731)
 
 
 [![Release Notes](https://img.shields.io/github/release/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/releases)

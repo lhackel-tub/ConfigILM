@@ -266,8 +266,11 @@ For the usage in this context, the dataset was extended from its RGB form to inc
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
 <span class="p">)</span>
 
-<span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">img</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
 <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="c1"># only choose RGB channels</span>
+<span class="c1"># reorder channels for display</span>
+<span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">img</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -275,13 +278,13 @@ For the usage in this context, the dataset was extended from its RGB form to inc
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 120, 120])
-Question: are forests and permanent crops or arable land present in the image?
-Question (start): [101, 2024, 6138, 1998, 4568, 8765, 2030, 5424, 2571, 2455, 2556, 1999, 1996, 3746, 1029]
-Answer: no
-Answer (start): tensor([0., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
+Question: are some coniferous forest present in the scene?
+Question (start): [101, 2024, 2070, 9530, 23930, 3224, 2556, 1999, 1996, 3496, 1029, 102, 0, 0, 0]
+Answer: yes
+Answer (start): tensor([0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../../_images/8e9138a07fe4051303093d7ad1afbce8df44b811a0a636bada58f379a966315f.png" src="../../_images/8e9138a07fe4051303093d7ad1afbce8df44b811a0a636bada58f379a966315f.png" />
+<img alt="../../_images/42ec34e27939a9d22040cfcb5a3ba68bd67f6d0aef4365b3fa59007497acf040.png" src="../../_images/42ec34e27939a9d22040cfcb5a3ba68bd67f6d0aef4365b3fa59007497acf040.png" />
 </div>
 </div>
 <section id="tokenizer-and-tokenization">
@@ -595,8 +598,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f80be446fe0&gt;
-&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f80becdb250&gt;
+&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f2050b33fa0&gt;
+&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f212cd921d0&gt;
 None
 </pre></div>
 </div>

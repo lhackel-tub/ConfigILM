@@ -71,8 +71,11 @@ jobs:
         run: |
           source .venv/bin/activate
           coverage report
+          coverage json
       - name: Generate coverage badge
-        uses: tj-actions/coverage-badge-py@v2
+        run: |
+          source .venv/bin/activate
+          python generate_readme.py
 
       #----------------------------------------------
       #  Add Coverage Badge

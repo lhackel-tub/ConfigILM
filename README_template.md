@@ -52,13 +52,15 @@ tutorial examples, and a detailed overview of the framework's interface, ensurin
 
 ![Concept of ConfigILM](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM-ILMType.VQA_CLASSIFICATION.png)
 
-For detailed information please visit the [publication](https://www.sciencedirect.com/science/article/pii/S235271102400102X) or the [documentation](https://lhackel-tub.github.io/ConfigILM).
+For detailed information please see its [publication](https://doi.org/10.1016/j.softx.2024.101731) 
+and the [documentation](https://lhackel-tub.github.io/ConfigILM).
 
 `ConfigILM` is released under the [MIT Software License](https://opensource.org/licenses/mit-0)
 
 ## Contributing
 
-As an open-source project in a developing field, we are open to contributions, whether it be in the form of a new or improved feature or better documentation.
+As an open-source project in a developing field, we are open to contributions.
+They can be in the form of a new or improved feature or better documentation.
 
 For detailed information on how to contribute, see [here](.github/CONTRIBUTING.md).
 
@@ -92,4 +94,4 @@ BigEarth Project under Grant 759764 and by the European Space Agency through the
 by the German Ministry for Economic Affairs and Climate Action through the AI-Cube
 Project under Grant 50EE2012B. Furthermore, we gratefully acknowledge funding from the
 German Federal Ministry of Education and Research under the grant BIFOLD24B.
-We also thank [EO-LAB](https://eo-lab.org/en/) for giving us access to their GPUs.
+We also thank [EO-Lab](https://eo-lab.org/en/) for giving us access to their GPUs.

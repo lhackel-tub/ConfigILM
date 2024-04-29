@@ -84,7 +84,9 @@ jobs:
         uses: tj-actions/verify-changed-files@v13
         id: verify-changed-files
         with:
-          files: coverage.svg
+          files: | 
+            coverage.svg
+            README.md
 
       - name: Commit files
         if: steps.verify-changed-files.outputs.files_changed == 'true'

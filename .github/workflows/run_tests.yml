@@ -26,6 +26,8 @@ jobs:
       #----------------------------------------------
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up python
         id: setup-python
         uses: actions/setup-python@v4
@@ -101,4 +103,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.github_token }}
-          # branch: ${{ github.head_ref }}
+          branch: ${{ github.ref }}

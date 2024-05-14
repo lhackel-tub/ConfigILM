@@ -18,7 +18,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/configilm)](https://pypi.org/project/configilm/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/configilm)](https://pypi.org/project/configilm/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10777487.svg)](https://zenodo.org/records/10777487)  
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11192200.svg)](https://zenodo.org/records/11192200)  
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
 [![Code Coverage](https://img.shields.io/badge/coverage%20-98%25-4c1)](./coverage.report)  
@@ -83,17 +83,17 @@ If you use this work, please cite
 ```
 and the used version of the software, e.g., the current version with
 ```bibtex
-@software{hackel_2024_10777487,
+@software{hackel_2024_11192200,
   author       = {Hackel, Leonard and
                   Clasen, Kai Norman and
                   Demir, Begüm},
   title        = {ConfigILM},
-  month        = mar,
+  month        = may,
   year         = 2024,
   publisher    = {Zenodo},
-  version      = {v0.5.0},
-  doi          = {10.5281/zenodo.10777487},
-  url          = {https://doi.org/10.5281/zenodo.10777487}
+  version      = {v0.5.1},
+  doi          = {10.5281/zenodo.11192200},
+  url          = {https://doi.org/10.5281/zenodo.11192200}
 }
 ```
 <!-- citation-end -->

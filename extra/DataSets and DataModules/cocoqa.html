@@ -289,7 +289,7 @@ Question (start): [101, 1996, 2158, 4755, 2054, 3216, 2046, 1996, 4153, 102, 0, 
 Answer (start): tensor([1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../../_images/94af208aa6614a75870d72d54760588ad7f85409b68d1dc04d77a1e74c34328e.png" src="../../_images/94af208aa6614a75870d72d54760588ad7f85409b68d1dc04d77a1e74c34328e.png" />
+<img alt="../../_images/c1f5e6433ec3bf71c8efaaf85a6cf0021d1f847263973feafaf0e519f3a7d401.png" src="../../_images/c1f5e6433ec3bf71c8efaaf85a6cf0021d1f847263973feafaf0e519f3a7d401.png" />
 </div>
 </div>
 <p>As we can see, this Dataset uses a tokenizer to generate the Question out of a natural language text. If no tokenizer is provided, a default one will be used, however this may lead to bad performance if not accounted for. The tokenizer can be configured as input parameter.</p>
@@ -311,11 +311,11 @@ Answer (start): tensor([1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/ConfigILM.py:80: UserWarning: Model &#39;prajjwal1/bert-tiny&#39; not available. Trying to download...
 
   warnings.warn(f&quot;Model &#39;{model_name}&#39; not available. Trying to download...\n&quot;)
+/home/runner/work/ConfigILM/ConfigILM/.venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/.venv/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
-  return self.fget.__get__(instance, owner)()
-Some weights of BertForSequenceClassification were not initialized from the model checkpoint at prajjwal1/bert-tiny and are newly initialized: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of BertForSequenceClassification were not initialized from the model checkpoint at prajjwal1/bert-tiny and are newly initialized: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
 You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
 </pre></div>
 </div>
@@ -359,7 +359,7 @@ Question (start): [101, 2054, 2003, 1996, 3609, 1997, 1996, 2839, 102, 0, 0, 0, 
 Answer (start): tensor([1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
 </pre></div>
 </div>
-<img alt="../../_images/a67606d36c4c6124700eeaf52ec299a5599d66b5896bd8ef48fef1aee1ff9a03.png" src="../../_images/a67606d36c4c6124700eeaf52ec299a5599d66b5896bd8ef48fef1aee1ff9a03.png" />
+<img alt="../../_images/9c7190c1cba70a56a828424c0f91cb2602608480ca9db36b63e8adbd9df8cd43.png" src="../../_images/9c7190c1cba70a56a828424c0f91cb2602608480ca9db36b63e8adbd9df8cd43.png" />
 </div>
 </div>
 </section>

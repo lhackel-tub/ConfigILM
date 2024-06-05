@@ -1,6 +1,6 @@
 import pytest
 
-import configilm.extra.BEN_lmdb_utils as ben_utils
+import configilm.extra.BENv1_utils as ben_utils
 import configilm.extra.DataSets.COCOQA_DataSet as cocoqa
 import configilm.extra.DataSets.HRVQA_DataSet as hrvqa
 from configilm.extra.data_dir import mock_data_path as expected_paths

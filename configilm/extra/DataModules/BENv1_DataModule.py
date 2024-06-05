@@ -21,15 +21,15 @@ from torch.utils.data import DataLoader
 
 from configilm.extra._defaults import default_train_transform
 from configilm.extra._defaults import default_transform
-from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
-from configilm.extra.DataSets.BEN_DataSet import BENDataSet
+from configilm.extra.BENv1_utils import band_combi_to_mean_std
+from configilm.extra.DataSets.BENv1_DataSet import BENv1DataSet
 
 
-class BENDataModule(pl.LightningDataModule):
+class BENv1DataModule(pl.LightningDataModule):
     num_classes = 19
-    train_ds: Union[None, BENDataSet] = None
-    val_ds: Union[None, BENDataSet] = None
-    test_ds: Union[None, BENDataSet] = None
+    train_ds: Union[None, BENv1DataSet] = None
+    val_ds: Union[None, BENv1DataSet] = None
+    test_ds: Union[None, BENv1DataSet] = None
 
     train_transforms: Optional[Callable] = None
     eval_transforms: Optional[Callable] = None
@@ -140,7 +140,7 @@ class BENDataModule(pl.LightningDataModule):
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
-            self.train_ds = BENDataSet(
+            self.train_ds = BENv1DataSet(
                 self.data_dirs,
                 split="train",
                 transform=self.train_transform,
@@ -148,7 +148,7 @@ class BENDataModule(pl.LightningDataModule):
                 img_size=self.img_size,
             )
 
-            self.val_ds = BENDataSet(
+            self.val_ds = BENv1DataSet(
                 self.data_dirs,
                 split="val",
                 transform=self.transform,
@@ -160,7 +160,7 @@ class BENDataModule(pl.LightningDataModule):
 
         # Assign test dataset for use in dataloader(s)
         if stage == "test" or stage is None:
-            self.test_ds = BENDataSet(
+            self.test_ds = BENv1DataSet(
                 self.data_dirs,
                 split="test",
                 transform=self.transform,

@@ -13,7 +13,7 @@ from torch.utils.data import DataLoader
 from configilm import ConfigILM
 from configilm.ConfigILM import ILMConfiguration
 from configilm.ConfigILM import ILMType
-from configilm.extra import BEN_lmdb_utils
+from configilm.extra import BENv1_utils
 from configilm.extra._defaults import default_train_transform
 from configilm.extra._defaults import default_transform
 from configilm.extra.DataSets.RSVQAxBEN_DataSet import resolve_data_dir
@@ -37,7 +37,7 @@ model_config = ILMConfiguration(
 )
 model = ConfigILM.ConfigILM(model_config)
 
-ben_mean, ben_std = BEN_lmdb_utils.band_combi_to_mean_std(number_of_channels)
+ben_mean, ben_std = BENv1_utils.band_combi_to_mean_std(number_of_channels)
 train_transform = default_train_transform(img_size=(image_size, image_size), mean=ben_mean, std=ben_std)
 transform = default_transform(img_size=(image_size, image_size), mean=ben_mean, std=ben_std)
 

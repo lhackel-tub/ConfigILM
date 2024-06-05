@@ -1,8 +1,8 @@
 (api-BEN-reader)=
-# BigEarthNet Utils
+# BigEarthNetv1 Utils
 
 :::{eval-rst}
-.. automodule:: configilm.extra.BEN_lmdb_utils
+.. automodule:: configilm.extra.BENv1_utils
     :members:
     :undoc-members:
 :::

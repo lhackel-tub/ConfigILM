@@ -6,7 +6,7 @@ See the following modules for details on DataSets and DataModules:
 :maxdepth: 1
 
 ds/api_BEN_reader
-ds/api_ds_BEN
+ds/api_ds_BENv1
 ds/api_ds_COCOQA
 ds/api_ds_HRVQA
 ds/api_ds_RSVQALR

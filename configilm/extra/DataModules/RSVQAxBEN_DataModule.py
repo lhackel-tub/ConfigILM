@@ -14,7 +14,7 @@ from typing import Optional
 
 from configilm.extra._defaults import default_train_transform
 from configilm.extra._defaults import default_transform
-from configilm.extra.BEN_lmdb_utils import band_combi_to_mean_std
+from configilm.extra.BENv1_utils import band_combi_to_mean_std
 from configilm.extra.DataModules.ClassificationVQADataModule import ClassificationVQADataModule
 from configilm.extra.DataSets.RSVQAxBEN_DataSet import RSVQAxBENDataSet
 

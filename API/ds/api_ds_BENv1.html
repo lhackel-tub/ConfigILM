@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Toronto COCO-QA DataSet and DataModules" href="api_ds_COCOQA.html" /><link rel="prev" title="BigEarthNet Utils" href="api_BEN_reader.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Toronto COCO-QA DataSet and DataModules" href="api_ds_COCOQA.html" /><link rel="prev" title="BigEarthNetv1 Utils" href="api_BEN_reader.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>BigEarthNet DataSets and DataModules - ConfigILM</title>
+        <title>BigEarthNetv1 DataSets and DataModules - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -169,9 +169,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../extra/BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extra/BENv1_LMDB_Reader.html">Using the BigEarthNet v1.0 LMDB Reader</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/bigearthnet.html">BigEarthNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/bigearthnetv1.html">BigEarthNet v1.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
@@ -184,8 +184,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../api_configilm.html">ILMConfiguration</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api_datasets.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="api_BEN_reader.html">BigEarthNet Utils</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_BEN_reader.html">BigEarthNetv1 Utils</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">BigEarthNetv1 DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
@@ -238,16 +238,16 @@
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.extra.DataSets.BEN_DataSet">
-<span id="bigearthnet-datasets-and-datamodules"></span><span id="api-datasets-ben"></span><h1>BigEarthNet DataSets and DataModules<a class="headerlink" href="#module-configilm.extra.DataSets.BEN_DataSet" title="Permalink to this heading">#</a></h1>
+          <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.extra.DataSets.BENv1_DataSet">
+<span id="bigearthnetv1-datasets-and-datamodules"></span><span id="api-datasets-benv1"></span><h1>BigEarthNetv1 DataSets and DataModules<a class="headerlink" href="#module-configilm.extra.DataSets.BENv1_DataSet" title="Permalink to this heading">#</a></h1>
 <p>Dataset for BigEarthNet dataset. Files can be requested by contacting
 the author.
 Original Paper of Image Data:
 <a class="reference external" href="https://arxiv.org/abs/2105.07921">https://arxiv.org/abs/2105.07921</a></p>
 <p><a class="reference external" href="https://bigearth.net/">https://bigearth.net/</a></p>
 <dl class="py class">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.BEN_DataSet.BENDataSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.BEN_DataSet.</span></span><span class="sig-name descname"><span class="pre">BENDataSet</span></span><a class="headerlink" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataSets.BENv1_DataSet.</span></span><span class="sig-name descname"><span class="pre">BENv1DataSet</span></span><a class="headerlink" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet" title="Permalink to this definition">#</a></dt>
 <dd><p>Dataset for BigEarthNet dataset. LMDB-Files can be requested by contacting
 the author or by downloading the dataset from the official website and encoding
 it using the BigEarthNet Encoder.</p>
@@ -264,8 +264,8 @@ The available configurations are:</p>
 </ul>
 </div></blockquote>
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.BEN_DataSet.BENDataSet.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.__init__" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Dataset for BigEarthNet dataset. Files can be requested by contacting
 the author.</p>
 <p>Original Paper of Image Data:
@@ -338,14 +338,14 @@ excluded from the dataset.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.BEN_DataSet.BENDataSet.get_available_channel_configurations">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_available_channel_configurations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.get_available_channel_configurations" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.get_available_channel_configurations">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_available_channel_configurations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.get_available_channel_configurations" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints all available preconfigured channel combinations.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.BEN_DataSet.BENDataSet.get_index_from_patchname">
-<span class="sig-name descname"><span class="pre">get_index_from_patchname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patchname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.get_index_from_patchname" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.get_index_from_patchname">
+<span class="sig-name descname"><span class="pre">get_index_from_patchname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patchname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.get_index_from_patchname" title="Permalink to this definition">#</a></dt>
 <dd><p>Gives the index of the image of a specific name. Does not distinguish between
 invalid names (not in original BigEarthNet) and names not in loaded list.</p>
 <dl class="field-list simple">
@@ -362,8 +362,8 @@ invalid names (not in original BigEarthNet) and names not in loaded list.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataSets.BEN_DataSet.BENDataSet.get_patchname_from_index">
-<span class="sig-name descname"><span class="pre">get_patchname_from_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.get_patchname_from_index" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.get_patchname_from_index">
+<span class="sig-name descname"><span class="pre">get_patchname_from_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.get_patchname_from_index" title="Permalink to this definition">#</a></dt>
 <dd><p>Gives the patch name of the image at the specified index. May return invalid
 names (names that are not actually loadable because they are not part of the
 lmdb file) if the name is included in the csv file.</p>
@@ -382,17 +382,17 @@ lmdb file) if the name is included in the csv file.</p>
 
 </dd></dl>
 
-<span class="target" id="module-configilm.extra.DataModules.BEN_DataModule"></span><p>Datamodule for BigEarthNet dataset. Files can be requested by contacting
+<span class="target" id="module-configilm.extra.DataModules.BENv1_DataModule"></span><p>Datamodule for BigEarthNet dataset. Files can be requested by contacting
 the author.
 Original Paper of Image Data:
 <a class="reference external" href="https://arxiv.org/abs/2105.07921">https://arxiv.org/abs/2105.07921</a>
 <a class="reference external" href="https://bigearth.net/">https://bigearth.net/</a></p>
 <dl class="py class">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.BEN_DataModule.BENDataModule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataModules.BEN_DataModule.</span></span><span class="sig-name descname"><span class="pre">BENDataModule</span></span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataModules.BENv1_DataModule.</span></span><span class="sig-name descname"><span class="pre">BENv1DataModule</span></span><a class="headerlink" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule" title="Permalink to this definition">#</a></dt>
 <dd><dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.BEN_DataModule.BENDataModule.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.__init__" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>This datamodule is designed to work with the BigEarthNet dataset. It is a
 multi-label classification dataset. The dataset is split into train, validation
 and test sets. The datamodule provides dataloaders for each of these sets.</p>
@@ -469,8 +469,8 @@ the dataset, otherwise it is excluded.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.BEN_DataModule.BENDataModule.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.setup" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.setup" title="Permalink to this definition">#</a></dt>
 <dd><p>Prepares the data sets for the specific stage.</p>
 <ul class="simple">
 <li><p>“fit”: train and validation data set</p></li>
@@ -490,8 +490,8 @@ is set.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.BEN_DataModule.BENDataModule.test_dataloader">
-<span class="sig-name descname"><span class="pre">test_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.test_dataloader" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.test_dataloader">
+<span class="sig-name descname"><span class="pre">test_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.test_dataloader" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
@@ -502,8 +502,8 @@ Uses the test set and expects it to be set (e.g. via <cite>setup()</cite> call)<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.BEN_DataModule.BENDataModule.train_dataloader">
-<span class="sig-name descname"><span class="pre">train_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.train_dataloader" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.train_dataloader">
+<span class="sig-name descname"><span class="pre">train_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.train_dataloader" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
@@ -514,8 +514,8 @@ Uses the train set and expects it to be set (e.g. via <cite>setup()</cite> call)
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.DataModules.BEN_DataModule.BENDataModule.val_dataloader">
-<span class="sig-name descname"><span class="pre">val_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.val_dataloader" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.val_dataloader">
+<span class="sig-name descname"><span class="pre">val_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.val_dataloader" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a Dataloader according to the specification in the <cite>__init__</cite> call.
 Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> call)</p>
 <dl class="field-list simple">
@@ -550,7 +550,7 @@ Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> 
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">BigEarthNet Utils</div>
+                <div class="title">BigEarthNetv1 Utils</div>
                 
               </div>
             </a>
@@ -728,20 +728,20 @@ Uses the validation set and expects it to be set (e.g. via <cite>setup()</cite> 
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">BigEarthNet DataSets and DataModules</a><ul>
-<li><a class="reference internal" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet"><code class="docutils literal notranslate"><span class="pre">BENDataSet</span></code></a><ul>
-<li><a class="reference internal" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.__init__"><code class="docutils literal notranslate"><span class="pre">BENDataSet.__init__()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.get_available_channel_configurations"><code class="docutils literal notranslate"><span class="pre">BENDataSet.get_available_channel_configurations()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.get_index_from_patchname"><code class="docutils literal notranslate"><span class="pre">BENDataSet.get_index_from_patchname()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataSets.BEN_DataSet.BENDataSet.get_patchname_from_index"><code class="docutils literal notranslate"><span class="pre">BENDataSet.get_patchname_from_index()</span></code></a></li>
+<li><a class="reference internal" href="#">BigEarthNetv1 DataSets and DataModules</a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet"><code class="docutils literal notranslate"><span class="pre">BENv1DataSet</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.__init__"><code class="docutils literal notranslate"><span class="pre">BENv1DataSet.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.get_available_channel_configurations"><code class="docutils literal notranslate"><span class="pre">BENv1DataSet.get_available_channel_configurations()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.get_index_from_patchname"><code class="docutils literal notranslate"><span class="pre">BENv1DataSet.get_index_from_patchname()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet.get_patchname_from_index"><code class="docutils literal notranslate"><span class="pre">BENv1DataSet.get_patchname_from_index()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule"><code class="docutils literal notranslate"><span class="pre">BENDataModule</span></code></a><ul>
-<li><a class="reference internal" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.__init__"><code class="docutils literal notranslate"><span class="pre">BENDataModule.__init__()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.setup"><code class="docutils literal notranslate"><span class="pre">BENDataModule.setup()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.test_dataloader"><code class="docutils literal notranslate"><span class="pre">BENDataModule.test_dataloader()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.train_dataloader"><code class="docutils literal notranslate"><span class="pre">BENDataModule.train_dataloader()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.DataModules.BEN_DataModule.BENDataModule.val_dataloader"><code class="docutils literal notranslate"><span class="pre">BENDataModule.val_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule"><code class="docutils literal notranslate"><span class="pre">BENv1DataModule</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.__init__"><code class="docutils literal notranslate"><span class="pre">BENv1DataModule.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.setup"><code class="docutils literal notranslate"><span class="pre">BENv1DataModule.setup()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.test_dataloader"><code class="docutils literal notranslate"><span class="pre">BENv1DataModule.test_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.train_dataloader"><code class="docutils literal notranslate"><span class="pre">BENv1DataModule.train_dataloader()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.val_dataloader"><code class="docutils literal notranslate"><span class="pre">BENv1DataModule.val_dataloader()</span></code></a></li>
 </ul>
 </li>
 </ul>

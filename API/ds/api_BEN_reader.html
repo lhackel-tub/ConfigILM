@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="BigEarthNet DataSets and DataModules" href="api_ds_BEN.html" /><link rel="prev" title="DataSets and DataModules" href="../api_datasets.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="BigEarthNetv1 DataSets and DataModules" href="api_ds_BENv1.html" /><link rel="prev" title="DataSets and DataModules" href="../api_datasets.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>BigEarthNet Utils - ConfigILM</title>
+        <title>BigEarthNetv1 Utils - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -169,9 +169,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../extra/BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extra/BENv1_LMDB_Reader.html">Using the BigEarthNet v1.0 LMDB Reader</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/bigearthnet.html">BigEarthNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/bigearthnetv1.html">BigEarthNet v1.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
@@ -184,8 +184,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../api_configilm.html">ILMConfiguration</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api_datasets.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">BigEarthNet Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">BigEarthNetv1 Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_BENv1.html">BigEarthNetv1 DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
@@ -238,19 +238,19 @@
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.extra.BEN_lmdb_utils">
-<span id="bigearthnet-utils"></span><span id="api-ben-reader"></span><h1>BigEarthNet Utils<a class="headerlink" href="#module-configilm.extra.BEN_lmdb_utils" title="Permalink to this heading">#</a></h1>
+          <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.extra.BENv1_utils">
+<span id="bigearthnetv1-utils"></span><span id="api-ben-reader"></span><h1>BigEarthNetv1 Utils<a class="headerlink" href="#module-configilm.extra.BENv1_utils" title="Permalink to this heading">#</a></h1>
 <p>Helpful functions when working with lmdb file which contains BigEarthNet as encoded
 binary patches.
 Functions include reading data and extracting specific band combinations and their
 properties.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="configilm.extra.BEN_lmdb_utils.BENLMDBReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.BEN_lmdb_utils.</span></span><span class="sig-name descname"><span class="pre">BENLMDBReader</span></span><a class="headerlink" href="#configilm.extra.BEN_lmdb_utils.BENLMDBReader" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.BENv1_utils.BENv1LMDBReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv1_utils.</span></span><span class="sig-name descname"><span class="pre">BENv1LMDBReader</span></span><a class="headerlink" href="#configilm.extra.BENv1_utils.BENv1LMDBReader" title="Permalink to this definition">#</a></dt>
 <dd><dl class="py method">
-<dt class="sig sig-object py" id="configilm.extra.BEN_lmdb_utils.BENLMDBReader.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmdb_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BEN_lmdb_utils.BENLMDBReader.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initialize a BigEarthNet Reader object that reads from a lmdb encoded file.</p>
+<dt class="sig sig-object py" id="configilm.extra.BENv1_utils.BENv1LMDBReader.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmdb_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv1_utils.BENv1LMDBReader.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Initialize a BigEarthNet v1.0 Reader object that reads from a lmdb encoded file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -268,8 +268,8 @@ ones (19) should be returned</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="configilm.extra.BEN_lmdb_utils.band_combi_to_mean_std">
-<span class="sig-prename descclassname"><span class="pre">configilm.extra.BEN_lmdb_utils.</span></span><span class="sig-name descname"><span class="pre">band_combi_to_mean_std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BEN_lmdb_utils.band_combi_to_mean_std" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.BENv1_utils.band_combi_to_mean_std">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv1_utils.</span></span><span class="sig-name descname"><span class="pre">band_combi_to_mean_std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv1_utils.band_combi_to_mean_std" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrievs the mean and standard deviation for a given BigEarthNet
 BAND_COMBINATION_PREDEFINTIONS or list of bands.</p>
 <dl class="field-list simple">
@@ -284,16 +284,16 @@ or a list of bandsmb</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="configilm.extra.BEN_lmdb_utils.ben19_list_to_onehot">
-<span class="sig-prename descclassname"><span class="pre">configilm.extra.BEN_lmdb_utils.</span></span><span class="sig-name descname"><span class="pre">ben19_list_to_onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BEN_lmdb_utils.ben19_list_to_onehot" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.BENv1_utils.ben19_list_to_onehot">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv1_utils.</span></span><span class="sig-name descname"><span class="pre">ben19_list_to_onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv1_utils.ben19_list_to_onehot" title="Permalink to this definition">#</a></dt>
 <dd><p>Converts a list of [BEN19 Labels] to a one hot vector.
 Elements in the vector are sorted alphabetically. See
 <cite>valid_labels_classification()</cite> for details.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="configilm.extra.BEN_lmdb_utils.read_ben_from_lmdb">
-<span class="sig-prename descclassname"><span class="pre">configilm.extra.BEN_lmdb_utils.</span></span><span class="sig-name descname"><span class="pre">read_ben_from_lmdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BEN_lmdb_utils.read_ben_from_lmdb" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.BENv1_utils.read_ben_from_lmdb">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv1_utils.</span></span><span class="sig-name descname"><span class="pre">read_ben_from_lmdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv1_utils.read_ben_from_lmdb" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads a BigEarthNet_S1_S2_Patch from a lmdb environment and decodes it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -312,8 +312,8 @@ Elements in the vector are sorted alphabetically. See
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="configilm.extra.BEN_lmdb_utils.resolve_data_dir">
-<span class="sig-prename descclassname"><span class="pre">configilm.extra.BEN_lmdb_utils.</span></span><span class="sig-name descname"><span class="pre">resolve_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BEN_lmdb_utils.resolve_data_dir" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="configilm.extra.BENv1_utils.resolve_data_dir">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv1_utils.</span></span><span class="sig-name descname"><span class="pre">resolve_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv1_utils.resolve_data_dir" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper function that tries to resolve the correct directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -340,12 +340,12 @@ small data</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="api_ds_BEN.html">
+          <a class="next-page" href="api_ds_BENv1.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">BigEarthNet DataSets and DataModules</div>
+                <div class="title">BigEarthNetv1 DataSets and DataModules</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -534,15 +534,15 @@ small data</p></li>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">BigEarthNet Utils</a><ul>
-<li><a class="reference internal" href="#configilm.extra.BEN_lmdb_utils.BENLMDBReader"><code class="docutils literal notranslate"><span class="pre">BENLMDBReader</span></code></a><ul>
-<li><a class="reference internal" href="#configilm.extra.BEN_lmdb_utils.BENLMDBReader.__init__"><code class="docutils literal notranslate"><span class="pre">BENLMDBReader.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#">BigEarthNetv1 Utils</a><ul>
+<li><a class="reference internal" href="#configilm.extra.BENv1_utils.BENv1LMDBReader"><code class="docutils literal notranslate"><span class="pre">BENv1LMDBReader</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.BENv1_utils.BENv1LMDBReader.__init__"><code class="docutils literal notranslate"><span class="pre">BENv1LMDBReader.__init__()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configilm.extra.BEN_lmdb_utils.band_combi_to_mean_std"><code class="docutils literal notranslate"><span class="pre">band_combi_to_mean_std()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.BEN_lmdb_utils.ben19_list_to_onehot"><code class="docutils literal notranslate"><span class="pre">ben19_list_to_onehot()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.BEN_lmdb_utils.read_ben_from_lmdb"><code class="docutils literal notranslate"><span class="pre">read_ben_from_lmdb()</span></code></a></li>
-<li><a class="reference internal" href="#configilm.extra.BEN_lmdb_utils.resolve_data_dir"><code class="docutils literal notranslate"><span class="pre">resolve_data_dir()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv1_utils.band_combi_to_mean_std"><code class="docutils literal notranslate"><span class="pre">band_combi_to_mean_std()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv1_utils.ben19_list_to_onehot"><code class="docutils literal notranslate"><span class="pre">ben19_list_to_onehot()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv1_utils.read_ben_from_lmdb"><code class="docutils literal notranslate"><span class="pre">read_ben_from_lmdb()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv1_utils.resolve_data_dir"><code class="docutils literal notranslate"><span class="pre">resolve_data_dir()</span></code></a></li>
 </ul>
 </li>
 </ul>

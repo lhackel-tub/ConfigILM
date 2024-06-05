@@ -40,7 +40,7 @@ throughput_testing
 :hidden:
 :caption: Extra
 
-extra/BEN_LMDB_Reader
+extra/BENv1_LMDB_Reader
 extra/DataSets and DataModules
 ```
 

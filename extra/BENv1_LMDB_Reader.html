@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DataSets and DataModules" href="DataSets%20and%20DataModules.html" /><link rel="prev" title="Throughput testing" href="../throughput_testing.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>Using the BigEarthNet LMDB Reader - ConfigILM</title>
+        <title>Using the BigEarthNet v1.0 LMDB Reader - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -169,9 +169,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Using the BigEarthNet LMDB Reader</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Using the BigEarthNet v1.0 LMDB Reader</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="DataSets%20and%20DataModules.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/bigearthnet.html">BigEarthNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/bigearthnetv1.html">BigEarthNet v1.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
@@ -184,8 +184,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../API/api_configilm.html">ILMConfiguration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API/ds/api_BEN_reader.html">BigEarthNetv1 Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_BENv1.html">BigEarthNetv1 DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
@@ -238,9 +238,9 @@
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="using-the-bigearthnet-lmdb-reader">
-<h1>Using the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> LMDB Reader<a class="headerlink" href="#using-the-bigearthnet-lmdb-reader" title="Permalink to this heading">#</a></h1>
-<p>In this section, an example of using the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> reader is shown. This converts the Lightning Memory-Mapped Database Manager (<a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>) used in the background as a database into an indexable Python object.</p>
+          <section class="tex2jax_ignore mathjax_ignore" id="using-the-bigearthnet-v1-0-lmdb-reader">
+<h1>Using the <a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a> LMDB Reader<a class="headerlink" href="#using-the-bigearthnet-v1-0-lmdb-reader" title="Permalink to this heading">#</a></h1>
+<p>In this section, an example of using the <a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a> reader is shown. This converts the Lightning Memory-Mapped Database Manager (<a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>) used in the background as a database into an indexable Python object.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Due to its use of <a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>, which is not pickle-able, it is not thread safe to use this object after first access. However, using it only after forking is supported (e.g. access in <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> methods in a <code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">dataset</span></code>).</p>
@@ -248,9 +248,9 @@
 <p>To use the reader, we have to create a <code class="docutils literal notranslate"><span class="pre">BENLMDBReader</span></code> object. This object needs 4 arguments for creation, namely the directory where the LMBD file is located as <code class="docutils literal notranslate"><span class="pre">string</span></code>, a sequence of 3 <code class="docutils literal notranslate"><span class="pre">ints</span></code> for the desired image size <code class="docutils literal notranslate"><span class="pre">(Channel,</span> <span class="pre">Height,</span> <span class="pre">Width)</span></code>, an indication of which bands are to be used and the label type to use.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.BEN_lmdb_utils</span> <span class="kn">import</span> <span class="n">BENLMDBReader</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.BENv1_utils</span> <span class="kn">import</span> <span class="n">BENv1LMDBReader</span>
 
-<span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+<span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENv1LMDBReader</span><span class="p">(</span>
         <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
@@ -288,7 +288,7 @@ Labels:
 \)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENv1LMDBReader</span><span class="p">(</span>
         <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B08&quot;</span><span class="p">,</span> <span class="s2">&quot;B04&quot;</span><span class="p">],</span>
@@ -334,7 +334,7 @@ Not all configurations are necessarily supported by all implementations in <code
 <p>We can also request the labels in the “new” 19-label version as introduced in <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id5" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">6</a>]</span>. Here we see that the Label ‘Water bodies’ gets converted into ‘Inland waters’ as expected.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENv1LMDBReader</span><span class="p">(</span>
         <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span>
@@ -359,7 +359,7 @@ Not all configurations are necessarily supported by all implementations in <code
 <p>If wished, the 19-label lists can also be converted into a 19-dimensional one-hot tensor. This guarantees a uniform conversion, so that each label vector always has the same sequence, regardless of the user.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.BEN_lmdb_utils</span> <span class="kn">import</span> <span class="n">ben19_list_to_onehot</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.BENv1_utils</span> <span class="kn">import</span> <span class="n">ben19_list_to_onehot</span>
 <span class="n">ben19_list_to_onehot</span><span class="p">(</span><span class="n">lbl</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -377,7 +377,7 @@ Not all configurations are necessarily supported by all implementations in <code
 <p>The reader objects also collect mean and standard deviation during initialization based on the chosen band configuration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader_1</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader_1</span> <span class="o">=</span> <span class="n">BENv1LMDBReader</span><span class="p">(</span>
         <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B08&quot;</span><span class="p">,</span> <span class="s2">&quot;B04&quot;</span><span class="p">],</span>
@@ -386,7 +386,7 @@ Not all configurations are necessarily supported by all implementations in <code
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean 1: </span><span class="si">{</span><span class="n">BEN_reader_1</span><span class="o">.</span><span class="n">mean</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Std 1: </span><span class="si">{</span><span class="n">BEN_reader_1</span><span class="o">.</span><span class="n">std</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="n">BEN_reader_2</span> <span class="o">=</span> <span class="n">BENLMDBReader</span><span class="p">(</span>
+<span class="n">BEN_reader_2</span> <span class="o">=</span> <span class="n">BENv1LMDBReader</span><span class="p">(</span>
         <span class="n">lmdb_dir</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path to dataset</span>
         <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span>
         <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;B04&quot;</span><span class="p">,</span> <span class="s2">&quot;B01&quot;</span><span class="p">,</span> <span class="s2">&quot;B8A&quot;</span><span class="p">],</span>
@@ -608,7 +608,7 @@ Mean 2: [590.23569706, 340.76769064, 2266.46036911]
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Using the BigEarthNet LMDB Reader</a><ul>
+<li><a class="reference internal" href="#">Using the BigEarthNet v1.0 LMDB Reader</a><ul>
 <li><a class="reference internal" href="#selecting-bands">Selecting Bands</a></li>
 <li><a class="reference internal" href="#label-types">Label types</a></li>
 <li><a class="reference internal" href="#mean-and-standard-deviation">Mean and Standard Deviation</a></li>

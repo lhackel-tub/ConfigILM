@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="RSVQA low resolution" href="rsvqa-lr.html" /><link rel="prev" title="BigEarthNet" href="bigearthnet.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="RSVQA low resolution" href="rsvqa-lr.html" /><link rel="prev" title="BigEarthNet v1.0" href="bigearthnetv1.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>RSVQAxBEN - ConfigILM</title>
@@ -169,9 +169,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../BEN_LMDB_Reader.html">Using the BigEarthNet LMDB Reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../BENv1_LMDB_Reader.html">Using the BigEarthNet v1.0 LMDB Reader</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../DataSets%20and%20DataModules.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="bigearthnet.html">BigEarthNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigearthnetv1.html">BigEarthNet v1.0</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">RSVQAxBEN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-hr.html">RSVQA high resolution</a></li>
@@ -184,8 +184,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../API/api_configilm.html">ILMConfiguration</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../API/api_datasets.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_BEN_reader.html">BigEarthNet Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BEN.html">BigEarthNet DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_BEN_reader.html">BigEarthNetv1 Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_BENv1.html">BigEarthNetv1 DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../API/ds/api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
@@ -241,8 +241,8 @@
           <section class="tex2jax_ignore mathjax_ignore" id="rsvqaxben">
 <h1>RSVQAxBEN<a class="headerlink" href="#rsvqaxben" title="Permalink to this heading">#</a></h1>
 <p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://zenodo.org/record/5084904#.ZAsFWNLMIUE">RSVQAxBEN</a>, a VQA dataset based on the
-<a class="reference external" href="https://bigearth.net/">BigEarthNet</a> Dataset. It was first published by <span id="id1">Lobry <em>et al.</em> [<a class="reference internal" href="../../references.html#id7" title="Sylvain Lobry, Begüm Demir, and Devis Tuia. Rsvqa meets bigearthnet: a new, large-scale, visual question answering dataset for remote sensing. In 2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS, 1218–1221. IEEE, 2021.">2</a>]</span>. The dataset can be found on zenodo <a class="reference external" href="https://doi.org/10.5281/zenodo.5084904"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.5084904.svg" /></a>.
-For the usage in this context, the dataset was extended from its RGB form to include all bands originally included in <a class="reference external" href="https://bigearth.net/">BigEarthNet</a>. A small example of the data used is distributed with this package.</p>
+<a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a> Dataset. It was first published by <span id="id1">Lobry <em>et al.</em> [<a class="reference internal" href="../../references.html#id7" title="Sylvain Lobry, Begüm Demir, and Devis Tuia. Rsvqa meets bigearthnet: a new, large-scale, visual question answering dataset for remote sensing. In 2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS, 1218–1221. IEEE, 2021.">2</a>]</span>. The dataset can be found on zenodo <a class="reference external" href="https://doi.org/10.5281/zenodo.5084904"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.5084904.svg" /></a>.
+For the usage in this context, the dataset was extended from its RGB form to include all bands originally included in <a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a>. A small example of the data used is distributed with this package.</p>
 <p>This module contains two <code class="docutils literal notranslate"><span class="pre">classes</span></code>, a standard <code class="docutils literal notranslate"><span class="pre">torch.util.data.Dataset</span></code> and a <code class="docutils literal notranslate"><span class="pre">pytorch_lightning.LightningDataModule</span></code> that encapsulates the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> for easy use in <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> applications. The <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> uses a <code class="docutils literal notranslate"><span class="pre">BENLMDBReader</span></code> to read images a LMDB file. Questions and Answers are read using JSON files.</p>
 <section id="rsvqaxbendataset">
 <h2>RSVQAxBENDataSet<a class="headerlink" href="#rsvqaxbendataset" title="Permalink to this heading">#</a></h2>
@@ -387,7 +387,7 @@ Question 2: &#39;are artificial areas or agricultural areas&#39;
 </section>
 <section id="selecting-bands">
 <h3>Selecting Bands<a class="headerlink" href="#selecting-bands" title="Permalink to this heading">#</a></h3>
-<p>Like for the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> DataSet, this DataSet supports different Band combinations. Currently, the selection is limited to some preconfigured combinations. Which bands are used is defined by the number of channels set in the Dataset. The selection is the same as for the <a class="reference external" href="https://bigearth.net/">BigEarthNet</a> DataSet as we can see when we use a faulty configuration.</p>
+<p>Like for the <a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a> DataSet, this DataSet supports different Band combinations. Currently, the selection is limited to some preconfigured combinations. Which bands are used is defined by the number of channels set in the Dataset. The selection is the same as for the <a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a> DataSet as we can see when we use a faulty configuration.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
@@ -621,13 +621,13 @@ To use a DataModule, the setup() function has to be called. This populates the D
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f0283f9aa10&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f2b32996a70&gt;
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f0283f9a560&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;configilm.extra.DataSets.RSVQAxBEN_DataSet.RSVQAxBENDataSet object at 0x7f2c244914e0&gt;
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -751,14 +751,14 @@ Pinned Memory will be set if a <code class="docutils literal notranslate"><span 
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="bigearthnet.html">
+          <a class="prev-page" href="bigearthnetv1.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">BigEarthNet</div>
+                <div class="title">BigEarthNet v1.0</div>
                 
               </div>
             </a>

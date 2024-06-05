@@ -8,7 +8,7 @@ with warnings.catch_warnings():
     from configilm.extra.DataModules.BENv1_DataModule import BENv1DataModule
 
 from . import test_data_common
-from configilm.extra.BEN_utils import resolve_data_dir
+from configilm.extra.BENv1_utils import resolve_data_dir
 from typing import Sequence, Union
 import torch
 

@@ -15,7 +15,7 @@ from torchmetrics.classification import AveragePrecision
 from configilm import ConfigILM
 from configilm.ConfigILM import ILMConfiguration
 from configilm.ConfigILM import ILMType
-from configilm.extra import BEN_utils
+from configilm.extra import BENv1_utils
 from configilm.extra._defaults import default_train_transform
 from configilm.extra._defaults import default_transform
 from configilm.extra.DataSets.BENv1_DataSet import BENv1DataSet
@@ -96,13 +96,13 @@ def main(
 
     img_size = (number_of_channels, image_size, image_size)
 
-    ben_mean, ben_std = BEN_utils.band_combi_to_mean_std(img_size[0])
+    ben_mean, ben_std = BENv1_utils.band_combi_to_mean_std(img_size[0])
     train_transform = default_train_transform(img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std)
     transform = default_transform(img_size=(img_size[1], img_size[2]), mean=ben_mean, std=ben_std)
 
     # just using a mock data dir here - you should replace this with the path to your data
     # (consider the dict structure needed)
-    ben_data_dir = BEN_utils.resolve_data_dir(None, allow_mock=True)
+    ben_data_dir = BENv1_utils.resolve_data_dir(None, allow_mock=True)
     train_ds = BENv1DataSet(
         ben_data_dir,
         split="train",

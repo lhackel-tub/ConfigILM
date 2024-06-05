@@ -21,7 +21,7 @@ from torch.utils.data import DataLoader
 
 from configilm.extra._defaults import default_train_transform
 from configilm.extra._defaults import default_transform
-from configilm.extra.BEN_utils import band_combi_to_mean_std
+from configilm.extra.BENv1_utils import band_combi_to_mean_std
 from configilm.extra.DataSets.BENv1_DataSet import BENv1DataSet
 
 

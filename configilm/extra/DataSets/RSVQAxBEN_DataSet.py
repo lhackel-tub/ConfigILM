@@ -15,7 +15,7 @@ from typing import Optional
 
 import torch
 
-from configilm.extra.BEN_utils import BENv1LMDBReader
+from configilm.extra.BENv1_utils import BENv1LMDBReader
 from configilm.extra.data_dir import resolve_data_dir_for_ds
 from configilm.extra.DataSets.ClassificationVQADataset import ClassificationVQADataset
 

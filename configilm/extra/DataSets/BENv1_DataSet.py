@@ -17,8 +17,8 @@ from typing import Union
 
 from torch.utils.data import Dataset
 
-from configilm.extra.BEN_utils import ben19_list_to_onehot
-from configilm.extra.BEN_utils import BENv1LMDBReader
+from configilm.extra.BENv1_utils import ben19_list_to_onehot
+from configilm.extra.BENv1_utils import BENv1LMDBReader
 
 
 def _csv_files_to_patch_list(csv_files: Union[Path, Iterable[Path]]):

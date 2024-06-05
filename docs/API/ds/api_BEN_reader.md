@@ -2,7 +2,7 @@
 # BigEarthNet Utils
 
 :::{eval-rst}
-.. automodule:: configilm.extra.BEN_lmdb_utils
+.. automodule:: configilm.extra.BEN_utils
     :members:
     :undoc-members:
 :::

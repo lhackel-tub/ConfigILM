@@ -13,10 +13,10 @@ from torch.utils.data import DataLoader
 from configilm import ConfigILM
 from configilm.ConfigILM import ILMConfiguration
 from configilm.ConfigILM import ILMType
-from configilm.extra import BEN_lmdb_utils
+from configilm.extra import BEN_utils
 from configilm.extra._defaults import default_train_transform
 from configilm.extra._defaults import default_transform
-from configilm.extra.DataSets.BEN_DataSet import BENDataSet
+from configilm.extra.DataSets.BENv1_DataSet import BENv1DataSet
 
 __author__ = "Leonard Hackel - BIFOLD/RSiM TU Berlin"
 
@@ -34,26 +34,26 @@ model_config = ILMConfiguration(
 )
 model = ConfigILM.ConfigILM(model_config)
 
-ben_mean, ben_std = BEN_lmdb_utils.band_combi_to_mean_std(number_of_channels)
+ben_mean, ben_std = BEN_utils.band_combi_to_mean_std(number_of_channels)
 train_transform = default_train_transform(img_size=(image_size, image_size), mean=ben_mean, std=ben_std)
 transform = default_transform(img_size=(image_size, image_size), mean=ben_mean, std=ben_std)
 
-train_ds = BENDataSet(
-    BEN_lmdb_utils.resolve_data_dir(None, allow_mock=True),
+train_ds = BENv1DataSet(
+    BEN_utils.resolve_data_dir(None, allow_mock=True),
     split="train",
     transform=train_transform,
     img_size=(number_of_channels, image_size, image_size),
 )
 
-val_ds = BENDataSet(
-    BEN_lmdb_utils.resolve_data_dir(None, allow_mock=True),
+val_ds = BENv1DataSet(
+    BEN_utils.resolve_data_dir(None, allow_mock=True),
     split="val",
     transform=transform,
     img_size=(number_of_channels, image_size, image_size),
 )
 
-test_ds = BENDataSet(
-    BEN_lmdb_utils.resolve_data_dir(None, allow_mock=True),
+test_ds = BENv1DataSet(
+    BEN_utils.resolve_data_dir(None, allow_mock=True),
     split="test",
     transform=transform,
     img_size=(number_of_channels, image_size, image_size),

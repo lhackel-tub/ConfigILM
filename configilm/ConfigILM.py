@@ -7,27 +7,27 @@ __credits__ = ["Leonard Hackel"]
 __maintainer__ = "Leonard Hackel"
 __email__ = "l.hackel@tu-berlin.de"
 
+import warnings
+from collections import OrderedDict
+from dataclasses import dataclass
+from enum import Enum
+from os import listdir
+from os.path import isdir, join
+from pathlib import Path
+from typing import Sequence, Union, Callable
+
 import timm
+import torch
 import transformers
+from appdirs import user_cache_dir
+from requests.exceptions import HTTPError  # type: ignore
+from requests.exceptions import ReadTimeout  # type: ignore
+from torch import nn
 from transformers import (
     AutoTokenizer,
     AutoModelForSequenceClassification,
     AutoConfig,
 )
-from typing import Sequence, Union, Callable
-import torch
-from torch import nn
-
-from dataclasses import dataclass
-from enum import Enum
-from pathlib import Path
-from collections import OrderedDict
-from os import listdir
-from os.path import isdir, join
-import warnings
-from requests.exceptions import HTTPError  # type: ignore
-from requests.exceptions import ReadTimeout  # type: ignore
-from appdirs import user_cache_dir
 
 
 def _available_hf_models(base_path: Path):

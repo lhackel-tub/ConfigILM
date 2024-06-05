@@ -19,8 +19,8 @@ from torchmetrics.classification import AveragePrecision
 from configilm import ConfigILM
 from configilm.ConfigILM import ILMConfiguration
 from configilm.ConfigILM import ILMType
-from configilm.extra import BEN_lmdb_utils
-from configilm.extra.DataModules.BEN_DataModule import BENDataModule
+from configilm.extra import BEN_utils
+from configilm.extra.DataModules.BENv1_DataModule import BENv1DataModule
 
 __author__ = "Leonard Hackel - BIFOLD/RSiM TU Berlin"
 
@@ -139,10 +139,10 @@ def main(
     )
 
     model = LitVisionEncoder(config=model_config, lr=lr)
-    dm = BENDataModule(
+    dm = BENv1DataModule(
         # just using a mock data dir here - you should replace this with the path to your data
         # (consider the dict structure needed)
-        data_dirs=BEN_lmdb_utils.resolve_data_dir(None, allow_mock=True),
+        data_dirs=BEN_utils.resolve_data_dir(None, allow_mock=True),
         img_size=(number_of_channels, image_size, image_size),
         num_workers_dataloader=num_workers,
         batch_size=batch_size,

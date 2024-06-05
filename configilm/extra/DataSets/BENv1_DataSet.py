@@ -17,8 +17,8 @@ from typing import Union
 
 from torch.utils.data import Dataset
 
-from configilm.extra.BEN_lmdb_utils import ben19_list_to_onehot
-from configilm.extra.BEN_lmdb_utils import BENLMDBReader
+from configilm.extra.BEN_utils import ben19_list_to_onehot
+from configilm.extra.BEN_utils import BENv1LMDBReader
 
 
 def _csv_files_to_patch_list(csv_files: Union[Path, Iterable[Path]]):
@@ -34,7 +34,7 @@ def _csv_files_to_patch_list(csv_files: Union[Path, Iterable[Path]]):
     return [x[0] for x in patches]
 
 
-class BENDataSet(Dataset):
+class BENv1DataSet(Dataset):
     """
     Dataset for BigEarthNet dataset. LMDB-Files can be requested by contacting
     the author or by downloading the dataset from the official website and encoding
@@ -133,7 +133,7 @@ class BENDataSet(Dataset):
         self.transform = transform
         self.image_size = img_size
         if img_size[0] not in self.avail_chan_configs.keys():
-            BENDataSet.get_available_channel_configurations()
+            BENv1DataSet.get_available_channel_configurations()
             raise AssertionError(f"{img_size[0]} is not a valid channel configuration.")
 
         self.channels = img_size[0]
@@ -159,7 +159,7 @@ class BENDataSet(Dataset):
             self.patches = self.patches[:max_len]
 
         print(f"    {len(self.patches)} filtered patches indexed")
-        self.BENLoader = BENLMDBReader(
+        self.BENLoader = BENv1LMDBReader(
             lmdb_dir=self.lmdb_dir,
             label_type="new",
             image_size=self.image_size,

@@ -20,7 +20,7 @@ from tqdm import tqdm
 from configilm import ConfigILM
 from configilm.ConfigILM import ILMConfiguration
 from configilm.ConfigILM import ILMType
-from configilm.extra import BEN_lmdb_utils
+from configilm.extra import BEN_utils
 from configilm.extra.DataModules.RSVQAxBEN_DataModule import RSVQAxBENDataModule
 
 try:
@@ -202,7 +202,7 @@ def main(
     dm = RSVQAxBENDataModule(
         # just using a mock data dir here - you should replace this with the path to your data
         # (consider the dict structure needed)
-        data_dirs=BEN_lmdb_utils.resolve_data_dir(None, allow_mock=True),
+        data_dirs=BEN_utils.resolve_data_dir(None, allow_mock=True),
         img_size=(number_of_channels, image_size, image_size),
         max_len=max_img_index,
         num_workers_dataloader=num_workers,

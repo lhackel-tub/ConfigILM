@@ -182,7 +182,7 @@ def read_ben_from_lmdb(env, key):
     return ben_patch
 
 
-class BENLMDBReader:
+class BENv1LMDBReader:
     def __init__(
         self,
         lmdb_dir: Union[str, Path],
@@ -191,7 +191,7 @@ class BENLMDBReader:
         label_type: str,
     ):
         """
-        Initialize a BigEarthNet Reader object that reads from a lmdb encoded file.
+        Initialize a BigEarthNet v1.0 Reader object that reads from a lmdb encoded file.
 
         :param lmdb_dir: base path that contains a data.mdb and lock.mdb
         :param image_size: final size of the image that it is interpolated to

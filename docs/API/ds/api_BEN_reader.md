@@ -1,5 +1,5 @@
 (api-BEN-reader)=
-# BigEarthNet Utils
+# BigEarthNetv1 Utils
 
 :::{eval-rst}
 .. automodule:: configilm.extra.BENv1_utils

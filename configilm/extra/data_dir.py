@@ -43,6 +43,17 @@ dataset_paths = {
             "test_data": erde_storagecube / "leonard" / "test.csv",
         },
     ],
+    "benv2": [
+        # MARS
+        {},
+        # ERDE
+        {
+            "images_lmdb": Path("/faststorage") / "BigEarthNet-V2" / "BigEarthNet-V2-LMDB",
+            "split_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_split_mapping.csv",
+            "s1_mapping_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_s1_mapping.csv",
+            "labels_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_label_mapping.csv",
+        },
+    ],
     "cocoqa": [],
     "hrvqa": [
         # MARS Storagecube
@@ -126,6 +137,12 @@ mock_data_path = {
         "train_data": mock_data_dir / "BENv1" / "train.csv",
         "val_data": mock_data_dir / "BENv1" / "val.csv",
         "test_data": mock_data_dir / "BENv1" / "test.csv",
+    },
+    "benv2": {
+        "images_lmdb": mock_data_dir / "BENv2" / "BigEarthNet-V2-LMDB",
+        "split_csv": mock_data_dir / "BENv2" / "patch_id_split_mapping.csv",
+        "s1_mapping_csv": mock_data_dir / "BENv2" / "patch_id_s1_mapping.csv",
+        "labels_csv": mock_data_dir / "BENv2" / "patch_id_label_mapping.csv",
     },
     "cocoqa": {
         "images": mock_data_dir / "COCO-QA" / "images",

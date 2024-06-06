@@ -95,6 +95,36 @@ def get_classification_metric_collection(
     exclude: Optional[list[str]] = None,
     prefix: Optional[str] = None,
 ) -> MetricCollection:
+    """
+    Get a collection of classification metrics. The metrics are chosen based on the task and the average parameter.
+    By default, all metrics are included. The exclude parameter can be used to exclude specific metrics. For some
+    combinations of task and average, some metrics are not available and will be excluded automatically.
+
+    Right now, only multilabel classification is implemented. The other tasks are placeholders for future
+    implementations.
+
+    The default metrics are:
+        - Accuracy
+        - AUROC
+        - AveragePrecision
+        - F1Score
+        - F2Score
+        - Precision
+        - Recall
+        - Specificity
+
+    The following metrics are removed by default:
+        - AUROC and AveragePrecision for `task="multilabel"` and `average="sample"`
+
+    :param task: The classification task. One of "binary", "multiclass", or "multilabel".
+    :param average: The averaging strategy to be used. One of "macro", "micro", "sample", or None.
+    :param num_classes: The number of classes in the dataset. Required for multiclass classification.
+    :param num_labels: The number of labels in the dataset. Required for multilabel classification.
+    :param exclude: A list of metric names to exclude from the collection.
+    :param prefix: A prefix to add to the metric names.
+
+    :return: A MetricCollection object containing the chosen metrics.
+    """
     if prefix is None:
         prefix = ""
     if task == "binary":

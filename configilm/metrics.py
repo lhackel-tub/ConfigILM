@@ -119,14 +119,3 @@ def get_classification_metric_collection(
         return _get_multilabel_metrics(num_labels, average, prefix, exclude)
     else:
         raise ValueError(f"Invalid task {task}")
-
-
-if __name__ == "__main__":
-    metrics = get_classification_metric_collection("multilabel", num_labels=10)
-    print(len(metrics))
-    metrics = get_classification_metric_collection("multilabel", num_labels=10, average="macro")
-    print(len(metrics))
-    metrics = get_classification_metric_collection("multilabel", num_labels=10, average="micro")
-    print(len(metrics))
-    metrics = get_classification_metric_collection("multilabel", num_labels=10, average="sample")
-    print(len(metrics))

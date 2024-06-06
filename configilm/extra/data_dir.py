@@ -11,6 +11,7 @@ mars_storagecube_datasets = mars_storagecube / "data" / "datasets"
 erde_storagecube_datasets = erde_storagecube / "data" / "datasets"
 mars_data_dir = Path("/data/leonard")
 erde_data_dir = Path("/faststorage/leonard")
+pluto_local = Path("/home/leonard/data/")
 
 dataset_paths = {
     "benv1": [
@@ -52,6 +53,13 @@ dataset_paths = {
             "split_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_split_mapping.csv",
             "s1_mapping_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_s1_mapping.csv",
             "labels_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_label_mapping.csv",
+        },
+        # PLUTO
+        {
+            "images_lmdb": pluto_local / "BigEarthNet-V2" / "BigEarthNet-V2-LMDB",
+            "split_csv": pluto_local / "BigEarthNet-V2" / "patch_id_split_mapping.csv",
+            "s1_mapping_csv": pluto_local / "BigEarthNet-V2" / "patch_id_s1_mapping.csv",
+            "labels_csv": pluto_local / "BigEarthNet-V2" / "patch_id_label_mapping.csv",
         },
     ],
     "cocoqa": [],

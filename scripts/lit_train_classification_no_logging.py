@@ -1,7 +1,7 @@
 """
 This is an example script for vision classification using the BigEarthNet dataset.
 It is basically a 1-to-1 application of the process described in the documentation under
-Supervised Vision Classification.
+Supervised Image Classification.
 """
 # import packages
 from typing import List

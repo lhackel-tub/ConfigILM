@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Contributing" href="../general/contributing.html" /><link rel="prev" title="Utilities" href="api_util.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Contributing" href="../general/contributing.html" /><link rel="prev" title="Metrics Collection" href="api_metrics.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
         <title>Throughput - ConfigILM</title>
@@ -195,6 +195,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api_fusion.html">Fusion Methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_util.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_metrics.html">Metrics Collection</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Throughput</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Other</span></p>
@@ -253,7 +254,7 @@ ClassificationVQADataset and provides some dataset specific functionality.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – A mapping from file key to file path. Is ignored, as
 the dataset does not use any real files but included for compatibility.</p></li>
-<li><p><strong>split</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>str</em><em>]</em>) – <p>The name of the split to use. Is ignored, as the dataset
+<li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>The name of the split to use. Is ignored, as the dataset
 does not use any real splits but included for compatibility with other</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
@@ -270,7 +271,7 @@ included for compatibility with other datasets.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>max_len</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>int</em><em>]</em>) – <p>The maximum number of qa-pairs to use. If None or -1 is
+<li><p><strong>max_len</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – <p>The maximum number of qa-pairs to use. If None or -1 is
 provided, all qa-pairs are used. “all” is defined in num_samples.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
@@ -599,14 +600,14 @@ method is not called before this method or the dataset has no validation data.</
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="api_util.html">
+          <a class="prev-page" href="api_metrics.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Utilities</div>
+                <div class="title">Metrics Collection</div>
                 
               </div>
             </a>

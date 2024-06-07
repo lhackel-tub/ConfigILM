@@ -46,7 +46,7 @@ dataset_paths = {
     ],
     "benv2": [
         # MARS
-        {},
+        {"images_lmdb": "INVALID_PATH"},
         # ERDE
         {
             "images_lmdb": Path("/faststorage") / "BigEarthNet-V2" / "BigEarthNet-V2-LMDB",
@@ -207,7 +207,7 @@ def resolve_data_dir_for_ds(
     """
     dataset_name = dataset_name.lower()
     if data_dir_mapping is None:
-        Messages.warn("No data directory provided, trying to resolve")
+        Messages.info("No data directory provided, trying to resolve")
         path_dicts = dataset_paths.get(dataset_name, {})
         assert type(path_dicts) == list, f"Invalid path_dicts for {dataset_name}"
         for pd in path_dicts:
@@ -219,7 +219,7 @@ def resolve_data_dir_for_ds(
                     break
             if valid:
                 data_dir_mapping = {k: Path(v).resolve() for k, v in pd.items()}
-                Messages.warn(f"Changing path to {data_dir_mapping}")
+                Messages.info(f"Changing path to {data_dir_mapping}")
                 break
 
     # using mock data if allowed and no other found or forced

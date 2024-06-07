@@ -81,7 +81,9 @@ def _get_multilabel_metrics(
         )
     elif average is None:
         return MetricCollection(
-            [metric(num_labels=num_labels, task="multilabel") for metric in metric_list], prefix=prefix
+            [metric(num_labels=num_labels, task="multilabel", average="none") for metric in metric_list],
+            prefix=prefix,
+            postfix="_class",
         )
     else:
         raise ValueError(f"Invalid average {average}")

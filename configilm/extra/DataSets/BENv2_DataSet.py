@@ -45,6 +45,7 @@ class BENv2DataSet(Dataset):
         4: "10m Sentinel-2",
         10: "10m + 20m Sentinel-2",
         12: "10m + 20m Sentinel-2 + 10m Sentinel-1",
+        14: "10m + 20m Sentinel-2 + 60m Sentinel-2 + 10m Sentinel-1 ",
     }
 
     channel_configurations = {
@@ -53,6 +54,7 @@ class BENv2DataSet(Dataset):
         4: STANDARD_BANDS["10m"],  # BRGIr order
         10: STANDARD_BANDS["10m"] + STANDARD_BANDS["20m"],
         12: STANDARD_BANDS["10m"] + STANDARD_BANDS["20m"] + STANDARD_BANDS["S1"],
+        14: STANDARD_BANDS["10m"] + STANDARD_BANDS["20m"] + STANDARD_BANDS["60m"] + STANDARD_BANDS["S1"],
     }
 
     @classmethod

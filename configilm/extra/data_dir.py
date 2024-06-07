@@ -11,6 +11,7 @@ mars_storagecube_datasets = mars_storagecube / "data" / "datasets"
 erde_storagecube_datasets = erde_storagecube / "data" / "datasets"
 mars_data_dir = Path("/data/leonard")
 erde_data_dir = Path("/faststorage/leonard")
+pluto_local = Path("/home/leonard/data/")
 
 dataset_paths = {
     "benv1": [
@@ -41,6 +42,24 @@ dataset_paths = {
             "train_data": erde_storagecube / "leonard" / "train.csv",
             "val_data": erde_storagecube / "leonard" / "val.csv",
             "test_data": erde_storagecube / "leonard" / "test.csv",
+        },
+    ],
+    "benv2": [
+        # MARS
+        {"images_lmdb": "INVALID_PATH"},
+        # ERDE
+        {
+            "images_lmdb": Path("/faststorage") / "BigEarthNet-V2" / "BigEarthNet-V2-LMDB",
+            "split_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_split_mapping.csv",
+            "s1_mapping_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_s1_mapping.csv",
+            "labels_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_label_mapping.csv",
+        },
+        # PLUTO
+        {
+            "images_lmdb": pluto_local / "BigEarthNet-V2" / "BigEarthNet-V2-LMDB",
+            "split_csv": pluto_local / "BigEarthNet-V2" / "patch_id_split_mapping.csv",
+            "s1_mapping_csv": pluto_local / "BigEarthNet-V2" / "patch_id_s1_mapping.csv",
+            "labels_csv": pluto_local / "BigEarthNet-V2" / "patch_id_label_mapping.csv",
         },
     ],
     "cocoqa": [],
@@ -127,6 +146,12 @@ mock_data_path = {
         "val_data": mock_data_dir / "BENv1" / "val.csv",
         "test_data": mock_data_dir / "BENv1" / "test.csv",
     },
+    "benv2": {
+        "images_lmdb": mock_data_dir / "BENv2" / "BigEarthNet-V2-LMDB",
+        "split_csv": mock_data_dir / "BENv2" / "patch_id_split_mapping.csv",
+        "s1_mapping_csv": mock_data_dir / "BENv2" / "patch_id_s1_mapping.csv",
+        "labels_csv": mock_data_dir / "BENv2" / "patch_id_label_mapping.csv",
+    },
     "cocoqa": {
         "images": mock_data_dir / "COCO-QA" / "images",
         "train_data": mock_data_dir / "COCO-QA" / "cocoqa-2015-05-17" / "train",
@@ -182,7 +207,7 @@ def resolve_data_dir_for_ds(
     """
     dataset_name = dataset_name.lower()
     if data_dir_mapping is None:
-        Messages.warn("No data directory provided, trying to resolve")
+        Messages.info("No data directory provided, trying to resolve")
         path_dicts = dataset_paths.get(dataset_name, {})
         assert type(path_dicts) == list, f"Invalid path_dicts for {dataset_name}"
         for pd in path_dicts:
@@ -194,7 +219,7 @@ def resolve_data_dir_for_ds(
                     break
             if valid:
                 data_dir_mapping = {k: Path(v).resolve() for k, v in pd.items()}
-                Messages.warn(f"Changing path to {data_dir_mapping}")
+                Messages.info(f"Changing path to {data_dir_mapping}")
                 break
 
     # using mock data if allowed and no other found or forced

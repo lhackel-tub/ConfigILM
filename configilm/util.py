@@ -68,6 +68,9 @@ class Messages:
     BOLD = "\033[1m"
     UNDERLINE = "\033[4m"
 
+    max_indent = 10
+    start_msg = ""
+
     @classmethod
     def warn(cls, message: str) -> None:
         """
@@ -76,7 +79,7 @@ class Messages:
 
         :param message: Message to print
         """
-        print(f"\n{cls.WARNING}[WARNING] {indent(message, 9)}{cls.ENDC}")
+        print(f"{cls.start_msg}{cls.WARNING}[WARNING] {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
     def error(cls, message: str) -> None:
@@ -86,7 +89,7 @@ class Messages:
 
         :param message: Message to print
         """
-        print(f"\n{cls.FAIL}[ERROR]   {indent(message, 7)}{cls.ENDC}")
+        print(f"{cls.start_msg}{cls.FAIL}[ERROR]   {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
     def success(cls, message: str) -> None:
@@ -96,7 +99,7 @@ class Messages:
 
         :param message: Message to print
         """
-        print(f"\n{cls.OKGREEN}[SUCCESS] {indent(message, 10)}{cls.ENDC}")
+        print(f"{cls.start_msg}{cls.OKGREEN}[SUCCESS] {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
     def hint(cls, message: str) -> None:
@@ -106,7 +109,17 @@ class Messages:
 
         :param message: Message to print
         """
-        print(f"\n{cls.OKCYAN}[HINT]    {indent(message, 6)}{cls.ENDC}")
+        print(f"{cls.start_msg}{cls.OKCYAN}[HINT]    {indent(message, cls.max_indent)}{cls.ENDC}")
+
+    @classmethod
+    def info(cls, message: str) -> None:
+        """
+        Prints a dark blue info message with aligned indent and "[INFO]".
+        If the message has multiple lines, it is aligned to the right of the colon.
+
+        :param message: Message to print
+        """
+        print(f"{cls.start_msg}{cls.OKCYAN}[INFO]    {indent(message, cls.max_indent)}{cls.ENDC}")
 
 
 def round_to(x, base):

@@ -166,7 +166,7 @@ class BENv1DataSet(Dataset):
             bands=self.image_size[0],
         )
 
-    def get_patchname_from_index(self, idx: int) -> Optional[None]:
+    def get_patchname_from_index(self, idx: int) -> Optional[str]:
         """
         Gives the patch name of the image at the specified index. May return invalid
         names (names that are not actually loadable because they are not part of the

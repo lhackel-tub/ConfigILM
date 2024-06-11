@@ -1,3 +1,4 @@
+import dataclasses
 import shutil
 import warnings
 from collections import OrderedDict
@@ -752,3 +753,42 @@ def test_tokenizer_not_exists():
 
     with pytest.raises(AttributeError):
         _ = model.get_tokenizer()
+
+
+def test_configuration_default():
+    cfg = ConfigILM.ILMConfiguration(timm_model_name="resnet18")
+    assert cfg.channels == 3, f"Channels should be 3 but is {cfg.channels}"
+    assert cfg.classes == 10, f"Classes should be 10 but is {cfg.classes}"
+    assert cfg.image_size == 120, f"Image size should be 120 but is {cfg.image_size}"
+    assert cfg.fusion_in == 512, f"Fusion in should be 512 but is {cfg.fusion_in}"
+    assert cfg.fusion_out == 512, f"Fusion out should be 512 but is {cfg.fusion_out}"
+    assert cfg.fusion_method == torch.mul, f"Fusion method should be torch.mul but is {cfg.fusion_method}"
+    assert cfg.hf_model_name is None, f"HF model name should be None but is {cfg.hf_model_name}"
+    assert isinstance(
+        cfg.fusion_activation, torch.nn.Tanh
+    ), f"Fusion activation should be nn.Tanh but is {cfg.fusion_activation}"
+
+
+def test_configurations_equal():
+    cfg1 = ConfigILM.ILMConfiguration(timm_model_name="resnet18")
+    cfg2 = ConfigILM.ILMConfiguration(timm_model_name="resnet18")
+    assert cfg1 == cfg2, "Configurations should be equal"
+    assert cfg1.dif(cfg2) == {}, "Configurations should be equal"
+
+    dct = dataclasses.asdict(cfg1)
+    assert ConfigILM.ILMConfiguration(**dct) == cfg1, "Configurations should be equal"
+    assert ConfigILM.ILMConfiguration(**dct).dif(cfg1) == {}, "Configurations should be equal"
+
+
+def test_configurations_change():
+    cfg1 = ConfigILM.ILMConfiguration(timm_model_name="resnet18")
+    dct = dataclasses.asdict(cfg1)
+    dct["timm_model_name"] = "resnet50"
+    assert ConfigILM.ILMConfiguration(**dct) != cfg1, "Configurations should not be equal"
+    assert ConfigILM.ILMConfiguration(**dct).dif(cfg1) == {
+        "timm_model_name": "resnet50"
+    }, "Configurations should not be equal"
+
+    dct = cfg1.as_dict()
+    assert ConfigILM.ILMConfiguration(**dct) == cfg1, "Configurations should be equal"
+    assert ConfigILM.ILMConfiguration(**dct).dif(cfg1) == {}, "Configurations should be equal"

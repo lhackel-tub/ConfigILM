@@ -316,22 +316,17 @@ or casts to a different type.</p>
 <dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.ConfigILM.</span></span><span class="sig-name descname"><span class="pre">ILMConfiguration</span></span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration" title="Permalink to this definition">#</a></dt>
 <dd><p>Configuration dataclass that defines all properties of ConfigILM models.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timm_model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_model_name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size=120</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels=3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes=10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_type=ILMType.IMAGE_CLASSIFICATION</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual_features_out=512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_in=512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_out=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_hidden=256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_dropout_rate=0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_dropout_rate=0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_dropout_rate=0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_method=&lt;built-in</span> <span class="pre">method</span> <span class="pre">mul</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_activation=Tanh()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_rate=0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pooler_output=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sequence_length=32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_pretrained_timm_if_available=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_pretrained_hf_if_available=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Initializes a configuration dataclass that defines all properties of ConfigILM
-models.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>channels</strong> (<em>int</em>) – <p>Number of input channels for the image model.</p>
+<li><p><strong>channels</strong> – <p>Number of input channels for the image model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>3</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>class_names</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – <p>Names of the classes in the classifier. Usable for
+<li><p><strong>class_names</strong> – <p>Names of the classes in the classifier. Usable for
 class-specific performance. If none, classes will be enumerated with
 numbers.</p>
 <dl class="field-list simple">
@@ -340,7 +335,7 @@ numbers.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>classes</strong> (<em>int</em>) – <p>Number of classes for the output of IMAGE_CLASSIFICATION
+<li><p><strong>classes</strong> – <p>Number of classes for the output of IMAGE_CLASSIFICATION
 classifier or VQA_CLASSIFICATION classifier.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -348,14 +343,14 @@ classifier or VQA_CLASSIFICATION classifier.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>drop_rate</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – <p>Dropout and drop path rate for timm models.</p>
+<li><p><strong>drop_rate</strong> – <p>Dropout and drop path rate for timm models.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0.2</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>fusion_activation</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>]</em><em>, </em><em>Tensor</em><em>]</em>) – <p>Activation function inside all classification head
+<li><p><strong>fusion_activation</strong> – <p>Activation function inside all classification head
 layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -363,14 +358,14 @@ layers.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>fusion_dropout_rate</strong> (<em>float</em>) – <p>Drop rate inside all classification head layers.</p>
+<li><p><strong>fusion_dropout_rate</strong> – <p>Drop rate inside all classification head layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0.25</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>fusion_hidden</strong> (<em>int</em>) – <p>Number of neurons inside the hidden layer of the
+<li><p><strong>fusion_hidden</strong> – <p>Number of neurons inside the hidden layer of the
 classification head.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -378,14 +373,14 @@ classification head.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>fusion_in</strong> (<em>int</em>) – <p>Input dimension to the fusion method.</p>
+<li><p><strong>fusion_in</strong> – <p>Input dimension to the fusion method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>512</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>fusion_method</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>, </em><em>Tensor</em><em>]</em><em>, </em><em>Tensor</em><em>]</em>) – <p>Fusion method to combine text and image features. Callable
+<li><p><strong>fusion_method</strong> – <p>Fusion method to combine text and image features. Callable
 with two inputs (tensor, tensor) and a single output (tensor) where each
 tensor is single dimension (plus batch dimension). First input is flatten
 output of image model with dimension fusion_in, second input is flatten
@@ -397,7 +392,7 @@ dimension fusion_out.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>fusion_out</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>int</em><em>]</em>) – <p>Output dimension of the fusion method. If None, output will
+<li><p><strong>fusion_out</strong> – <p>Output dimension of the fusion method. If None, output will
 be same as input (e.g. for point-wise operations).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -405,7 +400,7 @@ be same as input (e.g. for point-wise operations).</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>hf_model_name</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>str</em><em>]</em>) – <p>Name of the text model from huggingface if applicable. The
+<li><p><strong>hf_model_name</strong> – <p>Name of the text model from huggingface if applicable. The
 model has to be a model for text sequence classification.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -413,7 +408,7 @@ model has to be a model for text sequence classification.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>image_size</strong> (<em>int</em>) – <p>Size of input images for image models. Only applicable for
+<li><p><strong>image_size</strong> – <p>Size of input images for image models. Only applicable for
 some specific models.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -421,7 +416,7 @@ some specific models.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>load_pretrained_hf_if_available</strong> (<em>bool</em>) – <p>Load pretrained weights for huggingface
+<li><p><strong>load_pretrained_hf_if_available</strong> – <p>Load pretrained weights for huggingface
 model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -429,7 +424,7 @@ model.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>load_pretrained_timm_if_available</strong> (<em>bool</em>) – <p>Load pretrained weights for timm
+<li><p><strong>load_pretrained_timm_if_available</strong> – <p>Load pretrained weights for timm
 model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -437,7 +432,7 @@ model.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>max_sequence_length</strong> (<em>int</em>) – <p>Maximum sequence length of huggingface models.
+<li><p><strong>max_sequence_length</strong> – <p>Maximum sequence length of huggingface models.
 Sequences that are shorter will be padded, longer ones are cropped to this
 maximum length.</p>
 <dl class="field-list simple">
@@ -446,7 +441,7 @@ maximum length.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>network_type</strong> (<a class="reference internal" href="#configilm.ConfigILM.ILMType" title="configilm.ConfigILM.ILMType"><em>ILMType</em></a>) – <p>Type of ILM-network. Available types are listed in ILMType
+<li><p><strong>network_type</strong> – <p>Type of ILM-network. Available types are listed in ILMType
 enum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -454,7 +449,7 @@ enum.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>t_dropout_rate</strong> (<em>float</em>) – <p>Dropout rate of the mapping from the huggingface text
+<li><p><strong>t_dropout_rate</strong> – <p>Dropout rate of the mapping from the huggingface text
 model to the dimension of the fusion method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -462,9 +457,9 @@ model to the dimension of the fusion method.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>timm_model_name</strong> (<em>str</em>) – (required) Name of the image model as defined in
+<li><p><strong>timm_model_name</strong> – (required) Name of the image model as defined in
 timm.list_models()</p></li>
-<li><p><strong>use_pooler_output</strong> (<em>bool</em>) – <p>Use the pooler output of the huggingface model if
+<li><p><strong>use_pooler_output</strong> – <p>Use the pooler output of the huggingface model if
 applicable and available. Otherwise, last hidden features will be flattened
 and used instead.</p>
 <dl class="field-list simple">
@@ -473,7 +468,7 @@ and used instead.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>v_dropout_rate</strong> (<em>float</em>) – <p>Dropout rate of the mapping from the timm image model to
+<li><p><strong>v_dropout_rate</strong> – <p>Dropout rate of the mapping from the timm image model to
 the dimension of the fusion method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
@@ -481,7 +476,7 @@ the dimension of the fusion method.</p>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>visual_features_out</strong> (<em>int</em>) – <p>Output dimension of the timm image model. Dimension
+<li><p><strong>visual_features_out</strong> – <p>Output dimension of the timm image model. Dimension
 will be linearly mapped to fusion_in dimension with activation and dropout
 as specified.</p>
 <dl class="field-list simple">
@@ -493,7 +488,195 @@ as specified.</p>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timm_model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_model_name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size=120</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels=3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes=10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_type=ILMType.IMAGE_CLASSIFICATION</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual_features_out=512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_in=512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_out=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_hidden=256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_dropout_rate=0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_dropout_rate=0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_dropout_rate=0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_method=&lt;built-in</span> <span class="pre">method</span> <span class="pre">mul</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_activation=Tanh()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_rate=0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pooler_output=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sequence_length=32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_pretrained_timm_if_available=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_pretrained_hf_if_available=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.__init__" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timm_model_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>hf_model_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>image_size</strong> (<em>int</em>) – </p></li>
+<li><p><strong>channels</strong> (<em>int</em>) – </p></li>
+<li><p><strong>classes</strong> (<em>int</em>) – </p></li>
+<li><p><strong>class_names</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>network_type</strong> (<a class="reference internal" href="#configilm.ConfigILM.ILMType" title="configilm.ConfigILM.ILMType"><em>ILMType</em></a>) – </p></li>
+<li><p><strong>visual_features_out</strong> (<em>int</em>) – </p></li>
+<li><p><strong>fusion_in</strong> (<em>int</em>) – </p></li>
+<li><p><strong>fusion_out</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+<li><p><strong>fusion_hidden</strong> (<em>int</em>) – </p></li>
+<li><p><strong>v_dropout_rate</strong> (<em>float</em>) – </p></li>
+<li><p><strong>t_dropout_rate</strong> (<em>float</em>) – </p></li>
+<li><p><strong>fusion_dropout_rate</strong> (<em>float</em>) – </p></li>
+<li><p><strong>fusion_method</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>, </em><em>Tensor</em><em>]</em><em>, </em><em>Tensor</em><em>]</em>) – </p></li>
+<li><p><strong>fusion_activation</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>]</em><em>, </em><em>Tensor</em><em>]</em>) – </p></li>
+<li><p><strong>drop_rate</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
+<li><p><strong>use_pooler_output</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>max_sequence_length</strong> (<em>int</em>) – </p></li>
+<li><p><strong>load_pretrained_timm_if_available</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>load_pretrained_hf_if_available</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.as_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the configuration as a dictionary.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.channels">
+<span class="sig-name descname"><span class="pre">channels</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.channels" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.class_names">
+<span class="sig-name descname"><span class="pre">class_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.class_names" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.classes">
+<span class="sig-name descname"><span class="pre">classes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.classes" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.dif">
+<span class="sig-name descname"><span class="pre">dif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.dif" title="Permalink to this definition">#</a></dt>
+<dd><p>Compares two ILMConfigurations and returns a dictionary with the differences.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.drop_rate">
+<span class="sig-name descname"><span class="pre">drop_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.2</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.drop_rate" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.fusion_activation">
+<span class="sig-name descname"><span class="pre">fusion_activation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Tanh()</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_activation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.fusion_dropout_rate">
+<span class="sig-name descname"><span class="pre">fusion_dropout_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.25</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_dropout_rate" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.fusion_hidden">
+<span class="sig-name descname"><span class="pre">fusion_hidden</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">256</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_hidden" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.fusion_in">
+<span class="sig-name descname"><span class="pre">fusion_in</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">512</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_in" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.fusion_method">
+<span class="sig-name descname"><span class="pre">fusion_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_method" title="Permalink to this definition">#</a></dt>
+<dd><p>mul(input, other, <a href="#id1"><span class="problematic" id="id2">*</span></a>, out=None) -&gt; Tensor</p>
+<p>Multiplies <code class="xref py py-attr docutils literal notranslate"><span class="pre">input</span></code> by <code class="xref py py-attr docutils literal notranslate"><span class="pre">other</span></code>.</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\text{out}_i = \text{input}_i \times \text{other}_i\]</div>
+</div>
+<p>Supports <span class="xref std std-ref">broadcasting to a common shape</span>,
+<span class="xref std std-ref">type promotion</span>, and integer, float, and complex inputs.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>input (Tensor): the input tensor.
+other (Tensor or Number) - the tensor or number to multiply input by.</p>
+</dd>
+<dt>Keyword args:</dt><dd><p>out (Tensor, optional): the output tensor.</p>
+</dd>
+</dl>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">tensor([ 0.2015, -0.4255,  2.6087])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="go">tensor([  20.1494,  -42.5491,  260.8663])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
+<span class="go">tensor([[ 1.1207],</span>
+<span class="go">        [-0.3137],</span>
+<span class="go">        [ 0.0700],</span>
+<span class="go">        [ 0.8378]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
+<span class="go">tensor([[ 0.5146,  0.1216, -0.5244,  2.2382]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="go">tensor([[ 0.5767,  0.1363, -0.5877,  2.5083],</span>
+<span class="go">        [-0.1614, -0.0382,  0.1645, -0.7021],</span>
+<span class="go">        [ 0.0360,  0.0085, -0.0367,  0.1567],</span>
+<span class="go">        [ 0.4312,  0.1019, -0.4394,  1.8753]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.fusion_out">
+<span class="sig-name descname"><span class="pre">fusion_out</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_out" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.hf_model_name">
+<span class="sig-name descname"><span class="pre">hf_model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.hf_model_name" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.image_size">
+<span class="sig-name descname"><span class="pre">image_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">120</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.image_size" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.load_pretrained_hf_if_available">
+<span class="sig-name descname"><span class="pre">load_pretrained_hf_if_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.load_pretrained_hf_if_available" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.load_pretrained_timm_if_available">
+<span class="sig-name descname"><span class="pre">load_pretrained_timm_if_available</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.load_pretrained_timm_if_available" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.max_sequence_length">
+<span class="sig-name descname"><span class="pre">max_sequence_length</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">32</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.max_sequence_length" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.network_type">
+<span class="sig-name descname"><span class="pre">network_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#configilm.ConfigILM.ILMType" title="configilm.ConfigILM.ILMType"><span class="pre">ILMType</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.network_type" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.t_dropout_rate">
+<span class="sig-name descname"><span class="pre">t_dropout_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.25</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.t_dropout_rate" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.timm_model_name">
+<span class="sig-name descname"><span class="pre">timm_model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.timm_model_name" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.use_pooler_output">
+<span class="sig-name descname"><span class="pre">use_pooler_output</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.use_pooler_output" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.v_dropout_rate">
+<span class="sig-name descname"><span class="pre">v_dropout_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.25</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.v_dropout_rate" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.visual_features_out">
+<span class="sig-name descname"><span class="pre">visual_features_out</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">512</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.visual_features_out" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -724,6 +907,29 @@ as specified.</p>
 </li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration</span></code></a><ul>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.__init__"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.as_dict"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.as_dict()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.channels"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.channels</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.class_names"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.class_names</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.classes"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.classes</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.dif"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.dif()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.drop_rate"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.drop_rate</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_activation"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_activation</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_dropout_rate"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_dropout_rate</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_hidden"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_hidden</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_in"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_in</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_method"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_method()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_out"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_out</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.hf_model_name"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.hf_model_name</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.image_size"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.image_size</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.load_pretrained_hf_if_available"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.load_pretrained_hf_if_available</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.load_pretrained_timm_if_available"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.load_pretrained_timm_if_available</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.max_sequence_length"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.max_sequence_length</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.network_type"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.network_type</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.t_dropout_rate"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.t_dropout_rate</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.timm_model_name"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.timm_model_name</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.use_pooler_output"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.use_pooler_output</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.v_dropout_rate"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.v_dropout_rate</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.visual_features_out"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.visual_features_out</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMType"><code class="docutils literal notranslate"><span class="pre">ILMType</span></code></a><ul>
@@ -749,5 +955,7 @@ as specified.</p>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/scripts/furo.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

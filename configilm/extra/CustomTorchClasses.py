@@ -174,3 +174,12 @@ class LinearWarmupCosineAnnealingLR(LRScheduler):
             * (1 + math.cos(math.pi * (self.last_epoch - self.warmup_epochs) / (self.max_epochs - self.warmup_epochs)))
             for base_lr in self.base_lrs
         ]
+
+
+class NoneActivation(torch.nn.Module):
+    """
+    Dummy activation module that does nothing.
+    """
+
+    def forward(self, x):
+        return x

@@ -34,6 +34,7 @@ ilmconfiguration
 sup_pretraining
 vqa
 throughput_testing
+custom_fusion
 ```
 
 ```{toctree}

@@ -443,8 +443,13 @@ class ILMConfiguration:
         """
         Compares two ILMConfigurations and returns a dictionary with the differences.
         """
+        if not isinstance(other, ILMConfiguration):
+            return {"other": other, "self": self}
         differences = {}
         for key in self.__dict__.keys():
+            if key not in other.__dict__.keys():
+                # key is not in other
+                differences[key] = self.__dict__[key]
             if self.__dict__[key] != other.__dict__[key]:
                 # keys are different
                 if not isinstance(self.__dict__[key], Callable):

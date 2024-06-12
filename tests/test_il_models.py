@@ -977,3 +977,17 @@ def test_configuration_json_serializable():
 
     cfg2 = ConfigILM.ILMConfiguration.from_json(json_str)
     assert cfg == cfg2, "Configuration should be equal after serialization"
+
+
+def test_configuration_equal():
+    cfg1 = ConfigILM.ILMConfiguration(timm_model_name="resnet18")
+    cfg2 = ConfigILM.ILMConfiguration(timm_model_name="resnet18")
+    assert cfg1 == cfg2, "Configurations should be equal"
+    assert cfg1.dif(cfg2) == {}, "Configurations should be equal"
+    cfg3 = ConfigILM.ILMConfiguration(timm_model_name="resnet50")
+    assert cfg1 != cfg3, "Configurations should not be equal"
+    # Test with different types
+    assert cfg1 != 1, "Configurations should not be equal"
+    assert cfg1 is not None, "Configurations should not be equal"
+    assert cfg1 != "a", "Configurations should not be equal"
+    assert cfg1 != {}, "Configurations should not be equal"

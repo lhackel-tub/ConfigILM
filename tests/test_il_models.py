@@ -11,6 +11,8 @@ from appdirs import user_cache_dir
 from requests.exceptions import ReadTimeout  # type: ignore
 
 from configilm import ConfigILM
+from configilm.extra.CustomTorchClasses import NoneActivation
+from configilm.Fusion.LinearSumFusion import LinearSum
 
 DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
 max_memory_usage = 8  # VRAM usage of largest model during test
@@ -658,10 +660,58 @@ def test_fusion_same_dim_explicit(dim):
         hf_model_name=default_text_test_model,
         fusion_in=dim,
         fusion_out=dim,
-        fusion_method=torch.mul,
+        custom_fusion_method=torch.mul,
         network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
     )
     assert apply_ilm(cfg, bs=4), f"Fusion with {dim}->{dim} failed"
+
+
+@pytest.mark.parametrize(
+    "fusion, activation",
+    [
+        (f, a)
+        for f in [
+            torch.mul,
+            torch.add,
+            "torch.mul",
+            "torch.add",
+            LinearSum([512, 512], 512),
+            "configilm.Fusion.LinearSumFusion.LinearSum([512, 512], 512)",
+        ]
+        for a in [
+            torch.nn.Tanh(),
+            torch.nn.ReLU(),
+            "torch.nn.Tanh()",
+            "torch.nn.ReLU()",
+            NoneActivation(),
+            "configilm.extra.CustomTorchClasses.NoneActivation()",
+        ]
+    ],
+)
+def test_custom_fusion_activation_method(fusion, activation):
+    """
+    Tests if fusion functions with the same input and output dimensions work
+    """
+
+    if isinstance(fusion, LinearSum):
+        # LinearSum works only as a string argument
+        with pytest.raises(AttributeError):
+            _ = ConfigILM.ILMConfiguration(
+                timm_model_name=default_image_test_model,
+                hf_model_name=default_text_test_model,
+                custom_fusion_method=fusion,
+                custom_fusion_activation=activation,
+                network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+            )
+    else:
+        cfg = ConfigILM.ILMConfiguration(
+            timm_model_name=default_image_test_model,
+            hf_model_name=default_text_test_model,
+            custom_fusion_method=fusion,
+            custom_fusion_activation=activation,
+            network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+        )
+        assert apply_ilm(cfg, bs=4), f"Fusion with 512->512 failed with {fusion} and {activation}"
 
 
 @pytest.mark.parametrize("dim", tested_dims)
@@ -674,7 +724,7 @@ def test_fusion_same_dim_implicit(dim):
         hf_model_name=default_text_test_model,
         fusion_in=dim,
         fusion_out=None,
-        fusion_method=torch.mul,
+        custom_fusion_method=torch.mul,
         network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
     )
     assert apply_ilm(cfg, bs=4), f"Fusion with {dim}->{dim} failed"
@@ -708,10 +758,128 @@ def test_fusion_dif_dim(in_dim, out_dim):
         hf_model_name=default_text_test_model,
         fusion_in=in_dim,
         fusion_out=out_dim,
-        fusion_method=_CatNet(in_dim_cat=in_dim, out_dim_lin=out_dim),
+        custom_fusion_method=(f"_CatNet(in_dim_cat={in_dim}, out_dim_lin={out_dim})", _CatNet),
         network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
     )
     assert apply_ilm(cfg, bs=4), f"Fusion with {in_dim}->{out_dim} failed"
+
+
+def test_custom_activation():
+    class CustomActivation(torch.nn.Module):
+        def forward(self, x):
+            return x
+
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        hf_model_name=default_text_test_model,
+        custom_fusion_activation=("CustomActivation", CustomActivation()),
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+    )
+    assert apply_ilm(cfg, bs=4), "Custom activation failed"
+
+
+def test_custom_fusion():
+    class CustomFusion(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.op = torch.mul
+
+        def forward(self, x1, x2):
+            return self.op(x1, x2)
+
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        hf_model_name=default_text_test_model,
+        custom_fusion_method=("CustomFusion", CustomFusion()),
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+    )
+    assert apply_ilm(cfg, bs=4), "Custom fusion failed"
+
+
+def test_custom_fusion_not_importable():
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        hf_model_name=default_text_test_model,
+        custom_fusion_method="not.importable",
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+    )
+    with pytest.raises(ImportError):
+        assert apply_ilm(cfg, bs=4), "Custom fusion failed"
+
+
+def test_custom_fusion_not_available():
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        hf_model_name=default_text_test_model,
+        custom_fusion_method="not_available",
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+    )
+    with pytest.raises(NameError):
+        assert apply_ilm(cfg, bs=4), "Custom fusion failed"
+
+
+def test_custom_fusion_importable_not_available():
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        hf_model_name=default_text_test_model,
+        custom_fusion_method="torch.not_available",
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+    )
+    with pytest.raises(AttributeError):
+        assert apply_ilm(cfg, bs=4), "Custom fusion failed"
+
+
+def test_custom_fusion_wrong_input():
+    with pytest.raises(ValueError):
+        _ = ConfigILM.ILMConfiguration(
+            timm_model_name=default_image_test_model,
+            hf_model_name=default_text_test_model,
+            custom_fusion_method=1,
+            network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+        )
+
+
+def test_custom_activation_not_importable():
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        hf_model_name=default_text_test_model,
+        custom_fusion_activation="not.importable",
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+    )
+    with pytest.raises(ImportError):
+        assert apply_ilm(cfg, bs=4), "Custom fusion failed"
+
+
+def test_custom_activation_not_available():
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        hf_model_name=default_text_test_model,
+        custom_fusion_activation="not_available",
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+    )
+    with pytest.raises(NameError):
+        assert apply_ilm(cfg, bs=4), "Custom fusion failed"
+
+
+def test_custom_activation_importable_not_available():
+    cfg = ConfigILM.ILMConfiguration(
+        timm_model_name=default_image_test_model,
+        hf_model_name=default_text_test_model,
+        custom_fusion_activation="torch.not_available",
+        network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+    )
+    with pytest.raises(AttributeError):
+        assert apply_ilm(cfg, bs=4), "Custom fusion failed"
+
+
+def test_custom_activation_wrong_input():
+    with pytest.raises(ValueError):
+        _ = ConfigILM.ILMConfiguration(
+            timm_model_name=default_image_test_model,
+            hf_model_name=default_text_test_model,
+            custom_fusion_activation=1,
+            network_type=ConfigILM.ILMType.VQA_CLASSIFICATION,
+        )
 
 
 def test_tokenizer_exists():
@@ -779,6 +947,11 @@ def test_configurations_equal():
     assert ConfigILM.ILMConfiguration(**dct) == cfg1, "Configurations should be equal"
     assert ConfigILM.ILMConfiguration(**dct).dif(cfg1) == {}, "Configurations should be equal"
 
+    dct2 = cfg1.as_dict()
+    assert ConfigILM.ILMConfiguration(**dct2) == cfg1, "Configurations should be equal"
+    assert ConfigILM.ILMConfiguration(**dct2).dif(cfg1) == {}, "Configurations should be equal"
+    assert dct == dct2, "Configurations should be equal"
+
 
 def test_configurations_change():
     cfg1 = ConfigILM.ILMConfiguration(timm_model_name="resnet18")
@@ -789,6 +962,18 @@ def test_configurations_change():
         "timm_model_name": "resnet50"
     }, "Configurations should not be equal"
 
-    dct = cfg1.as_dict()
-    assert ConfigILM.ILMConfiguration(**dct) == cfg1, "Configurations should be equal"
-    assert ConfigILM.ILMConfiguration(**dct).dif(cfg1) == {}, "Configurations should be equal"
+    dct2 = cfg1.as_dict()
+    assert ConfigILM.ILMConfiguration(**dct2) == cfg1, "Configurations should be equal"
+    assert ConfigILM.ILMConfiguration(**dct2).dif(cfg1) == {}, "Configurations should be equal"
+
+
+def test_configuration_json_serializable():
+    cfg = ConfigILM.ILMConfiguration(timm_model_name="resnet18")
+    dct = cfg.as_dict()
+    assert isinstance(dct, dict), "Configuration should be serializable to dict"
+
+    json_str = cfg.to_json()
+    assert isinstance(json_str, str), "Configuration should be serializable to json"
+
+    cfg2 = ConfigILM.ILMConfiguration.from_json(json_str)
+    assert cfg == cfg2, "Configuration should be equal after serialization"

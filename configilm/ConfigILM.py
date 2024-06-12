@@ -11,10 +11,11 @@ import warnings
 from collections import OrderedDict
 from dataclasses import dataclass, asdict
 from enum import Enum
+from importlib import import_module
 from os import listdir
 from os.path import isdir, join
 from pathlib import Path
-from typing import Sequence, Callable, Optional
+from typing import Sequence, Callable, Optional, Union, Tuple
 
 import timm
 import torch
@@ -134,7 +135,7 @@ def _get_timm_model(model_name: str, kwargs: dict):
     return encoder
 
 
-class ILMType(Enum):
+class ILMType(int, Enum):
     """
     Class for different types of architectures supported by ILMConfigurations
     """
@@ -146,10 +147,97 @@ class ILMType(Enum):
         return f"{self.name} (value: {self.value})"
 
 
+_MODULE_CONVERTER = {
+    "nn": "torch.nn",
+    "F": "torch.nn.functional",
+    "timm": "timm",
+    "transformers": "transformers",
+}
+
+
+def _str_to_callable(s: str):
+    """
+    Converts a string to a callable if possible. If not, returns the string.
+
+    :param s: string to convert
+    :return: callable or string
+    """
+    module = None
+    module_split = s.split(".")
+    if len(module_split) > 1:
+        try:
+            module_str = ".".join(module_split[:-1])
+            if module_str in _MODULE_CONVERTER.keys():
+                module = import_module(_MODULE_CONVERTER[module_str])
+            else:
+                module = import_module(module_str)
+            method = module_split[-1]
+            callable_method = eval(".".join(["module", method]))
+        except ImportError:
+            raise ImportError(f"Module '{module_split[0]}' not found. Are you sure it is installed?")
+        except AttributeError:
+            assert module is not None
+            raise AttributeError(f"Attribute '{module_split[-1]}' not found in module '{module.__name__}'.")
+    else:
+        try:
+            callable_method = eval(s)
+        except NameError:
+            raise NameError(f"Name '{s}' not found.")
+    assert callable(callable_method), "Method is not callable"
+    return callable_method
+
+
+def _callable_to_str(c: Callable):
+    """
+    Converts a callable to a string if possible. If not, returns the string.
+
+    :param c: callable to convert
+    :return: string or callable
+    """
+    with_brackets = False
+    if str(c).endswith("()"):
+        with_brackets = True
+        c = c.__class__
+    try:
+        callable_name = c.__name__
+        module_name = c.__module__
+        return f"{module_name}.{callable_name}{('()' if with_brackets else '')}"
+    except AttributeError:
+        raise AttributeError(
+            f"Callable '{c}' has no name or module, cannot convert to string. Please use a string "
+            f"instead, e.g. use 'torch.nn.Tanh()' instead of torch.nn.Tanh()."
+        )
+
+
+def _callable_tuple_to_str(t: Tuple[str, Callable]):
+    """
+    Converts a tuple of a string and a callable to a string if possible. Otherwise, raises an assertion error.
+
+    :param t: tuple of a string and a callable to convert
+    :return: string
+    """
+    assert len(t) == 2, "Tuple has to have two elements"
+    assert isinstance(t[0], str), "First element has to be a string"
+    assert callable(t[1]), "Second element has to be a callable"
+    # set the name of the callable into globals to enable later evaluation
+    try:
+        globals()[t[1].__name__] = t[1]
+    except AttributeError:
+        try:
+            if hasattr(t[1], "_get_name"):
+                globals()[t[1]._get_name()] = t[1]
+            else:
+                raise AttributeError(f"{t[1]} has no attribute '_get_name' to set name to globals.")
+        except AttributeError:
+            raise AttributeError(f"Could not set name of callable '{t[1]}' to globals.")
+    return t[0]
+
+
 @dataclass
 class ILMConfiguration:
     """
-    Configuration dataclass that defines all properties of ConfigILM models.
+    Configuration dataclass that defines all properties of ConfigILM models. The datatypes within the dataclass are
+    selected to be compatible with json serialization and deserialization.
 
     :param channels: Number of input channels for the image model.
 
@@ -166,14 +254,36 @@ class ILMConfiguration:
 
         :Default: 10
 
+    :param custom_fusion_activation: Activation function inside all classification head
+        layers. Only used for initialization. After initialization, the fusion activation is
+        accessible via the fusion_activation property. Default options from torch.nn or torch.nn.functional
+        can be used as strings (e.g. "nn.Tanh()") or as callables (e.g. nn.Tanh()).
+        If a custom
+        function is used, it has to be a callable with a single input (tensor) and a single output
+        (tensor) where the input tensor is single dimension (plus batch dimension). The activation is then
+        passed as a tuple (str, m) where str is the string representation of the function and m is the
+        callable, which has to be a torch.nn.Module and initialized with the correct parameters, e.g.
+        ("tanh", nn.Tanh()).
+
+        :Default: nn.Tanh()
+
+    :param custom_fusion_method: Fusion method to combine text and image features. Callable
+        with two inputs (tensor, tensor) and a single output (tensor) where each
+        tensor is single dimension (plus batch dimension). First input is flatten
+        output of image model with dimension fusion_in, second input is flatten
+        output of the text model with dimension fusion_in. Output should have the
+        dimension fusion_out. Only used for initialization. After initialization, the
+        fusion method is accessible via the fusion_method property.
+        If a custom function is used, it has to be a callable with two inputs (tensor, tensor) and a single output
+        (tensor) where each tensor is single dimension (plus batch dimension). The fusion method is then
+        passed as a tuple (str, f) where str is the string representation of the function and f is the
+        callable, e.g. ("mul", torch.mul).
+
+        :Default: torch.mul
+
     :param drop_rate: Dropout and drop path rate for timm models.
 
         :Default: 0.2
-
-    :param fusion_activation: Activation function inside all classification head
-        layers.
-
-        :Default: nn.tanh()
 
     :param fusion_dropout_rate: Drop rate inside all classification head layers.
 
@@ -187,15 +297,6 @@ class ILMConfiguration:
     :param fusion_in: Input dimension to the fusion method.
 
         :Default: 512
-
-    :param fusion_method: Fusion method to combine text and image features. Callable
-        with two inputs (tensor, tensor) and a single output (tensor) where each
-        tensor is single dimension (plus batch dimension). First input is flatten
-        output of image model with dimension fusion_in, second input is flatten
-        output of the text model with dimension fusion_in. Output should have the
-        dimension fusion_out.
-
-        :Default: torch.mul
 
     :param fusion_out: Output dimension of the fusion method. If None, output will
         be same as input (e.g. for point-wise operations).
@@ -274,17 +375,69 @@ class ILMConfiguration:
     v_dropout_rate: float = 0.25
     t_dropout_rate: float = 0.25
     fusion_dropout_rate: float = 0.25
-    fusion_method: Callable[[torch.Tensor, torch.Tensor], torch.Tensor] = torch.mul
-    fusion_activation: Callable[[torch.Tensor], torch.Tensor] = nn.Tanh()
+    _fusion_method: str = "torch.mul"
+    _fusion_activation: str = "nn.Tanh()"
     drop_rate: Optional[float] = 0.2
     use_pooler_output: bool = True
     max_sequence_length: int = 32
     load_pretrained_timm_if_available: bool = False
     load_pretrained_hf_if_available: bool = True
+    custom_fusion_method: Optional[
+        Union[Callable[[torch.Tensor, torch.Tensor], torch.Tensor], str, Tuple[str, Callable]]
+    ] = None
+    custom_fusion_activation: Optional[Union[Callable[[torch.Tensor], torch.Tensor], str, Tuple[str, Callable]]] = None
 
     def __post_init__(self):
         if self.fusion_out is None:
             self.fusion_out = self.fusion_in
+        # go over all properties and check if they are called "custom_"
+        self_dict_keys = list(self.__dict__.keys())  # needed for iteration and deletion
+        for key in self_dict_keys:
+            if key.startswith("custom_"):
+                # check if the custom function is set
+                if self.__dict__[key] is not None:
+                    # set the real function / call the property setter
+                    setattr(self, key[7:], self.__dict__[key])
+                    # delete the custom property
+                    delattr(self, key)
+
+    @property
+    def fusion_activation(self) -> Callable[[torch.Tensor], torch.Tensor]:
+        # convert to callable if string
+        fusion_activation = _str_to_callable(self._fusion_activation)
+        assert isinstance(fusion_activation, nn.Module), "Fusion activation has to be a torch.nn.Module"
+        return fusion_activation
+
+    @fusion_activation.setter
+    def fusion_activation(self, value: Union[str, Callable[[torch.Tensor], torch.Tensor], Tuple[str, Callable]]):
+        if isinstance(value, str):
+            self._fusion_activation = value
+        elif callable(value):
+            # convert to string
+            self._fusion_activation = _callable_to_str(value)
+        elif isinstance(value, tuple):
+            self._fusion_activation = _callable_tuple_to_str(value)
+        else:
+            raise ValueError("Fusion activation has to be a string or a callable or a tuple of a string and a callable")
+
+    @property
+    def fusion_method(self) -> Callable[[torch.Tensor, torch.Tensor], torch.Tensor]:
+        # convert to callable if string
+        return _str_to_callable(self._fusion_method)
+
+    @fusion_method.setter
+    def fusion_method(
+        self, value: Union[str, Callable[[torch.Tensor, torch.Tensor], torch.Tensor], Tuple[str, Callable]]
+    ):
+        if isinstance(value, str):
+            self._fusion_method = value
+        elif callable(value):
+            # convert to string
+            self._fusion_method = _callable_to_str(value)
+        elif isinstance(value, tuple):
+            self._fusion_method = _callable_tuple_to_str(value)
+        else:
+            raise ValueError("Fusion method has to be a string or a callable or a tuple of a string and a callable")
 
     def dif(self, other):
         """
@@ -314,6 +467,26 @@ class ILMConfiguration:
         Returns the configuration as a dictionary.
         """
         return asdict(self)
+
+    def to_json(self):
+        """
+        Returns the configuration as a json string.
+        """
+        import json
+
+        dct = self.as_dict()
+        return json.dumps(dct, indent=4)
+
+    @classmethod
+    def from_json(cls, json_string):
+        """
+        Loads a configuration from a json string.
+        """
+        import json
+
+        self = cls.__new__(cls)
+        self.__dict__ = json.loads(json_string)
+        return self
 
 
 class ConfigILM(nn.Module):
@@ -379,8 +552,9 @@ class ConfigILM(nn.Module):
             self.dropout_v = torch.nn.Dropout(self.config.v_dropout_rate)
             self.dropout_q = torch.nn.Dropout(self.config.t_dropout_rate)
 
-            if self.config.fusion_out is None:
-                self.config.fusion_out = self.config.fusion_in
+            assert (
+                self.config.fusion_out is not None
+            ), "Fusion output dimension has to be specified - this should have been done in the configuration"
 
             self.fusion = nn.Sequential(
                 OrderedDict(

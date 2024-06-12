@@ -166,6 +166,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../vqa.html">Visual Question Answering (VQA)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../throughput_testing.html">Throughput testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../custom_fusion.html">Customize Fusion Approach</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul class="current">
@@ -309,19 +310,6 @@ Answer (start): tensor([1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/configilm/ConfigILM.py:80: UserWarning: Model &#39;prajjwal1/bert-tiny&#39; not available. Trying to download...
-
-  warnings.warn(f&quot;Model &#39;{model_name}&#39; not available. Trying to download...\n&quot;)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of BertForSequenceClassification were not initialized from the model checkpoint at prajjwal1/bert-tiny and are newly initialized: [&#39;classifier.bias&#39;, &#39;classifier.weight&#39;]
-You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/ConfigILM/ConfigILM/.venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
-  warnings.warn(
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading COCOQA data for None...
           20 QA-pairs indexed
           20 QA-pairs used

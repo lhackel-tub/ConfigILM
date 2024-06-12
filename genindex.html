@@ -164,6 +164,7 @@
 <li class="toctree-l1"><a class="reference internal" href="sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vqa.html">Visual Question Answering (VQA)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="throughput_testing.html">Throughput testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_fusion.html">Customize Fusion Approach</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -445,8 +446,6 @@
           <li><a href="API/ds/api_ds_HRVQA.html#module-configilm.extra.DataSets.HRVQA_DataSet">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     configilm.extra.DataSets.RSVQAHR_DataSet
 
@@ -454,6 +453,8 @@
           <li><a href="API/ds/api_ds_RSVQAHR.html#module-configilm.extra.DataSets.RSVQAHR_DataSet">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     configilm.extra.DataSets.RSVQALR_DataSet
 
@@ -554,6 +555,10 @@
         </ul></li>
         <li><a href="API/api_util.html#configilm.util.convert">convert() (in module configilm.util)</a>
 </li>
+        <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.custom_fusion_activation">custom_fusion_activation (configilm.ConfigILM.ILMConfiguration attribute)</a>
+</li>
+        <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.custom_fusion_method">custom_fusion_method (configilm.ConfigILM.ILMConfiguration attribute)</a>
+</li>
     </ul></td>
   </tr></table>
 </section>
@@ -610,7 +615,9 @@
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.fusion_activation">fusion_activation (configilm.ConfigILM.ILMConfiguration attribute)</a>
+        <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.from_json">from_json() (configilm.ConfigILM.ILMConfiguration class method)</a>
+</li>
+        <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.fusion_activation">fusion_activation (configilm.ConfigILM.ILMConfiguration property)</a>
 </li>
         <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.fusion_dropout_rate">fusion_dropout_rate (configilm.ConfigILM.ILMConfiguration attribute)</a>
 </li>
@@ -618,7 +625,7 @@
 </li>
         <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.fusion_in">fusion_in (configilm.ConfigILM.ILMConfiguration attribute)</a>
 </li>
-        <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.fusion_method">fusion_method() (configilm.ConfigILM.ILMConfiguration method)</a>
+        <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.fusion_method">fusion_method (configilm.ConfigILM.ILMConfiguration property)</a>
 </li>
         <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.fusion_out">fusion_out (configilm.ConfigILM.ILMConfiguration attribute)</a>
 </li>
@@ -946,6 +953,8 @@
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="API/api_configilm.html#configilm.ConfigILM.ConfigILM.to">to() (configilm.ConfigILM.ConfigILM method)</a>
+</li>
+        <li><a href="API/api_configilm.html#configilm.ConfigILM.ILMConfiguration.to_json">to_json() (configilm.ConfigILM.ILMConfiguration method)</a>
 </li>
         <li><a href="API/ds/api_ds_BENv1.html#configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule.train_dataloader">train_dataloader() (configilm.extra.DataModules.BENv1_DataModule.BENv1DataModule method)</a>
 

@@ -166,6 +166,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../sup_pretraining.html">Supervised Image Classification</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vqa.html">Visual Question Answering (VQA)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../throughput_testing.html">Throughput testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../custom_fusion.html">Customize Fusion Approach</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Extra</span></p>
 <ul>
@@ -315,7 +316,8 @@ or casts to a different type.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.ConfigILM.</span></span><span class="sig-name descname"><span class="pre">ILMConfiguration</span></span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration" title="Permalink to this definition">#</a></dt>
-<dd><p>Configuration dataclass that defines all properties of ConfigILM models.</p>
+<dd><p>Configuration dataclass that defines all properties of ConfigILM models. The datatypes within the dataclass are
+selected to be compatible with json serialization and deserialization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -343,18 +345,43 @@ classifier or VQA_CLASSIFICATION classifier.</p>
 </dd>
 </dl>
 </p></li>
+<li><p><strong>custom_fusion_activation</strong> – <p>Activation function inside all classification head
+layers. Only used for initialization. After initialization, the fusion activation is
+accessible via the fusion_activation property. Default options from torch.nn or torch.nn.functional
+can be used as strings (e.g. “nn.Tanh()”) or as callables (e.g. nn.Tanh()).
+If a custom
+function is used, it has to be a callable with a single input (tensor) and a single output
+(tensor) where the input tensor is single dimension (plus batch dimension). The activation is then
+passed as a tuple (str, m) where str is the string representation of the function and m is the
+callable, which has to be a torch.nn.Module and initialized with the correct parameters, e.g.
+(“tanh”, nn.Tanh()).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>nn.Tanh()</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>custom_fusion_method</strong> – <p>Fusion method to combine text and image features. Callable
+with two inputs (tensor, tensor) and a single output (tensor) where each
+tensor is single dimension (plus batch dimension). First input is flatten
+output of image model with dimension fusion_in, second input is flatten
+output of the text model with dimension fusion_in. Output should have the
+dimension fusion_out. Only used for initialization. After initialization, the
+fusion method is accessible via the fusion_method property.
+If a custom function is used, it has to be a callable with two inputs (tensor, tensor) and a single output
+(tensor) where each tensor is single dimension (plus batch dimension). The fusion method is then
+passed as a tuple (str, f) where str is the string representation of the function and f is the
+callable, e.g. (“mul”, torch.mul).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.mul</p>
+</dd>
+</dl>
+</p></li>
 <li><p><strong>drop_rate</strong> – <p>Dropout and drop path rate for timm models.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>0.2</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>fusion_activation</strong> – <p>Activation function inside all classification head
-layers.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>nn.tanh()</p>
 </dd>
 </dl>
 </p></li>
@@ -377,18 +404,6 @@ classification head.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>512</p>
-</dd>
-</dl>
-</p></li>
-<li><p><strong>fusion_method</strong> – <p>Fusion method to combine text and image features. Callable
-with two inputs (tensor, tensor) and a single output (tensor) where each
-tensor is single dimension (plus batch dimension). First input is flatten
-output of image model with dimension fusion_in, second input is flatten
-output of the text model with dimension fusion_in. Output should have the
-dimension fusion_out.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p>torch.mul</p>
 </dd>
 </dl>
 </p></li>
@@ -490,7 +505,7 @@ as specified.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timm_model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_model_name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size=120</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels=3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes=10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_type=ILMType.IMAGE_CLASSIFICATION</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual_features_out=512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_in=512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_out=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_hidden=256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_dropout_rate=0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_dropout_rate=0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_dropout_rate=0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_method=&lt;built-in</span> <span class="pre">method</span> <span class="pre">mul</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_activation=Tanh()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_rate=0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pooler_output=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sequence_length=32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_pretrained_timm_if_available=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_pretrained_hf_if_available=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.__init__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timm_model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hf_model_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">120</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">ILMType.IMAGE_CLASSIFICATION</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visual_features_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_hidden</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_dropout_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_fusion_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'torch.mul'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_fusion_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nn.Tanh()'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_pooler_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_sequence_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_pretrained_timm_if_available</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_pretrained_hf_if_available</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_fusion_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_fusion_activation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.__init__" title="Permalink to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -508,13 +523,15 @@ as specified.</p>
 <li><p><strong>v_dropout_rate</strong> (<em>float</em>) – </p></li>
 <li><p><strong>t_dropout_rate</strong> (<em>float</em>) – </p></li>
 <li><p><strong>fusion_dropout_rate</strong> (<em>float</em>) – </p></li>
-<li><p><strong>fusion_method</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>, </em><em>Tensor</em><em>]</em><em>, </em><em>Tensor</em><em>]</em>) – </p></li>
-<li><p><strong>fusion_activation</strong> (<em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>]</em><em>, </em><em>Tensor</em><em>]</em>) – </p></li>
+<li><p><strong>_fusion_method</strong> (<em>str</em>) – </p></li>
+<li><p><strong>_fusion_activation</strong> (<em>str</em>) – </p></li>
 <li><p><strong>drop_rate</strong> (<em>Optional</em><em>[</em><em>float</em><em>]</em>) – </p></li>
 <li><p><strong>use_pooler_output</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>max_sequence_length</strong> (<em>int</em>) – </p></li>
 <li><p><strong>load_pretrained_timm_if_available</strong> (<em>bool</em>) – </p></li>
 <li><p><strong>load_pretrained_hf_if_available</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>custom_fusion_method</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>, </em><em>Tensor</em><em>]</em><em>, </em><em>Tensor</em><em>]</em><em>, </em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>]</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>custom_fusion_activation</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Tensor</em><em>]</em><em>, </em><em>Tensor</em><em>]</em><em>, </em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>]</em><em>]</em><em>]</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -544,6 +561,16 @@ as specified.</p>
 <span class="sig-name descname"><span class="pre">classes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.classes" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.custom_fusion_activation">
+<span class="sig-name descname"><span class="pre">custom_fusion_activation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.custom_fusion_activation" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.custom_fusion_method">
+<span class="sig-name descname"><span class="pre">custom_fusion_method</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.custom_fusion_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.dif">
 <span class="sig-name descname"><span class="pre">dif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.dif" title="Permalink to this definition">#</a></dt>
@@ -555,9 +582,15 @@ as specified.</p>
 <span class="sig-name descname"><span class="pre">drop_rate</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.2</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.drop_rate" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.from_json">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.from_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Loads a configuration from a json string.</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.fusion_activation">
-<span class="sig-name descname"><span class="pre">fusion_activation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Tanh()</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_activation" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fusion_activation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_activation" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -575,48 +608,10 @@ as specified.</p>
 <span class="sig-name descname"><span class="pre">fusion_in</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">512</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_in" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.fusion_method">
-<span class="sig-name descname"><span class="pre">fusion_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_method" title="Permalink to this definition">#</a></dt>
-<dd><p>mul(input, other, <a href="#id1"><span class="problematic" id="id2">*</span></a>, out=None) -&gt; Tensor</p>
-<p>Multiplies <code class="xref py py-attr docutils literal notranslate"><span class="pre">input</span></code> by <code class="xref py py-attr docutils literal notranslate"><span class="pre">other</span></code>.</p>
-<div class="math-wrapper docutils container">
-<div class="math notranslate nohighlight">
-\[\text{out}_i = \text{input}_i \times \text{other}_i\]</div>
-</div>
-<p>Supports <span class="xref std std-ref">broadcasting to a common shape</span>,
-<span class="xref std std-ref">type promotion</span>, and integer, float, and complex inputs.</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>input (Tensor): the input tensor.
-other (Tensor or Number) - the tensor or number to multiply input by.</p>
-</dd>
-<dt>Keyword args:</dt><dd><p>out (Tensor, optional): the output tensor.</p>
-</dd>
-</dl>
-<p>Examples:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
-<span class="go">tensor([ 0.2015, -0.4255,  2.6087])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="go">tensor([  20.1494,  -42.5491,  260.8663])</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
-<span class="go">tensor([[ 1.1207],</span>
-<span class="go">        [-0.3137],</span>
-<span class="go">        [ 0.0700],</span>
-<span class="go">        [ 0.8378]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
-<span class="go">tensor([[ 0.5146,  0.1216, -0.5244,  2.2382]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">torch</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
-<span class="go">tensor([[ 0.5767,  0.1363, -0.5877,  2.5083],</span>
-<span class="go">        [-0.1614, -0.0382,  0.1645, -0.7021],</span>
-<span class="go">        [ 0.0360,  0.0085, -0.0367,  0.1567],</span>
-<span class="go">        [ 0.4312,  0.1019, -0.4394,  1.8753]])</span>
-</pre></div>
-</div>
-</dd></dl>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fusion_method</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.fusion_method" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.fusion_out">
@@ -662,6 +657,12 @@ other (Tensor or Number) - the tensor or number to multiply input by.</p>
 <dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.timm_model_name">
 <span class="sig-name descname"><span class="pre">timm_model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.timm_model_name" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.to_json">
+<span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.ConfigILM.ILMConfiguration.to_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the configuration as a json string.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="configilm.ConfigILM.ILMConfiguration.use_pooler_output">
@@ -911,13 +912,16 @@ other (Tensor or Number) - the tensor or number to multiply input by.</p>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.channels"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.channels</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.class_names"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.class_names</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.classes"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.classes</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.custom_fusion_activation"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.custom_fusion_activation</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.custom_fusion_method"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.custom_fusion_method</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.dif"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.dif()</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.drop_rate"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.drop_rate</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.from_json"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.from_json()</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_activation"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_activation</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_dropout_rate"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_dropout_rate</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_hidden"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_hidden</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_in"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_in</span></code></a></li>
-<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_method"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_method()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_method"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_method</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.fusion_out"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.fusion_out</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.hf_model_name"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.hf_model_name</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.image_size"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.image_size</span></code></a></li>
@@ -927,6 +931,7 @@ other (Tensor or Number) - the tensor or number to multiply input by.</p>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.network_type"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.network_type</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.t_dropout_rate"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.t_dropout_rate</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.timm_model_name"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.timm_model_name</span></code></a></li>
+<li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.to_json"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.to_json()</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.use_pooler_output"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.use_pooler_output</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.v_dropout_rate"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.v_dropout_rate</span></code></a></li>
 <li><a class="reference internal" href="#configilm.ConfigILM.ILMConfiguration.visual_features_out"><code class="docutils literal notranslate"><span class="pre">ILMConfiguration.visual_features_out</span></code></a></li>
@@ -955,7 +960,5 @@ other (Tensor or Number) - the tensor or number to multiply input by.</p>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/scripts/furo.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="BigEarthNetv1 DataSets and DataModules" href="api_ds_BENv1.html" /><link rel="prev" title="DataSets and DataModules" href="../api_datasets.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>BigEarthNetv1 Utils - ConfigILM</title>
+        <title>BigEarthNet Utils - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -185,8 +185,9 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../api_configilm.html">ILMConfiguration</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../api_datasets.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">BigEarthNetv1 Utils</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">BigEarthNet Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_BENv1.html">BigEarthNetv1 DataSets and DataModules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_ds_BENv2.html">BigEarthNetv2 (reBEN) DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_COCOQA.html">Toronto COCO-QA DataSet and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_HRVQA.html">HRVQA DataSets and DataModules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api_ds_RSVQALR.html">RSVQA-LR DataSets and DataModules</a></li>
@@ -241,7 +242,7 @@
         </div>
         <article role="main">
           <section class="tex2jax_ignore mathjax_ignore" id="module-configilm.extra.BENv1_utils">
-<span id="bigearthnetv1-utils"></span><span id="api-ben-reader"></span><h1>BigEarthNetv1 Utils<a class="headerlink" href="#module-configilm.extra.BENv1_utils" title="Permalink to this heading">#</a></h1>
+<span id="bigearthnet-utils"></span><span id="api-ben-reader"></span><h1>BigEarthNet Utils<a class="headerlink" href="#module-configilm.extra.BENv1_utils" title="Permalink to this heading">#</a></h1>
 <p>Helpful functions when working with lmdb file which contains BigEarthNet as encoded
 binary patches.
 Functions include reading data and extracting specific band combinations and their
@@ -331,6 +332,208 @@ small data</p></li>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Mapping</em>[str, <em>Path</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-configilm.extra.BENv2_utils"></span><dl class="py class">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.BENv2LDMBReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv2_utils.</span></span><span class="sig-name descname"><span class="pre">BENv2LDMBReader</span></span><a class="headerlink" href="#configilm.extra.BENv2_utils.BENv2LDMBReader" title="Permalink to this definition">#</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.BENv2LDMBReader.S1_keys">
+<span class="sig-name descname"><span class="pre">S1_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.S1_keys" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>update</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.BENv2LDMBReader.S2_keys">
+<span class="sig-name descname"><span class="pre">S2_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.S2_keys" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>update</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.BENv2LDMBReader.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_lmdb_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s1_mapping_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_bands_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_labels_fn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.__init__" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_lmdb_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – </p></li>
+<li><p><strong>label_file</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – </p></li>
+<li><p><strong>s1_mapping_file</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>bands</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Iterable</em><em>, </em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>process_bands_fn</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>ndarray</em><em>]</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>process_labels_fn</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>print_info</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.BENv2LDMBReader.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.keys" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>update</strong> (<em>bool</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.BENv2LDMBReader.open_env">
+<span class="sig-name descname"><span class="pre">open_env</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.open_env" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.STANDARD_BANDS">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv2_utils.</span></span><span class="sig-name descname"><span class="pre">STANDARD_BANDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'S1':</span> <span class="pre">['VH',</span> <span class="pre">'VV'],</span> <span class="pre">'S2':</span> <span class="pre">['B01',</span> <span class="pre">'B02',</span> <span class="pre">'B03',</span> <span class="pre">'B04',</span> <span class="pre">'B05',</span> <span class="pre">'B06',</span> <span class="pre">'B07',</span> <span class="pre">'B08',</span> <span class="pre">'B09',</span> <span class="pre">'B11',</span> <span class="pre">'B12',</span> <span class="pre">'B8A'],</span> <span class="pre">'ALL':</span> <span class="pre">['B01',</span> <span class="pre">'B02',</span> <span class="pre">'B03',</span> <span class="pre">'B04',</span> <span class="pre">'B05',</span> <span class="pre">'B06',</span> <span class="pre">'B07',</span> <span class="pre">'B08',</span> <span class="pre">'B09',</span> <span class="pre">'B11',</span> <span class="pre">'B12',</span> <span class="pre">'B8A',</span> <span class="pre">'VH',</span> <span class="pre">'VV'],</span> <span class="pre">'RGB':</span> <span class="pre">['B04',</span> <span class="pre">'B03',</span> <span class="pre">'B02'],</span> <span class="pre">'10m':</span> <span class="pre">['B02',</span> <span class="pre">'B03',</span> <span class="pre">'B04',</span> <span class="pre">'B08'],</span> <span class="pre">'20m':</span> <span class="pre">['B05',</span> <span class="pre">'B06',</span> <span class="pre">'B07',</span> <span class="pre">'B11',</span> <span class="pre">'B12',</span> <span class="pre">'B8A'],</span> <span class="pre">'60m':</span> <span class="pre">['B01',</span> <span class="pre">'B09'],</span> <span class="pre">2:</span> <span class="pre">['VH',</span> <span class="pre">'VV'],</span> <span class="pre">10:</span> <span class="pre">['B02',</span> <span class="pre">'B03',</span> <span class="pre">'B04',</span> <span class="pre">'B08',</span> <span class="pre">'B05',</span> <span class="pre">'B06',</span> <span class="pre">'B07',</span> <span class="pre">'B11',</span> <span class="pre">'B12',</span> <span class="pre">'B8A'],</span> <span class="pre">12:</span> <span class="pre">['B02',</span> <span class="pre">'B03',</span> <span class="pre">'B04',</span> <span class="pre">'B08',</span> <span class="pre">'B05',</span> <span class="pre">'B06',</span> <span class="pre">'B07',</span> <span class="pre">'B11',</span> <span class="pre">'B12',</span> <span class="pre">'B8A',</span> <span class="pre">'VH',</span> <span class="pre">'VV'],</span> <span class="pre">3:</span> <span class="pre">['B04',</span> <span class="pre">'B03',</span> <span class="pre">'B02'],</span> <span class="pre">4:</span> <span class="pre">['B04',</span> <span class="pre">'B03',</span> <span class="pre">'B02',</span> <span class="pre">'B08']}</span></em><a class="headerlink" href="#configilm.extra.BENv2_utils.STANDARD_BANDS" title="Permalink to this definition">#</a></dt>
+<dd><p>This file contains band statistics for BigEarthNet v2 (including S1 stats from v1) for various interpolation types.
+The statistics are calculated based on the images of the official train split.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.band_combi_to_mean_std">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv2_utils.</span></span><span class="sig-name descname"><span class="pre">band_combi_to_mean_std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'120_nearest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.band_combi_to_mean_std" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrievs the mean and standard deviation for a given BigEarthNet
+BAND_COMBINATION_PREDEFINTIONS or list of bands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bands</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – a list of bandnames</p></li>
+<li><p><strong>interpolation</strong> (<em>str</em>) – <p>the interpolation type to use. For available types see <cite>means.keys()</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>”120_nearest”</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>mean and standard deviation for the given combination in same order</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.ben_19_labels_to_multi_hot">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv2_utils.</span></span><span class="sig-name descname"><span class="pre">ben_19_labels_to_multi_hot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lex_sorted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.ben_19_labels_to_multi_hot" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>lex_sorted</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.ben_19_labels_to_multi_hot_np">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv2_utils.</span></span><span class="sig-name descname"><span class="pre">ben_19_labels_to_multi_hot_np</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lex_sorted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.ben_19_labels_to_multi_hot_np" title="Permalink to this definition">#</a></dt>
+<dd><p>Convenience function that converts an input iterable of labels into
+a multi-hot encoded vector.
+If <cite>lex_sorted</cite> is True (default) the classes are lexigraphically ordered, as they are
+in <cite>constants.NEW_LABELS</cite>.
+If <cite>lex_sorted</cite> is False, the original order from the BigEarthNet paper is used, as
+they are given in <cite>constants.NEW_LABELS_ORIGINAL_ORDER</cite>.</p>
+<p>If an unknown label is given, a <cite>KeyError</cite> is raised.</p>
+<p>Be aware that this approach assumes that <strong>all</strong> labels are actually used in the dataset!
+This is not necessarily the case if you are using a subset!</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>lex_sorted</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>array</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.resolve_band_combi">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv2_utils.</span></span><span class="sig-name descname"><span class="pre">resolve_band_combi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.resolve_band_combi" title="Permalink to this definition">#</a></dt>
+<dd><p>Resolves a predefined combination of bands or a list of bands into a list of
+individual bands and checks if all bands contained are actual S1/S2 band names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bands</strong> (<em>Union</em><em>[</em><em>Iterable</em><em>, </em><em>str</em><em>, </em><em>int</em><em>]</em>) – a combination of bands as defined in BAND_COMBINATION_PREDEFINTIONS
+or a list of bands, or a single band, e.g. “B02”, [“B02”, “B03”], 2, “S1”, “S2”</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a list of bands contained in the predefinition or the single band as list</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.resolve_data_dir">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv2_utils.</span></span><span class="sig-name descname"><span class="pre">resolve_data_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_mock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.resolve_data_dir" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper function that tries to resolve the correct directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_dir</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – current path that is suggested</p></li>
+<li><p><strong>allow_mock</strong> (<em>bool</em>) – <p>allows mock data path to be returned</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>force_mock</strong> (<em>bool</em>) – <p>only mock data path will be returned. Useful for debugging with
+small data</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>False</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a valid dir to the dataset if data_dir was none, otherwise data_dir</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Mapping</em>[str, <em>Path</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="configilm.extra.BENv2_utils.stack_and_interpolate">
+<span class="sig-prename descclassname"><span class="pre">configilm.extra.BENv2_utils.</span></span><span class="sig-name descname"><span class="pre">stack_and_interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">120</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upsample_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nearest'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.BENv2_utils.stack_and_interpolate" title="Permalink to this definition">#</a></dt>
+<dd><p>Supports 2D input (as values in the dict) with “nearest”, “bilinear” and “bicubic” interpolation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bands</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>ndarray</em><em>]</em>) – </p></li>
+<li><p><strong>order</strong> (<em>Optional</em><em>[</em><em>Iterable</em><em>[</em><em>str</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>img_size</strong> (<em>int</em>) – </p></li>
+<li><p><strong>upsample_mode</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>array</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -536,7 +739,7 @@ small data</p></li>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">BigEarthNetv1 Utils</a><ul>
+<li><a class="reference internal" href="#">BigEarthNet Utils</a><ul>
 <li><a class="reference internal" href="#configilm.extra.BENv1_utils.BENv1LMDBReader"><code class="docutils literal notranslate"><span class="pre">BENv1LMDBReader</span></code></a><ul>
 <li><a class="reference internal" href="#configilm.extra.BENv1_utils.BENv1LMDBReader.__init__"><code class="docutils literal notranslate"><span class="pre">BENv1LMDBReader.__init__()</span></code></a></li>
 </ul>
@@ -545,6 +748,21 @@ small data</p></li>
 <li><a class="reference internal" href="#configilm.extra.BENv1_utils.ben19_list_to_onehot"><code class="docutils literal notranslate"><span class="pre">ben19_list_to_onehot()</span></code></a></li>
 <li><a class="reference internal" href="#configilm.extra.BENv1_utils.read_ben_from_lmdb"><code class="docutils literal notranslate"><span class="pre">read_ben_from_lmdb()</span></code></a></li>
 <li><a class="reference internal" href="#configilm.extra.BENv1_utils.resolve_data_dir"><code class="docutils literal notranslate"><span class="pre">resolve_data_dir()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.BENv2LDMBReader"><code class="docutils literal notranslate"><span class="pre">BENv2LDMBReader</span></code></a><ul>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.S1_keys"><code class="docutils literal notranslate"><span class="pre">BENv2LDMBReader.S1_keys()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.S2_keys"><code class="docutils literal notranslate"><span class="pre">BENv2LDMBReader.S2_keys()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.__init__"><code class="docutils literal notranslate"><span class="pre">BENv2LDMBReader.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.keys"><code class="docutils literal notranslate"><span class="pre">BENv2LDMBReader.keys()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.BENv2LDMBReader.open_env"><code class="docutils literal notranslate"><span class="pre">BENv2LDMBReader.open_env()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.STANDARD_BANDS"><code class="docutils literal notranslate"><span class="pre">STANDARD_BANDS</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.band_combi_to_mean_std"><code class="docutils literal notranslate"><span class="pre">band_combi_to_mean_std()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.ben_19_labels_to_multi_hot"><code class="docutils literal notranslate"><span class="pre">ben_19_labels_to_multi_hot()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.ben_19_labels_to_multi_hot_np"><code class="docutils literal notranslate"><span class="pre">ben_19_labels_to_multi_hot_np()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.resolve_band_combi"><code class="docutils literal notranslate"><span class="pre">resolve_band_combi()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.resolve_data_dir"><code class="docutils literal notranslate"><span class="pre">resolve_data_dir()</span></code></a></li>
+<li><a class="reference internal" href="#configilm.extra.BENv2_utils.stack_and_interpolate"><code class="docutils literal notranslate"><span class="pre">stack_and_interpolate()</span></code></a></li>
 </ul>
 </li>
 </ul>

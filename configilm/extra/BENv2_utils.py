@@ -465,8 +465,14 @@ def resolve_data_dir(
 
     :param data_dir: current path that is suggested
     :param allow_mock: allows mock data path to be returned
+
+        :default: False
+
     :param force_mock: only mock data path will be returned. Useful for debugging with
         small data
+
+        :default: False
+
     :return: a valid dir to the dataset if data_dir was none, otherwise data_dir
     """
     return resolve_data_dir_for_ds("benv2", data_dir, allow_mock=allow_mock, force_mock=force_mock)
@@ -509,6 +515,11 @@ def band_combi_to_mean_std(bands: Iterable[str], interpolation: str = "120_neare
     BAND_COMBINATION_PREDEFINTIONS or list of bands.
 
     :param bands: a list of bandnames
+    :param interpolation: the interpolation type to use. For available types see `means.keys()`
+
+        :default: "120_nearest"
+
+
     :return: mean and standard deviation for the given combination in same order
     """
     bands = resolve_band_combi(bands)

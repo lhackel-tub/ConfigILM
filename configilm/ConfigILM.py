@@ -281,9 +281,13 @@ class ILMConfiguration:
 
         :Default: torch.mul
 
-    :param drop_rate: Dropout and drop path rate for timm models.
+    :param drop_rate: Dropout rate for timm models.
 
         :Default: 0.2
+
+    :param drop_path_rate: Drop path rate for timm models.
+
+            :Default: 0.2
 
     :param fusion_dropout_rate: Drop rate inside all classification head layers.
 
@@ -378,6 +382,7 @@ class ILMConfiguration:
     _fusion_method: str = "torch.mul"
     _fusion_activation: str = "nn.Tanh()"
     drop_rate: Optional[float] = 0.2
+    drop_path_rate: Optional[float] = None
     use_pooler_output: bool = True
     max_sequence_length: int = 32
     load_pretrained_timm_if_available: bool = False
@@ -519,7 +524,7 @@ class ConfigILM(nn.Module):
                 "img_size": self.config.image_size,
                 "in_chans": self.config.channels,
                 "drop_rate": self.config.drop_rate,
-                "drop_path_rate": self.config.drop_rate,
+                "drop_path_rate": self.config.drop_path_rate,
                 "pretrained": self.config.load_pretrained_timm_if_available,
             }
 

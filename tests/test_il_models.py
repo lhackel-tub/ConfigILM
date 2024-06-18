@@ -501,7 +501,7 @@ def test_ilm_wrong_input_length():
         _ = model((v, q, q))
 
 
-def test_failty_config():
+def test_faulty_config():
     bs = 4
     config = ConfigILM.ILMConfiguration(
         timm_model_name=default_image_test_model,

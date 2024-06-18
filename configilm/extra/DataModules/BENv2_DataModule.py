@@ -2,7 +2,7 @@
 Datamodule for BigEarthNet dataset. Files can be requested by contacting
 the author.
 Original Paper of Image Data:
-https://arxiv.org/abs/2105.07921
+TO BE PUBLISHED
 https://bigearth.net/
 """
 from pathlib import Path

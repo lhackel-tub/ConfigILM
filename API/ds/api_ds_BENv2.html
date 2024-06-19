@@ -391,7 +391,7 @@ TO BE PUBLISHED
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.extra.DataModules.BENv2_DataModule.</span></span><span class="sig-name descname"><span class="pre">BENv2DataModule</span></span><a class="headerlink" href="#configilm.extra.DataModules.BENv2_DataModule.BENv2DataModule" title="Permalink to this definition">#</a></dt>
 <dd><dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataModules.BENv2_DataModule.BENv2DataModule.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BENv2_DataModule.BENv2DataModule.__init__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataModules.BENv2_DataModule.BENv2DataModule.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>This datamodule is designed to work with the BigEarthNet dataset. It is a
 multi-label classification dataset. The dataset is split into train, validation
 and test sets. The datamodule provides dataloaders for each of these sets.</p>
@@ -456,6 +456,24 @@ provided, it is set to True if a GPU is available and False otherwise.</p>
 provided, no filtering is applied. The callable should take a string as input
 and return a boolean. If the callable returns True, the image is included in
 the dataset, otherwise it is excluded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>train_transforms</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to transform the training images.
+If None is provided, the default train transform is used, that consists of
+resizing, horizontal and vertical flipping and normalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">default<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>eval_transforms</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – <p>A callable that is used to transform the evaluation images.
+If None is provided, the default eval transform is used, that consists of
+resizing and normalization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>

@@ -95,6 +95,18 @@ class BENv1DataModule(pl.LightningDataModule):
             the dataset, otherwise it is excluded.
 
             :default: None
+
+        :param train_transforms: A callable that is used to transform the training images.
+            If None is provided, the default train transform is used, that consists of
+            resizing, horizontal and vertical flipping and normalization.
+
+            :default: None
+
+        :param eval_transforms: A callable that is used to transform the evaluation images.
+            If None is provided, the default eval transform is used, that consists of
+            resizing and normalization.
+
+            :default: None
         """
         super().__init__()
 

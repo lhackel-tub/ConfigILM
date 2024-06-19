@@ -3031,7 +3031,6 @@ files = [
 numpy = [
     {version = ">=1.22.4", markers = "python_version < \"3.11\""},
     {version = ">=1.23.2", markers = "python_version == \"3.11\""},
-    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
 ]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
@@ -5553,5 +5552,5 @@ full-pytorch-lightning = ["bigearthnet-encoder", "lmdb", "pyarrow", "pydantic", 
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.9, <3.13"
-content-hash = "08573587609e57eebb25c81a0b7130fe124a2916cfcec0d2635fd3e8cd30e0dd"
+python-versions = "^3.9, <3.12"
+content-hash = "837cec3a2b2374126f734d143ffc576583bddff8ea8530415a2ec858eafa90e0"

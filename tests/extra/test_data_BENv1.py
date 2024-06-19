@@ -30,9 +30,9 @@ max_lens_too_large = [600_000, 1_000_000]
 
 
 def dataset_ok(
-        dataset: Union[BENv1DataSet, None],
-        expected_image_shape: Sequence,
-        expected_length: Union[int, None],
+    dataset: Union[BENv1DataSet, None],
+    expected_image_shape: Sequence,
+    expected_length: Union[int, None],
 ):
     # In principal dataset may be not set in data modules, but mypy requires this
     # notation to be happy.
@@ -270,6 +270,7 @@ def test_dm_unexposed_kwargs(data_dirs):
 def test_train_transform_settable(data_dirs):
     from configilm.extra._defaults import default_train_transform
     from configilm.extra._defaults import default_train_transform_with_noise
+
     dm = BENv1DataModule(
         data_dirs=data_dirs,
         img_size=(3, 120, 120),
@@ -289,6 +290,7 @@ def test_train_transform_settable(data_dirs):
 def test_eval_transform_settable(data_dirs):
     from configilm.extra._defaults import default_transform
     from configilm.extra._defaults import default_train_transform_with_noise
+
     dm = BENv1DataModule(
         data_dirs=data_dirs,
         img_size=(3, 120, 120),

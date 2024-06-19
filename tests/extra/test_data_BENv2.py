@@ -322,10 +322,10 @@ def test_band_selection(data_dirs, bands):
     assert x.shape[0] == expected_len, "Number of bands should match"
 
 
-
 def test_train_transform_settable(data_dirs):
     from configilm.extra._defaults import default_train_transform
     from configilm.extra._defaults import default_train_transform_with_noise
+
     dm = BENv2DataModule(
         data_dirs=data_dirs,
         img_size=(3, 120, 120),
@@ -345,6 +345,7 @@ def test_train_transform_settable(data_dirs):
 def test_eval_transform_settable(data_dirs):
     from configilm.extra._defaults import default_transform
     from configilm.extra._defaults import default_train_transform_with_noise
+
     dm = BENv2DataModule(
         data_dirs=data_dirs,
         img_size=(3, 120, 120),

@@ -131,8 +131,9 @@ class BENv2DataModule(pl.LightningDataModule):
             self.transform = eval_transforms
         else:
             warn("Using default eval transform.")
-            self.transform = default_transform(img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std)
-
+            self.transform = default_transform(
+                img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
+            )
 
     def setup(self, stage: Optional[str] = None) -> None:
         """

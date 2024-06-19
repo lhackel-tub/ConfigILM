@@ -18,10 +18,10 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/configilm)](https://pypi.org/project/configilm/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/configilm)](https://pypi.org/project/configilm/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
-[![DOI](<CURRENT_ZENODO_BADGE>)](<CURRENT_ZENODO_LINK>)  
+[![DOI](<CURRENT_ZENODO_BADGE>)](<CURRENT_ZENODO_LINK>)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
-[![Code Coverage](<COVERAGE_BADGE_LINK>)](./coverage.report)  
+[![Code Coverage](<COVERAGE_BADGE_LINK>)](./coverage.report)
 [![GitHub Star Chart](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)
 [![Open Issues](https://img.shields.io/github/issues-raw/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/issues)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/configilm)](https://pypi.org/project/configilm/)
@@ -52,7 +52,7 @@ tutorial examples, and a detailed overview of the framework's interface, ensurin
 
 ![Concept of ConfigILM](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM-ILMType.VQA_CLASSIFICATION.png)
 
-For detailed information please see its [publication](https://doi.org/10.1016/j.softx.2024.101731) 
+For detailed information please see its [publication](https://doi.org/10.1016/j.softx.2024.101731)
 and the [documentation](https://lhackel-tub.github.io/ConfigILM).
 
 `ConfigILM` is released under the [MIT Software License](https://opensource.org/licenses/mit-0)

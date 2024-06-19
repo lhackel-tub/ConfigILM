@@ -1,29 +1,30 @@
 import json
+
 from requests import get
 
 COLOR_THRESHOLDS = [
-    (101, 95, '4c1'),  # 101 is higher than the max coverage, needed for easier comparison
-    (95, 90, '97CA00'),
-    (90, 75, 'a4a61d'),
-    (75, 60, 'dfb317'),
-    (60, 40, 'fe7d37'),
-    (40, 0, 'e05d44'),
+    (101, 95, "4c1"),  # 101 is higher than the max coverage, needed for easier comparison
+    (95, 90, "97CA00"),
+    (90, 75, "a4a61d"),
+    (75, 60, "dfb317"),
+    (60, 40, "fe7d37"),
+    (40, 0, "e05d44"),
 ]
 
 if __name__ == "__main__":
     # Read the template file
-    with open("README_template.md", "r") as file:
+    with open("README_template.md") as file:
         template = file.read()
 
     # Read the coverage json file
-    with open("coverage.json", "r") as file:
+    with open("coverage.json") as file:
         coverage = json.load(file)
     overall_coverage = int(coverage["totals"]["percent_covered_display"])
     print(f"Overall coverage: {overall_coverage}")
     # get the correct color for the coverage
     color = [color for upper, lower, color in COLOR_THRESHOLDS if lower <= overall_coverage < upper][0]
     print(f"Color: {color}")
-    coverage_str = f'https://img.shields.io/badge/coverage%20-{overall_coverage}%25-{color}'
+    coverage_str = f"https://img.shields.io/badge/coverage%20-{overall_coverage}%25-{color}"
     # Replace the placeholders in the template
     readme = template.replace("<COVERAGE_BADGE_LINK>", coverage_str)
 
@@ -38,7 +39,7 @@ if __name__ == "__main__":
     # find zenodo id
     zenodo_id = zenodo_link.split("/")[-1]
     print(zenodo_id)
-    badge_link = f'https://zenodo.org/badge/DOI/10.5281/zenodo.{zenodo_id}.svg'
+    badge_link = f"https://zenodo.org/badge/DOI/10.5281/zenodo.{zenodo_id}.svg"
     readme = readme.replace("<CURRENT_ZENODO_BADGE>", badge_link)
 
     # Get the bibtex info from zenodo

@@ -18,10 +18,10 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/configilm)](https://pypi.org/project/configilm/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/configilm)](https://pypi.org/project/configilm/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12095668.svg)](https://zenodo.org/records/12095668)  
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12095668.svg)](https://zenodo.org/records/12095668)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
-[![Code Coverage](https://img.shields.io/badge/coverage%20-98%25-4c1)](./coverage.report)  
+[![Code Coverage](https://img.shields.io/badge/coverage%20-97%25-4c1)](./coverage.report)
 [![GitHub Star Chart](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)
 [![Open Issues](https://img.shields.io/github/issues-raw/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/issues)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/configilm)](https://pypi.org/project/configilm/)
@@ -52,7 +52,7 @@ tutorial examples, and a detailed overview of the framework's interface, ensurin
 
 ![Concept of ConfigILM](https://raw.githubusercontent.com/wiki/lhackel-tub/ConfigILM/static/imgs/ConfigILM-ILMType.VQA_CLASSIFICATION.png)
 
-For detailed information please see its [publication](https://doi.org/10.1016/j.softx.2024.101731) 
+For detailed information please see its [publication](https://doi.org/10.1016/j.softx.2024.101731)
 and the [documentation](https://lhackel-tub.github.io/ConfigILM).
 
 `ConfigILM` is released under the [MIT Software License](https://opensource.org/licenses/mit-0)

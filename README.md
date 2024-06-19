@@ -21,7 +21,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.12095668.svg)](https://zenodo.org/records/12095668)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
-[![Code Coverage](https://img.shields.io/badge/coverage%20-98%25-4c1)](./coverage.report)
+[![Code Coverage](https://img.shields.io/badge/coverage%20-97%25-4c1)](./coverage.report)
 [![GitHub Star Chart](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)](https://img.shields.io/github/stars/lhackel-tub/ConfigILM?style=social)
 [![Open Issues](https://img.shields.io/github/issues-raw/lhackel-tub/ConfigILM)](https://github.com/lhackel-tub/ConfigILM/issues)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/configilm)](https://pypi.org/project/configilm/)

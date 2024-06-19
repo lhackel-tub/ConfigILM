@@ -44,6 +44,8 @@ class BENv2DataModule(pl.LightningDataModule):
         max_len: Optional[int] = None,
         pin_memory: Optional[bool] = None,
         patch_prefilter: Optional[Callable[[str], bool]] = None,
+        train_transforms: Optional[Callable] = None,
+        eval_transforms: Optional[Callable] = None,
     ):
         """
         This datamodule is designed to work with the BigEarthNet dataset. It is a
@@ -117,11 +119,20 @@ class BENv2DataModule(pl.LightningDataModule):
 
         # get mean and std
         ben_mean, ben_std = band_combi_to_mean_std(self.img_size[0])
+        if train_transforms is not None:
+            self.train_transform = train_transforms
+        else:
+            warn("Using default train transform.")
+            self.train_transform = default_train_transform(
+                img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
+            )
 
-        self.train_transform = default_train_transform(
-            img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std
-        )
-        self.transform = default_transform(img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std)
+        if eval_transforms is not None:
+            self.transform = eval_transforms
+        else:
+            warn("Using default eval transform.")
+            self.transform = default_transform(img_size=(self.img_size[1], self.img_size[2]), mean=ben_mean, std=ben_std)
+
 
     def setup(self, stage: Optional[str] = None) -> None:
         """

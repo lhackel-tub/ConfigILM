@@ -30,9 +30,9 @@ max_lens_too_large = [600_000, 1_000_000]
 
 
 def dataset_ok(
-    dataset: Union[BENv1DataSet, None],
-    expected_image_shape: Sequence,
-    expected_length: Union[int, None],
+        dataset: Union[BENv1DataSet, None],
+        expected_image_shape: Sequence,
+        expected_length: Union[int, None],
 ):
     # In principal dataset may be not set in data modules, but mypy requires this
     # notation to be happy.
@@ -265,3 +265,41 @@ def test_dm_unexposed_kwargs(data_dirs):
     # changing the param here
     dm.train_ds.return_extras = True
     assert len(dm.train_ds[0]) == 3, f"This change should have returned 3 items but does {len(dm.train_ds[0])}"
+
+
+def test_train_transform_settable(data_dirs):
+    from configilm.extra._defaults import default_train_transform
+    from configilm.extra._defaults import default_train_transform_with_noise
+    dm = BENv1DataModule(
+        data_dirs=data_dirs,
+        img_size=(3, 120, 120),
+        train_transforms=default_train_transform(120, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+    )
+    dataloaders_ok(dm, expected_image_shape=(3, 120, 120))
+
+    dm = BENv1DataModule(
+        data_dirs=data_dirs,
+        img_size=(3, 120, 120),
+        train_transforms=default_train_transform_with_noise(120, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+        shuffle=False,
+    )
+    dataloaders_ok(dm, expected_image_shape=(3, 120, 120))
+
+
+def test_eval_transform_settable(data_dirs):
+    from configilm.extra._defaults import default_transform
+    from configilm.extra._defaults import default_train_transform_with_noise
+    dm = BENv1DataModule(
+        data_dirs=data_dirs,
+        img_size=(3, 120, 120),
+        eval_transforms=default_transform(120, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+    )
+    dataloaders_ok(dm, expected_image_shape=(3, 120, 120))
+
+    dm = BENv1DataModule(
+        data_dirs=data_dirs,
+        img_size=(3, 120, 120),
+        eval_transforms=default_train_transform_with_noise(120, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+        shuffle=False,
+    )
+    dataloaders_ok(dm, expected_image_shape=(3, 120, 120))

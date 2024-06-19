@@ -320,3 +320,42 @@ def test_band_selection(data_dirs, bands):
         else 1
     )
     assert x.shape[0] == expected_len, "Number of bands should match"
+
+
+
+def test_train_transform_settable(data_dirs):
+    from configilm.extra._defaults import default_train_transform
+    from configilm.extra._defaults import default_train_transform_with_noise
+    dm = BENv2DataModule(
+        data_dirs=data_dirs,
+        img_size=(3, 120, 120),
+        train_transforms=default_train_transform(120, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+    )
+    dataloaders_ok(dm, expected_image_shape=(3, 120, 120))
+
+    dm = BENv2DataModule(
+        data_dirs=data_dirs,
+        img_size=(3, 120, 120),
+        train_transforms=default_train_transform_with_noise(120, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+        shuffle=False,
+    )
+    dataloaders_ok(dm, expected_image_shape=(3, 120, 120))
+
+
+def test_eval_transform_settable(data_dirs):
+    from configilm.extra._defaults import default_transform
+    from configilm.extra._defaults import default_train_transform_with_noise
+    dm = BENv2DataModule(
+        data_dirs=data_dirs,
+        img_size=(3, 120, 120),
+        eval_transforms=default_transform(120, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+    )
+    dataloaders_ok(dm, expected_image_shape=(3, 120, 120))
+
+    dm = BENv2DataModule(
+        data_dirs=data_dirs,
+        img_size=(3, 120, 120),
+        eval_transforms=default_train_transform_with_noise(120, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+        shuffle=False,
+    )
+    dataloaders_ok(dm, expected_image_shape=(3, 120, 120))

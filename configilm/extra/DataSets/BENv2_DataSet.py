@@ -87,7 +87,7 @@ class BENv2DataSet(Dataset):
 
         :param data_dirs: A mapping from file key to file path. The file key is
             used to identify the function of the file. The required keys are:
-            "images_lmdb", "labels_csv", "s1_mapping_csv", "split_csv".
+            "images_lmdb", "metadata_parquet", "metadata_snow_cloud_parquet".
 
         :param split: The name of the split to use. Can be either "train", "val" or
             "test". If None is provided, all splits are used.

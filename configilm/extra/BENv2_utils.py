@@ -367,18 +367,6 @@ stds = {
     },
 }
 
-
-def _numpy_level_aggreagate(df, key_col, val_col):
-    # optimized version of df.groupby(key_col)[val_col].apply(list).reset_index(name=val_col)
-    # credits to B. M. @
-    # https://stackoverflow.com/questions/22219004/how-to-group-dataframe-rows-into-list-in-pandas-groupby
-    keys, values = df.sort_values(key_col).values.T
-    ukeys, index = np.unique(keys, True)
-    arrays = np.split(values, index[1:])
-    df2 = pd.DataFrame({key_col: ukeys, val_col: [list(a) for a in arrays]})
-    return df2
-
-
 NEW_LABELS_ORIGINAL_ORDER = (
     "Urban fabric",
     "Industrial or commercial units",
@@ -532,8 +520,8 @@ class BENv2LDMBReader:
     def __init__(
         self,
         image_lmdb_file: Union[str, Path],
-        label_file: Union[str, Path],
-        s1_mapping_file: Optional[Union[str, Path]] = None,
+        metadata_file: Union[str, Path],
+        metadata_snow_cloud_file: Optional[Union[str, Path]] = None,
         bands: Optional[Union[Iterable, str, int]] = None,
         process_bands_fn: Optional[Callable[[Dict[str, np.ndarray], List[str]], Any]] = None,
         process_labels_fn: Optional[Callable[[List[str]], Any]] = None,
@@ -548,29 +536,14 @@ class BENv2LDMBReader:
         self.uses_s1 = any([x in _s1_bandnames for x in self.bands])
         self.uses_s2 = any([x in _s2_bandnames for x in self.bands])
 
-        if s1_mapping_file is None:
-            assert not self.uses_s1, "If you want to use S1 bands, please provide a s2s1_mapping_file"
-            self.mapping = None
-        else:
-            # read and create mapping S2v2 name -> S1 name
-            self._print_info("Reading mapping ...")
-            mapping = pd.read_csv(str(s1_mapping_file))
-            self._print_info("Creating mapping dict ...")
-            self.mapping = dict(zip(mapping.patch_id, mapping.s1_name))  # naming of the columns is hardcoded
-            del mapping
-
-        # read labels and create mapping S2v2 name -> List[label]
-        self._print_info("Reading labels ...")
-        lbls = pd.read_csv(str(label_file))
-
-        self._print_info("Aggregating label list ...")
-        lbls = _numpy_level_aggreagate(lbls, "patch_id", "label")
-        # lbls = lbls.groupby('patch')['lbl_19'].apply(list).reset_index(name='lbl_19')
-
-        self._print_info("Creating label dict ...")
-        self.lbls = dict(zip(lbls.patch_id, lbls.label))  # naming of the columns is hardcoded
+        self.metadata = pd.read_parquet(metadata_file)
+        if metadata_snow_cloud_file is not None:
+            metadata_snow_cloud = pd.read_parquet(metadata_snow_cloud_file)
+            self.metadata = pd.concat([self.metadata, metadata_snow_cloud])
+            self._print_info("Merged metadata with snow/cloud metadata")
+        self.lbls = {row["patch_id"]: row["labels"] for idx, row in self.metadata.iterrows()}
         self.lbl_key_set = set(self.lbls.keys())
-        del lbls
+        self.mapping = {row["patch_id"]: row["s1_name"] for idx, row in self.metadata.iterrows()}
 
         # set mean and std based on bands selected
         self.mean = None

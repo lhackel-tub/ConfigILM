@@ -82,6 +82,21 @@ def test_ben_4c_dataset_patchname_getter(data_dirs):
     assert ds.get_index_from_patchname("abc") is None, "None existing name does not work"
 
 
+def test_ben_dataset_with_cloud(data_dirs):
+    ds = BENv2DataSet(data_dirs=data_dirs, split="validation", include_cloudy=True, include_snowy=False)
+    assert len(ds) == 6 + 1, "Only 7 patches should have been returned (6 regular and 1 cloudy)"
+
+
+def test_ben_dataset_with_snow(data_dirs):
+    ds = BENv2DataSet(data_dirs=data_dirs, split="validation", include_cloudy=False, include_snowy=True)
+    assert len(ds) == 6 + 1, "Only 7 patches should have been returned (6 regular and 1 snowy)"
+
+
+def test_ben_dataset_with_cloud_snow(data_dirs):
+    ds = BENv2DataSet(data_dirs=data_dirs, split="validation", include_cloudy=True, include_snowy=True)
+    assert len(ds) == 6 + 2, "Only 8 patches should have been returned (6 regular and 1 snowy and 1 cloudy)"
+
+
 def test_ben_4c_dataset_patchname(data_dirs):
     ds = BENv2DataSet(data_dirs=data_dirs, split="validation")
     assert len(ds[0]) == 2, "Only two items should have been returned"
@@ -139,8 +154,8 @@ def test_ben_fail_image_retrieve(data_dirs):
 
 @pytest.mark.parametrize("max_len", max_lens)
 def test_ben_max_index(data_dirs, max_len: int):
-    is_mocked = "mock" in str(data_dirs["split_csv"])
-    expected_len = 9 if is_mocked else 123_723
+    is_mocked = "mock" in str(data_dirs["metadata_parquet"])
+    expected_len = 6 if is_mocked else 123_723
     if max_len is not None and expected_len > max_len and max_len != -1:
         expected_len = max_len
 
@@ -167,6 +182,16 @@ def test_ben_max_index_too_large(data_dirs, max_len: int):
         max_len=max_len,
     )
     assert len(ds) < max_len
+
+
+def test_ben_prefilter(data_dirs):
+    ds = BENv2DataSet(
+        data_dirs=data_dirs,
+        split="validation",
+        img_size=(3, 120, 120),
+        patch_prefilter=lambda x: "S2A_MSIL2A_20170613T101031_N9999_R022_T33UUP_33_" in x,
+    )
+    assert len(ds) == 2, "There should be exactly 2 patches with this prefix in the mock data"
 
 
 def test_ben_dm_lightning(data_dirs):
@@ -261,40 +286,24 @@ def test_dm_unexposed_kwargs(data_dirs):
     assert len(dm.train_ds[0]) == 3, f"This change should have returned 3 items but does {len(dm.train_ds[0])}"
 
 
-def test_utils_no_mapping(data_dirs):
-    with pytest.raises(AssertionError):
-        _ = BENv2LDMBReader(
-            image_lmdb_file=data_dirs["images_lmdb"],
-            label_file=data_dirs["labels_csv"],
-        )
-    with pytest.raises(AssertionError):
-        _ = BENv2LDMBReader(
-            image_lmdb_file=data_dirs["images_lmdb"], label_file=data_dirs["labels_csv"], bands=STANDARD_BANDS["S1"]
-        )
-    reader = BENv2LDMBReader(
-        image_lmdb_file=data_dirs["images_lmdb"], label_file=data_dirs["labels_csv"], bands=STANDARD_BANDS["S2"]
-    )
-    assert reader.mapping is None, "Mapping should be None if not provided"
-
-
 def test_utils_keys(data_dirs):
     reader = BENv2LDMBReader(
         image_lmdb_file=data_dirs["images_lmdb"],
-        label_file=data_dirs["labels_csv"],
-        s1_mapping_file=data_dirs["s1_mapping_csv"],
+        metadata_file=data_dirs["metadata_parquet"],
+        metadata_snow_cloud_file=data_dirs["metadata_snow_cloud_parquet"],
     )
 
-    assert len(reader.keys()) == 9 * 3 * 2, "Keys should be 9*3*2 (9 patches, 3 splits, 2 satellites)"
-    assert len(reader.S1_keys()) == 9 * 3, "S1 keys should be 9*3 (9 patches, 3 splits)"
-    assert len(reader.S2_keys()) == 9 * 3, "S2 keys should be 9*3 (9 patches, 3 splits)"
+    assert len(reader.keys()) == 8 * 3 * 2, "Keys should be 9*3*2 (9 patches, 3 splits, 2 satellites)"
+    assert len(reader.S1_keys()) == 8 * 3, "S1 keys should be 9*3 (9 patches, 3 splits)"
+    assert len(reader.S2_keys()) == 8 * 3, "S2 keys should be 9*3 (9 patches, 3 splits)"
 
 
 @pytest.mark.parametrize("pi", [True, False])
 def test_print_info(data_dirs, pi):
     reader = BENv2LDMBReader(
         image_lmdb_file=data_dirs["images_lmdb"],
-        label_file=data_dirs["labels_csv"],
-        s1_mapping_file=data_dirs["s1_mapping_csv"],
+        metadata_file=data_dirs["metadata_parquet"],
+        metadata_snow_cloud_file=data_dirs["metadata_snow_cloud_parquet"],
         print_info=pi,
     )
     _ = reader[list(reader.S2_keys())[0]]
@@ -304,8 +313,8 @@ def test_print_info(data_dirs, pi):
 def test_band_selection(data_dirs, bands):
     reader = BENv2LDMBReader(
         image_lmdb_file=data_dirs["images_lmdb"],
-        label_file=data_dirs["labels_csv"],
-        s1_mapping_file=data_dirs["s1_mapping_csv"],
+        metadata_file=data_dirs["metadata_parquet"],
+        metadata_snow_cloud_file=data_dirs["metadata_snow_cloud_parquet"],
         bands=bands,
         process_bands_fn=partial(stack_and_interpolate, img_size=120, upsample_mode="nearest"),
     )
@@ -320,6 +329,17 @@ def test_band_selection(data_dirs, bands):
         else 1
     )
     assert x.shape[0] == expected_len, "Number of bands should match"
+
+
+def test_invalid_band_type(data_dirs):
+    with pytest.raises(ValueError):
+        _ = BENv2LDMBReader(
+            image_lmdb_file=data_dirs["images_lmdb"],
+            metadata_file=data_dirs["metadata_parquet"],
+            metadata_snow_cloud_file=data_dirs["metadata_snow_cloud_parquet"],
+            bands=3.2,  # noqa
+            process_bands_fn=partial(stack_and_interpolate, img_size=120, upsample_mode="nearest"),
+        )
 
 
 def test_train_transform_settable(data_dirs):

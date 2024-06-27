@@ -268,7 +268,7 @@ The available configurations are:</p>
 </div></blockquote>
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataSets.BENv2_DataSet.BENv2DataSet.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BENv2_DataSet.BENv2DataSet.__init__" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_cloudy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_snowy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BENv2_DataSet.BENv2DataSet.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Dataset for BigEarthNet v2 dataset. Files can be requested by contacting
 the author or visiting the official website.</p>
 <p>Original Paper of Image Data:
@@ -331,6 +331,8 @@ excluded from the dataset.</p>
 </dd>
 </dl>
 </p></li>
+<li><p><strong>include_cloudy</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>include_snowy</strong> (<em>bool</em>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -365,7 +367,7 @@ invalid names (not in original BigEarthNet) and names not in loaded list.</p>
 <span class="sig-name descname"><span class="pre">get_patchname_from_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BENv2_DataSet.BENv2DataSet.get_patchname_from_index" title="Permalink to this definition">#</a></dt>
 <dd><p>Gives the patch name of the image at the specified index. May return invalid
 names (names that are not actually loadable because they are not part of the
-lmdb file) if the name is included in the csv file.</p>
+lmdb file) if the name is included in the metadata file(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>idx</strong> (<em>int</em>) – index of an image</p>

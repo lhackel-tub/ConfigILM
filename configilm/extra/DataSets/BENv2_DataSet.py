@@ -6,7 +6,6 @@ TO BE PUBLISHED
 
 https://bigearth.net/
 """
-import csv
 from functools import partial
 from pathlib import Path
 from typing import Callable
@@ -14,6 +13,7 @@ from typing import Mapping
 from typing import Optional
 from typing import Union
 
+import pandas as pd
 from torch.utils.data import Dataset
 
 from configilm.extra.BENv2_utils import ben_19_labels_to_multi_hot
@@ -75,6 +75,8 @@ class BENv2DataSet(Dataset):
         img_size: tuple = (3, 120, 120),
         return_extras: bool = False,
         patch_prefilter: Optional[Callable[[str], bool]] = None,
+        include_cloudy: bool = False,
+        include_snowy: bool = False,
     ):
         """
         Dataset for BigEarthNet v2 dataset. Files can be requested by contacting
@@ -134,13 +136,21 @@ class BENv2DataSet(Dataset):
             raise AssertionError(f"{img_size[0]} is not a valid channel configuration.")
 
         print(f"Loading BEN data for {split}...")
-        # read split csv file
-        split_csv = Path(data_dirs["split_csv"])
-        with open(split_csv) as f:
-            reader = csv.reader(f)
-            split_data = list(reader)
-            split_data = split_data[1:]  # remove header
-        self.patches = [x[0] for x in split_data if split is None or x[1] == split]
+        # read metadata
+        metadata = pd.read_parquet(data_dirs["metadata_parquet"])
+        if include_cloudy or include_snowy:
+            metadata_snow_cloud = pd.read_parquet(data_dirs["metadata_snow_cloud_parquet"])
+            metadata = pd.concat([metadata, metadata_snow_cloud])
+        if not include_cloudy:
+            # remove all rows with contains_cloud_or_shadow
+            metadata = metadata[~metadata["contains_cloud_or_shadow"]]
+        if not include_snowy:
+            # remove all rows with contains_seasonal_snow
+            metadata = metadata[~metadata["contains_seasonal_snow"]]
+        if split is not None:
+            metadata = metadata[metadata["split"] == split]
+        self.patches = metadata["patch_id"].tolist()
+
         print(f"    {len(self.patches)} patches indexed")
 
         # if a prefilter is provided, filter patches based on function
@@ -157,8 +167,8 @@ class BENv2DataSet(Dataset):
         self.channel_order = self.channel_configurations[c]
         self.BENv2Loader = BENv2LDMBReader(
             image_lmdb_file=self.lmdb_dir,
-            label_file=data_dirs["labels_csv"],
-            s1_mapping_file=data_dirs["s1_mapping_csv"],
+            metadata_file=data_dirs["metadata_parquet"],
+            metadata_snow_cloud_file=data_dirs["metadata_snow_cloud_parquet"],
             bands=self.channel_order,
             process_bands_fn=partial(stack_and_interpolate, img_size=h, upsample_mode="nearest"),
             process_labels_fn=ben_19_labels_to_multi_hot,
@@ -168,7 +178,7 @@ class BENv2DataSet(Dataset):
         """
         Gives the patch name of the image at the specified index. May return invalid
         names (names that are not actually loadable because they are not part of the
-        lmdb file) if the name is included in the csv file.
+        lmdb file) if the name is included in the metadata file(s).
 
         :param idx: index of an image
         :return: patch name of the image or None, if the index is invalid

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "configilm"
-version = "0.6.5"
+version = "0.6.6"
 description = "A state-of-the-art tool for Python developers seeking to rapidly and iteratively develop vision and language models within the [`pytorch`](https://pytorch.org/) framework"
 authors = ["Leonard Hackel <l.hackel@tu-berlin.de>"]
 readme = "README.md"
@@ -17,6 +17,8 @@ torch = ">=2.0.0, !=2.0.1, !=2.1.0"
 timm = "^0.9.2"
 transformers = "^4.26.0"
 appdirs = "^1.4.4"
+# numpy 2.0 is not compatible with pandas yet
+numpy = "^1.21.5"
 # pydantic version 2 is incompatible with bigearthnet-encoder
 pydantic = { version = "^1.8", optional = true }
 lmdb = { version = "^1.4.0", optional = true }

@@ -46,20 +46,28 @@ dataset_paths = {
     ],
     "benv2": [
         # MARS
-        {"images_lmdb": "INVALID_PATH"},
+        {
+            "images_lmdb": Path("/data") / "kaiclasen" / "BENv2.lmdb",
+            "metadata_parquet": Path("/data") / "kaiclasen" / "metadata.parquet",
+            "metadata_snow_cloud_parquet": Path("/data")
+            / "kaiclasen"
+            / "metadata_for_patches_with_snow_cloud_or_shadow.parquet",
+        },
         # ERDE
         {
             "images_lmdb": Path("/faststorage") / "BigEarthNet-V2" / "BigEarthNet-V2-LMDB",
-            "split_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_split_mapping.csv",
-            "s1_mapping_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_s1_mapping.csv",
-            "labels_csv": Path("/faststorage") / "BigEarthNet-V2" / "patch_id_label_mapping.csv",
+            "metadata_parquet": Path("/faststorage") / "BigEarthNet-V2" / "metadata.parquet",
+            "metadata_snow_cloud_parquet": Path("/faststorage")
+            / "BigEarthNet-V2"
+            / "metadata_for_patches_with_snow_cloud_or_shadow.parquet",
         },
         # PLUTO
         {
-            "images_lmdb": pluto_local / "BigEarthNet-V2" / "BigEarthNet-V2-LMDB",
-            "split_csv": pluto_local / "BigEarthNet-V2" / "patch_id_split_mapping.csv",
-            "s1_mapping_csv": pluto_local / "BigEarthNet-V2" / "patch_id_s1_mapping.csv",
-            "labels_csv": pluto_local / "BigEarthNet-V2" / "patch_id_label_mapping.csv",
+            "images_lmdb": pluto_local / "BigEarthNet-V2" / "BENv2.lmdb",
+            "metadata_parquet": pluto_local / "BigEarthNet-V2" / "metadata.parquet",
+            "metadata_snow_cloud_parquet": pluto_local
+            / "BigEarthNet-V2"
+            / "metadata_for_patches_with_snow_cloud_or_shadow.parquet",
         },
     ],
     "cocoqa": [],
@@ -148,9 +156,10 @@ mock_data_path = {
     },
     "benv2": {
         "images_lmdb": mock_data_dir / "BENv2" / "BigEarthNet-V2-LMDB",
-        "split_csv": mock_data_dir / "BENv2" / "patch_id_split_mapping.csv",
-        "s1_mapping_csv": mock_data_dir / "BENv2" / "patch_id_s1_mapping.csv",
-        "labels_csv": mock_data_dir / "BENv2" / "patch_id_label_mapping.csv",
+        "metadata_parquet": mock_data_dir / "BENv2" / "metadata.parquet",
+        "metadata_snow_cloud_parquet": mock_data_dir
+        / "BENv2"
+        / "metadata_for_patches_with_snow_cloud_or_shadow.parquet",
     },
     "cocoqa": {
         "images": mock_data_dir / "COCO-QA" / "images",

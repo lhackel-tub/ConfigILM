@@ -53,11 +53,12 @@ class BENv2DataModule(pl.LightningDataModule):
         and test sets. The datamodule provides dataloaders for each of these sets.
 
         :param data_dirs: A mapping from file key to file path. Required keys are
-            "images_lmdb", "train_data", "val_data" and "test_data". The "images_lmdb"
-            key is used to identify the lmdb file that contains the images. The "_data"
-            keys are used to identify paths to the respective split csv files.
-            Note, that the lmdb file is encoded using the BigEarthNet Encoder and contains
-            images and labels.
+            "images_lmdb", "metadata_parquet" and "metadata_snow_cloud_parquet". The "images_lmdb"
+            key is used to identify the lmdb file that contains the images. The "metadata_" keys
+            are used to identify the parquet files that contain the metadata. The metadata files
+            contain information about the images, such as the labels, split and cloud and snow info.
+            Note, that the lmdb file is encoded using the RICO-HDL Encoder and contains
+            images in the form of safe files.
 
         :param batch_size: The batch size to use for the dataloaders.
 

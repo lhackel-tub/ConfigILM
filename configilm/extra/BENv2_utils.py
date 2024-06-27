@@ -541,9 +541,15 @@ class BENv2LDMBReader:
             metadata_snow_cloud = pd.read_parquet(metadata_snow_cloud_file)
             self.metadata = pd.concat([self.metadata, metadata_snow_cloud])
             self._print_info("Merged metadata with snow/cloud metadata")
-        self.lbls = {row["patch_id"]: row["labels"] for idx, row in self.metadata.iterrows()}
+
+        # self.lbls = {row["patch_id"]: row["labels"] for idx, row in self.metadata.iterrows()}
+        self.lbls = {p: l for p, l in zip(self.metadata["patch_id"], self.metadata["labels"])}
+        self._print_info(f"Loaded {len(self.lbls)} labels")
         self.lbl_key_set = set(self.lbls.keys())
-        self.mapping = {row["patch_id"]: row["s1_name"] for idx, row in self.metadata.iterrows()}
+        self._print_info(f"Loaded {len(self.lbl_key_set)} keys")
+        # self.mapping = {row["patch_id"]: row["s1_name"] for idx, row in self.metadata.iterrows()}
+        self.mapping = {p: s for p, s in zip(self.metadata["patch_id"], self.metadata["s1_name"])}
+        self._print_info("Loaded mapping created")
 
         # set mean and std based on bands selected
         self.mean = None
@@ -571,7 +577,7 @@ class BENv2LDMBReader:
                 readonly=True,
                 lock=False,
                 meminit=False,
-                readahead=False,
+                readahead=True,
                 map_size=8 * 1024**3,  # 8GB blocked for caching
                 max_spare_txns=16,  # expected number of concurrent transactions (e.g. threads/workers)
             )

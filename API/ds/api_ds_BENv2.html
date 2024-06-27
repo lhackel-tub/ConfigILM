@@ -278,7 +278,7 @@ TO BE PUBLISHED</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – A mapping from file key to file path. The file key is
 used to identify the function of the file. The required keys are:
-“images_lmdb”, “labels_csv”, “s1_mapping_csv”, “split_csv”.</p></li>
+“images_lmdb”, “metadata_parquet”, “metadata_snow_cloud_parquet”.</p></li>
 <li><p><strong>split</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – <p>The name of the split to use. Can be either “train”, “val” or
 “test”. If None is provided, all splits are used.</p>
 <dl class="field-list simple">
@@ -401,11 +401,12 @@ and test sets. The datamodule provides dataloaders for each of these sets.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_dirs</strong> (<em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em><em>]</em>) – A mapping from file key to file path. Required keys are
-“images_lmdb”, “train_data”, “val_data” and “test_data”. The “images_lmdb”
-key is used to identify the lmdb file that contains the images. The “_data”
-keys are used to identify paths to the respective split csv files.
-Note, that the lmdb file is encoded using the BigEarthNet Encoder and contains
-images and labels.</p></li>
+“images_lmdb”, “metadata_parquet” and “metadata_snow_cloud_parquet”. The “images_lmdb”
+key is used to identify the lmdb file that contains the images. The “<a href="#id1"><span class="problematic" id="id2">metadata_</span></a>” keys
+are used to identify the parquet files that contain the metadata. The metadata files
+contain information about the images, such as the labels, split and cloud and snow info.
+Note, that the lmdb file is encoded using the RICO-HDL Encoder and contains
+images in the form of safe files.</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em>) – <p>The batch size to use for the dataloaders.</p>
 <dl class="field-list simple">
 <dt class="field-odd">default<span class="colon">:</span></dt>

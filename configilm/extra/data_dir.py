@@ -1,4 +1,3 @@
-from os.path import isdir
 from pathlib import Path
 from typing import Mapping
 from typing import Optional
@@ -222,8 +221,8 @@ def resolve_data_dir_for_ds(
         for pd in path_dicts:
             # check that all paths are valid
             valid = True
-            for p in pd:
-                if not isdir(Path(p).resolve()):
+            for p in pd.values():
+                if not Path(p).exists():
                     valid = False
                     break
             if valid:

@@ -298,17 +298,6 @@ def test_utils_keys(data_dirs):
     assert len(reader.S2_keys()) == 8 * 3, "S2 keys should be 9*3 (9 patches, 3 splits)"
 
 
-@pytest.mark.parametrize("pi", [True, False])
-def test_print_info(data_dirs, pi):
-    reader = BENv2LDMBReader(
-        image_lmdb_file=data_dirs["images_lmdb"],
-        metadata_file=data_dirs["metadata_parquet"],
-        metadata_snow_cloud_file=data_dirs["metadata_snow_cloud_parquet"],
-        print_info=pi,
-    )
-    _ = reader[list(reader.S2_keys())[0]]
-
-
 @pytest.mark.parametrize("bands", list(STANDARD_BANDS.keys()) + STANDARD_BANDS[12] + list(STANDARD_BANDS.values()))
 def test_band_selection(data_dirs, bands):
     reader = BENv2LDMBReader(

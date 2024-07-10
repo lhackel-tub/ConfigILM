@@ -20,6 +20,7 @@ from configilm.extra.BENv2_utils import ben_19_labels_to_multi_hot
 from configilm.extra.BENv2_utils import BENv2LDMBReader
 from configilm.extra.BENv2_utils import stack_and_interpolate
 from configilm.extra.BENv2_utils import STANDARD_BANDS
+from configilm.util import Messages
 
 
 class BENv2DataSet(Dataset):
@@ -62,9 +63,9 @@ class BENv2DataSet(Dataset):
         """
         Prints all available preconfigured channel combinations.
         """
-        print("Available channel configurations are:")
+        Messages.hint("Available channel configurations are:")
         for c, m in cls.avail_chan_configs.items():
-            print(f"    {c:>3} -> {m}")
+            Messages.hint(f"    {c:>3} -> {m}")
 
     def __init__(
         self,
@@ -135,7 +136,7 @@ class BENv2DataSet(Dataset):
             BENv2DataSet.get_available_channel_configurations()
             raise AssertionError(f"{img_size[0]} is not a valid channel configuration.")
 
-        print(f"Loading BEN data for {split}...")
+        Messages.info(f"Loading BEN data for {split}...")
         # read metadata
         metadata = pd.read_parquet(data_dirs["metadata_parquet"])
         if include_cloudy or include_snowy:
@@ -151,18 +152,18 @@ class BENv2DataSet(Dataset):
             metadata = metadata[metadata["split"] == split]
         self.patches = metadata["patch_id"].tolist()
 
-        print(f"    {len(self.patches)} patches indexed")
+        Messages.info(f"    {len(self.patches)} patches indexed")
 
         # if a prefilter is provided, filter patches based on function
         if patch_prefilter:
             self.patches = list(filter(patch_prefilter, self.patches))
-        print(f"    {len(self.patches)} pre-filtered patches indexed")
+        Messages.info(f"    {len(self.patches)} pre-filtered patches indexed")
 
         # sort list for reproducibility
         self.patches.sort()
         if max_len is not None and max_len < len(self.patches) and max_len != -1:
             self.patches = self.patches[:max_len]
-        print(f"    {len(self.patches)} filtered patches indexed")
+        Messages.info(f"    {len(self.patches)} filtered patches indexed")
 
         self.channel_order = self.channel_configurations[c]
         self.BENv2Loader = BENv2LDMBReader(
@@ -212,7 +213,7 @@ class BENv2DataSet(Dataset):
         img, labels = self.BENv2Loader[key]
 
         if img is None:
-            print(f"Cannot load {key} from database")
+            Messages.error(f"Cannot load {key} from database")
             raise ValueError
         if self.transform:
             img = self.transform(img)

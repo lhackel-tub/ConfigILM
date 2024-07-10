@@ -1,3 +1,4 @@
+from enum import Enum
 from pathlib import Path
 
 from transformers import BertTokenizer
@@ -33,6 +34,18 @@ def indent(s, num_spaces=0, indent_first=False):
     # join with spaces
     s = "\n".join(s)
     return s
+
+
+class MessageLevel(Enum):
+    INFO = 0
+    HINT = 0
+    SUCCESS = 0
+    WARNING = 1
+    ERROR = 2
+
+
+MESSAGE_PRINT_FN = print
+MESSAGE_LEVEL = MessageLevel.INFO
 
 
 class Messages:
@@ -76,50 +89,75 @@ class Messages:
         """
         Prints a yellow warning message with aligned indent and "[WARNING]".
         If the message has multiple lines, it is aligned to the right of the colon.
+        Prints only if the message level is set to WARNING or higher.
+        Message level is defined by the global variable MESSAGE_LEVEL.
+        Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
         """
-        print(f"{cls.start_msg}{cls.WARNING}[WARNING] {indent(message, cls.max_indent)}{cls.ENDC}")
+        if MESSAGE_LEVEL.value > MessageLevel.WARNING.value:
+            return
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.WARNING}[WARNING] {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
     def error(cls, message: str) -> None:
         """
         Prints a red error message with aligned indent and "[ERROR]".
         If the message has multiple lines, it is aligned to the right of the colon.
+        Prints only if the message level is set to ERROR.
+        Message level is defined by the global variable MESSAGE_LEVEL.
+        Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
         """
-        print(f"{cls.start_msg}{cls.FAIL}[ERROR]   {indent(message, cls.max_indent)}{cls.ENDC}")
+        if MESSAGE_LEVEL.value > MessageLevel.ERROR.value:
+            return
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.FAIL}[ERROR]   {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
     def success(cls, message: str) -> None:
         """
         Prints a green success message with aligned indent and "[SUCCESS]"
         If the message has multiple lines, it is aligned to the right of the colon.
+        Prints only if the message level is set to SUCCESS or higher.
+        Message level is defined by the global variable MESSAGE_LEVEL.
+        Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
         """
-        print(f"{cls.start_msg}{cls.OKGREEN}[SUCCESS] {indent(message, cls.max_indent)}{cls.ENDC}")
+        if MESSAGE_LEVEL.value > MessageLevel.SUCCESS.value:
+            return
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.OKGREEN}[SUCCESS] {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
     def hint(cls, message: str) -> None:
         """
         Prints a blue hint message with aligned indent and "[HINT]".
         If the message has multiple lines, it is aligned to the right of the colon.
+        Prints only if the message level is set to HINT or higher.
+        Message level is defined by the global variable MESSAGE_LEVEL.
+        Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
         """
-        print(f"{cls.start_msg}{cls.OKCYAN}[HINT]    {indent(message, cls.max_indent)}{cls.ENDC}")
+        if MESSAGE_LEVEL.value > MessageLevel.HINT.value:
+            return
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.OKCYAN}[HINT]    {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
     def info(cls, message: str) -> None:
         """
         Prints a dark blue info message with aligned indent and "[INFO]".
         If the message has multiple lines, it is aligned to the right of the colon.
+        Prints only if the message level is set to INFO or higher.
+        Message level is defined by the global variable MESSAGE_LEVEL.
+        Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
         """
-        print(f"{cls.start_msg}{cls.OKCYAN}[INFO]    {indent(message, cls.max_indent)}{cls.ENDC}")
+        if MESSAGE_LEVEL.value > MessageLevel.INFO.value:
+            return
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.OKCYAN}[INFO]    {indent(message, cls.max_indent)}{cls.ENDC}")
 
 
 def round_to(x, base):

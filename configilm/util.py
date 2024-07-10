@@ -1,3 +1,4 @@
+import time
 from enum import Enum
 from pathlib import Path
 
@@ -45,7 +46,7 @@ class MessageLevel(Enum):
 
 
 MESSAGE_PRINT_FN = print
-MESSAGE_LEVEL = MessageLevel.INFO
+MESSAGE_LEVEL = MessageLevel.WARNING
 
 
 class Messages:
@@ -85,7 +86,7 @@ class Messages:
     start_msg = ""
 
     @classmethod
-    def warn(cls, message: str) -> None:
+    def warn(cls, message: str, with_time: bool = False) -> None:
         """
         Prints a yellow warning message with aligned indent and "[WARNING]".
         If the message has multiple lines, it is aligned to the right of the colon.
@@ -94,13 +95,15 @@ class Messages:
         Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
+        :param with_time: If set, the time is printed in front of the message
         """
         if MESSAGE_LEVEL.value > MessageLevel.WARNING.value:
             return
-        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.WARNING}[WARNING] {indent(message, cls.max_indent)}{cls.ENDC}")
+        t = f" [{time.time():.5f}]" if with_time else ""
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.WARNING}[WARNING]{t} {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
-    def error(cls, message: str) -> None:
+    def error(cls, message: str, with_time: bool = False) -> None:
         """
         Prints a red error message with aligned indent and "[ERROR]".
         If the message has multiple lines, it is aligned to the right of the colon.
@@ -109,13 +112,15 @@ class Messages:
         Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
+        :param with_time: If set, the time is printed in front of the message
         """
         if MESSAGE_LEVEL.value > MessageLevel.ERROR.value:
             return
-        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.FAIL}[ERROR]   {indent(message, cls.max_indent)}{cls.ENDC}")
+        t = f" [{time.time():.5f}]" if with_time else ""
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.FAIL}[ERROR]{t}   {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
-    def success(cls, message: str) -> None:
+    def success(cls, message: str, with_time: bool = False) -> None:
         """
         Prints a green success message with aligned indent and "[SUCCESS]"
         If the message has multiple lines, it is aligned to the right of the colon.
@@ -124,13 +129,15 @@ class Messages:
         Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
+        :param with_time: If set, the time is printed in front of the message
         """
         if MESSAGE_LEVEL.value > MessageLevel.SUCCESS.value:
             return
-        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.OKGREEN}[SUCCESS] {indent(message, cls.max_indent)}{cls.ENDC}")
+        t = f" [{time.time():.5f}]" if with_time else ""
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.OKGREEN}[SUCCESS]{t} {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
-    def hint(cls, message: str) -> None:
+    def hint(cls, message: str, with_time: bool = False) -> None:
         """
         Prints a blue hint message with aligned indent and "[HINT]".
         If the message has multiple lines, it is aligned to the right of the colon.
@@ -139,13 +146,15 @@ class Messages:
         Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
+        :param with_time: If set, the time is printed in front of the message
         """
         if MESSAGE_LEVEL.value > MessageLevel.HINT.value:
             return
-        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.OKCYAN}[HINT]    {indent(message, cls.max_indent)}{cls.ENDC}")
+        t = f" [{time.time():.5f}]" if with_time else ""
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.OKCYAN}[HINT]{t}    {indent(message, cls.max_indent)}{cls.ENDC}")
 
     @classmethod
-    def info(cls, message: str) -> None:
+    def info(cls, message: str, with_time: bool = False) -> None:
         """
         Prints a dark blue info message with aligned indent and "[INFO]".
         If the message has multiple lines, it is aligned to the right of the colon.
@@ -154,10 +163,12 @@ class Messages:
         Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.
 
         :param message: Message to print
+        :param with_time: If set, the time is printed in front of the message
         """
         if MESSAGE_LEVEL.value > MessageLevel.INFO.value:
             return
-        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.OKCYAN}[INFO]    {indent(message, cls.max_indent)}{cls.ENDC}")
+        t = f" [{time.time():.5f}]" if with_time else ""
+        MESSAGE_PRINT_FN(f"{cls.start_msg}{cls.OKCYAN}[INFO]{t}    {indent(message, cls.max_indent)}{cls.ENDC}")
 
 
 def round_to(x, base):

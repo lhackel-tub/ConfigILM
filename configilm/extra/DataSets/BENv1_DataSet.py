@@ -19,6 +19,7 @@ from torch.utils.data import Dataset
 
 from configilm.extra.BENv1_utils import ben19_list_to_onehot
 from configilm.extra.BENv1_utils import BENv1LMDBReader
+from configilm.util import Messages
 
 
 def _csv_files_to_patch_list(csv_files: Union[Path, Iterable[Path]]):
@@ -64,9 +65,9 @@ class BENv1DataSet(Dataset):
         """
         Prints all available preconfigured channel combinations.
         """
-        print("Available channel configurations are:")
+        Messages.hint("Available channel configurations are:")
         for c, m in cls.avail_chan_configs.items():
-            print(f"    {c:>3} -> {m}")
+            Messages.hint(f"    {c:>3} -> {m}")
 
     def __init__(
         self,
@@ -138,7 +139,7 @@ class BENv1DataSet(Dataset):
 
         self.channels = img_size[0]
 
-        print(f"Loading BEN data for {split}...")
+        Messages.info(f"Loading BEN data for {split}...")
         if split is None:
             csv_files = [data_dirs["train_data"], data_dirs["val_data"], data_dirs["test_data"]]
         else:
@@ -146,19 +147,19 @@ class BENv1DataSet(Dataset):
 
         # get data from this csv file(s)
         self.patches = _csv_files_to_patch_list([Path(x) for x in csv_files])
-        print(f"    {len(self.patches)} patches indexed")
+        Messages.info(f"    {len(self.patches)} patches indexed")
 
         # if a prefilter is provided, filter patches based on function
         if patch_prefilter:
             self.patches = list(filter(patch_prefilter, self.patches))
-        print(f"    {len(self.patches)} pre-filtered patches indexed")
+        Messages.info(f"    {len(self.patches)} pre-filtered patches indexed")
 
         # sort list for reproducibility
         self.patches.sort()
         if max_len is not None and max_len < len(self.patches) and max_len != -1:
             self.patches = self.patches[:max_len]
 
-        print(f"    {len(self.patches)} filtered patches indexed")
+        Messages.info(f"    {len(self.patches)} filtered patches indexed")
         self.BENLoader = BENv1LMDBReader(
             lmdb_dir=self.lmdb_dir,
             label_type="new",
@@ -204,7 +205,7 @@ class BENv1DataSet(Dataset):
         img, labels = self.BENLoader[key]
 
         if img is None:
-            print(f"Cannot load {key} from database")
+            Messages.error(f"Cannot load {key} from database")
             raise ValueError
         if self.transform:
             img = self.transform(img)

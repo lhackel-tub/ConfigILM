@@ -198,7 +198,7 @@ class BENv2DataModule(pl.LightningDataModule):
         if stage == "predict":
             raise NotImplementedError("Predict stage not implemented")
 
-        print(sample_info_msg)
+        Messages.info(sample_info_msg)
 
     def train_dataloader(self):
         """

@@ -1,5 +1,4 @@
 from pathlib import Path
-from time import time
 from typing import Any
 from typing import Callable
 from typing import Dict
@@ -17,6 +16,7 @@ import torch.nn.functional as F
 from safetensors.numpy import load as safetensor_load
 
 from configilm.extra.data_dir import resolve_data_dir_for_ds
+from configilm.util import Messages
 
 _s1_bandnames = ["VH", "VV"]
 _s2_bandnames = ["B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B11", "B12", "B8A"]
@@ -525,11 +525,9 @@ class BENv2LDMBReader:
         bands: Optional[Union[Iterable, str, int]] = None,
         process_bands_fn: Optional[Callable[[Dict[str, np.ndarray], List[str]], Any]] = None,
         process_labels_fn: Optional[Callable[[List[str]], Any]] = None,
-        print_info: bool = False,
     ):
         self.image_lmdb_file = image_lmdb_file
         self.env = None
-        self.print_info_toggle = print_info
 
         self.bands = bands if bands is not None else _all_bandnames
         self.bands = resolve_band_combi(self.bands)
@@ -540,16 +538,16 @@ class BENv2LDMBReader:
         if metadata_snow_cloud_file is not None:
             metadata_snow_cloud = pd.read_parquet(metadata_snow_cloud_file)
             self.metadata = pd.concat([self.metadata, metadata_snow_cloud])
-            self._print_info("Merged metadata with snow/cloud metadata")
+            Messages.info("Merged metadata with snow/cloud metadata")
 
         # self.lbls = {row["patch_id"]: row["labels"] for idx, row in self.metadata.iterrows()}
         self.lbls = {p: l for p, l in zip(self.metadata["patch_id"], self.metadata["labels"])}
-        self._print_info(f"Loaded {len(self.lbls)} labels")
+        Messages.info(f"Loaded {len(self.lbls)} labels")
         self.lbl_key_set = set(self.lbls.keys())
-        self._print_info(f"Loaded {len(self.lbl_key_set)} keys")
+        Messages.info(f"Loaded {len(self.lbl_key_set)} keys")
         # self.mapping = {row["patch_id"]: row["s1_name"] for idx, row in self.metadata.iterrows()}
         self.mapping = {p: s for p, s in zip(self.metadata["patch_id"], self.metadata["s1_name"])}
-        self._print_info("Loaded mapping created")
+        Messages.info("Loaded mapping created")
 
         # set mean and std based on bands selected
         self.mean = None
@@ -562,16 +560,9 @@ class BENv2LDMBReader:
         self._S2_keys: Optional[set] = None
         self._S1_keys: Optional[set] = None
 
-    def _print_info(self, info: str):
-        if self.print_info_toggle:
-            timestamp = time()
-            GREEN = "\033[92m"
-            RESET = "\033[0m"
-            print(f"{GREEN}[DEBUG] [{timestamp:.5f}]{RESET} ", info)
-
     def open_env(self):
         if self.env is None:
-            self._print_info("Opening LMDB environment ...")
+            Messages.info("Opening LMDB environment ...")
             self.env = lmdb.open(
                 str(self.image_lmdb_file),
                 readonly=True,
@@ -585,7 +576,7 @@ class BENv2LDMBReader:
     def keys(self, update: bool = False):
         self.open_env()
         if self._keys is None or update:
-            self._print_info("(Re-)Reading keys ...")
+            Messages.info("(Re-)Reading keys ...")
             assert self.env is not None, "Environment not opened yet"
             with self.env.begin() as txn:
                 self._keys = set(txn.cursor().iternext(values=False))
@@ -594,13 +585,13 @@ class BENv2LDMBReader:
 
     def S2_keys(self, update: bool = False):
         if self._S2_keys is None or update:
-            self._print_info("(Re-)Reading S2 keys ..")
+            Messages.info("(Re-)Reading S2 keys ..")
             self._S2_keys = {key for key in self.keys(update) if key.startswith("S2")}
         return self._S2_keys
 
     def S1_keys(self, update: bool = False):
         if self._S1_keys is None or update:
-            self._print_info("(Re-)Reading S1 keys")
+            Messages.info("(Re-)Reading S1 keys")
             self._S1_keys = {key for key in self.keys(update) if key.startswith("S1")}
         return self._S1_keys
 

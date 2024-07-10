@@ -292,6 +292,12 @@
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="configilm.util.MessageLevel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.util.</span></span><span class="sig-name descname"><span class="pre">MessageLevel</span></span><a class="headerlink" href="#configilm.util.MessageLevel" title="Permalink to this definition">#</a></dt>
+<dd><p>An enumeration.</p>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="configilm.util.Messages">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">configilm.util.</span></span><span class="sig-name descname"><span class="pre">Messages</span></span><a class="headerlink" href="#configilm.util.Messages" title="Permalink to this definition">#</a></dt>
 <dd><p>Class to print messages. Defines colors and formatting for bash shells.
@@ -337,12 +343,18 @@ without defining an object.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.util.Messages.error">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.error" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.error" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints a red error message with aligned indent and “[ERROR]”.
-If the message has multiple lines, it is aligned to the right of the colon.</p>
+If the message has multiple lines, it is aligned to the right of the colon.
+Prints only if the message level is set to ERROR.
+Message level is defined by the global variable MESSAGE_LEVEL.
+Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Message to print</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>str</em>) – Message to print</p></li>
+<li><p><strong>with_time</strong> (<em>bool</em>) – If set, the time is printed in front of the message</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -352,12 +364,18 @@ If the message has multiple lines, it is aligned to the right of the colon.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.util.Messages.hint">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.hint" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.hint" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints a blue hint message with aligned indent and “[HINT]”.
-If the message has multiple lines, it is aligned to the right of the colon.</p>
+If the message has multiple lines, it is aligned to the right of the colon.
+Prints only if the message level is set to HINT or higher.
+Message level is defined by the global variable MESSAGE_LEVEL.
+Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Message to print</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>str</em>) – Message to print</p></li>
+<li><p><strong>with_time</strong> (<em>bool</em>) – If set, the time is printed in front of the message</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -367,12 +385,18 @@ If the message has multiple lines, it is aligned to the right of the colon.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.util.Messages.info">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.info" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.info" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints a dark blue info message with aligned indent and “[INFO]”.
-If the message has multiple lines, it is aligned to the right of the colon.</p>
+If the message has multiple lines, it is aligned to the right of the colon.
+Prints only if the message level is set to INFO or higher.
+Message level is defined by the global variable MESSAGE_LEVEL.
+Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Message to print</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>str</em>) – Message to print</p></li>
+<li><p><strong>with_time</strong> (<em>bool</em>) – If set, the time is printed in front of the message</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -382,12 +406,18 @@ If the message has multiple lines, it is aligned to the right of the colon.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.util.Messages.success">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.success" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">success</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.success" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints a green success message with aligned indent and “[SUCCESS]”
-If the message has multiple lines, it is aligned to the right of the colon.</p>
+If the message has multiple lines, it is aligned to the right of the colon.
+Prints only if the message level is set to SUCCESS or higher.
+Message level is defined by the global variable MESSAGE_LEVEL.
+Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Message to print</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>str</em>) – Message to print</p></li>
+<li><p><strong>with_time</strong> (<em>bool</em>) – If set, the time is printed in front of the message</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -397,12 +427,18 @@ If the message has multiple lines, it is aligned to the right of the colon.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.util.Messages.warn">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">warn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.warn" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">warn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.util.Messages.warn" title="Permalink to this definition">#</a></dt>
 <dd><p>Prints a yellow warning message with aligned indent and “[WARNING]”.
-If the message has multiple lines, it is aligned to the right of the colon.</p>
+If the message has multiple lines, it is aligned to the right of the colon.
+Prints only if the message level is set to WARNING or higher.
+Message level is defined by the global variable MESSAGE_LEVEL.
+Printing is done with the global variable MESSAGE_PRINT_FN, which defaults to print.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – Message to print</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>str</em>) – Message to print</p></li>
+<li><p><strong>with_time</strong> (<em>bool</em>) – If set, the time is printed in front of the message</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -710,6 +746,7 @@ added to first line</p></li>
 <li><a class="reference internal" href="#configilm.util.AverageMeter.update"><code class="docutils literal notranslate"><span class="pre">AverageMeter.update()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#configilm.util.MessageLevel"><code class="docutils literal notranslate"><span class="pre">MessageLevel</span></code></a></li>
 <li><a class="reference internal" href="#configilm.util.Messages"><code class="docutils literal notranslate"><span class="pre">Messages</span></code></a><ul>
 <li><a class="reference internal" href="#configilm.util.Messages.error"><code class="docutils literal notranslate"><span class="pre">Messages.error()</span></code></a></li>
 <li><a class="reference internal" href="#configilm.util.Messages.hint"><code class="docutils literal notranslate"><span class="pre">Messages.hint()</span></code></a></li>

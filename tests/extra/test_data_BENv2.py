@@ -243,10 +243,7 @@ def test_ben_shuffle_false(data_dirs):
     dm = BENv2DataModule(data_dirs=data_dirs, shuffle=False, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
     # should not be equal due to transforms being random!
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
+    test_data_common._assert_shuffle_true_with_retry(dm.train_dataloader())
     assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
     assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
@@ -254,10 +251,7 @@ def test_ben_shuffle_false(data_dirs):
 def test_ben_shuffle_none(data_dirs):
     dm = BENv2DataModule(data_dirs=data_dirs, shuffle=None, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
+    test_data_common._assert_shuffle_true_with_retry(dm.train_dataloader())
     assert torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
     assert torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
 
@@ -266,12 +260,9 @@ def test_ben_shuffle_none(data_dirs):
 def test_ben_shuffle_true(data_dirs):
     dm = BENv2DataModule(data_dirs=data_dirs, shuffle=True, num_workers_dataloader=0, pin_memory=False)
     dm.setup(None)
-    assert not torch.equal(
-        next(iter(dm.train_dataloader()))[0],
-        next(iter(dm.train_dataloader()))[0],
-    )
-    assert not torch.equal(next(iter(dm.val_dataloader()))[0], next(iter(dm.val_dataloader()))[0])
-    assert not torch.equal(next(iter(dm.test_dataloader()))[0], next(iter(dm.test_dataloader()))[0])
+    test_data_common._assert_shuffle_true_with_retry(dm.train_dataloader())
+    test_data_common._assert_shuffle_true_with_retry(dm.val_dataloader())
+    test_data_common._assert_shuffle_true_with_retry(dm.test_dataloader())
 
 
 def test_dm_unexposed_kwargs(data_dirs):

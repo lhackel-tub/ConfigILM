@@ -10,7 +10,7 @@ mars_storagecube_datasets = mars_storagecube / "data" / "datasets"
 erde_storagecube_datasets = erde_storagecube / "data" / "datasets"
 mars_data_dir = Path("/data/leonard")
 erde_data_dir = Path("/faststorage/leonard")
-pluto_local = Path("/home/leonard/data/")
+pluto_read_only = Path("/data_read_only")
 
 dataset_paths = {
     "benv1": [
@@ -62,9 +62,10 @@ dataset_paths = {
         },
         # PLUTO
         {
-            "images_lmdb": pluto_local / "BigEarthNet-V2" / "BENv2.lmdb",
-            "metadata_parquet": pluto_local / "BigEarthNet-V2" / "metadata.parquet",
-            "metadata_snow_cloud_parquet": pluto_local
+            "images_lmdb": pluto_read_only / "BigEarthNet" / "BigEarthNet-V2" / "BENv2.lmdb",
+            "metadata_parquet": pluto_read_only / "BigEarthNet" / "BigEarthNet-V2" / "metadata.parquet",
+            "metadata_snow_cloud_parquet": pluto_read_only
+            / "BigEarthNet"
             / "BigEarthNet-V2"
             / "metadata_for_patches_with_snow_cloud_or_shadow.parquet",
         },

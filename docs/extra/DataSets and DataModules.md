@@ -7,6 +7,7 @@ We may remove this section in the future, or extend it, depending on feedback ðŸ
 :maxdepth: 1
 
 DataSets and DataModules/bigearthnetv1
+DataSets and DataModules/bigearthnetv2
 DataSets and DataModules/rsvqaxben
 DataSets and DataModules/rsvqa-lr
 DataSets and DataModules/rsvqa-hr

@@ -20,6 +20,9 @@ These models are all trained with the TensorFlow library.
     - https://git.tu-berlin.de/rsim/BigEarthNet-S2_19-classes_models
 - Pretrained multi-modal models trained on BigEarthNet-S1 and BigEarthNet-S2 simultaneously
     - https://git.tu-berlin.de/rsim/BigEarthNet-MM_19-classes_models
+- Pretrained multi-modal models trained on refined BigEarthNet (ConfigILM was used for the official pretrained
+checkpoints)
+    - https://huggingface.co/BIFOLD-BigEarthNetv2-0
 
 ## BigEarthNet Tools
 - BigEarthNet-S1 Tools
@@ -35,6 +38,8 @@ These models are all trained with the TensorFlow library.
     - Requires the BigEarthNet-S2 archive on disk
 - Code to read pairs of Sentinel-1 and Sentinel-2 patches
     - https://git.tu-berlin.de/rsim/BigEarthNet-MM_tools
+- Converter to create a high-throughput format for refined BigEarthNet
+    - https://github.com/kai-tub/rico-hdl
 
 ## Bibliography
 

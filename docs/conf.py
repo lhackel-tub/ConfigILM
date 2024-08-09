@@ -66,7 +66,8 @@ myst_enable_extensions = [
 ]
 
 myst_substitutions = {
-    "ben": "[BigEarthNet v1.0](https://bigearth.net/)",
+    "ben": "[BigEarthNet v1.0](https://bigearth.net/v1.0.html)",
+    "reben": "[refined BigEarthNet](https://bigearth.net/)",
     "timm": "[PyTorch Image Models]" "(https://github.com/rwightman/pytorch-image-models/)",
     "issues": "[GitHub issues](https://github.com/lhackel-tub/ConfigILM/issues)",
     "lmdb": "[LMDB](http://www.lmdb.tech/doc/)",

@@ -18,10 +18,7 @@
    "cell_type": "code",
    "execution_count": 1,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -51,29 +48,25 @@
    "source": [
     "## RSVQAxBENDataSet\n",
     "\n",
-    "In its most basic form, the `Dataset` only needs the base path of the LMDB file and json files, if the path is not \"./\". The LMDB file name is assumed to be `BigEarthNetEncoded.lmdb` (note, that from an os point of view, LMDB files are folders). This `Dataset` will load 12 channels (10m + 20m Sentinel-2 + 10m Sentinel-1).\n",
+    "In its most basic form, the `Dataset` only needs the base path of the LMDB file and json files. Note, that from an os point of view, LMDB files are folders. The path should follow the same structure as it is when downloaded from the official page and extracted with images, questions and answer next to each other. The official naming for files is expected.\n",
     "\n",
-    "The full folder structure expected for the data is\n",
+    "The full data path structure expected is\n",
     "```\n",
-    ".\n",
-    "├── BigEarthNetEncoded.lmdb\n",
-    "│   ├── data.mdb\n",
-    "│   └── lock.mdb\n",
-    "└── VQA_RSVQAxBEN\n",
-    "    ├── RSVQAxBEN_QA_train.json\n",
-    "    ├── RSVQAxBEN_QA_val.json\n",
-    "    └── RSVQAxBEN_QA_test.json\n",
-    "```"
+    "datapath = {\n",
+    "    \"images_lmdb\": \"/path/to/BigEarthNetEncoded.lmdb\",\n",
+    "    \"train_data\": \"/path/to/train-data\",\n",
+    "    \"val_data\": \"/path/to/val-data\",\n",
+    "    \"test_data\": \"/path/to/test-data\"\n",
+    "}\n",
+    "```\n",
+    "Note, that the keys have to match exactly while the paths can be selected freely."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 48,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -88,6 +81,9 @@
    ],
    "source": [
     "# remove-output\n",
+    "from configilm import util\n",
+    "util.MESSAGE_LEVEL = util.MessageLevel.INFO  # use INFO to see all messages\n",
+    "\n",
     "from configilm.extra.DataSets import RSVQAxBEN_DataSet\n",
     " \n",
     "ds = RSVQAxBEN_DataSet.RSVQAxBENDataSet(\n",
@@ -105,10 +101,7 @@
    "cell_type": "code",
    "execution_count": 49,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -165,10 +158,7 @@
    "cell_type": "code",
    "execution_count": 4,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -217,10 +207,7 @@
    "cell_type": "code",
    "execution_count": 5,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -249,10 +236,7 @@
    "cell_type": "code",
    "execution_count": 6,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -272,10 +256,7 @@
    "cell_type": "code",
    "execution_count": 7,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -304,10 +285,7 @@
    "cell_type": "code",
    "execution_count": 8,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -334,10 +312,7 @@
    "cell_type": "code",
    "execution_count": 9,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -365,10 +340,7 @@
    "cell_type": "code",
    "execution_count": 10,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -397,10 +369,7 @@
    "cell_type": "code",
    "execution_count": 11,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -435,10 +404,7 @@
    "cell_type": "code",
    "execution_count": 12,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -473,10 +439,7 @@
    "cell_type": "code",
    "execution_count": 13,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -502,10 +465,7 @@
    "cell_type": "code",
    "execution_count": 14,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -540,10 +500,7 @@
    "cell_type": "code",
    "execution_count": 15,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -581,10 +538,7 @@
    "cell_type": "code",
    "execution_count": 16,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -628,10 +582,7 @@
    "cell_type": "code",
    "execution_count": 17,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -665,10 +616,7 @@
    "cell_type": "code",
    "execution_count": 18,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [],
    "source": [
@@ -684,10 +632,7 @@
    "cell_type": "code",
    "execution_count": 19,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -712,10 +657,7 @@
    "cell_type": "code",
    "execution_count": 20,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -749,10 +691,7 @@
    "cell_type": "code",
    "execution_count": 21,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -784,10 +723,7 @@
    "cell_type": "code",
    "execution_count": 22,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -826,10 +762,7 @@
    "cell_type": "code",
    "execution_count": 23,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -860,10 +793,7 @@
    "cell_type": "code",
    "execution_count": 24,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -882,10 +812,7 @@
    "cell_type": "code",
    "execution_count": 25,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [
     {
@@ -909,10 +836,7 @@
    "cell_type": "code",
    "execution_count": 26,
    "metadata": {
-    "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    }
+    "collapsed": false
    },
    "outputs": [],
    "source": [
@@ -928,9 +852,6 @@
    "execution_count": 27,
    "metadata": {
     "collapsed": false,
-    "jupyter": {
-     "outputs_hidden": false
-    },
     "tags": []
    },
    "outputs": [],

@@ -173,6 +173,7 @@
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Using the BigEarthNet v1.0 LMDB Reader</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="DataSets%20and%20DataModules.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/bigearthnetv1.html">BigEarthNet v1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/bigearthnetv2.html">BigEarthNet v2.0 / refined BigEarthNet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
@@ -242,8 +243,8 @@
         </div>
         <article role="main">
           <section class="tex2jax_ignore mathjax_ignore" id="using-the-bigearthnet-v1-0-lmdb-reader">
-<h1>Using the <a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a> LMDB Reader<a class="headerlink" href="#using-the-bigearthnet-v1-0-lmdb-reader" title="Permalink to this heading">#</a></h1>
-<p>In this section, an example of using the <a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a> reader is shown. This converts the Lightning Memory-Mapped Database Manager (<a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>) used in the background as a database into an indexable Python object.</p>
+<h1>Using the <a class="reference external" href="https://bigearth.net/v1.0.html">BigEarthNet v1.0</a> LMDB Reader<a class="headerlink" href="#using-the-bigearthnet-v1-0-lmdb-reader" title="Permalink to this heading">#</a></h1>
+<p>In this section, an example of using the <a class="reference external" href="https://bigearth.net/v1.0.html">BigEarthNet v1.0</a> reader is shown. This converts the Lightning Memory-Mapped Database Manager (<a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>) used in the background as a database into an indexable Python object.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Due to its use of <a class="reference external" href="http://www.lmdb.tech/doc/">LMDB</a>, which is not pickle-able, it is not thread safe to use this object after first access. However, using it only after forking is supported (e.g. access in <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> methods in a <code class="docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">dataset</span></code>).</p>
@@ -334,7 +335,7 @@ Not all configurations are necessarily supported by all implementations in <code
 </section>
 <section id="label-types">
 <h2>Label types<a class="headerlink" href="#label-types" title="Permalink to this heading">#</a></h2>
-<p>We can also request the labels in the “new” 19-label version as introduced in <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id5" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">6</a>]</span>. Here we see that the Label ‘Water bodies’ gets converted into ‘Inland waters’ as expected.</p>
+<p>We can also request the labels in the “new” 19-label version as introduced in <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="../references.html#id6" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">7</a>]</span>. Here we see that the Label ‘Water bodies’ gets converted into ‘Inland waters’ as expected.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BEN_reader</span> <span class="o">=</span> <span class="n">BENv1LMDBReader</span><span class="p">(</span>

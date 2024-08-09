@@ -173,6 +173,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../BENv1_LMDB_Reader.html">Using the BigEarthNet v1.0 LMDB Reader</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../DataSets%20and%20DataModules.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="bigearthnetv1.html">BigEarthNet v1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigearthnetv2.html">BigEarthNet v2.0 / refined BigEarthNet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-hr.html">RSVQA high resolution</a></li>
@@ -244,31 +245,28 @@
           <section class="tex2jax_ignore mathjax_ignore" id="hrvqa">
 <h1>HRVQA<a class="headerlink" href="#hrvqa" title="Permalink to this heading">#</a></h1>
 <p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://hrvqa.nl">HRVQA</a>, a high-resolution aerial VQA dataset based on the
-<a class="reference external" href="https://opendata.beeldmateriaal.nl/">Open data</a> provided by the Dutch governmental organizations. It was first published by <span id="id1">Li <em>et al.</em> [<a class="reference internal" href="../../references.html#id8" title="Kun Li, George Vosselman, and Michael Ying Yang. Hrvqa: a visual question answering benchmark for high-resolution aerial images. arXiv preprint arXiv:2301.09460, 2023.">1</a>]</span>. The dataset as well as more details can be found on <a class="reference external" href="https://hrvqa.nl">their website</a>.
+<a class="reference external" href="https://opendata.beeldmateriaal.nl/">Open data</a> provided by the Dutch governmental organizations. It was first published by <span id="id1">Li <em>et al.</em> [<a class="reference internal" href="../../references.html#id9" title="Kun Li, George Vosselman, and Michael Ying Yang. Hrvqa: a visual question answering benchmark for high-resolution aerial images. arXiv preprint arXiv:2301.09460, 2023.">2</a>]</span>. The dataset as well as more details can be found on <a class="reference external" href="https://hrvqa.nl">their website</a>.
 A small example of the data used is distributed with this package.</p>
 <p>This module contains two <code class="docutils literal notranslate"><span class="pre">classes</span></code>, a standard <code class="docutils literal notranslate"><span class="pre">torch.util.data.Dataset</span></code> and a <code class="docutils literal notranslate"><span class="pre">pytorch_lightning.LightningDataModule</span></code> that encapsulates the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> for easy use in <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> applications. The <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> uses a <code class="docutils literal notranslate"><span class="pre">BENLMDBReader</span></code> to read images a LMDB file. Questions and Answers are read using JSON files.</p>
 <section id="hrvqadataset">
 <h2>HRVQADataSet<a class="headerlink" href="#hrvqadataset" title="Permalink to this heading">#</a></h2>
-<p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the base path of the image and json files, if the path is not “./”. The path should follow the same structure as it is when downloaded and extracted using the official website.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
-├── HRVQA
-    ├── images
-    │   ├── 1.png
-    │   ├── 2.png
-    │   ├── ...
-    │   └── 53512.png
-    └── jsons
-        ├── test_question.json
-        ├── train_answer.json
-        ├── train_question.json
-        ├── val_answer.json
-        └── val_question.json
-
+<p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the base path of the image and json files. The path should follow the same structure as it is when downloaded and extracted using the official website with questions and answer next to each other. The official naming for files is expected.</p>
+<p>The full data path structure expected is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">datapath</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;images&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/images&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;train_data&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/jsons&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;val_data&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/jsons&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;test_data&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/jsons&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
+<p>Note, that the keys have to match exactly while the paths can be selected freely.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">HRVQA_DataSet</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="n">util</span><span class="o">.</span><span class="n">MESSAGE_LEVEL</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">MessageLevel</span><span class="o">.</span><span class="n">INFO</span>  <span class="c1"># use INFO to see all messages</span>
+
+<span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">HRVQA_DataSet</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">HRVQA_DataSet</span><span class="o">.</span><span class="n">HRVQADataSet</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
@@ -604,8 +602,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7f0043201390&gt;
-&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7f01084f0d60&gt;
+&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7ff35063f790&gt;
+&lt;configilm.extra.DataSets.HRVQA_DataSet.HRVQADataSet object at 0x7ff35063f010&gt;
 None
 </pre></div>
 </div>

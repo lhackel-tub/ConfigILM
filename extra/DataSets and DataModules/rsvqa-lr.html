@@ -173,6 +173,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../BENv1_LMDB_Reader.html">Using the BigEarthNet v1.0 LMDB Reader</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../DataSets%20and%20DataModules.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="bigearthnetv1.html">BigEarthNet v1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigearthnetv2.html">BigEarthNet v2.0 / refined BigEarthNet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-hr.html">RSVQA high resolution</a></li>
@@ -243,31 +244,28 @@
         <article role="main">
           <section class="tex2jax_ignore mathjax_ignore" id="rsvqa-low-resolution">
 <h1>RSVQA low resolution<a class="headerlink" href="#rsvqa-low-resolution" title="Permalink to this heading">#</a></h1>
-<p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://zenodo.org/record/6344334">the low resolution version of RSVQA</a>, a VQA dataset based on Sentinel-2 images over the Netherlands. It was first published by <span id="id1">Lobry <em>et al.</em> [<a class="reference internal" href="../../references.html#id9" title="Sylvain Lobry, Diego Marcos, Jesse Murray, and Devis Tuia. Rsvqa: visual question answering for remote sensing data. IEEE Transactions on Geoscience and Remote Sensing, 58(12):8555–8566, 2020.">3</a>]</span>. The dataset can be found on zenodo <a class="reference external" href="https://doi.org/10.5281/zenodo.6344334"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.6344334.svg" /></a>.
+<p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://zenodo.org/record/6344334">the low resolution version of RSVQA</a>, a VQA dataset based on Sentinel-2 images over the Netherlands. It was first published by <span id="id1">Lobry <em>et al.</em> [<a class="reference internal" href="../../references.html#id10" title="Sylvain Lobry, Diego Marcos, Jesse Murray, and Devis Tuia. Rsvqa: visual question answering for remote sensing data. IEEE Transactions on Geoscience and Remote Sensing, 58(12):8555–8566, 2020.">4</a>]</span>. The dataset can be found on zenodo <a class="reference external" href="https://doi.org/10.5281/zenodo.6344334"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.6344334.svg" /></a>.
 A small example of the data used is distributed with this package.</p>
 <p>This module contains two <code class="docutils literal notranslate"><span class="pre">classes</span></code>, a standard <code class="docutils literal notranslate"><span class="pre">torch.util.data.Dataset</span></code> and a <code class="docutils literal notranslate"><span class="pre">pytorch_lightning.LightningDataModule</span></code> that encapsulates the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> for easy use in <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> applications. Questions and Answers are read using JSON files.</p>
 <section id="rsvqalrdataset">
 <h2>RSVQALRDataSet<a class="headerlink" href="#rsvqalrdataset" title="Permalink to this heading">#</a></h2>
-<p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the base path to the image and json files, if the path is not “./”. The folder structure should follow the structure found online in the official zenodo directory.</p>
-<p>The full folder structure expected for the data is</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├── Images_LR
-│   ├── 1.tif
-.         .
-│   └── 9999.tif
-├── LR_split_test_answers.json
-├── LR_split_test_images.json
-├── LR_split_test_questions.json
-├── LR_split_train_answers.json
-├── LR_split_train_images.json
-├── LR_split_train_questions.json
-├── LR_split_val_answers.json
-├── LR_split_val_images.json
-└── LR_split_val_questions.json
+<p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the base path to the image and json files. The path should follow the same structure as it is when downloaded from the official zenodo page and extracted using the official website with images, questions and answer next to each other. The official naming for files is expected.</p>
+<p>The full data path structure expected is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">datapath</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;images&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/Images_LR&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;train_data&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/jsons&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;val_data&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/jsons&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;test_data&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/jsons&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
+<p>Note, that the keys have to match exactly while the paths can be selected freely.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">RSVQALR_DataSet</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm</span> <span class="kn">import</span> <span class="n">util</span>
+<span class="n">util</span><span class="o">.</span><span class="n">MESSAGE_LEVEL</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">MessageLevel</span><span class="o">.</span><span class="n">INFO</span>  <span class="c1"># use INFO to see all messages</span>
+
+<span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">RSVQALR_DataSet</span>
  
 <span class="n">ds</span> <span class="o">=</span> <span class="n">RSVQALR_DataSet</span><span class="o">.</span><span class="n">RSVQALRDataSet</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path to dataset</span>
@@ -391,7 +389,7 @@ Question 2: &#39;are there less buildings than circular&#39;
 </section>
 <section id="selecting-bands">
 <h3>Selecting Bands<a class="headerlink" href="#selecting-bands" title="Permalink to this heading">#</a></h3>
-<p>Like for the <a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a> DataSet, this DataSet supports different Band combinations. Currently, the selection is limited to some preconfigured combinations. Which bands are used is defined by the number of channels set in the Dataset. The selection can be seen when we use a faulty configuration.</p>
+<p>Like for the <a class="reference external" href="https://bigearth.net/v1.0.html">BigEarthNet v1.0</a> DataSet, this DataSet supports different Band combinations. Currently, the selection is limited to some preconfigured combinations. Which bands are used is defined by the number of channels set in the Dataset. The selection can be seen when we use a faulty configuration.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
@@ -599,8 +597,8 @@ None
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>After:
-&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7f49e2b71ab0&gt;
-&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7f4ade19d750&gt;
+&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7fe2ad152aa0&gt;
+&lt;configilm.extra.DataSets.RSVQALR_DataSet.RSVQALRDataSet object at 0x7fe2ae847c40&gt;
 None
 </pre></div>
 </div>

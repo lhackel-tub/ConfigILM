@@ -173,6 +173,7 @@
 <li class="toctree-l1"><a class="reference internal" href="extra/BENv1_LMDB_Reader.html">Using the BigEarthNet v1.0 LMDB Reader</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="extra/DataSets%20and%20DataModules.html">DataSets and DataModules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/bigearthnetv1.html">BigEarthNet v1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/bigearthnetv2.html">BigEarthNet v2.0 / refined BigEarthNet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqaxben.html">RSVQAxBEN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="extra/DataSets%20and%20DataModules/rsvqa-hr.html">RSVQA high resolution</a></li>
@@ -245,13 +246,13 @@
 <h1>Further references<a class="headerlink" href="#further-references" title="Permalink to this heading">#</a></h1>
 <p>Here, we provide a collection of relevant links provided by our research group:</p>
 <ul class="simple">
-<li><p>The first BigEarthNet (S2) paper <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="#id4" title="Gencer Sumbul, Marcela Charfuelan, Begüm Demir, and Volker Markl. Bigearthnet: A large-scale benchmark archive for remote sensing image understanding. In IGARSS 2019 - 2019 IEEE International Geoscience and Remote Sensing Symposium. IEEE, July 2019. URL: https://doi.org/10.1109/igarss.2019.8900532, doi:10.1109/igarss.2019.8900532.">5</a>]</span></p></li>
-<li><p>The BigEarthNet-MM publication + the recommended 19-class nomenclature <span id="id2">Sumbul <em>et al.</em> [<a class="reference internal" href="#id5" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">6</a>]</span></p></li>
+<li><p>The first BigEarthNet (S2) paper <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="#id4" title="Gencer Sumbul, Marcela Charfuelan, Begüm Demir, and Volker Markl. Bigearthnet: A large-scale benchmark archive for remote sensing image understanding. In IGARSS 2019 - 2019 IEEE International Geoscience and Remote Sensing Symposium. IEEE, July 2019. URL: https://doi.org/10.1109/igarss.2019.8900532, doi:10.1109/igarss.2019.8900532.">6</a>]</span></p></li>
+<li><p>The BigEarthNet-MM publication + the recommended 19-class nomenclature <span id="id2">Sumbul <em>et al.</em> [<a class="reference internal" href="#id6" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">7</a>]</span></p></li>
 </ul>
 <section id="the-bigearthnet-guide">
 <h2>The BigEarthNet Guide<a class="headerlink" href="#the-bigearthnet-guide" title="Permalink to this heading">#</a></h2>
 <p><a class="reference external" href="https://www.zenodo.org/badge/latestdoi/439043960"><img alt="DOI" src="https://www.zenodo.org/badge/439043960.svg" /></a></p>
-<p>The <a class="reference external" href="https://docs.kai-tub.tech/ben-docs/index.html">BigEarthNet Guide</a> documentation introduces the multi-modal <a class="reference external" href="https://bigearth.net/">BigEarthNet v1.0</a> dataset and makes it more accessible to others by providing an interactive dataset website.</p>
+<p>The <a class="reference external" href="https://docs.kai-tub.tech/ben-docs/index.html">BigEarthNet Guide</a> documentation introduces the multi-modal <a class="reference external" href="https://bigearth.net/v1.0.html">BigEarthNet v1.0</a> dataset and makes it more accessible to others by providing an interactive dataset website.</p>
 </section>
 <section id="pretrained-models">
 <h2>Pretrained models<a class="headerlink" href="#pretrained-models" title="Permalink to this heading">#</a></h2>
@@ -271,6 +272,12 @@ These models are all trained with the TensorFlow library.</p>
 <li><p>Pretrained multi-modal models trained on BigEarthNet-S1 and BigEarthNet-S2 simultaneously</p>
 <ul>
 <li><p>https://git.tu-berlin.de/rsim/BigEarthNet-MM_19-classes_models</p></li>
+</ul>
+</li>
+<li><p>Pretrained multi-modal models trained on refined BigEarthNet (ConfigILM was used for the official pretrained
+checkpoints)</p>
+<ul>
+<li><p>https://huggingface.co/BIFOLD-BigEarthNetv2-0</p></li>
 </ul>
 </li>
 </ul>
@@ -309,33 +316,42 @@ These models are all trained with the TensorFlow library.</p>
 <li><p>https://git.tu-berlin.de/rsim/BigEarthNet-MM_tools</p></li>
 </ul>
 </li>
+<li><p>Converter to create a high-throughput format for refined BigEarthNet</p>
+<ul>
+<li><p>https://github.com/kai-tub/rico-hdl</p></li>
+</ul>
+</li>
 </ul>
 </section>
 <section id="bibliography">
 <h2>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this heading">#</a></h2>
 <div class="docutils container" id="id3">
-<div class="citation" id="id8" role="doc-biblioentry">
+<div class="citation" id="id5" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>Kun Li, George Vosselman, and Michael Ying Yang. Hrvqa: a visual question answering benchmark for high-resolution aerial images. <em>arXiv preprint arXiv:2301.09460</em>, 2023.</p>
-</div>
-<div class="citation" id="id7" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Sylvain Lobry, Begüm Demir, and Devis Tuia. Rsvqa meets bigearthnet: a new, large-scale, visual question answering dataset for remote sensing. In <em>2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS</em>, 1218–1221. IEEE, 2021.</p>
+<p>Kai Norman Clasen, Leonard Hackel, Tom Burgert, Gencer Sumbul, Begüm Demir, and Volker Markl. Reben: refined bigearthnet dataset for remote sensing image analysis. <em>arXiv preprint arXiv:2407.03653</em>, 2024.</p>
 </div>
 <div class="citation" id="id9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Kun Li, George Vosselman, and Michael Ying Yang. Hrvqa: a visual question answering benchmark for high-resolution aerial images. <em>arXiv preprint arXiv:2301.09460</em>, 2023.</p>
+</div>
+<div class="citation" id="id8" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p>Sylvain Lobry, Begüm Demir, and Devis Tuia. Rsvqa meets bigearthnet: a new, large-scale, visual question answering dataset for remote sensing. In <em>2021 IEEE International Geoscience and Remote Sensing Symposium IGARSS</em>, 1218–1221. IEEE, 2021.</p>
+</div>
+<div class="citation" id="id10" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
 <p>Sylvain Lobry, Diego Marcos, Jesse Murray, and Devis Tuia. Rsvqa: visual question answering for remote sensing data. <em>IEEE Transactions on Geoscience and Remote Sensing</em>, 58(12):8555–8566, 2020.</p>
 </div>
-<div class="citation" id="id6" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
 <p>Mengye Ren, Ryan Kiros, and Richard Zemel. Exploring models and data for image question answering. <em>Advances in neural information processing systems</em>, 2015.</p>
 </div>
 <div class="citation" id="id4" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">5</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">6</a><span class="fn-bracket">]</span></span>
 <p>Gencer Sumbul, Marcela Charfuelan, Begüm Demir, and Volker Markl. Bigearthnet: A large-scale benchmark archive for remote sensing image understanding. In <em>IGARSS 2019 - 2019 IEEE International Geoscience and Remote Sensing Symposium</em>. IEEE, July 2019. URL: <a class="reference external" href="https://doi.org/10.1109/igarss.2019.8900532">https://doi.org/10.1109/igarss.2019.8900532</a>, <a class="reference external" href="https://doi.org/10.1109/igarss.2019.8900532">doi:10.1109/igarss.2019.8900532</a>.</p>
 </div>
-<div class="citation" id="id5" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">6</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">7</a><span class="fn-bracket">]</span></span>
 <p>Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. <em>IEEE Geosci. Remote Sens. Mag.</em>, 9(3):174–180, September 2021. URL: <a class="reference external" href="https://doi.org/10.1109/mgrs.2021.3089174">https://doi.org/10.1109/mgrs.2021.3089174</a>, <a class="reference external" href="https://doi.org/10.1109/mgrs.2021.3089174">doi:10.1109/mgrs.2021.3089174</a>.</p>
 </div>
 </div>

@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="BigEarthNet v2.0 / refined BigEarthNet" href="bigearthnetv2.html" /><link rel="prev" title="DataSets and DataModules" href="../DataSets%20and%20DataModules.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="RSVQAxBEN" href="rsvqaxben.html" /><link rel="prev" title="BigEarthNet v1.0" href="bigearthnetv1.html" />
 
     <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>BigEarthNet v1.0 - ConfigILM</title>
+        <title>BigEarthNet v2.0 / refined BigEarthNet - ConfigILM</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -172,8 +172,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../BENv1_LMDB_Reader.html">Using the BigEarthNet v1.0 LMDB Reader</a></li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../DataSets%20and%20DataModules.html">DataSets and DataModules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">BigEarthNet v1.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="bigearthnetv2.html">BigEarthNet v2.0 / refined BigEarthNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bigearthnetv1.html">BigEarthNet v1.0</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">BigEarthNet v2.0 / refined BigEarthNet</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqaxben.html">RSVQAxBEN</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-lr.html">RSVQA low resolution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsvqa-hr.html">RSVQA high resolution</a></li>
@@ -242,21 +242,20 @@
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="bigearthnet-v1-0">
-<h1><a class="reference external" href="https://bigearth.net/v1.0.html">BigEarthNet v1.0</a><a class="headerlink" href="#bigearthnet-v1-0" title="Permalink to this heading">#</a></h1>
-<p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://bigearth.net/v1.0.html">BigEarthNet v1.0</a>, a multi-spectral multilabel Remote Sensing Land-Use/Land-Cover classification dataset.</p>
-<p>The official paper of the <a class="reference external" href="https://bigearth.net/v1.0.html">BigEarthNet v1.0</a> (BigEarthNet-S2) dataset was initially published in <span id="id1">Sumbul <em>et al.</em> [<a class="reference internal" href="../../references.html#id4" title="Gencer Sumbul, Marcela Charfuelan, Begüm Demir, and Volker Markl. Bigearthnet: A large-scale benchmark archive for remote sensing image understanding. In IGARSS 2019 - 2019 IEEE International Geoscience and Remote Sensing Symposium. IEEE, July 2019. URL: https://doi.org/10.1109/igarss.2019.8900532, doi:10.1109/igarss.2019.8900532.">6</a>]</span> and updated to multi-modal <a class="reference external" href="https://bigearth.net/v1.0.html">BigEarthNet v1.0</a> in <span id="id2">Sumbul <em>et al.</em> [<a class="reference internal" href="../../references.html#id6" title="Gencer Sumbul, Arne de Wall, Tristan Kreuziger, Filipe Marcelino, Hugo Costa, Pedro Benevides, Mario Caetano, Begüm Demir, and Volker Markl. BigEarthNet-MM: A large-scale, multimodal, multilabel benchmark archive for remote sensing image classification and retrieval [Software and data sets]. IEEE Geosci. Remote Sens. Mag., 9(3):174-180, September 2021. URL: https://doi.org/10.1109/mgrs.2021.3089174, doi:10.1109/mgrs.2021.3089174.">7</a>]</span>.</p>
-<p>For detailed information on the dataset itself please refer to the publications and the <a class="reference external" href="https://github.com/kai-tub/ben-docs">BigEarthNet Guide</a>.</p>
-<p>The dataset is divided into two modules which contains two <code class="docutils literal notranslate"><span class="pre">classes</span></code>, a standard <code class="docutils literal notranslate"><span class="pre">torch.util.data.Dataset</span></code> and a <code class="docutils literal notranslate"><span class="pre">pytorch_lightning.LightningDataModule</span></code> that encapsulates the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> for easy use in <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> applications. The <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> uses a <code class="docutils literal notranslate"><span class="pre">BENv1LMDBReader</span></code> to read images and labels from a LMDB file. Labels are returned in their 19-label version as one-hot vector.</p>
-<section id="bendataset">
-<h2>BENDataSet<a class="headerlink" href="#bendataset" title="Permalink to this heading">#</a></h2>
-<p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the base path of the LMDB file and csv files. Note, that from an os point of view, LMDB files are folders. This <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> will load 12 channels (10m + 20m Sentinel-2 + 10m Sentinel-1).</p>
+          <section class="tex2jax_ignore mathjax_ignore" id="bigearthnet-v2-0-refined-bigearthnet">
+<h1>BigEarthNet v2.0 / <a class="reference external" href="https://bigearth.net/">refined BigEarthNet</a><a class="headerlink" href="#bigearthnet-v2-0-refined-bigearthnet" title="Permalink to this heading">#</a></h1>
+<p>This page describes the usage of Dataloader and Datamodule for <a class="reference external" href="https://bigearth.net/">refined BigEarthNet</a> (also known as reBEN or BigEarthNet v2.0), a multi-spectral multilabel Remote Sensing Land-Use/Land-Cover classification dataset.</p>
+<p>The official paper of the <a class="reference external" href="https://bigearth.net/">refined BigEarthNet</a> dataset was initially published in <span id="id1">Clasen <em>et al.</em> [<a class="reference internal" href="../../references.html#id5" title="Kai Norman Clasen, Leonard Hackel, Tom Burgert, Gencer Sumbul, Begüm Demir, and Volker Markl. Reben: refined bigearthnet dataset for remote sensing image analysis. arXiv preprint arXiv:2407.03653, 2024.">1</a>]</span>.</p>
+<p>For detailed information on the dataset itself please refer to the publications.</p>
+<p>The dataset is divided into two modules which contains two <code class="docutils literal notranslate"><span class="pre">classes</span></code>, a standard <code class="docutils literal notranslate"><span class="pre">torch.util.data.Dataset</span></code> and a <code class="docutils literal notranslate"><span class="pre">pytorch_lightning.LightningDataModule</span></code> that encapsulates the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> for easy use in <code class="docutils literal notranslate"><span class="pre">pytorch_lightning</span></code> applications. The <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> uses a <code class="docutils literal notranslate"><span class="pre">BENv2LMDBReader</span></code> to read images and labels from a LMDB file. Labels are returned in their 19-label version as one-hot vector.</p>
+<section id="benv2dataset">
+<h2>BENv2DataSet<a class="headerlink" href="#benv2dataset" title="Permalink to this heading">#</a></h2>
+<p>In its most basic form, the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> only needs the base path of the LMDB file and metadata parquet files. Note, that from an os point of view, LMDB files are folders. This <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> will load 3 channels (10m RGB Sentinel-2).</p>
 <p>The full data path structure expected is</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">datapath</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;images_lmdb&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/BigEarthNetEncoded.lmdb&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;train_data&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/train.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;val_data&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/val.csv&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;test_data&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/test.csv&quot;</span>
+    <span class="s2">&quot;metadata_parquet&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/metadata.parquet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;metadata_snow_cloud_parquet&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/metadata_snow_cloud.parquet&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -266,23 +265,29 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">configilm</span> <span class="kn">import</span> <span class="n">util</span>
 <span class="n">util</span><span class="o">.</span><span class="n">MESSAGE_LEVEL</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">MessageLevel</span><span class="o">.</span><span class="n">INFO</span>  <span class="c1"># use INFO to see all messages</span>
 
-<span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">BENv1_DataSet</span>
-<span class="kn">from</span> <span class="nn">configilm.extra.DataModules</span> <span class="kn">import</span> <span class="n">BENv1_DataModule</span>
+<span class="kn">from</span> <span class="nn">configilm.extra.DataSets</span> <span class="kn">import</span> <span class="n">BENv2_DataSet</span>
+<span class="kn">from</span> <span class="nn">configilm.extra.DataModules</span> <span class="kn">import</span> <span class="n">BENv2_DataModule</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">BENv1_DataSet</span><span class="o">.</span><span class="n">BENv1DataSet</span><span class="p">(</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">BENv2_DataSet</span><span class="o">.</span><span class="n">BENv2DataSet</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path set by to dataset</span>
 <span class="p">)</span>
 
-<span class="n">img</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">26</span><span class="p">]</span>
-<span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># only choose RGB channels</span>
+<span class="n">img</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">img</span> <span class="c1"># only choose RGB channels</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO]    Loading BEN data for None...
-[INFO]        30 patches indexed
-[INFO]        30 pre-filtered patches indexed
-[INFO]        30 filtered patches indexed
+[INFO]        18 patches indexed
+[INFO]        18 pre-filtered patches indexed
+[INFO]        18 filtered patches indexed
+[INFO]    Merged metadata with snow/cloud metadata
+[INFO]    Loaded 24 labels
+[INFO]    Loaded 24 keys
+[INFO]    Loaded mapping created
+[INFO]    Opening LMDB environment ...
 </pre></div>
 </div>
 </div>
@@ -291,20 +296,20 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Size: torch.Size([3, 120, 120])
 Labels:
-tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
-        1.])
+tensor([0., 1., 0., 1., 0., 0., 0., 0., 0., 0., 0., 0., 1., 0., 0., 1., 0., 0.,
+        0.], dtype=torch.float64)
 </pre></div>
 </div>
-<img alt="../../_images/316d9d51aa4f45f0ece1408ce3953241b8456c69ee110254b6092b3cf8f6ac9a.png" src="../../_images/316d9d51aa4f45f0ece1408ce3953241b8456c69ee110254b6092b3cf8f6ac9a.png" />
+<img alt="../../_images/73049ca0309bb8f1adde0310befdbb6db975053144e6782425f0d730ad9682af.png" src="../../_images/73049ca0309bb8f1adde0310befdbb6db975053144e6782425f0d730ad9682af.png" />
 </div>
 </div>
 <section id="selecting-bands">
 <h3>Selecting Bands<a class="headerlink" href="#selecting-bands" title="Permalink to this heading">#</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> also supports different channel configurations, however, setting the selected channels is only supported via image size selection and only limited combinations are available. To see the available combinations call <code class="docutils literal notranslate"><span class="pre">BENv1_DataSet.BENv1DataSet.get_available_channel_configurations()</span></code>. Alternatively, a faulty configuration will display the possibilities as well whilst raising an <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> also supports different channel configurations, however, setting the selected channels is only supported via image size selection and only limited combinations are available. To see the available combinations call <code class="docutils literal notranslate"><span class="pre">BENv2_DataSet.BENv2DataSet.get_available_channel_configurations()</span></code>. Alternatively, a faulty configuration will display the possibilities as well whilst raising an <code class="docutils literal notranslate"><span class="pre">AssertionError</span></code>.</p>
 <p>The configurations are working like setting the respective number as <code class="docutils literal notranslate"><span class="pre">bands</span></code> parameter in the <code class="docutils literal notranslate"><span class="pre">LMDBReader</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BENv1_DataSet</span><span class="o">.</span><span class="n">BENv1DataSet</span><span class="o">.</span><span class="n">get_available_channel_configurations</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BENv2_DataSet</span><span class="o">.</span><span class="n">BENv2DataSet</span><span class="o">.</span><span class="n">get_available_channel_configurations</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -315,6 +320,7 @@ tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 [HINT]          4 -&gt; 10m Sentinel-2
 [HINT]         10 -&gt; 10m + 20m Sentinel-2
 [HINT]         12 -&gt; 10m + 20m Sentinel-2 + 10m Sentinel-1
+[HINT]         14 -&gt; 10m + 20m Sentinel-2 + 60m Sentinel-2 + 10m Sentinel-1 
 </pre></div>
 </div>
 </div>
@@ -322,10 +328,10 @@ tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 </section>
 <section id="splits">
 <h3>Splits<a class="headerlink" href="#splits" title="Permalink to this heading">#</a></h3>
-<p>It is possible to load only a specific split (<code class="docutils literal notranslate"><span class="pre">'train'</span></code>, <code class="docutils literal notranslate"><span class="pre">'val'</span></code> or <code class="docutils literal notranslate"><span class="pre">'test'</span></code>) in the dataset. The images loaded are specified using the csv files specified in the <code class="docutils literal notranslate"><span class="pre">data_dirs</span></code> parameter. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>), all three splits are loaded into the same <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
+<p>It is possible to load only a specific split (<code class="docutils literal notranslate"><span class="pre">'train'</span></code>, <code class="docutils literal notranslate"><span class="pre">'val'</span></code> or <code class="docutils literal notranslate"><span class="pre">'test'</span></code>) in the dataset. The images loaded are specified using the parquet files in the <code class="docutils literal notranslate"><span class="pre">data_dir</span></code> parameter. By default (<code class="docutils literal notranslate"><span class="pre">None</span></code>), all three splits are loaded into the same <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv1_DataSet</span><span class="o">.</span><span class="n">BENv1DataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv2_DataSet</span><span class="o">.</span><span class="n">BENv2DataSet</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span>
 <span class="p">)</span>
@@ -334,9 +340,13 @@ tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO]    Loading BEN data for train...
-[INFO]        10 patches indexed
-[INFO]        10 pre-filtered patches indexed
-[INFO]        10 filtered patches indexed
+[INFO]        6 patches indexed
+[INFO]        6 pre-filtered patches indexed
+[INFO]        6 filtered patches indexed
+[INFO]    Merged metadata with snow/cloud metadata
+[INFO]    Loaded 24 labels
+[INFO]    Loaded 24 keys
+[INFO]    Loaded mapping created
 </pre></div>
 </div>
 </div>
@@ -344,10 +354,10 @@ tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 </section>
 <section id="restricting-the-number-of-loaded-images">
 <h3>Restricting the number of loaded images<a class="headerlink" href="#restricting-the-number-of-loaded-images" title="Permalink to this heading">#</a></h3>
-<p>It is also possible to restrict the number of images indexed. By setting <code class="docutils literal notranslate"><span class="pre">max_img_idx</span> <span class="pre">=</span> <span class="pre">n</span></code> only the first <code class="docutils literal notranslate"><span class="pre">n</span></code> images (in alphabetical order based on their S2-name) will be loaded. A <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> of  <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> or larger than the number of images in the csv file(s) (in this case 10) equals to load-all-images behaviour.</p>
+<p>It is also possible to restrict the number of images indexed. By setting <code class="docutils literal notranslate"><span class="pre">max_img_idx</span> <span class="pre">=</span> <span class="pre">n</span></code> only the first <code class="docutils literal notranslate"><span class="pre">n</span></code> images (in alphabetical order based on their S2-name) will be loaded. A <code class="docutils literal notranslate"><span class="pre">max_img_idx</span></code> of  <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">-1</span></code> or larger than the number of images in the parquet file(s) (in this case 6) equals to load-all-images behaviour.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv1_DataSet</span><span class="o">.</span><span class="n">BENv1DataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv2_DataSet</span><span class="o">.</span><span class="n">BENv2DataSet</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">max_len</span><span class="o">=</span><span class="mi">5</span>
@@ -357,16 +367,20 @@ tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO]    Loading BEN data for train...
-[INFO]        10 patches indexed
-[INFO]        10 pre-filtered patches indexed
-[INFO]        10 filtered patches indexed
+[INFO]        6 patches indexed
+[INFO]        6 pre-filtered patches indexed
+[INFO]        5 filtered patches indexed
+[INFO]    Merged metadata with snow/cloud metadata
+[INFO]    Loaded 24 labels
+[INFO]    Loaded 24 keys
+[INFO]    Loaded mapping created
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv1_DataSet</span><span class="o">.</span><span class="n">BENv1DataSet</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv2_DataSet</span><span class="o">.</span><span class="n">BENv2DataSet</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
     <span class="n">max_len</span><span class="o">=</span><span class="mi">100</span>
@@ -376,22 +390,26 @@ tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[INFO]    Loading BEN data for train...
-[INFO]        10 patches indexed
-[INFO]        10 pre-filtered patches indexed
-[INFO]        10 filtered patches indexed
+[INFO]        6 patches indexed
+[INFO]        6 pre-filtered patches indexed
+[INFO]        6 filtered patches indexed
+[INFO]    Merged metadata with snow/cloud metadata
+[INFO]    Loaded 24 labels
+[INFO]    Loaded 24 keys
+[INFO]    Loaded mapping created
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 </section>
-<section id="bendatamodule">
-<h2>BENDataModule<a class="headerlink" href="#bendatamodule" title="Permalink to this heading">#</a></h2>
-<p>This class is a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/data/datamodule.html">Lightning Data Module</a>, that wraps the <code class="docutils literal notranslate"><span class="pre">BENv1_DataSet</span></code>. It automatically generates <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> per split with augmentations, shuffling, etc., depending on the split. All images are resized and normalized and images in the train set additionally basic-augmented via noise and flipping/rotation. The train split is also shuffled, however this can be overwritten (see below).</p>
+<section id="benv2datamodule">
+<h2>BENv2DataModule<a class="headerlink" href="#benv2datamodule" title="Permalink to this heading">#</a></h2>
+<p>This class is a <a class="reference external" href="https://pytorch-lightning.readthedocs.io/en/stable/data/datamodule.html">Lightning Data Module</a>, that wraps the <code class="docutils literal notranslate"><span class="pre">BENv2DataSet</span></code>. It automatically generates <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> per split with augmentations, shuffling, etc., depending on the split. All images are resized and normalized and images in the train set additionally basic-augmented via noise and flipping/rotation. The train split is also shuffled, however this can be overwritten (see below).</p>
 <p>To use a <code class="docutils literal notranslate"><span class="pre">DataModule</span></code>, the <code class="docutils literal notranslate"><span class="pre">setup()</span></code> function has to be called. This populates the <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> splits inside the <code class="docutils literal notranslate"><span class="pre">DataModule</span></code>. Depending on the stage (<code class="docutils literal notranslate"><span class="pre">'fit'</span></code>, <code class="docutils literal notranslate"><span class="pre">'test'</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>), the setup will prepare only train &amp; validation <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>, only test <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> or all three.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BENv1_DataModule</span><span class="o">.</span><span class="n">BENv1DataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BENv2_DataModule</span><span class="o">.</span><span class="n">BENv2DataModule</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span>  <span class="c1"># path set by to dataset</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Before:&quot;</span><span class="p">)</span>
@@ -419,25 +437,33 @@ None
 
 === SETUP ===
 [INFO]    Loading BEN data for train...
-[INFO]        10 patches indexed
-[INFO]        10 pre-filtered patches indexed
-[INFO]        10 filtered patches indexed
-[INFO]    Loading BEN data for val...
-[INFO]        10 patches indexed
-[INFO]        10 pre-filtered patches indexed
-[INFO]        10 filtered patches indexed
-[INFO]      Total training samples:       10  Total validation samples:       10
+[INFO]        6 patches indexed
+[INFO]        6 pre-filtered patches indexed
+[INFO]        6 filtered patches indexed
+[INFO]    Merged metadata with snow/cloud metadata
+[INFO]    Loaded 24 labels
+[INFO]    Loaded 24 keys
+[INFO]    Loaded mapping created
+[INFO]    Loading BEN data for validation...
+[INFO]        6 patches indexed
+[INFO]        6 pre-filtered patches indexed
+[INFO]        6 filtered patches indexed
+[INFO]    Merged metadata with snow/cloud metadata
+[INFO]    Loaded 24 labels
+[INFO]    Loaded 24 keys
+[INFO]    Loaded mapping created
+[INFO]      Total training samples:        6  Total validation samples:        6
 === END SETUP ===
 
 After:
-&lt;configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet object at 0x75c137134e50&gt;
-&lt;configilm.extra.DataSets.BENv1_DataSet.BENv1DataSet object at 0x75c13192d3f0&gt;
+&lt;configilm.extra.DataSets.BENv2_DataSet.BENv2DataSet object at 0x7fa50c3521a0&gt;
+&lt;configilm.extra.DataSets.BENv2_DataSet.BENv2DataSet object at 0x7fa41a421630&gt;
 None
 </pre></div>
 </div>
 </div>
 </div>
-<p>Afterwards the pytorch <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> can be easily accessed. Note, that <span class="math notranslate nohighlight">\(len(DL) = \lceil \frac{len(DS)}{batch\_size} \rceil\)</span>, therefore here with the default <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> of 16: 10/16 -&gt; 1.</p>
+<p>Afterwards the pytorch <code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> can be easily accessed. Note, that <span class="math notranslate nohighlight">\(len(DL) = \lceil \frac{len(DS)}{batch\_size} \rceil\)</span>, therefore here with the default <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> of 16: 6/16 -&gt; 1.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_loader</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">train_dataloader</span><span class="p">()</span>
@@ -458,7 +484,7 @@ None
 <p>Not changeable is the usage of pinned memory, which is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> if a cuda-enabled device is found and <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BENv1_DataModule</span><span class="o">.</span><span class="n">BENv1DataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dm</span> <span class="o">=</span> <span class="n">BENv2_DataModule</span><span class="o">.</span><span class="n">BENv2DataModule</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span>
 <span class="p">)</span>
@@ -475,24 +501,32 @@ None
 
 === SETUP ===
 [INFO]    Loading BEN data for train...
-[INFO]        10 patches indexed
-[INFO]        10 pre-filtered patches indexed
-[INFO]        10 filtered patches indexed
-[INFO]    Loading BEN data for val...
-[INFO]        10 patches indexed
-[INFO]        10 pre-filtered patches indexed
-[INFO]        10 filtered patches indexed
-[INFO]      Total training samples:       10  Total validation samples:       10
+[INFO]        6 patches indexed
+[INFO]        6 pre-filtered patches indexed
+[INFO]        6 filtered patches indexed
+[INFO]    Merged metadata with snow/cloud metadata
+[INFO]    Loaded 24 labels
+[INFO]    Loaded 24 keys
+[INFO]    Loaded mapping created
+[INFO]    Loading BEN data for validation...
+[INFO]        6 patches indexed
+[INFO]        6 pre-filtered patches indexed
+[INFO]        6 filtered patches indexed
+[INFO]    Merged metadata with snow/cloud metadata
+[INFO]    Loaded 24 labels
+[INFO]    Loaded 24 keys
+[INFO]    Loaded mapping created
+[INFO]      Total training samples:        6  Total validation samples:        6
 === END SETUP ===
 
-3
+2
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv1_DataModule</span><span class="o">.</span><span class="n">BENv1DataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv2_DataModule</span><span class="o">.</span><span class="n">BENv2DataModule</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
@@ -509,7 +543,7 @@ None
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv1_DataModule</span><span class="o">.</span><span class="n">BENv1DataModule</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">BENv2_DataModule</span><span class="o">.</span><span class="n">BENv2DataModule</span><span class="p">(</span>
     <span class="n">data_dirs</span><span class="o">=</span><span class="n">my_data_path</span><span class="p">,</span>  <span class="c1"># path set by to dataset</span>
     <span class="n">num_workers_dataloader</span><span class="o">=</span><span class="mi">2</span>
 <span class="p">)</span>
@@ -532,23 +566,23 @@ None
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="bigearthnetv2.html">
+          <a class="next-page" href="rsvqaxben.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">BigEarthNet v2.0 / refined BigEarthNet</div>
+                <div class="title">RSVQAxBEN</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../DataSets%20and%20DataModules.html">
+          <a class="prev-page" href="bigearthnetv1.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">DataSets and DataModules</div>
+                <div class="title">BigEarthNet v1.0</div>
                 
               </div>
             </a>
@@ -726,14 +760,14 @@ None
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">BigEarthNet v1.0</a><ul>
-<li><a class="reference internal" href="#bendataset">BENDataSet</a><ul>
+<li><a class="reference internal" href="#">BigEarthNet v2.0 / refined BigEarthNet</a><ul>
+<li><a class="reference internal" href="#benv2dataset">BENv2DataSet</a><ul>
 <li><a class="reference internal" href="#selecting-bands">Selecting Bands</a></li>
 <li><a class="reference internal" href="#splits">Splits</a></li>
 <li><a class="reference internal" href="#restricting-the-number-of-loaded-images">Restricting the number of loaded images</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#bendatamodule">BENDataModule</a><ul>
+<li><a class="reference internal" href="#benv2datamodule">BENv2DataModule</a><ul>
 <li><a class="reference internal" href="#dataloader-settings">DataLoader settings</a></li>
 </ul>
 </li>

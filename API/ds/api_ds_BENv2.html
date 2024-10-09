@@ -260,13 +260,27 @@ is defined by the first element of the img_size tuple (c, h, w).
 The available configurations are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>2 -&gt; Sentinel-1</p></li>
+<li><p>2 -&gt; Sentinel-1 (VV, VH)</p></li>
 <li><p>3 -&gt; RGB</p></li>
-<li><p>4 -&gt; 10m Sentinel-2</p></li>
-<li><p>10 -&gt; 10m + 20m Sentinel-2</p></li>
-<li><p>12 -&gt; 10m + 20m Sentinel-2 + 10m Sentinel-1</p></li>
+<li><p>4 -&gt; 10m Sentinel-2 (B, R, G, Ir)</p></li>
+<li><p>10 -&gt; 10m + 20m Sentinel-2 (in original order)</p></li>
+<li><p>12 -&gt; Sentinel-1 + 10m/20m Sentinel-2 (in original order)</p></li>
+<li><p>14 -&gt; Sentinel-1 + 10m/20m/60m Sentinel-2 (in original order)</p></li>
 </ul>
 </div></blockquote>
+<p>Original order means that the bands are ordered as they are defined by ESA:
+[“B01”, “B02”, “B03”, “B04”, “B05”, “B06”, “B07”, “B08”, “B8A”, “B09”, “B11”, “B12”]</p>
+<dl class="simple">
+<dt>In detail, this means:</dt><dd><ul class="simple">
+<li><p>2: VV, VH</p></li>
+<li><p>3: B04, B03, B02</p></li>
+<li><p>4: B02, B03, B04, B08</p></li>
+<li><p>10: B02, B03, B04, B05, B06, B07, B08, B8A, B11, B12</p></li>
+<li><p>12: VV, VH, B02, B03, B04, B05, B06, B07, B08, B8A, B11, B12</p></li>
+<li><p>14: VV, VH, B01, B02, B03, B04, B05, B06, B07, B08, B8A, B09, B11, B12</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="configilm.extra.DataSets.BENv2_DataSet.BENv2DataSet.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dirs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">120,</span> <span class="pre">120)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_extras</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_prefilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_cloudy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_snowy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#configilm.extra.DataSets.BENv2_DataSet.BENv2DataSet.__init__" title="Permalink to this definition">#</a></dt>

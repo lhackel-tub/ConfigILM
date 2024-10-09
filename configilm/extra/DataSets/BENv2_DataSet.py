@@ -33,29 +33,41 @@ class BENv2DataSet(Dataset):
     is defined by the first element of the img_size tuple (c, h, w).
     The available configurations are:
 
-        - 2 -> Sentinel-1
+        - 2 -> Sentinel-1 (VV, VH)
         - 3 -> RGB
-        - 4 -> 10m Sentinel-2
-        - 10 -> 10m + 20m Sentinel-2
-        - 12 -> 10m + 20m Sentinel-2 + 10m Sentinel-1
+        - 4 -> 10m Sentinel-2 (B, R, G, Ir)
+        - 10 -> 10m + 20m Sentinel-2 (in original order)
+        - 12 -> Sentinel-1 + 10m/20m Sentinel-2 (in original order)
+        - 14 -> Sentinel-1 + 10m/20m/60m Sentinel-2 (in original order)
+
+    Original order means that the bands are ordered as they are defined by ESA:
+    ["B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B11", "B12"]
+
+    In detail, this means:
+        - 2: VV, VH
+        - 3: B04, B03, B02
+        - 4: B02, B03, B04, B08
+        - 10: B02, B03, B04, B05, B06, B07, B08, B8A, B11, B12
+        - 12: VV, VH, B02, B03, B04, B05, B06, B07, B08, B8A, B11, B12
+        - 14: VV, VH, B01, B02, B03, B04, B05, B06, B07, B08, B8A, B09, B11, B12
     """
 
     avail_chan_configs = {
         2: "Sentinel-1",
         3: "RGB",
         4: "10m Sentinel-2",
-        10: "10m + 20m Sentinel-2",
-        12: "10m + 20m Sentinel-2 + 10m Sentinel-1",
-        14: "10m + 20m Sentinel-2 + 60m Sentinel-2 + 10m Sentinel-1 ",
+        10: "10m + 20m Sentinel-2 (in original order)",
+        12: "Sentinel-1 + 10m + 20m Sentinel-2 (in original order)",
+        14: "Sentinel-1 + 10m + 20m + 60m Sentinel-2 (in original order)",
     }
 
     channel_configurations = {
         2: STANDARD_BANDS["S1"],
         3: STANDARD_BANDS["RGB"],  # RGB order
         4: STANDARD_BANDS["10m"],  # BRGIr order
-        10: STANDARD_BANDS["10m"] + STANDARD_BANDS["20m"],
-        12: STANDARD_BANDS["10m"] + STANDARD_BANDS["20m"] + STANDARD_BANDS["S1"],
-        14: STANDARD_BANDS["10m"] + STANDARD_BANDS["20m"] + STANDARD_BANDS["60m"] + STANDARD_BANDS["S1"],
+        10: STANDARD_BANDS["10m_20m"],  # Original order
+        12: STANDARD_BANDS["S1_10m_20m"],  # Original order
+        14: STANDARD_BANDS["ALL"],  # Original order
     }
 
     @classmethod

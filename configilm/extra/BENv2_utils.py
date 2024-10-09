@@ -18,23 +18,30 @@ from safetensors.numpy import load as safetensor_load
 from configilm.extra.data_dir import resolve_data_dir_for_ds
 from configilm.util import Messages
 
-_s1_bandnames = ["VH", "VV"]
-_s2_bandnames = ["B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B09", "B11", "B12", "B8A"]
-_all_bandnames = _s2_bandnames + _s1_bandnames
+_s1_bandnames = ["VV", "VH"]
+_s2_bandnames = ["B01", "B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B09", "B11", "B12"]
+_s2_bandnames_10m = ["B02", "B03", "B04", "B08"]
+_s2_bandnames_20m = ["B05", "B06", "B07", "B8A", "B11", "B12"]
+_s2_bandnames_60m = ["B01", "B09"]
+_s2_bandnames_10m_20m = ["B02", "B03", "B04", "B05", "B06", "B07", "B08", "B8A", "B11", "B12"]
+_s2_bandnames_rgb = ["B04", "B03", "B02"]
+_all_bandnames = _s1_bandnames + _s2_bandnames
 
 STANDARD_BANDS = {
     "S1": _s1_bandnames,
     "S2": _s2_bandnames,
     "ALL": _all_bandnames,
-    "RGB": ["B04", "B03", "B02"],
-    "10m": ["B02", "B03", "B04", "B08"],
-    "20m": ["B05", "B06", "B07", "B11", "B12", "B8A"],
-    "60m": ["B01", "B09"],
+    "RGB": _s2_bandnames_rgb,
+    "10m": _s2_bandnames_10m,
+    "20m": _s2_bandnames_20m,
+    "60m": _s2_bandnames_60m,
+    "10m_20m": _s2_bandnames_10m_20m,
+    "S1_10m_20m": _s1_bandnames + _s2_bandnames_10m_20m,
     2: _s1_bandnames,
-    10: ["B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11", "B12", "B8A"],
-    12: ["B02", "B03", "B04", "B08", "B05", "B06", "B07", "B11", "B12", "B8A", "VH", "VV"],
-    3: ["B04", "B03", "B02"],
-    4: ["B04", "B03", "B02", "B08"],
+    3: _s2_bandnames_rgb,
+    4: _s2_bandnames_10m,
+    10: _s2_bandnames_10m_20m,
+    12: _s1_bandnames + _s2_bandnames_10m_20m,
 }
 
 """

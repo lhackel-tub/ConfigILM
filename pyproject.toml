@@ -14,7 +14,7 @@ python = "^3.9, <3.12"
 # pytorch dependencies for cuda are not set correctly in pypi right now
 # therefore we cannot use the newest versions
 torch = ">=2.0.0, !=2.0.1, !=2.1.0"
-timm = "^0.9.2"
+timm = "^1.0"
 transformers = "^4.26.0"
 appdirs = "^1.4.4"
 # numpy 2.0 is not compatible with pandas yet

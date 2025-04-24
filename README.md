@@ -18,7 +18,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/configilm)](https://pypi.org/project/configilm/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/configilm)](https://pypi.org/project/configilm/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/mit-0)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13269357.svg)](https://zenodo.org/records/13269357)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13909529.svg)](https://zenodo.org/records/13909529)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/run_tests.yml)
 [![CI Pipeline](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml/badge.svg)](https://github.com/lhackel-tub/ConfigILM/actions/workflows/build_docu.yml)
 [![Code Coverage](https://img.shields.io/badge/coverage%20-98%25-4c1)](./coverage.report)
@@ -83,16 +83,16 @@ If you use this work, please cite
 ```
 and the used version of the software, e.g., the current version with
 ```bibtex
-@software{lhackel_tub_2024_13269357,
+@software{lhackel_tub_2024_13909529,
   author       = {lhackel-tub and
                   Kai Norman Clasen},
-  title        = {lhackel-tub/ConfigILM: v0.6.9},
-  month        = aug,
+  title        = {lhackel-tub/ConfigILM: v0.7.0},
+  month        = oct,
   year         = 2024,
   publisher    = {Zenodo},
-  version      = {v0.6.9},
-  doi          = {10.5281/zenodo.13269357},
-  url          = {https://doi.org/10.5281/zenodo.13269357}
+  version      = {v0.7.0},
+  doi          = {10.5281/zenodo.13909529},
+  url          = {https://doi.org/10.5281/zenodo.13909529},
 }
 ```
 <!-- citation-end -->
